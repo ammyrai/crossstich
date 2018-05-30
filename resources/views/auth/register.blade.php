@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="form-group row">
-                           <label for="phone" class="col-md-4 control-label text-md-right">{{ __('Phone (Optional)') }}</label>
+                           <label for="phone" class="col-md-4 control-label text-md-right">{{ __('Phone') }}<span class="required_field">*</span></label>
 
                            <div class="col-md-6">
                                <input id="phone" type="text" class="form-control {{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone') }}" maxlength="12">
@@ -76,7 +76,7 @@
                        </div>
 
                        <div class="form-group row">
-                          <label for="phone" class="col-md-4 control-label text-md-right">{{ __('Company Name (Optional)') }}</label>
+                          <label for="phone" class="col-md-4 control-label text-md-right">{{ __('Company Name') }}<span class="required_field">*</span></label>
 
                           <div class="col-md-6">
                               <input id="company_name" type="text" class="form-control {{ $errors->has('company_name') ? ' is-invalid' : '' }}" name="company_name" value="{{ old('company_name') }}">

@@ -38,11 +38,11 @@
                     <div class="col-md-6 float-left canvas_content">
                         <div id="canvas"></div>
                     </div>
-                    <div class="col-md-6 float-left canvas_tool_bar">
+                    <!-- <div class="col-md-6 float-left canvas_tool_bar">
                         <p>Grid Width: <input type="text" id="grid_width" value="20" onkeyup="grid_width_change()"></p>
                         <p>Grid Height: <input type="text" id="grid_height" value="20" onkeyup="grid_height_change()"></p>
                         <button onclick="restart();"  title="Clears this grid">Clear</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>

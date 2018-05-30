@@ -5,18 +5,10 @@ var gridSize = 25,                      // Grid Tile Size
     box,                                // Variable for rectangle element
     isMouseDown = false;                // Set Mouse down property false
 
-  //  var fillPatternImage = box.fillPatternImage();
-
     // set fill pattern image
     var imageObj = new Image();
-    // imageObj.onload = function() {
-    //   shape.fillPatternImage(imageObj);
-    // };
     imageObj.src = '../imgs/stich.png';
 
-
-//var images = new Image();
-//images.src = 'stich.png';
 /*  create stage for main canvas  */
 var stage = new Konva.Stage({
     container: 'canvas',                  // Canvas container
@@ -53,27 +45,31 @@ for (var ix = 0; ix < canvasWidth; ix++) {
   }
 
 /*    Fill Grid cell   */
-background.on('click', function(evt) {
-  isMouseDown = !isMouseDown
-  if(isMouseDown === true){
-    background.on('mouseover', function(evt) {
-      if (isMouseDown){
-      //  console.log(imageObj);
-        var box = evt.target;
-        box.fillPatternImage(imageObj)
-        //box.color('red');
-        //background.add(text);
-        box.draw();
-      }
-    });
-    background.on('mouseout', function(evt) {
-        var box = evt.target;
-        box.fill('');
-        box.draw();
-    });
+background.on('mousedown', function(evt) {
+  isMouseDown = true
+  if (isMouseDown){
+    var box = evt.target;
+    if(box.attrs.fillPatternImage) { }
+    else {
+    box.fillPatternImage(imageObj);
+    box.draw();
+    }
   }
 });
+background.on('mouseup',function(evt){
+  isMouseDown= false
+})
 
+background.on('mouseover', function(evt) {
+  if (isMouseDown){
+    var box = evt.target;
+    if(box.attrs.fillPatternImage){ }
+    else {
+    box.fillPatternImage(imageObj);
+    box.draw();
+    }
+  }
+});
 
 stage.add(background);          // Add Layer to stage
 
