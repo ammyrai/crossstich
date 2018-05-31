@@ -1,0 +1,2272 @@
+[
+    {
+        "floss" : 150,
+        "color_code": "#AB0249",
+        "color_type": "very dark"
+    },
+    {
+        "floss" : 151,
+        "color_code": "#F0CED4",
+        "color_type": "very light"
+    },
+    {
+        "floss" : 152,
+        "color_code": "#E2A099",
+        "color_type": "med light"
+    },
+    {
+        "floss" : 153,
+        "color_code": "#E6CCD9",
+        "color_type": "very light"
+    },
+    {
+        "floss" : 154,
+        "color_code": "#572433",
+        "color_type": "very dark"
+    },
+    {
+        "floss" : 155,
+        "color_code": "#9891B6",
+        "color_type": "med dark"
+    },
+    {
+        "floss" : 156,
+        "color_code": "#A3AED1",
+        "color_type": "med light"
+    },
+    {
+        "floss" : 157,
+        "color_code": "#BBC3D9",
+        "color_type": "very light"
+    },
+    {
+        "floss" : 158,
+        "color_code": "#4C526E",
+        "color_type": "very dark"
+    },
+    {
+        "floss" : 159,
+        "color_code": "#C7CAD7",
+        "color_type": "light"
+    },
+    {
+        "floss" : 160,
+        "color_code": "#999FB7",
+        "color_type": "med light"
+    },
+    {
+        "floss" : 161,
+        "color_code": "#7880A4",
+        "color_type": "dark"
+    },
+    {
+        "floss" : 162,
+        "color_code": "#DBECF5",
+        "color_type": "very light"
+    },
+    {
+        "floss" : 163,
+        "color_code": "#4D8361",
+        "color_type": "med dark"
+    },
+    {
+        "floss" : 164,
+        "color_code": "#C8D8B8",
+        "color_type": "light"
+    },
+    {
+        "floss" : 165,
+        "color_code": "#EFF4A4",
+        "color_type": "very light"
+    },
+    {
+        "floss" : 166,
+        "color_code": "#C0C840",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 167,
+        "color_code": "#A77C49",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 168,
+        "color_code": "#D1D1D1",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 169,
+        "color_code": "#848484",
+        "color_type": "light",
+    },
+    {
+        "floss" : 208,
+        "color_code": "#835B8B",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 209,
+        "color_code": "#A37BA7",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 210,
+        "color_code": "#D29FC3",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 211,
+        "color_code": "#E3CBE3",
+        "color_type": "light",
+    },
+    {
+        "floss" : 221,
+        "color_code": "#883e43",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 223,
+        "color_code": "#CC847C",
+        "color_type": "light",
+    },
+    {
+        "floss" : 224,
+        "color_code": "#EBB7AF",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 225,
+        "color_code": "#FFDFD7",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 300,
+        "color_code": "#6F2F00",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 301,
+        "color_code": "#B35F2B",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 304,
+        "color_code": "#B71F33",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 307,
+        "color_code": "#FDED54",
+        "color_type": "bright",
+    },
+    {
+        "floss" : 309,
+        "color_code": "#BA4A4A",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 310,
+        "color_code": "#000000",
+        "color_type": "black",
+    },
+    {
+        "floss" : 311,
+        "color_code": "#1C5066",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 312,
+        "color_code": "#35668B",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 315,
+        "color_code": "#814952",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 316,
+        "color_code": "#B7737F",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 317,
+        "color_code": "#6C6C6C",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 318,
+        "color_code": "#ABABAB",
+        "color_type": "light",
+    },
+    {
+        "floss" : 319,
+        "color_code": "#205F2E",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 320,
+        "color_code": "#69885A",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 321,
+        "color_code": "#C72B3B",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 322,
+        "color_code": "#5A8FB8",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 326,
+        "color_code": "#B33B4B",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 327,
+        "color_code": "#633666",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 333,
+        "color_code": "#5C5478",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 334,
+        "color_code": "#739FC1",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 335,
+        "color_code": "#EE546E",
+        "color_type": "bright",
+    },
+    {
+        "floss" : 336,
+        "color_code": "#253B73",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 340,
+        "color_code": "#ADA7C7",
+        "color_type": "med light  ",
+    },
+    {
+        "floss" : 341,
+        "color_code": "#B7BFDD",
+        "color_type": "light",
+    },
+    {
+        "floss" : 347,
+        "color_code": "#BF2D2D",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 349,
+        "color_code": "#D21035",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 350,
+        "color_code": "#E04848",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 351,
+        "color_code": "#E96A67",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 352,
+        "color_code": "#FD9C97",
+        "color_type": "light",
+    },
+    {
+        "floss" : 353,
+        "color_code": "#FED7CC",
+        "color_type": "light",
+    },
+    {
+        "floss" : 355,
+        "color_code": "#984436",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 356,
+        "color_code": "#C56A5B",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 367,
+        "color_code": "#617A52",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 368,
+        "color_code": "#A6C298",
+        "color_type": "light",
+    },
+    {
+        "floss" : 369,
+        "color_code": "#D7EDCC",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 370,
+        "color_code": "#B89D64",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 371,
+        "color_code": "#BFA671",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 372,
+        "color_code": "#CCB784",
+        "color_type": "light",
+    },
+    {
+        "floss" : 400,
+        "color_code": "#8F430F",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 402,
+        "color_code": "#F7A777",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 407,
+        "color_code": "#BB8161",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 413,
+        "color_code": "#565656",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 414,
+        "color_code": "#8C8C8C",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 415,
+        "color_code": "#D3D3D6",
+        "color_type": "light",
+    },
+    {
+        "floss" : 420,
+        "color_code": "#A07042",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 422,
+        "color_code": "#C69F7B",
+        "color_type": "light",
+    },
+    {
+        "floss" : 433,
+        "color_code": "#7A451F",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 434,
+        "color_code": "#985e33",
+        "color_type": "light",
+    },
+    {
+        "floss" : 435,
+        "color_code": "#B87748",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 436,
+        "color_code": "#CB9051",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 437,
+        "color_code": "#E4BB8E",
+        "color_type": "light",
+    },
+    {
+        "floss" : 444,
+        "color_code": "#FFD600",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 445,
+        "color_code": "#FFFB8B",
+        "color_type": "light",
+    },
+    {
+        "floss" : 451,
+        "color_code": "#917B73",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 452,
+        "color_code": "#C0B3AE",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 453,
+        "color_code": "#D7CECB",
+        "color_type": "light",
+    },
+    {
+        "floss" : 469,
+        "color_code": "#72843C",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 470,
+        "color_code": "#94AB4F",
+        "color_type": "light",
+    },
+    {
+        "floss" : 471,
+        "color_code": "#AEBF79",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 472,
+        "color_code": "#D8E498",
+        "color_type": "ultra light",
+    },
+    {
+        "floss" : 498,
+        "color_code": "#A7132B",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 500,
+        "color_code": "#044D33",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 501,
+        "color_code": "#396F52",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 502,
+        "color_code": "#5B9071",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 503,
+        "color_code": "#7BAC94",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 504,
+        "color_code": "#C4DECC",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 505,
+        "color_code": "#338362",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 517,
+        "color_code": "#3B768F",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 518,
+        "color_code": "#4F93A7",
+        "color_type": "light",
+    },
+    {
+        "floss" : 519,
+        "color_code": "#7EB1C8",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 520,
+        "color_code": "#666D4F",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 522,
+        "color_code": "#969E7E",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 523,
+        "color_code": "#ABB197",
+        "color_type": "light",
+    },
+    {
+        "floss" : 524,
+        "color_code": "#C4CDAC",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 535,
+        "color_code": "#636458",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 543,
+        "color_code": "#F2E3CE",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 550,
+        "color_code": "#5C184E",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 552,
+        "color_code": "#803A6B",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 553,
+        "color_code": "#A3638B",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 554,
+        "color_code": "#DBB3CB",
+        "color_type": "light",
+    },
+    {
+        "floss" : 561,
+        "color_code": "#2C6A45",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 562,
+        "color_code": "#53976A",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 563,
+        "color_code": "#8FC098",
+        "color_type": "light",
+    },
+    {
+        "floss" : 564,
+        "color_code": "#A7CDAF",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 580,
+        "color_code": "#888D33",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 581,
+        "color_code": "#A7AE38",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 597,
+        "color_code": "#5BA3B3",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 598,
+        "color_code": "#90C3CC",
+        "color_type": "light",
+    },
+    {
+        "floss" : 600,
+        "color_code": "#CD2F63",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 601,
+        "color_code": "#D1286A",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 602,
+        "color_code": "#E24874",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 603,
+        "color_code": "#FFA4BE",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 604,
+        "color_code": "#FFB0BE",
+        "color_type": "light",
+    },
+    {
+        "floss" : 605,
+        "color_code": "#FFC0CD",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 606,
+        "color_code": "#FA3203",
+        "color_type": "bright",
+    },
+    {
+        "floss" : 608,
+        "color_code": "#FD5D35",
+        "color_type": "bright",
+    },
+    {
+        "floss" : 610,
+        "color_code": "#796047",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 611,
+        "color_code": "#967656",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 612,
+        "color_code": "#BC9A78",
+        "color_type": "light",
+    },
+    {
+        "floss" : 613,
+        "color_code": "#DCC4AA",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 632,
+        "color_code": "#875539",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 640,
+        "color_code": "#857B61",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 642,
+        "color_code": "#A49878",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 644,
+        "color_code": "#DDD8CB",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 645,
+        "color_code": "#6E655C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 646,
+        "color_code": "#877D73",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 647,
+        "color_code": "#B0A69C",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 648,
+        "color_code": "#BCB4AC",
+        "color_type": "light",
+    },
+    {
+        "floss" : 666,
+        "color_code": "#E31D42",
+        "color_type": "bright",
+    },
+    {
+        "floss" : 676,
+        "color_code": "#E5CE97",
+        "color_type": "light",
+    },
+    {
+        "floss" : 677,
+        "color_code": "#F5ECCB",
+        "color_type": "very light",
+    },
+    {
+        "floss" :  680,
+        "color_code": "#BC8D0E",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 699,
+        "color_code": "#56517",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 700,
+        "color_code": "#07731B",
+        "color_type": "bright",
+    },
+    {
+        "floss" : 701,
+        "color_code": "#3F8F29",
+        "color_type": "light",
+    },
+    {
+        "floss" : 702,
+        "color_code": "#47A72F",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 703,
+        "color_code": "#7BB547",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 704,
+        "color_code": "#9ECF34",
+        "color_type": "bright",
+    },
+    {
+        "floss" : 712,
+        "color_code": "#FFFBEF",
+        "color_type": "light",
+    },
+    {
+        "floss" : 718,
+        "color_code": "#9C2462",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 720,
+        "color_code": "#E55C1F",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 721,
+        "color_code": "#F27842",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 722,
+        "color_code": "#F7976F",
+        "color_type": "light",
+    },
+    {
+        "floss" : 725,
+        "color_code": "#FFC840",
+        "color_type": "light",
+    },
+    {
+        "floss" :  726,
+        "color_code": "#FDD755",
+        "color_type": "light",
+    },
+    {
+        "floss" : 727,
+        "color_code": "#FFF1AF",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 728,
+        "color_code": "#E4B468",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 729,
+        "color_code": "#D0A53E",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 730,
+        "color_code": "#827B30",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 731,
+        "color_code": "#938B37",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 732,
+        "color_code": "#948C36",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 733,
+        "color_code": "#BCB34C",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 734,
+        "color_code": "#C7C077",
+        "color_type": "light",
+    },
+    {
+        "floss" : 738,
+        "color_code": "#ECCC9E",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 739,
+        "color_code": "#F8E4C8",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 740,
+        "color_code": "#FF8B00",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 741,
+        "color_code": "#FFA32B",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 742,
+        "color_code": "#FFBF57",
+        "color_type": "light",
+    },
+    {
+        "floss" : 743,
+        "color_code": "#FED376",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 744,
+        "color_code": "#FFE793",
+        "color_type": "light",
+    },
+    {
+        "floss" : 745,
+        "color_code": "#FFE9AD",
+        "color_type": "light",
+    },
+    {
+        "floss" : 746,
+        "color_code": "#FCFCEE",
+        "color_type": "white",
+    },
+    {
+        "floss" : 747,
+        "color_code": "#E5FCFD",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 754,
+        "color_code": "#F7CBBF",
+        "color_type": "light",
+    },
+    {
+        "floss" : 758,
+        "color_code": "#EEAA9B",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 760,
+        "color_code": "#F5ADAD",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 761,
+        "color_code": "#FFC9C9",
+        "color_type": "light",
+    },
+    {
+        "floss" : 762,
+        "color_code": "#ECECEC",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 772,
+        "color_code": "#E4ECD4",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 775,
+        "color_code": "#D9EBF1",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 776,
+        "color_code": "#FCB0B9",
+        "color_type": "med light",
+    },
+    {
+        "floss" : 777,
+        "color_code": "#913546",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 778,
+        "color_code": "#DFB3BB",
+        "color_type": "very light",
+    },
+    {
+        "floss" : 779,
+        "color_code": "#624B45",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 780,
+        "color_code": "#94631A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 781,
+        "color_code": "#A26D20",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 782,
+        "color_code": "#AE7720",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 783,
+        "color_code": "#CE9124",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 791,
+        "color_code": "#464563",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 792,
+        "color_code": "#555B7B",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 793,
+        "color_code": "#707DA2",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 794,
+        "color_code": "#8F9CC1",
+        "color_type": "light",
+    },
+    {
+        "floss" : 796,
+        "color_code": "#11416D",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 797,
+        "color_code": "#13477D",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 798,
+        "color_code": "#466A8E",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 799,
+        "color_code": "#748EB6",
+        "color_type": "med dark",
+    },
+    {
+      "floss" : 800,
+        "color_code": "#C0CCDE",
+        "color_type": "light",
+    },
+    {
+        "floss" : 801,
+        "color_code": "#653919",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 803,
+        "color_code": "#2C597C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 806,
+        "color_code": "#3D95A5",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 807,
+        "color_code": "#64ABBA",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 809,
+        "color_code": "#94A8C6",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 813,
+        "color_code": "#A1C2D7",
+        "color_type": "light",
+    },
+    {
+        "floss" : 814,
+        "color_code": "#7B001B",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 815,
+        "color_code": "#87071F",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 816,
+        "color_code": "#970B23",
+        "color_type": "med dark",
+    },
+    {
+        "floss" : 817,
+        "color_code": "#BB051F",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 818,
+        "color_code": "#FFDFD9",
+        "color_type": "light",
+    },
+    {
+        "floss" : 819,
+        "color_code": "#FFEEEB",
+        "color_type": "light",
+    },
+    {
+        "floss" : 820,
+        "color_code": "#0E365C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 822,
+        "color_code": "#E7E2D3",
+        "color_type": "light",
+    },
+    {
+        "floss" : 823,
+        "color_code": "#213063",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 824,
+        "color_code": "#396987",
+        "color_type": "very dark",
+    },
+    {
+        "floss" : 825,
+        "color_code": "#4781A5",
+        "color_type": "dark",
+    },
+    {
+        "floss" : 826,
+        "color_code": "#6B9EBF",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#BDDDED",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C5E8ED",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#7E6B42",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#8D784B",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#AA8F56",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#BD9B51",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C8AB6C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#DBBE7F",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#594937",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#675541",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#9A7C5C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#B69B7E",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#D1BAA1",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#484848",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#835e39",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#184923",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FF5773",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FF798C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FC90A2",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFB2BB",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#1B5300",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#492A13",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#F27688",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#D15807",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#822637",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#557822",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#628A28",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#7FB335",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C7E666",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#156F49",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#187e56",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#189065",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#1B9D6B",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#6DAB77",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#820043",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#9B1359",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#82340A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#A64510",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#AC5414",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C66218",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E27323",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#566A6A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#98AEAE",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#BDCBCB",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#DDE3E3",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#455C71",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#6A859E",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#A2B5C6",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#313919",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#424D21",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#4C5826",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#627133",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#361F0E",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#1B2853",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#3D9384",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FBD5BB",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#EB6307",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FF7B4D",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FEE7DA",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#EED3C4",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFE2CF",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#88BA91",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#A2D6AD",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FF9191",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FDB5B5",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#3EB6A1",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#59C7B4",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#CF7373",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E68A8A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFD7D7",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#A9E2D8",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#B9D7C0",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFDED5",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#F78B13",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#F67F00",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFB515",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFE300",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#914F12",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C28142",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#DC9C56",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#405230",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#587141",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#738B5B",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#8DA675",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#477B6E",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#6FAE9F",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#90C0B4",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#2696B6",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#30C2EC",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#898A58",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#A6A75D",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#B9B982",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#4F4B41",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#8E9078",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#B1AA97",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#EBEAE7",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#4B3C2A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#B39F8B",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E3D8CC",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#956F7C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#B79DA7",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#BC966A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#D8BC9A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E7D6C1",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#5F6648",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#889268",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#9CA482",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C48E70",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E6E8E8",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FDF9CD",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#B8D2E6",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FBADB4",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E36D6D",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FF836F",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FCAB98",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#1B5915",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#406A3A",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#71935C",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#CCD9B1",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#BC4365",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E4A6AC",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#5E6B47",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#728256",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#83975F",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#1E1108",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C54989",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#EA9CC4",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#F4AED7",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#881531",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#C96B70",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#E7A9AC",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FBBFC2",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FF7992",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFADBC",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFCBD5",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#F18787",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFE2E2",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#FFBDBD",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#A14B51",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#BC6C64",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#9B5B66",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#DBA9B2",
+        "color_type": "very dark",
+    },
+    {
+        "floss" :
+        "color_code": "#DA6783",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#E8879B",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#785762",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#D7CBD3",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#776B98",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#D3D7ED",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#384C5E",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#C7D1DB",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#DBE2E9",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#92B4CE",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#EEFCFC",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#3E85A2",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#ACD8E2",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#347F8C",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#99CFD9",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#657F7F",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FFEEE3",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F4BBA9",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#A06C50",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#B67552",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F3E1D7",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#CF7939",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#863022",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#D98978",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F8CAC8",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#6B5743",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#D2BCA6",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#625D50",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#7F6A55",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#424242",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#E74967",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#714149",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#AB3357",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#E02876",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F3478B",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FF8CAE",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#60678C",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#366970",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#3F7C85",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#488E9A",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#BCE3E6",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#2F8C84",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#B2D4BD",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#508B7D",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#477759",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#65A57D",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#99C3AA",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#115A3B",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#E0E868",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#DFB65F",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F3CE75",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F6DC98",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FFFDE3",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FECDC2",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FDBD96",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#AD7239",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F7BB77",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#B78B61",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#A98204",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#BC5544",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#B32F48",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#DB556E",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#EA8699",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#72375D",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#946083",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#BA91AA",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#6C3A6E",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#5C7294",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#7B8EAB",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#B0C0DA",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#CDDFED",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#32667C",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#14AAD0",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#12AEBA",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#04C4CA",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#06E3E6",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#347D75",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#419392",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#52B3AE",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#378477",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#49B3A1",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#CD9D37",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F29746",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F2AF68",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FAD396",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FFD3B5",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#68251A",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#964A3F",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#BA8B7C",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#7D5D57",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#A68881",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#8A6E4E",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#A4835C",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#CBB69C",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F9F7F1",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FAF6F0",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FFFFFF",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#F0EADA",
+      "color_type": "very dark",
+},
+      {
+  "floss" :
+        "color_code": "#FCFBF8",
+        "color_type": "very dark",
+      }
+]
