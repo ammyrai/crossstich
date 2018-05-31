@@ -1,3 +1,5 @@
+/*    Konva canvas file   */
+
 /*    Declare Global Variables    */
 var gridSize = 25,                      // Grid Tile Size
     canvasWidth = 20,                   // Grid Width

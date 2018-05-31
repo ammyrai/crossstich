@@ -48,3 +48,19 @@ html, body {
 .m-b-md {
     margin-bottom: 30px;
 }
+
+
+
+/*  Color Pattel style  */
+
+ul.my-new-list {
+    float: left;
+    width: 100%;
+    list-style: none;
+}
+ul.my-new-list .color_pattel {
+  width: 20px;
+  float: left;
+  display: inline-block;
+  height: 20px;
+}
