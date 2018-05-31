@@ -1,5 +1,5 @@
 /*    Konva canvas file   */
-
+function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStrokeColor,circleFillColor){
 /*    Declare Global Variables    */
 var gridSize = 25,                      // Grid Tile Size
     canvasWidth = 20,                   // Grid Width
@@ -38,7 +38,7 @@ var stageRect =  new Konva.Rect({
   y:0,
   width: canvasWidth * gridSize,
   height: canvasHeight * gridSize,
-  fill: 'white',
+  fill: canvasMainBgcolor,
 })
 backgroundCanvas.add(stageRect);
 /*  Layer1 work ends here! */
@@ -53,12 +53,12 @@ for (var ix = 0; ix < canvasWidth; ix++) {
           height : gridSize,
           //strokeEnabled: false,
           //dash: [4, 21],
-          stroke: '#FFE793',
+          stroke: gridStrokeColor,
           strokeWidth: 0,
           lineJoin : 'round',
           shadowEnabled : true,
           //fillPatternImage: stichImageObj,
-          shadowColor: '#FFE9AD',
+          shadowColor: gridShadowColor,
           shadowOffset: {  x: 3,   y: 3 },
           shadowOpacity: 1
       });
@@ -67,9 +67,9 @@ for (var ix = 0; ix < canvasWidth; ix++) {
         x: box.attrs.x,
         y: box.attrs.y,
         radius: 2,
-        stroke: '#F7976F',
+        stroke: circleStrokeColor,
         strokeWidth: 1,
-        fill: '#FED376',
+        fill: circleFillColor,
       });
 
       canvasGridLayer.add(box);              // Add rectangle to background layer
@@ -110,3 +110,24 @@ stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 
 var json = stage.toJSON();      // Save entire canvas as json
 //console.log(json);
+}
+/* initiate canvas on window load  */
+$( window ).on( "load", function() {
+    /* Canvas initiate funtion with parameters
+      * Parameter1 : Initial canvas main background color.
+      * Parameter2 : Grid stroke color.
+      * Parameter3 : Grid shadow color.
+      * Parameter4 : Circle stroke color.
+      * Parameter5 : Circle Fill color.
+      */
+    canvasInit('white','#FFE793','#FFE9AD','#F7976F','#FED376');
+});
+
+$(function() {
+/*  Pass colors to canvasInit function from color pattel  */
+$(document).on('click', '.color_pattel',function() {
+  var canvasBgColor = $(this).data("colorcode");
+  var colorType   =  $(this).data("type");
+  canvasInit(canvasBgColor,'#FFE793','#FFE9AD','#F7976F','#FED376');
+});
+});
