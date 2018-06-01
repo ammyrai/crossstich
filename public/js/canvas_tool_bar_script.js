@@ -23,5 +23,13 @@ $(function() {
   })
   .always(function() {
   });
+  /*  Read color pattel jason and render html to canvas color tool bar  Ends here! */
 
+  /*  Show colors btn script Starts here!  */
+  $('.show-colors-btn').click(function(){
+          $(this).text(function(i,old){
+              return old=='+' ?  '-' : '+';
+          });
+  });
+  /*  Show colors btn script ends here! */
 });

@@ -1,18 +1,27 @@
 /*    Konva canvas file   */
-function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStrokeColor,circleFillColor){
 /*    Declare Global Variables    */
 var gridSize = 25,                      // Grid Tile Size
     canvasWidth = 20,                   // Grid Width
     canvasHeight = 20,                  // Grid Height
     box,                                // Variable for rectangle element
-    isMouseDown = false;                // Set Mouse down property false
+    isMouseDown = false,                // Set Mouse down property false
+    canvasBgCPara,                      // Canvas Background Color code parameter
+    gridStrokeCPara,                    // Grid Stroke Color code parameter
+    gridShadowCPara,                    // Grid Stroke Color code parameter
+    circleStrokeCPara,                  // Circle Stroke Color code parameter
+    circleFillCPara;                    // Circle Fill Color code parameter
 
+/*
+      * canvasInit(Para1, Para2, Para3, Para3, Para4, Para5)
+      * Canavs initiation function with 5 parameters
+      * Para1 : Canvas Background Color code
+      * Para2 : Grid Stroke Color code parameter
+      * Para3 : Grid Stroke Color code parameter
+      * Para4 : Circle Stroke Color code parameter
+      * Para5 : Circle Fill Color code parameter
 
-    /* set fill pattern cross image for grid tiles starts here */
-    var bgImageObj = new Image();
-    bgImageObj.src = '../imgs/bgimg.png';
-    /* set fill pattern cross image for grid tiles ends here */
-
+*/
+function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStrokeColor,circleFillColor){
     /* set fill pattern cross image for grid tiles starts here */
     var stichImageObj = new Image();
     stichImageObj.src = '../imgs/stich.png';
@@ -51,13 +60,10 @@ for (var ix = 0; ix < canvasWidth; ix++) {
           y : iy * gridSize,
           width : gridSize ,
           height : gridSize,
-          //strokeEnabled: false,
-          //dash: [4, 21],
           stroke: gridStrokeColor,
           strokeWidth: 0,
           lineJoin : 'round',
           shadowEnabled : true,
-          //fillPatternImage: stichImageObj,
           shadowColor: gridShadowColor,
           shadowOffset: {  x: 3,   y: 3 },
           shadowOpacity: 1
@@ -69,7 +75,6 @@ for (var ix = 0; ix < canvasWidth; ix++) {
         radius: 2,
         stroke: circleStrokeColor,
         strokeWidth: 1,
-        fill: circleFillColor,
       });
 
       canvasGridLayer.add(box);              // Add rectangle to background layer
@@ -81,11 +86,12 @@ for (var ix = 0; ix < canvasWidth; ix++) {
 canvasGridLayer.on('mousedown', function(evt) {
   isMouseDown = true
   if (isMouseDown){
-    var box = evt.target;
+    box = evt.target;
     if(box.attrs.fillPatternImage) { }
-    else {
-    box.fillPatternImage(stichImageObj);
-    box.draw();
+    else
+    {
+      box.fillPatternImage(stichImageObj);
+      box.draw();
     }
   }
 });
@@ -95,11 +101,12 @@ canvasGridLayer.on('mouseup',function(evt){
 
 canvasGridLayer.on('mouseover', function(evt) {
   if (isMouseDown){
-    var box = evt.target;
+    box = evt.target;
     if(box.attrs.fillPatternImage){ }
-    else {
-    box.fillPatternImage(stichImageObj);
-    box.draw();
+    else
+    {
+      box.fillPatternImage(stichImageObj);
+      box.draw();
     }
   }
 });
@@ -126,8 +133,54 @@ $( window ).on( "load", function() {
 $(function() {
 /*  Pass colors to canvasInit function from color pattel  */
 $(document).on('click', '.color_pattel',function() {
-  var canvasBgColor = $(this).data("colorcode");
-  var colorType   =  $(this).data("type");
-  canvasInit(canvasBgColor,'#FFE793','#FFE9AD','#F7976F','#FED376');
+  canvasBgColor = $(this).data("colorcode");
+  var colorType     =  $(this).data("type");
+  if(colorType == "white" || colorType == "black")        // set default colors if bg is of white or black color
+  {
+    gridStrokeCPara = '#FFE793';
+    gridShadowCPara = '#FFE9AD';
+    circleStrokeCPara = '#F7976F';
+    circleFillCPara = '#FED376';
+  }
+  else if(colorType == 'light')     // generate and set 20% darker shade if bg is of light color
+  {
+      // Create a 20% darker shade of light color
+      gridStrokeCPara = ColorLuminance(canvasBgColor, -0.2);
+      gridShadowCPara = ColorLuminance(gridStrokeCPara, -0.2);
+      circleStrokeCPara = ColorLuminance(gridShadowCPara, -0.2);
+      circleFillCPara = ColorLuminance(circleStrokeCPara, -0.2);
+  }
+  else                             // generate and set 100% lighter shade if bg is of dark color
+  {
+    // Create a 100% lighter shade of dark color
+    gridStrokeCPara = ColorLuminance(canvasBgColor, 0.10);
+    gridShadowCPara = ColorLuminance(gridStrokeCPara, 0.10);
+    circleStrokeCPara = ColorLuminance(gridShadowCPara, 0.10);
+    circleFillCPara = ColorLuminance(circleStrokeCPara, 0.10);
+  }
+  canvasInit(canvasBgColor,gridStrokeCPara,gridShadowCPara,circleStrokeCPara,circleFillCPara);
+  // Call to canvasInit function
 });
+
+/*  Generate new color codes script starts here!  */
+function ColorLuminance(hex, lum)
+{
+  // validate hex string
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+
+	// convert to decimal and change luminosity
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+	return rgb;
+}
+/*  Generate new color codes script ends here!  */
 });
