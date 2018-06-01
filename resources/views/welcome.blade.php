@@ -32,6 +32,9 @@
                 <div class="col-md-12 canvas_container">
                     <div class="col-md-6 float-left canvas_content">
                         <div id="canvas"></div>
+                        <!-- <ul>
+                            <li class="erase" id="erase_tool">Eraser</li>
+                        </ul> -->
                     </div>
                     <div class="col-md-6 float-left canvas_tool_bar">
                         <p class="font-weight-bold text-left">

@@ -12,6 +12,7 @@ var gridSize = 25,                      // Grid Tile Size
     circleFillCPara;                    // Circle Fill Color code parameter
 
 /*
+      =========================================================
       * canvasInit(Para1, Para2, Para3, Para3, Para4, Para5)
       * Canavs initiation function with 5 parameters
       * Para1 : Canvas Background Color code
@@ -19,6 +20,7 @@ var gridSize = 25,                      // Grid Tile Size
       * Para3 : Grid Stroke Color code parameter
       * Para4 : Circle Stroke Color code parameter
       * Para5 : Circle Fill Color code parameter
+      =========================================================
 
 */
 function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStrokeColor,circleFillColor){
@@ -26,6 +28,11 @@ function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStro
     var stichImageObj = new Image();
     stichImageObj.src = '../imgs/stich.png';
     /* set fill pattern cross image for grid tiles ends here */
+
+    /* set fill pattern blank image for erase fun. for grid tiles starts here */
+    var blankImageObj = new Image();
+    blankImageObj.src = '../imgs/blank.png';
+    /* set fill pattern blank image for erase fun. for grid tiles ends here */
 
 /*  create stage for main canvas  */
 var stage = new Konva.Stage({
@@ -82,43 +89,72 @@ for (var ix = 0; ix < canvasWidth; ix++) {
     }
   }
 
+
+/*   Eraser tool function    */
+var mode = "";
+// var erase = document.getElementById('erase_tool');
+// erase.addEventListener('click', function() {
+//   mode = "eraser";
+// });
+
+
 /*    Fill Grid cell   */
 canvasGridLayer.on('mousedown', function(evt) {
-  isMouseDown = true
-  if (isMouseDown){
-    box = evt.target;
-    if(box.attrs.fillPatternImage) { }
-    else
-    {
-      box.fillPatternImage(stichImageObj);
-      box.draw();
+  isMouseDown = true;
+
+  if (mode != '' && mode === 'eraser')
+  {
+
+  }
+  else
+  {
+    if (isMouseDown){
+      box = evt.target;
+      if(box.attrs.fillPatternImage) { }
+      else
+      {
+        box.fillPatternImage(stichImageObj);
+        box.draw();
+      }
     }
   }
+
 });
 canvasGridLayer.on('mouseup',function(evt){
   isMouseDown= false
 })
 
 canvasGridLayer.on('mouseover', function(evt) {
-  if (isMouseDown){
-    box = evt.target;
-    if(box.attrs.fillPatternImage){ }
-    else
-    {
-      box.fillPatternImage(stichImageObj);
-      box.draw();
+  if (mode != '' && mode === 'eraser')
+  {
+
+  }
+  else
+  {
+    if (isMouseDown){
+      box = evt.target;
+      if(box.attrs.fillPatternImage) { }
+      else
+      {
+        box.fillPatternImage(stichImageObj);
+        box.draw();
+      }
     }
   }
+
 });
 /*  Layer2 Create a grid on canvas work ends here!*/
 
 stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 
-
 var json = stage.toJSON();      // Save entire canvas as json
 //console.log(json);
 }
-/* initiate canvas on window load  */
+/*
+      ===============================
+      initiate canvas on window load
+      ===============================
+*/
 $( window ).on( "load", function() {
     /* Canvas initiate funtion with parameters
       * Parameter1 : Initial canvas main background color.
@@ -130,8 +166,13 @@ $( window ).on( "load", function() {
     canvasInit('white','#FFE793','#FFE9AD','#F7976F','#FED376');
 });
 
-$(function() {
-/*  Pass colors to canvasInit function from color pattel  */
+$(function()
+{
+/*
+    ====================================================
+    Pass colors to canvasInit function from color pattel
+    ====================================================
+*/
 $(document).on('click', '.color_pattel',function() {
   canvasBgColor = $(this).data("colorcode");
   var colorType     =  $(this).data("type");
@@ -162,7 +203,11 @@ $(document).on('click', '.color_pattel',function() {
   // Call to canvasInit function
 });
 
-/*  Generate new color codes script starts here!  */
+/*
+    ============================================
+    Generate new color codes script starts here!
+    =============================================
+*/
 function ColorLuminance(hex, lum)
 {
   // validate hex string
