@@ -11,6 +11,7 @@
         <!-- Styles -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -32,11 +33,19 @@
                 <div class="col-md-12 canvas_container">
                     <div class="col-md-6 float-left canvas_content">
                         <div id="canvas"></div>
-                        <!-- <ul>
-                            <li class="erase" id="erase_tool">Eraser</li>
-                        </ul> -->
                     </div>
-                    <div class="col-md-6 float-left canvas_tool_bar">
+                    <div class="col-md-2">
+                        <h3>Toolbar Section</h3>
+                        <ul class="toolbar_list" id="">
+                            <li class="canvas_tool active" id="pencil"><i class="fa fa-pencil" aria-hidden="true"></i></li>
+                            <li class="canvas_tool" id="eraser"><i class="fa fa-eraser" aria-hidden="true"></i> </li>
+                            <li class="canvas_tool" id=""><i class="fa fa-hand-rock-o" aria-hidden="true"></i></i> </li>
+                            <li class="canvas_tool" id=""><i class="fa fa-text-width" aria-hidden="true"></i></li>
+                            <li class="canvas_tool" id="refresh_canvas"><i class="fa fa-refresh" aria-hidden="true"></i></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 float-left canvas_tool_bar">
+                      <h3>Canvas Colors Section</h3>
                         <p class="font-weight-bold text-left">
                           Click to choose color for canvas background
                           <button class="btn btn-success show-colors-btn" data-toggle="collapse" data-target="#pattel_container"> + </button>

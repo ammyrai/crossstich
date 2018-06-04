@@ -64,3 +64,32 @@ ul.my-new-list .color_pattel {
   display: inline-block;
   height: 20px;
 }
+
+
+.canvas_container h3 {
+    background: #d6cece;
+    padding: 8px;
+    text-align: center;
+    font-size: 23px;
+    margin-bottom: 12px;
+}
+ul.toolbar_list {
+    float: left;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.toolbar_list li {
+  float: left;
+  width: 47%;
+  font-size: 25px;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 0 4px 5px 0px;
+}
+ul.toolbar_list li:hover,  ul.toolbar_list li.active{
+    background: #efe8e8;
+}

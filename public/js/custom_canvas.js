@@ -29,11 +29,6 @@ function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStro
     stichImageObj.src = '../imgs/stich.png';
     /* set fill pattern cross image for grid tiles ends here */
 
-    /* set fill pattern blank image for erase fun. for grid tiles starts here */
-    var blankImageObj = new Image();
-    blankImageObj.src = '../imgs/blank.png';
-    /* set fill pattern blank image for erase fun. for grid tiles ends here */
-
 /*  create stage for main canvas  */
 var stage = new Konva.Stage({
     container: 'canvas',                  // Canvas container
@@ -90,53 +85,114 @@ for (var ix = 0; ix < canvasWidth; ix++) {
   }
 
 
-/*   Eraser tool function    */
-var mode = "";
-// var erase = document.getElementById('erase_tool');
-// erase.addEventListener('click', function() {
-//   mode = "eraser";
-// });
 
+var mode = "";
+/*   Pencil tool function    */
+var pencil = document.getElementById('pencil');
+pencil.addEventListener('click', function() {
+  $('.toolbar_list li').removeClass('active');
+  $(this).addClass('active');
+  mode = "pencil";
+});
+
+/*   Eraser tool function    */
+var erase = document.getElementById('eraser');
+erase.addEventListener('click', function() {
+  $('.toolbar_list li').removeClass('active');
+  $(this).addClass('active');
+  mode = "eraser";
+});
+
+/*   Refresh tool function    */
+
+$('#refresh_canvas').click(function() {
+  location.reload();
+});
 
 /*    Fill Grid cell   */
 canvasGridLayer.on('mousedown', function(evt) {
   isMouseDown = true;
+  if (isMouseDown){
+    box = evt.target;
+    if (mode != '' && mode === 'eraser')            // Eraser Mode
+    {
+      if(box.attrs.fill)
+      {
+        box.shadowEnabled(false);
+        box.globalCompositeOperation('destination-out');
+        box.fill();
+        box.draw();
+        if(box.attrs.globalCompositeOperation)
+        {
+          box.globalCompositeOperation('source-over');
+          box.fill(canvasMainBgcolor);
+          box.shadowEnabled(true);
+          box.draw();
+        }
+      }
+    }
+    else                                           // Pencil Mode
+    {
+      if(box.attrs.globalCompositeOperation && box.attrs.fill == 'white') {
+        box.shadowEnabled(false);
+        box.fill('red');
+        box.draw();
+      }
+      else if(box.attrs.fill)
+      {
 
-  if (mode != '' && mode === 'eraser')
-  {
-
-  }
-  else
-  {
-    if (isMouseDown){
-      box = evt.target;
-      if(box.attrs.fillPatternImage) { }
+      }
       else
       {
-        box.fillPatternImage(stichImageObj);
+        box.shadowEnabled(false);
+        box.fill('red');
+        //box.fillPatternImage(stichImageObj);
         box.draw();
       }
     }
   }
-
 });
 canvasGridLayer.on('mouseup',function(evt){
   isMouseDown= false
 })
 
 canvasGridLayer.on('mouseover', function(evt) {
-  if (mode != '' && mode === 'eraser')
-  {
+  if (isMouseDown){
+    box = evt.target;
+    if (mode != '' && mode === 'eraser')          // Eraser mode
+    {
+      if(box.attrs.fill)
+      {
+        box.shadowEnabled(false);
+        box.globalCompositeOperation('destination-out');
+        box.fill();
+        box.draw();
+        if(box.attrs.globalCompositeOperation)
+        {
+          box.globalCompositeOperation('source-over');
+          box.fill(canvasMainBgcolor);
+          box.shadowEnabled(true);
+          box.shadowOffset({  x: 3,   y: 3 });
+          box.draw();
+        }
+      }
+    }
+    else                                          // Pencil Mode
+    {
+      if(box.attrs.globalCompositeOperation && box.attrs.fill == 'white') {
+        box.shadowEnabled(false);
+        box.fill('red');
+        box.draw();
+      }
+      else if(box.attrs.fill)
+      {
 
-  }
-  else
-  {
-    if (isMouseDown){
-      box = evt.target;
-      if(box.attrs.fillPatternImage) { }
+      }
       else
       {
-        box.fillPatternImage(stichImageObj);
+        box.shadowEnabled(false);
+        box.fill('red');
+        //box.fillPatternImage(stichImageObj);
         box.draw();
       }
     }
