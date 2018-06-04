@@ -37,21 +37,39 @@
                     <div class="col-md-2">
                         <h3>Toolbar Section</h3>
                         <ul class="toolbar_list" id="">
-                            <li class="canvas_tool active" id="pencil"><i class="fa fa-pencil" aria-hidden="true"></i></li>
-                            <li class="canvas_tool" id="eraser"><i class="fa fa-eraser" aria-hidden="true"></i> </li>
-                            <li class="canvas_tool" id=""><i class="fa fa-hand-rock-o" aria-hidden="true"></i></i> </li>
-                            <li class="canvas_tool" id=""><i class="fa fa-text-width" aria-hidden="true"></i></li>
-                            <li class="canvas_tool" id="refresh_canvas"><i class="fa fa-refresh" aria-hidden="true"></i></li>
+                            <li class="canvas_tool active" id="pencil" data-mode="pencil">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </li>
+                            <li class="canvas_tool" id="eraser" data-mode="eraser">
+                                <i class="fa fa-eraser" aria-hidden="true"></i>
+                            </li>
+                            <li class="canvas_tool" id="" data-mode="hand">
+                                <i class="fa fa-hand-rock-o" aria-hidden="true"></i></i>
+                            </li>
+                            <li class="canvas_tool" id="" data-mode="text">
+                                <i class="fa fa-text-width" aria-hidden="true"></i>
+                            </li>
+                            <li class="canvas_tool" id="refresh_canvas" data-mode="refresh">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-md-4 float-left canvas_tool_bar">
                       <h3>Canvas Colors Section</h3>
                         <p class="font-weight-bold text-left">
-                          Click to choose color for canvas background
+                          Click to change canvas background color
                           <button class="btn btn-success show-colors-btn" data-toggle="collapse" data-target="#pattel_container"> + </button>
                         </p>
                         <div class="color_pattel_container collapse text-left" id="pattel_container">
                         </div>
+
+                        <p class="font-weight-bold text-left">
+                          Click to change text color
+                          <button class="btn btn-success show-text-colors-btn" data-toggle="collapse" data-target="#text_pattel_container"> + </button>
+                        </p>
+                        <div class="text_color_pattel_container collapse text-left" id="text_pattel_container">
+                        </div>
+
                         <!-- <p>Grid Width: <input type="text" id="grid_width" value="20" onkeyup="grid_width_change()"></p>
                         <p>Grid Height: <input type="text" id="grid_height" value="20" onkeyup="grid_height_change()"></p>
                         <button onclick="restart();"  title="Clears this grid">Clear</button>

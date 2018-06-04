@@ -53,12 +53,12 @@ html, body {
 
 /*  Color Pattel style  */
 
-ul.my-new-list {
+ul.my-new-list, ul.text-color-list {
     float: left;
     width: 100%;
     list-style: none;
 }
-ul.my-new-list .color_pattel {
+ul.my-new-list .color_pattel , ul.text-color-list li {
   width: 20px;
   float: left;
   display: inline-block;

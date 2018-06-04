@@ -87,27 +87,17 @@ for (var ix = 0; ix < canvasWidth; ix++) {
 
 
 var mode = "";
-/*   Pencil tool function    */
-var pencil = document.getElementById('pencil');
-pencil.addEventListener('click', function() {
+/*   Change tool mode function starts here!   */
+$(".canvas_tool").click(function(){
   $('.toolbar_list li').removeClass('active');
   $(this).addClass('active');
-  mode = "pencil";
+   mode = $(this).data('mode');
+  if(mode == 'refresh')
+  {
+    location.reload();
+  }
 });
-
-/*   Eraser tool function    */
-var erase = document.getElementById('eraser');
-erase.addEventListener('click', function() {
-  $('.toolbar_list li').removeClass('active');
-  $(this).addClass('active');
-  mode = "eraser";
-});
-
-/*   Refresh tool function    */
-
-$('#refresh_canvas').click(function() {
-  location.reload();
-});
+/*   Change tool mode function ends here!   */
 
 /*    Fill Grid cell   */
 canvasGridLayer.on('mousedown', function(evt) {
