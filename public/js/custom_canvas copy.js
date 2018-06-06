@@ -17,7 +17,6 @@ var gridSize = 25,                      // Grid Tile Size
     gridShadowCPara,                    // Grid Stroke Color code parameter
     circleStrokeCPara,                  // Circle Stroke Color code parameter
     circleFillCPara,                    // Circle Fill Color code parameter
-    textFillCPara,                      // Text color fill parameter
     json;                               // Json variable for final canvas output
 
 /*
@@ -32,7 +31,11 @@ var gridSize = 25,                      // Grid Tile Size
       =========================================================
 
 */
-function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStrokeColor,circleFillColor,textFillColor){
+function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStrokeColor,circleFillColor){
+    /* set fill pattern cross image for grid tiles starts here */
+    var stichImageObj = new Image();
+    stichImageObj.src = '../imgs/stich.png';
+    /* set fill pattern cross image for grid tiles ends here */
 
 /*  create stage for main canvas  */
 stage = new Konva.Stage({
@@ -48,11 +51,6 @@ canvasGridLayer = new Konva.Layer();         //  a Layer2 for canvas Grid
 
 /*  Layers creation ends here! */
 
-/*  Create new group  */
-var gridRectGroup = new Konva.Group();
-var gridCircleGroup = new Konva.Group();
-var gridTextGroup = new Konva.Group();
-
 /*  Layer1 work starts here! */
 stageRect =  new Konva.Rect({
   x:0,
@@ -63,12 +61,6 @@ stageRect =  new Konva.Rect({
 })
 backgroundCanvas.add(stageRect);
 /*  Layer1 work ends here! */
-textFillCPara = textFillColor;
-$(document).on('click','.text_color_pattel',function(){
-    text.fill = $(this).data("colorcode");
-
-})
-
 
 /*  Layer2 Create a grid on canvas work starts here!*/
 
@@ -78,7 +70,7 @@ text = new Konva.Text({
   y: '',
   fontFamily: 'sans-serif',
   fontSize: gridSize,
-  fill: textFillCPara,
+  fill: '#000',
   fontStyle : 'normal'
 });
 
@@ -104,8 +96,8 @@ for (var ix = 0; ix < canvasWidth; ix++) {
         stroke: circleStrokeColor,
         strokeWidth: 1,
       });
-      gridRectGroup.add(box);                   // Add rectangle to group
-      gridCircleGroup.add(circle);              // Add rectangle to group
+      canvasGridLayer.add(box);              // Add rectangle to background layer
+      canvasGridLayer.add(circle);              // Add rectangle to background layer
     }
   }
 
@@ -115,55 +107,56 @@ $(".canvas_tool").click(function(){
   $('.toolbar_list li').removeClass('active');
   $(this).addClass('active');
    mode = $(this).data('mode');
-   if(mode == 'refresh')location.reload();
+  if(mode == 'refresh')
+  {
+    location.reload();
+  }
 });
 /*   Change tool mode function ends here!   */
 
 /*    Fill Grid cell   */
-canvasGridLayer.on('mousedown', function(evt)
-{
+canvasGridLayer.on('mousedown', function(evt) {
   isMouseDown = true;
-  if (isMouseDown)
-  {
+  if (isMouseDown){
     box = evt.target;
-    switch (mode)
+    if (mode != '' && mode === 'eraser')            // Eraser Mode
     {
-       case 'pencil':
-           if(box.filled !== true)
-           {
-              box.shadowEnabled(false);
-              box['filled'] = true;
-              text = new Konva.Text({
-                  text: 'X',
-                  x: box.attrs.x,
-                  y: box.attrs.y,
-                  fontFamily: 'sans-serif',
-                  fontSize: gridSize,
-                  fill: textFillColor,
-                  fontStyle : 'normal',
-                });
-               box.height = text.getHeight();
-               gridTextGroup.add(text);
-               canvasGridLayer.draw();
-           }
-       break;
-       case 'eraser':
-           if(box.filled == true)
-           {
-                text.destroy();
-                box['filled'] = false;
-                gridRectGroup.add(box);
-                canvasGridLayer.draw();
-           }
-       break;
-       case 'hand':
-         console.log('Hand Mode!');
-       break;
-       case 'text':
-         console.log('Text Mode!');
-       break;
-       default:
 
+        box.shadowEnabled(false);
+        box.globalCompositeOperation('destination-out');
+        text.text(' ');
+        text.x(box.attrs.x);
+        text.y(box.attrs.y);
+        canvasGridLayer.add(text);
+        text.draw();
+        if(box.attrs.globalCompositeOperation)
+        {
+          box.globalCompositeOperation('source-over');
+          box.fill(canvasMainBgcolor);
+          box.shadowEnabled(true);
+          box.draw();
+        }
+
+    }
+    else                                           // Pencil Mode
+    {
+      if(box.attrs.globalCompositeOperation && box.attrs.fill == 'white') {
+        box.shadowEnabled(false);
+        text.text('X');
+        text.x(box.attrs.x);
+        text.y(box.attrs.y);
+        canvasGridLayer.add(text);
+        text.draw();
+      }
+       else
+       {
+        box.shadowEnabled(false);
+        text.text('X');
+        text.x(box.attrs.x);
+        text.y(box.attrs.y);
+        canvasGridLayer.add(text);
+        text.draw();
+      }
     }
   }
 });
@@ -172,59 +165,53 @@ canvasGridLayer.on('mouseup',function(evt){
 })
 
 canvasGridLayer.on('mouseover', function(evt) {
-  if (isMouseDown)
-  {
+  if (isMouseDown){
     box = evt.target;
-
-    switch (mode)
+    if (mode != '' && mode === 'eraser')          // Eraser mode
     {
-       case 'pencil':
-            if(box.filled !== true)
-            {
-            box.shadowEnabled(false);
-            box['filled'] = true;
-            text = new Konva.Text({
-                text: 'X',
-                x: box.attrs.x,
-                y: box.attrs.y,
-                fontFamily: 'sans-serif',
-                fontSize: gridSize,
-                fill: textFillColor,
-                fontStyle : 'normal',
-              });
-
-             box.height = text.getHeight();
-             gridTextGroup.add(text);
-             canvasGridLayer.draw();
-            }
-       break;
-       case 'eraser':
-              if(box.filled == true)
-              {
-                 var textList = canvasGridLayer.find("Text");
-                 $( textList ).each(function(key, val) {
-                    val.on('mouseenter', function() {
-                      val.destroy();
-                    });
-                });
-                gridRectGroup.add(box);
-                box['filled'] = false;
-              }
-            canvasGridLayer.draw();
-       break;
-       case 'hand':
-         console.log('Hand Mode!');
-       break;
-       case 'text':
-         console.log('Text Mode!');
-       break;
-       default:
-
+      if(box.attrs.fill)
+      {
+        box.shadowEnabled(false);
+        box.globalCompositeOperation('destination-out');
+        text.text('');
+        text.x(box.attrs.x);
+        text.y(box.attrs.y);
+        canvasGridLayer.add(text);
+        text.draw();
+        if(box.attrs.globalCompositeOperation)
+        {
+          box.globalCompositeOperation('source-over');
+          box.fill(canvasMainBgcolor);
+          box.shadowEnabled(true);
+          box.shadowOffset({  x: 3, y: 3 });
+          box.draw();
+        }
+      }
+    }
+    else                                          // Pencil Mode
+    {
+      if(box.attrs.globalCompositeOperation && box.attrs.fill == 'white') {
+        box.shadowEnabled(false);
+        text.text('X');
+        text.x(box.attrs.x);
+        text.y(box.attrs.y);
+        canvasGridLayer.add(text);
+        text.draw();
+      }
+       else
+       {
+        box.shadowEnabled(false);
+        text.text('X');
+        text.x(box.attrs.x);
+        text.y(box.attrs.y);
+        canvasGridLayer.add(text);
+        text.draw();
+      }
     }
   }
 });
 /*  Layer2 Create a grid on canvas work ends here!*/
-canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);   // Add Groups to layer
+
 stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 json = stage.toJSON();      // Save entire canvas as json
 //console.log(json);
@@ -241,9 +228,8 @@ $( window ).on( "load", function() {
       * Parameter3 : Grid shadow color.
       * Parameter4 : Circle stroke color.
       * Parameter5 : Circle Fill color.
-      * Parameter6 : Text Fill color
       */
-    canvasInit('white','#FFE793','#FFE9AD','#F7976F','#FED376','#000000');
+    canvasInit('white','#FFE793','#FFE9AD','#F7976F','#FED376');
 });
 
 $(function()
