@@ -156,6 +156,7 @@ canvasGridLayer.on('mousedown', function(evt)
              {
                  evt.target.destroy();
                  box.attrs.filled = false;
+                 box.shadowEnabled(true);
              }
           }
       canvasGridLayer.draw();
@@ -214,6 +215,7 @@ canvasGridLayer.on('mouseover', function(evt) {
                  });
              });
              box.attrs.filled = false;
+             box.shadowEnabled(true);
            }
            canvasGridLayer.draw();
        break;
