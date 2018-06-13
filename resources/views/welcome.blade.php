@@ -37,21 +37,21 @@
                     <div class="col-md-2">
                         <h3>Toolbar Section</h3>
                         <ul class="toolbar_list" id="">
-                            <li class="canvas_tool active" id="pencil" data-mode="pencil">
-                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                            </li>
-                            <li class="canvas_tool" id="eraser" data-mode="eraser">
-                                <i class="fa fa-eraser" aria-hidden="true"></i>
-                            </li>
-                            <li class="canvas_tool" id="" data-mode="hand">
-                                <i class="fa fa-hand-rock-o" aria-hidden="true"></i></i>
-                            </li>
-                            <li class="canvas_tool" id="" data-mode="text">
-                                <i class="fa fa-text-width" aria-hidden="true"></i>
-                            </li>
-                            <li class="canvas_tool" id="refresh_canvas" data-mode="refresh">
-                                <i class="fa fa-refresh" aria-hidden="true"></i>
-                            </li>
+                          <li class="canvas_tool active" id="pencil" data-mode="pencil" title="pencil">
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                          </li>
+                          <li class="canvas_tool" id="eraser" data-mode="eraser" title="eraser">
+                              <i class="fa fa-eraser" aria-hidden="true"></i>
+                          </li>
+                          <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
+                              <i class="fa fa-crop" aria-hidden="true"></i>
+                          </li>
+                          <li class="canvas_tool" id="" data-mode="text" title="Text">
+                              <i class="fa fa-text-width" aria-hidden="true"></i>
+                          </li>
+                          <li class="canvas_tool" id="refresh_canvas" data-mode="refresh" title="Refresh">
+                              <i class="fa fa-refresh" aria-hidden="true"></i>
+                          </li>
                         </ul>
                     </div>
                     <div class="col-md-4 float-left canvas_tool_bar">

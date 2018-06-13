@@ -18,8 +18,10 @@ var gridSize = 25,                      // Grid Tile Size
     circleStrokeCPara,                  // Circle Stroke Color code parameter
     circleFillCPara,                    // Circle Fill Color code parameter
     textFillCPara,                      // Text color fill parameter
-    json;                               // Json variable for final canvas output
-
+    json,                               // Json variable for final canvas output
+    posStart,
+    posNow,
+    rectPoints = [];
 /*
       =========================================================
       * canvasInit(Para1, Para2, Para3, Para3, Para4, Para5)
@@ -52,6 +54,7 @@ canvasGridLayer = new Konva.Layer();         //  a Layer2 for canvas Grid
 var gridRectGroup = new Konva.Group();
 var gridCircleGroup = new Konva.Group();
 var gridTextGroup = new Konva.Group();
+var gridcloneGroup = new Konva.Group({draggable: true});
 
 /*  Layer1 work starts here! */
 stageRect =  new Konva.Rect({
@@ -72,23 +75,13 @@ $(document).on('click','.text_color_pattel',function(){
 
 /*  Layer2 Create a grid on canvas work starts here!*/
 
-text = new Konva.Text({
-  text: '',
-  x: '',
-  y: '',
-  fontFamily: 'sans-serif',
-  fontSize: gridSize,
-  fill: textFillCPara,
-  fontStyle : 'normal'
-});
-
 for (var ix = 0; ix < canvasWidth; ix++) {
     for (var iy = 0; iy < canvasHeight; iy++) {
       box = new Konva.Rect({
           x : ix * gridSize,
           y : iy * gridSize,
           width : gridSize ,
-          height: text.getHeight(),
+          height: gridSize,
           stroke: gridStrokeColor,
           strokeWidth: 0,
           lineJoin : 'round',
@@ -120,6 +113,11 @@ $(".canvas_tool").click(function(){
 });
 /*   Change tool mode function ends here!   */
 
+// draw a rectangle to be used as the rubber area
+var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, stroke: 'red', dash: [2,2]})
+r2.listening(false); // stop r2 catching our mouse events.
+gridRectGroup.add(r2);
+
 /*    Fill Grid cell   */
 canvasGridLayer.on('mousedown', function(evt)
 {
@@ -130,6 +128,7 @@ canvasGridLayer.on('mousedown', function(evt)
     switch (mode)
     {
       case 'pencil':
+           // stage.container().style.cursor = 'move';
            if(box.attrs.filled == false)
            {
              box.shadowEnabled(false);
@@ -161,28 +160,50 @@ canvasGridLayer.on('mousedown', function(evt)
           }
       canvasGridLayer.draw();
       break;
-       case 'hand':
-         console.log('Hand Mode!');
+       case 'select_shape':
+          startDrag({x: box.attrs.x, y: box.attrs.y})
        break;
        case 'text':
          console.log('Text Mode!');
        break;
        default:
-
+       // stage.container().style.cursor = 'pointer';
     }
   }
 });
 canvasGridLayer.on('mouseup',function(evt){
   isMouseDown= false
+  box = evt.target;
+
+  if(mode === 'select_shape')
+  {
+    var textList = canvasGridLayer.find("Text");
+    $( textList ).each(function(key, val) {
+      if(val.attrs.selected === 'selected')
+      {
+          var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect' });
+          gridcloneGroup.add(clonerect);
+          canvasGridLayer.add(gridcloneGroup);
+          val.destroy();
+          box.attrs.filled = false;
+          box.shadowEnabled(true);
+          canvasGridLayer.draw();
+        }
+    })
+    r2.visible(true);
+    mode = '';
+    stage.draw();
+}
 })
 
-canvasGridLayer.on('mouseover', function(evt) {
+canvasGridLayer.on('mousemove', function(evt) {
   if (isMouseDown)
   {
     box = evt.target;
     switch (mode)
     {
        case 'pencil':
+            // stage.container().style.cursor = 'move';
             if(box.attrs.filled == false)
             {
               box.shadowEnabled(false);
@@ -194,7 +215,7 @@ canvasGridLayer.on('mouseover', function(evt) {
                   fontSize: gridSize,
                   fill: textFillColor,
                   fontStyle : 'normal',
-                  filled : true
+                  filled : true,
               });
               box.attrs.filled = true;
               box.height = text.getHeight();
@@ -219,17 +240,47 @@ canvasGridLayer.on('mouseover', function(evt) {
            }
            canvasGridLayer.draw();
        break;
-       case 'hand':
-         console.log('Hand Mode!');
+       case 'select_shape':
+          updateDrag({x: box.attrs.x, y: box.attrs.y})
        break;
        case 'text':
          console.log('Text Mode!');
        break;
        default:
-
+       // stage.container().style.cursor = 'pointer';
     }
   }
 });
+
+gridcloneGroup.on('dragstart', function() {
+        r2.visible(false);
+    });
+gridcloneGroup.on('dragend', function() {
+
+  gridcloneGroup.draggable(false)
+});
+function updateDrag(posIn){
+
+  // update rubber rect position
+   posNow = {x: posIn.x, y: posIn.y};
+   // console.log(posNow)
+   var posRect = reverse(posStart,posNow);
+   r2.x(posRect.x1);
+   r2.y(posRect.y1);
+   r2.width(posRect.x2 - posRect.x1);
+   r2.height(posRect.y2 - posRect.y1);
+   r2.visible(true);
+   var textList = canvasGridLayer.find("Text");
+   $( textList ).each(function(key, val) {
+     // console.log(val.attrs.x);
+     if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
+       val.attrs.selected = 'selected';
+     }
+   })
+   rectPoints.push(posNow);
+   stage.draw(); // redraw any changes.
+}
+
 /*  Layer2 Create a grid on canvas work ends here!*/
 canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);   // Add Groups to layer
 stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
@@ -252,6 +303,25 @@ $( window ).on( "load", function() {
       */
     canvasInit('white','#FFE793','#FFE9AD','#F7976F','#FED376','#000000');
 });
+
+
+function startDrag(posIn){
+  posStart = {x: posIn.x, y: posIn.y};
+  posNow = {x: posIn.x, y: posIn.y};
+}
+
+function reverse(r1, r2){
+  var r1x = r1.x, r1y = r1.y, r2x = r2.x,  r2y = r2.y, d;
+  if (r1x > r2x ){
+    d = Math.abs(r1x - r2x);
+    r1x = r2x; r2x = r1x + d;
+  }
+  if (r1y > r2y ){
+    d = Math.abs(r1y - r2y);
+    r1y = r2y; r2y = r1y + d;
+  }
+    return ({x1: r1x, y1: r1y, x2: r2x, y2: r2y}); // return the corrected rect.
+}
 
 $(function()
 {
@@ -315,4 +385,6 @@ function ColorLuminance(hex, lum)
 	return rgb;
 }
 /*  Generate new color codes script ends here!  */
+
+
 });
