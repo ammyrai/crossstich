@@ -71,8 +71,6 @@ $(document).on('click','.text_color_pattel',function(){
     text.fill = $(this).data("colorcode");
 
 })
-
-
 /*  Layer2 Create a grid on canvas work starts here!*/
 
 for (var ix = 0; ix < canvasWidth; ix++) {
@@ -117,6 +115,8 @@ $(".canvas_tool").click(function(){
 var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, stroke: 'red', dash: [2,2]})
 r2.listening(false); // stop r2 catching our mouse events.
 gridRectGroup.add(r2);
+
+var selected_rect = [];
 
 /*    Fill Grid cell   */
 canvasGridLayer.on('mousedown', function(evt)
@@ -175,25 +175,48 @@ canvasGridLayer.on('mouseup',function(evt){
   isMouseDown= false
   box = evt.target;
 
-  if(mode === 'select_shape')
+  switch (mode)
   {
-    var textList = canvasGridLayer.find("Text");
-    $( textList ).each(function(key, val) {
-      if(val.attrs.selected === 'selected')
-      {
-          var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect' });
-          gridcloneGroup.add(clonerect);
-          canvasGridLayer.add(gridcloneGroup);
-          val.destroy();
-          box.attrs.filled = false;
-          box.shadowEnabled(true);
-          canvasGridLayer.draw();
-        }
-    })
-    r2.visible(true);
-    mode = '';
-    stage.draw();
-}
+     case 'pencil':
+     break;
+     case 'eraser':
+     break;
+     case 'select_shape':
+       updateDrag({x: box.attrs.x, y: box.attrs.y},true)
+         var textList = canvasGridLayer.find("Text");
+
+         $( textList ).each(function(key, val) {
+           if(val.attrs.selected === 'selected')
+           {
+               var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect'});
+               gridcloneGroup.add(clonerect);
+               canvasGridLayer.add(gridcloneGroup);
+               $( selected_rect ).each(function(key, rect) {
+                 if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                 {
+                   rect.attrs.filled = false;
+                   rect.attrs.shadowEnabled = true;
+                   rect.attrs.shadowColor = gridShadowColor;
+                   rect.attrs.shadowOffset = {  x: 3,   y: 3 };
+                   canvasGridLayer.draw();
+                 }
+                });
+               val.destroy();
+             }
+         })
+         r2.visible(true);
+         mode = '';
+         stage.draw();
+     break;
+     case 'back_stich':
+
+     break;
+     case 'text':
+       console.log('Text Mode!');
+     break;
+     default:
+     // stage.container().style.cursor = 'pointer';
+   }
 })
 
 canvasGridLayer.on('mousemove', function(evt) {
@@ -222,6 +245,10 @@ canvasGridLayer.on('mousemove', function(evt) {
               gridTextGroup.add(text);
               canvasGridLayer.draw();
             }
+            if(box.className === 'Rect' && box.attrs.filled === true)
+               {
+                  selected_rect.push(box);
+               }
        break;
        case 'eraser':
            if(box.className == 'Rect' && box.attrs.filled == true)
@@ -241,7 +268,7 @@ canvasGridLayer.on('mousemove', function(evt) {
            canvasGridLayer.draw();
        break;
        case 'select_shape':
-          updateDrag({x: box.attrs.x, y: box.attrs.y})
+          updateDrag({x: box.attrs.x, y: box.attrs.y},false)
        break;
        case 'text':
          console.log('Text Mode!');
@@ -252,32 +279,36 @@ canvasGridLayer.on('mousemove', function(evt) {
   }
 });
 
-gridcloneGroup.on('dragstart', function() {
-        r2.visible(false);
-    });
-gridcloneGroup.on('dragend', function() {
-
-  gridcloneGroup.draggable(false)
+gridcloneGroup.on('dragstart', function(e) {
+    r2.visible(false);
 });
-function updateDrag(posIn){
+gridcloneGroup.on('dragend', function() {
+    gridcloneGroup.position({
+      x: Math.round(gridcloneGroup.x() / gridSize) * gridSize,
+      y: Math.round(gridcloneGroup.y() / gridSize) * gridSize
+    });
+    stage.batchDraw();
+    gridcloneGroup.draggable(false)
+});
 
+function updateDrag(posIn,updateSelect){
   // update rubber rect position
    posNow = {x: posIn.x, y: posIn.y};
-   // console.log(posNow)
    var posRect = reverse(posStart,posNow);
    r2.x(posRect.x1);
    r2.y(posRect.y1);
    r2.width(posRect.x2 - posRect.x1);
    r2.height(posRect.y2 - posRect.y1);
    r2.visible(true);
-   var textList = canvasGridLayer.find("Text");
-   $( textList ).each(function(key, val) {
-     // console.log(val.attrs.x);
-     if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
-       val.attrs.selected = 'selected';
-     }
-   })
-   rectPoints.push(posNow);
+   if(updateSelect == true){
+     var textList = canvasGridLayer.find("Text");
+     $( textList ).each(function(key, val) {
+       if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
+         val.attrs.selected = 'selected';
+       }
+     })
+     rectPoints.push(posNow);
+   }
    stage.draw(); // redraw any changes.
 }
 
@@ -285,7 +316,6 @@ function updateDrag(posIn){
 canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);   // Add Groups to layer
 stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 json = stage.toJSON();      // Save entire canvas as json
-//console.log(json);
 }
 /*
       ===============================

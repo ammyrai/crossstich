@@ -44,7 +44,10 @@
                               <i class="fa fa-eraser" aria-hidden="true"></i>
                           </li>
                           <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
-                              <i class="fa fa-crop" aria-hidden="true"></i>
+                            <img src="{{ asset('imgs/select.png') }}" alt="select shape"/>
+                          </li>
+                          <li class="canvas_tool" id="back_stich" data-mode="back_stich" title="Back Stich">
+                            <img src="{{ asset('imgs/back_stich.png') }}" alt="Back Stich" width='54px' height='41px' />
                           </li>
                           <li class="canvas_tool" id="" data-mode="text" title="Text">
                               <i class="fa fa-text-width" aria-hidden="true"></i>
