@@ -118,6 +118,14 @@ gridRectGroup.add(r2);
 
 var selected_rect = [];
 
+var line = new Konva.Line({
+    points :[],
+    stroke: 'red',
+    strokeWidth: 2,
+    drawLine : true,
+});
+gridRectGroup.add(line);
+var points =[];
 /*    Fill Grid cell   */
 canvasGridLayer.on('mousedown', function(evt)
 {
@@ -162,6 +170,14 @@ canvasGridLayer.on('mousedown', function(evt)
       break;
        case 'select_shape':
           startDrag({x: box.attrs.x, y: box.attrs.y})
+       break;
+       case 'back_stich':
+           line.attrs.drawLine = true;
+           var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
+           var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
+           line.points(points[box.attrs.x,box.attrs.y,secondX,secondY]);
+           canvasGridLayer.draw();
+           box.attrs.lineDraw = true;
        break;
        case 'text':
          console.log('Text Mode!');
@@ -209,7 +225,11 @@ canvasGridLayer.on('mouseup',function(evt){
          stage.draw();
      break;
      case 'back_stich':
-
+        line.attrs.drawLine = false;
+        line.attrs.close = true;
+        // var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
+        // var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
+        // points = [box.attrs.x,box.attrs.y,secondX,secondY];
      break;
      case 'text':
        console.log('Text Mode!');
@@ -270,6 +290,22 @@ canvasGridLayer.on('mousemove', function(evt) {
        case 'select_shape':
           updateDrag({x: box.attrs.x, y: box.attrs.y},false)
        break;
+       case 'back_stich':
+            line.attrs.drawLine = true;
+            if(line.attrs.drawLine === true)
+            {
+              // if(box.attrs.lineDraw === false)
+              // {
+                var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x + gridSize);
+                var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y + gridSize);
+                points.push(secondX,secondY);
+                line.points(points);
+                canvasGridLayer.draw();
+                line.attrs.drawLine = true;
+              // }
+            }
+
+       break;
        case 'text':
          console.log('Text Mode!');
        break;
@@ -316,6 +352,13 @@ function updateDrag(posIn,updateSelect){
 canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);   // Add Groups to layer
 stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 json = stage.toJSON();      // Save entire canvas as json
+}
+function nearest(value, min, max){
+   if((value-min)>(max-value)){
+   return max
+   } else {
+   return min
+   }
 }
 /*
       ===============================
