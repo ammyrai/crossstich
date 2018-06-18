@@ -118,13 +118,6 @@ gridRectGroup.add(r2);
 
 var selected_rect = [];
 
-var line = new Konva.Line({
-    points :[],
-    stroke: 'red',
-    strokeWidth: 2,
-    drawLine : true,
-});
-gridRectGroup.add(line);
 var points =[];
 /*    Fill Grid cell   */
 canvasGridLayer.on('mousedown', function(evt)
@@ -172,10 +165,18 @@ canvasGridLayer.on('mousedown', function(evt)
           startDrag({x: box.attrs.x, y: box.attrs.y})
        break;
        case 'back_stich':
-           line.attrs.drawLine = true;
+           points=[];
            var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
            var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
-           line.points(points[box.attrs.x,box.attrs.y,secondX,secondY]);
+           points.push(box.attrs.x,box.attrs.y,secondX,secondY)
+           var line = new Konva.Line({
+               points :points,
+               stroke: 'red',
+               strokeWidth: 2,
+               drawLine : true,
+           });
+           gridRectGroup.add(line);
+
            canvasGridLayer.draw();
            box.attrs.lineDraw = true;
        break;
@@ -225,11 +226,8 @@ canvasGridLayer.on('mouseup',function(evt){
          stage.draw();
      break;
      case 'back_stich':
-        line.attrs.drawLine = false;
-        line.attrs.close = true;
-        // var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
-        // var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
-        // points = [box.attrs.x,box.attrs.y,secondX,secondY];
+         var line = canvasGridLayer.find("Line");
+         line[line.length-1].attrs.drawLine = false;
      break;
      case 'text':
        console.log('Text Mode!');
@@ -291,20 +289,23 @@ canvasGridLayer.on('mousemove', function(evt) {
           updateDrag({x: box.attrs.x, y: box.attrs.y},false)
        break;
        case 'back_stich':
-            line.attrs.drawLine = true;
-            if(line.attrs.drawLine === true)
-            {
-              // if(box.attrs.lineDraw === false)
-              // {
-                var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x + gridSize);
-                var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y + gridSize);
-                points.push(secondX,secondY);
-                line.points(points);
-                canvasGridLayer.draw();
-                line.attrs.drawLine = true;
-              // }
-            }
 
+               var line = canvasGridLayer.find("Line");
+               line[line.length-1].attrs.drawLine = true;
+               if(line[line.length-1].attrs.drawLine === true)
+               {
+                   var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
+                   var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
+                   if ( ((secondX - evt.evt.layerX) < 6) && ((secondX - evt.evt.layerX) > 0)) {
+                     points.push(secondX,secondY);
+                   }
+                   else if(((secondY - evt.evt.layerY) < 6) && ((secondY - evt.evt.layerY) > 0)){
+                     points.push(secondX,secondY);
+                   }
+                   line[line.length-1].points(points);
+                   canvasGridLayer.draw();
+                   line[line.length-1].attrs.drawLine = true;
+               }
        break;
        case 'text':
          console.log('Text Mode!');
@@ -354,10 +355,10 @@ stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 json = stage.toJSON();      // Save entire canvas as json
 }
 function nearest(value, min, max){
-   if((value-min)>(max-value)){
-   return max
+  if((value-min)>(max-value)){
+      return max;
    } else {
-   return min
+    return min;
    }
 }
 /*
