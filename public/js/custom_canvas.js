@@ -67,10 +67,15 @@ stageRect =  new Konva.Rect({
 backgroundCanvas.add(stageRect);
 /*  Layer1 work ends here! */
 textFillCPara = textFillColor;
+var textColor = "";
 $(document).on('click','.text_color_pattel',function(){
-    text.fill = $(this).data("colorcode");
-
+    var textClr = $(this).data("colorcode");
+    changeColor(textClr);
 })
+function changeColor(x)
+{
+  textFillColor = x;
+}
 /*  Layer2 Create a grid on canvas work starts here!*/
 
 for (var ix = 0; ix < canvasWidth; ix++) {
