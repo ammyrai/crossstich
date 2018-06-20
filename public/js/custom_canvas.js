@@ -140,13 +140,15 @@ canvasGridLayer.on('mousedown', function(evt)
              box.shadowEnabled(false);
              text = new Konva.Text({
                  text: 'X',
-                 x: box.attrs.x,
-                 y: box.attrs.y,
+                 x: box.attrs.x+5,
+                 y: box.attrs.y+4,
                  fontFamily: 'sans-serif',
                  fontSize: gridSize,
                  fill: textFillColor,
                  fontStyle : 'normal',
-                 filled : true
+                 filled : true,
+                 fontSize: 18,
+                 align: 'center'
              });
              box.attrs.filled = true;
              box.height = text.getHeight();
@@ -176,8 +178,8 @@ canvasGridLayer.on('mousedown', function(evt)
            points.push(box.attrs.x,box.attrs.y,secondX,secondY)
            var line = new Konva.Line({
                points :points,
-               stroke: 'red',
-               strokeWidth: 2,
+               stroke: '#000000',
+               strokeWidth: 3,
                drawLine : true,
            });
            gridRectGroup.add(line);
@@ -214,7 +216,7 @@ canvasGridLayer.on('mouseup',function(evt){
                gridcloneGroup.add(clonerect);
                canvasGridLayer.add(gridcloneGroup);
                $( selected_rect ).each(function(key, rect) {
-                 if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                 if(rect.attrs.x+5 === val.attrs.x && rect.attrs.y+4 === val.attrs.y)
                  {
                    rect.attrs.filled = false;
                    rect.attrs.shadowEnabled = true;
@@ -255,13 +257,15 @@ canvasGridLayer.on('mousemove', function(evt) {
               box.shadowEnabled(false);
               text = new Konva.Text({
                   text: 'X',
-                  x: box.attrs.x,
-                  y: box.attrs.y,
+                  x: box.attrs.x+5,
+                  y: box.attrs.y+4,
                   fontFamily: 'sans-serif',
                   fontSize: gridSize,
                   fill: textFillColor,
                   fontStyle : 'normal',
                   filled : true,
+                  fontSize: 18,
+                  align: 'center'
               });
               box.attrs.filled = true;
               box.height = text.getHeight();
