@@ -170,14 +170,15 @@
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Sample:</label>
                                 <div class="col-sm-10">
-                                  <canvas id="textSample" width="300" height="100" style="border:1px solid gray;  "></canvas>
+                                  <div id="textSample"></div>
+                                  <div id="textSample1" style="display:none;"></div>
                                 </div>
                               </div>
 
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button id="loadpage" type="button" class="btn btn-primary">Ok</button>
+                            <button id="cloneSampleText" type="button" class="btn btn-primary">Ok</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->

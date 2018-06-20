@@ -362,6 +362,206 @@ function updateDrag(posIn,updateSelect){
 canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);   // Add Groups to layer
 stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 json = stage.toJSON();      // Save entire canvas as json
+
+
+
+
+/* Text popup starts here    */
+
+  $("#textModal").draggable({
+  handle: ".modal-header"
+  });
+
+    /*  Text field value on keyup  */
+    $("#textfill").keyup(function() {
+      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+      updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+    });
+
+    /* Text font family value on change  */
+    $('#textFontSelect').change(function(){
+        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+    });
+
+    /* Text Font size value on change  */
+    $('#textFontsize').change(function(){
+        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+    });
+    /* Text Font Bold value on change  */
+    $('#textFontBold').change(function(){
+        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+    });
+    /* Text Font Italic value on change  */
+    $('#textFontItalic').change(function(){
+        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+    });
+
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value)
+      updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value)
+    }
+
+    // CREATE KONVE STAGE AND LAYER
+    var updateSampleStage = new Konva.Stage({
+     container: 'textSample',
+     width: 450,
+     height: 200
+    });
+
+    updateSampleStage.getContainer().style.border = '1px solid grey';
+    var updateSampleLayer = new Konva.Layer();
+    updateSampleStage.add(updateSampleLayer);
+    var updateSampleGroup = new Konva.Group();
+
+
+    function updateSample(textpara,fontfamily,textsize,bold,italic,weight) {
+        var f = text(textpara,fontfamily,textsize,bold,italic,weight)
+        updateSampleLayer.clearBeforeDraw(true);
+        updateSampleLayer.clearCache();
+        updateSampleGroup.destroy();
+        updateSampleLayer.draw();
+        var q = 9;
+        if (q >= 10) {
+            q = 5
+        }
+        var g = applyDeselRatio(q);
+        var d = Math.ceil(updateSampleStage.width() / g);
+        var p = Math.ceil(updateSampleStage.height() / q);
+        var o = Math.max(0, Math.floor((f.width - d) / 2));
+        var m = Math.max(0, Math.floor((f.height - p) / 2));
+        var j = Math.min(f.width, 1 + Math.ceil((f.width + d) / 2));
+        var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
+        var b = Math.floor(updateSampleStage.width() / 2 - g * f.width / 2);
+        var a = Math.floor(updateSampleStage.height() / 2 - q * f.height / 2);
+        for (var l = m; l < h; l++) {
+            var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
+            for (var n = o; n < j; n++) {
+                var e = (l * f.width + n) * 4;
+
+                var fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
+                var complexText = new Konva.Text({
+                  x: b + n * g + k,
+                  y: a + l * q,
+                  text: 'X',
+                  fill: fillStyle,
+                  align: 'center',
+                });
+                updateSampleGroup.add(complexText);
+            }
+        }
+        updateSampleLayer.add(updateSampleGroup);
+        updateSampleLayer.draw();
+        updateSampleStage.draw();
+    }
+
+    var hiddenSampleStage = new Konva.Stage({
+     container: 'textSample1',
+     width: 50 * gridSize,
+     height: canvasWidth * gridSize,
+     visible: false
+    });
+    var hiddenSampleLayer = new Konva.Layer();
+    hiddenSampleStage.add(hiddenSampleLayer);
+    var hiddenSampleGroup = new Konva.Group({});
+
+    function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
+        var f = text(textpara,fontfamily,textsize,bold,italic,weight)
+        hiddenSampleLayer.clearBeforeDraw(true);
+        hiddenSampleLayer.clearCache();
+        hiddenSampleGroup.destroy();
+        hiddenSampleLayer.draw();
+        var q = 25;
+        var g = applyDeselRatio(q);
+        var d = Math.ceil(hiddenSampleStage.width() / g);
+        var p = Math.ceil(hiddenSampleStage.height() / q);
+        var o = Math.max(0, Math.floor((f.width - d) / 2));
+        var m = Math.max(0, Math.floor((f.height - p) / 2));
+        var j = Math.min(f.width, 1 + Math.ceil((f.width + d) / 2));
+        var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
+        var b = Math.floor(hiddenSampleStage.width() / 2 - g * f.width / 2);
+        var a = Math.floor(hiddenSampleStage.height() / 2 - q * f.height / 2);
+        for (var l = m; l < h; l++) {
+            var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
+            for (var n = o; n < j; n++) {
+                var e = (l * f.width + n) * 4;
+
+                var fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
+                var complexText = new Konva.Text({
+                  x: b + n * g + k,
+                  y: a + l * q,
+                  text: 'X',
+                  fill: fillStyle,
+                  align: 'center',
+                });
+                hiddenSampleGroup.add(complexText);
+            }
+        }
+        hiddenSampleLayer.add(hiddenSampleGroup);
+        hiddenSampleLayer.draw();
+        hiddenSampleStage.draw();
+    }
+
+    $("#cloneSampleText").click(function(){
+      $( hiddenSampleGroup.children ).each(function(key, val) {
+        if(val.attrs.fill === '#ffffff')
+           {
+             val.destroy();
+             hiddenSampleLayer.draw();
+           }
+           val.fontSize(18);
+           var xx = val.attrs.x-5, yy = val.attrs.y+5;
+           val.attrs.x = xx;
+           val.attrs.y = yy;
+         });
+      var aa = hiddenSampleGroup.clone({x:0, y:0,width: hiddenSampleStage.width(), height: hiddenSampleStage.height(),draggable:true,name:'sampleGroupCloned',visible:true});
+       canvasGridLayer.add(aa);
+       canvasGridLayer.draw();
+       stage.batchDraw();
+       console.log('hii')
+      $('.close').click();
+    })
+    hiddenSampleGroup.on('dragstart', function(e) {
+      console.log('drag start')
+
+    });
+    hiddenSampleGroup.on('dragend', function() {
+      var groups = stage.find(node => {
+       return node.getType() === 'Group';
+      });
+      var RectList = canvasGridLayer.find("Rect");
+      $( groups).each(function(key, val) {
+        if(val.attrs.name === "sampleGroupCloned")
+           {
+             val.position({
+               x: Math.round(val.x() / gridSize) * gridSize,
+               y: Math.round(val.y() / gridSize) * gridSize
+             });
+             stage.batchDraw();
+             val.draggable(false)
+             $( RectList ).each(function(key, rectval) {
+                if(rectval.attrs.x+5 === val.x() && rectval.attrs.y+4 === val.y())
+                {
+                  rectval.attrs.filled = true;
+                }
+             });
+           }
+
+
+      });
+    });
+
+    /*  Text popup ends here  */
+
+
+
 }
 function nearest(value, min, max){
   if((value-min)>(max-value)){
@@ -370,6 +570,91 @@ function nearest(value, min, max){
     return min;
    }
 }
+
+
+/*  Text tool functions  */
+function applyDeselRatio(b) {
+var deselRatio = 1;
+    var a = b * deselRatio;
+    if (deselRatio >= 1) {
+        a = Math.floor(a)
+    } else {
+        a = Math.ceil(a)
+    }
+    return a
+}
+function text(textpara, b, m, h, g,weight)
+{
+  this.canvas = document.createElement("canvas");
+  this.canvas.width = 200;
+  this.canvas.height = 200;
+  this.ctx = this.canvas.getContext("2d")
+
+  this.ctx.clearRect(0, 0, 600, 600);
+  this.ctx.fillStyle = "#000000";
+  var d = fontSpec(b, m, h, g);
+  this.ctx.font = d;
+  var c = this.ctx.measureText(textpara);
+  var p = getTextHeight(d);
+  this.ctx.fillText(textpara, 0, p.ascent);
+
+  var k = Math.max(1, c.width);
+  var e = this.ctx.getImageData(0, 0, k, p.height);
+
+  var n = 600;
+  var j = 0;
+  for (var f = 3; f < e.data.length; f += 4) {
+
+      var a = 0;
+      if (e.data[f] >= weight) {
+          a = 255;
+          var l = (f / 4) % k;
+          n = Math.min(n, l);
+          j = Math.max(j, l)
+      }
+      e.data[f] = a
+  }
+  this.textWidth = 1 + j - n;
+  if (this.textWidth > 580) {
+      this.textWidth = c.width
+  }
+  return e
+}
+function fontSpec(e, d, c, b) {
+    var a = "";
+    if (b) {
+        a += "italic "
+    }
+    if (c) {
+        a += "bold "
+    }
+    return a + d + "px " + e
+}
+
+function getTextHeight(c) {
+    var e = $('<span style="font: ' + c + '">Hg</span>');
+    var d = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
+    var f = $("<div></div>");
+    f.append(e, d);
+    var b = $("body");
+    b.append(f);
+    try {
+        var a = {};
+        d.css({
+            verticalAlign: "baseline"
+        });
+        a.ascent = d.offset().top - e.offset().top;
+        d.css({
+            verticalAlign: "bottom"
+        });
+        a.height = d.offset().top - e.offset().top;
+        a.descent = a.height - a.ascent
+    } finally {
+        f.remove()
+    }
+    return a
+}
+
 /*
       ===============================
       initiate canvas on window load
@@ -470,155 +755,4 @@ function ColorLuminance(hex, lum)
 /*  Generate new color codes script ends here!  */
 
 
-});
-
-
-$(document).ready(function() {
-
-    $("#textModal").draggable({
-    handle: ".modal-header"
-    });
-
-    /*  Text field value on keyup  */
-    $("#textfill").keyup(function() {
-      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-    });
-
-    /* Text font family value on change  */
-    $('#textFontSelect').change(function(){
-        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-    });
-
-    /* Text Font size value on change  */
-    $('#textFontsize').change(function(){
-        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-    });
-    /* Text Font Bold value on change  */
-    $('#textFontBold').change(function(){
-        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-    });
-    /* Text Font Italic value on change  */
-    $('#textFontItalic').change(function(){
-        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-    });
-
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value;
-    slider.oninput = function() {
-      output.innerHTML = this.value;
-      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value)
-    }
-
-
-    function updateSample(textpara,fontfamily,textsize,bold,italic,weight) {
-        var f = text(textpara,fontfamily,textsize,bold,italic,weight)
-        // this.tooWide.toggleClass("hideMe", TextUtil.textWidth <= designGrid.width());
-        var c = document.getElementById("textSample");
-        var r = c.getContext("2d");
-        r.clearRect(0, 0, c.width, c.height);
-        var q =6;
-        if (q >= 10) {
-            q = 5
-        }
-        var g = applyDeselRatio(q);
-        var d = Math.ceil(c.width / g);
-        var p = Math.ceil(c.height / q);
-        var o = Math.max(0, Math.floor((f.width - d) / 2));
-        var m = Math.max(0, Math.floor((f.height - p) / 2));
-        var j = Math.min(f.width, 1 + Math.ceil((f.width + d) / 2));
-        var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
-        var b = Math.floor(c.width / 2 - g * f.width / 2);
-        var a = Math.floor(c.height / 2 - q * f.height / 2);
-        for (var l = m; l < h; l++) {
-            var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
-            for (var n = o; n < j; n++) {
-                var e = (l * f.width + n) * 4;
-
-                r.fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
-                r.fillRect(b + n * g + k, a + l * q, g, q)
-            }
-        }
-    }
-    function applyDeselRatio(b) {
-    var deselRatio = 1;
-        var a = b * deselRatio;
-        if (deselRatio >= 1) {
-            a = Math.floor(a)
-        } else {
-            a = Math.ceil(a)
-        }
-        return a
-    }
-    function text(textpara, b, m, h, g,weight)
-    {
-      this.canvas = document.createElement("canvas");
-      this.canvas.width = 200;
-      this.canvas.height = 200;
-      this.ctx = this.canvas.getContext("2d")
-
-      this.ctx.clearRect(0, 0, 600, 600);
-      this.ctx.fillStyle = "#000000";
-      var d = fontSpec(b, m, h, g);
-      this.ctx.font = d;
-      var c = this.ctx.measureText(textpara);
-      var p = getTextHeight(d);
-      this.ctx.fillText(textpara, 0, p.ascent);
-
-      var k = Math.max(1, c.width);
-      var e = this.ctx.getImageData(0, 0, k, p.height);
-
-      var n = 600;
-      var j = 0;
-      for (var f = 3; f < e.data.length; f += 4) {
-
-          var a = 0;
-          if (e.data[f] >= weight) {
-              a = 255;
-              var l = (f / 4) % k;
-              n = Math.min(n, l);
-              j = Math.max(j, l)
-          }
-          e.data[f] = a
-      }
-      this.textWidth = 1 + j - n;
-      if (this.textWidth > 580) {
-          this.textWidth = c.width
-      }
-      return e
-    }
-    function fontSpec(e, d, c, b) {
-        var a = "";
-        if (b) {
-            a += "italic "
-        }
-        if (c) {
-            a += "bold "
-        }
-        return a + d + "px " + e
-    }
-
-    function getTextHeight(c) {
-        var e = $('<span style="font: ' + c + '">Hg</span>');
-        var d = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
-        var f = $("<div></div>");
-        f.append(e, d);
-        var b = $("body");
-        b.append(f);
-        try {
-            var a = {};
-            d.css({
-                verticalAlign: "baseline"
-            });
-            a.ascent = d.offset().top - e.offset().top;
-            d.css({
-                verticalAlign: "bottom"
-            });
-            a.height = d.offset().top - e.offset().top;
-            a.descent = a.height - a.ascent
-        } finally {
-            f.remove()
-        }
-        return a
-    }
 });
