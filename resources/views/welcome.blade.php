@@ -49,12 +49,12 @@
                                         <a href="#step3" data-toggle="tab">Select Aida Cloth Colour</a>
                                     </li>
                                 </ul>
-                                <form action="{{ url('/gridcanvas') }}" method="post">
+                                <form action="" method="post">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="step1">
                                         <h3>Aida Cloth Selection</h3>
                                         <div class="selectAidaCloth">
-                                          <select class="select_cloth" placeholder="Select Aida Cloth for Design">
+                                          <select name="cloth" class="select_cloth" placeholder="Select Aida Cloth for Design">
                                           	<option value="7">7</option>
                                           	<option value="11">11</option>
                                             <option value="12">12</option>
@@ -107,7 +107,8 @@
                                           <input type="hidden" name="gridShadowCPara" id="gridShadowCPara" value=""/>
                                           <input type="hidden" name="circleStrokeCPara" id="circleStrokeCPara" value=""/>
                                           <input type="hidden" name="circleFillCPara" id="circleFillCPara" value=""/>
-                                          <li><input type="submit" class="btn btn-primary">Next</button></li>
+
+                                          <li><a href="{{ url('/gridcanvas') }}"><button type="button" class="btn btn-primary">Next</button></a></li>
                                         </ul>
                                     </div>
                                     <div class="clearfix"></div>

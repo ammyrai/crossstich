@@ -1,8 +1,15 @@
 /*    Konva canvas file   */
 /*    Declare Global Variables    */
-var gridSize = 25,                      // Grid Tile Size
-    canvasWidth = 20,                   // Grid Width
-    canvasHeight = 20,                  // Grid Height
+
+clothframe = localStorage.getItem("clothframe");
+var frame = clothframe.split(" X ");
+console.log(frame);
+
+var
+    stageWidth = 800,
+    gridSize = stageWidth/frame[0],                      // Grid Tile Size
+    canvasWidth = frame[0],                   // Grid Width
+    canvasHeight = frame[1],                  // Grid Height
     box,                                // Variable for rectangle element
     circle,                             // Variable for circle element
     text,                               // Variable for circle element
@@ -34,12 +41,17 @@ var gridSize = 25,                      // Grid Tile Size
       =========================================================
 
 */
-function canvasInit(canvasMainBgcolor,gridStrokeColor,gridShadowColor,circleStrokeColor,circleFillColor,textFillColor){
+function canvasInit(textFillColor){
 
+canvasMainBgcolor = localStorage.getItem("canvasBgColor");
+gridStrokeColor = localStorage.getItem("gridStrokeCPara");
+gridShadowColor = localStorage.getItem("gridShadowCPara");
+circleStrokeColor = localStorage.getItem("circleStrokeCPara");
+circleFillColor = localStorage.getItem("circleFillCPara");
 /*  create stage for main canvas  */
 stage = new Konva.Stage({
     container: 'canvas',                  // Canvas container
-    width: canvasWidth * gridSize,        // Canvas Width
+    width: stageWidth,        // Canvas Width
     height: canvasHeight * gridSize       // Canvas Height
 });
 
@@ -60,7 +72,7 @@ var gridcloneGroup = new Konva.Group({draggable: true});
 stageRect =  new Konva.Rect({
   x:0,
   y:0,
-  width: canvasWidth * gridSize,
+  width: stageWidth,
   height: canvasHeight * gridSize,
   fill: canvasMainBgcolor,
 })
@@ -756,7 +768,7 @@ $( window ).on( "load", function() {
       * Parameter5 : Circle Fill color.
       * Parameter6 : Text Fill color
       */
-    canvasInit('white','#FFE793','#FFE9AD','#F7976F','#FED376','#000000');
+    canvasInit('#000000');
 });
 
 
@@ -777,69 +789,3 @@ function reverse(r1, r2){
   }
     return ({x1: r1x, y1: r1y, x2: r2x, y2: r2y}); // return the corrected rect.
 }
-
-$(function()
-{
-/*
-    ====================================================
-    Pass colors to canvasInit function from color pattel
-    ====================================================
-*/
-$(".selectstyle").delegate("ul#select_style_ul li", "click", function(e) {
-  canvasBgColor = $(this).attr('value');
-  var colorType     = $(this).attr('data-type');
-  if(colorType == "white" || colorType == "black")        // set default colors if bg is of white or black color
-  {
-    gridStrokeCPara = '#FFE793';
-    gridShadowCPara = '#FFE9AD';
-    circleStrokeCPara = '#F7976F';
-    circleFillCPara = '#FED376';
-  }
-  else if(colorType == 'light')     // generate and set 20% darker shade if bg is of light color
-  {
-      // Create a 20% darker shade of light color
-      gridStrokeCPara = ColorLuminance(canvasBgColor, -0.2);
-      gridShadowCPara = ColorLuminance(gridStrokeCPara, -0.2);
-      circleStrokeCPara = ColorLuminance(gridShadowCPara, -0.2);
-      circleFillCPara = ColorLuminance(circleStrokeCPara, -0.2);
-  }
-  else                             // generate and set 100% lighter shade if bg is of dark color
-  {
-    // Create a 100% lighter shade of dark color
-    gridStrokeCPara = ColorLuminance(canvasBgColor, 0.10);
-    gridShadowCPara = ColorLuminance(gridStrokeCPara, 0.10);
-    circleStrokeCPara = ColorLuminance(gridShadowCPara, 0.10);
-    circleFillCPara = ColorLuminance(circleStrokeCPara, 0.10);
-  }
-  canvasInit(canvasBgColor,gridStrokeCPara,gridShadowCPara,circleStrokeCPara,circleFillCPara);
-  // Call to canvasInit function
-});
-
-/*
-    ============================================
-    Generate new color codes script starts here!
-    =============================================
-*/
-function ColorLuminance(hex, lum)
-{
-  // validate hex string
-	hex = String(hex).replace(/[^0-9a-f]/gi, '');
-
-	if (hex.length < 6) {
-		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-	}
-	lum = lum || 0;
-
-	// convert to decimal and change luminosity
-	var rgb = "#", c, i;
-	for (i = 0; i < 3; i++) {
-		c = parseInt(hex.substr(i*2,2), 16);
-		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-		rgb += ("00"+c).substr(c.length);
-	}
-	return rgb;
-}
-/*  Generate new color codes script ends here!  */
-
-
-});

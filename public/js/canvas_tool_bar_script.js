@@ -81,14 +81,15 @@ $(function() {
 
       $.each( json.dimensions, function( key, val ) {
           $.each(val[c],function(key,dval){
-                dimension.push( "<option value='"+ dval.squares +"'>'"+ dval.frame_size +"'</option>");
+                dimension.push( "<option value='"+ dval.squares +"'>"+ dval.frame_size +"</option>");
           })
       });
       /*  get data from json array  ends here! */
       /*  Append dynamic list of color pattel to color pattel container */
       $( ".selectClothFrame" ).html($( "<select/>",
       {
-          class:"select_cloth_frame",
+          name: "cloth_frame",
+          id:"select_cloth_frame",
           placeholder : "Select Aida Cloth Frame Size",
           html: dimension.join( "" )
       }));
@@ -106,7 +107,7 @@ $(function() {
 
         $.each( json.dimensions, function( key, val ) {
             $.each(val[c],function(key,dval){
-                dimension.push( "<option value='"+ dval.squares +"'>'"+ dval.frame_size +"'</option>");
+                dimension.push( "<option value='"+ dval.squares +"'>"+ dval.frame_size +"</option>");
             })
 
         });
@@ -114,7 +115,8 @@ $(function() {
         /*  Append dynamic list of color pattel to color pattel container */
         $( ".selectClothFrame" ).html($( "<select/>",
         {
-            class:"select_cloth_frame",
+            name: "cloth_frame",
+            id:"select_cloth_frame",
             placeholder : "Select Aida Cloth Frame Size",
             html: dimension.join( "" )
         }));
@@ -122,9 +124,10 @@ $(function() {
             Canvas Background Color pattel section Ends Here!
         */
     });
+  });
+  $(document).on('change', '#select_cloth_frame',function() {
+      localStorage.setItem("clothframe", $(this).val());
   })
-
-
 
   /*
       ====================================================
@@ -157,13 +160,19 @@ $(function() {
       circleStrokeCPara = ColorLuminance(gridShadowCPara, 0.10);
       circleFillCPara = ColorLuminance(circleStrokeCPara, 0.10);
     }
+    localStorage.setItem("canvasBgColor", canvasBgColor);
+    localStorage.setItem("gridStrokeCPara", gridStrokeCPara);
+    localStorage.setItem("gridShadowCPara", gridShadowCPara);
+    localStorage.setItem("circleStrokeCPara", circleStrokeCPara);
+    localStorage.setItem("circleFillCPara", circleFillCPara);
+
     $('#canvasBgColor').val(canvasBgColor);
     $('#gridStrokeCPara').val(gridStrokeCPara);
     $('#gridShadowCPara').val(gridShadowCPara);
     $("#circleStrokeCPara").val(circleStrokeCPara);
     $("#circleFillCPara").val(circleFillCPara);
   });
-
+});
   /*
       ============================================
       Generate new color codes script starts here!
@@ -189,6 +198,3 @@ $(function() {
     return rgb;
   }
   /*  Generate new color codes script ends here!  */
-
-
-});
