@@ -135,3 +135,7 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
 {
   float:left;
 }
+
+.selectBgColor {
+    margin-bottom: 8px;
+}

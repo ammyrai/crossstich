@@ -155,6 +155,15 @@ canvasGridLayer.on('mousedown', function(evt)
              gridTextGroup.add(text);
              canvasGridLayer.draw();
            }
+           else {
+             box.attrs.filled = false;
+             box.shadowEnabled(true);
+             if(evt.target.className == 'Text')
+             {
+               evt.target.destroy();
+             }
+             canvasGridLayer.draw();
+          }
       break;
       case 'eraser':
           if(box.attrs.filled == true)
@@ -525,7 +534,6 @@ json = stage.toJSON();      // Save entire canvas as json
        canvasGridLayer.add(aa);
        canvasGridLayer.draw();
        stage.batchDraw();
-       console.log('hii')
       $('.close').click();
     })
     hiddenSampleGroup.on('dragstart', function(e) {
@@ -698,9 +706,9 @@ $(function()
     Pass colors to canvasInit function from color pattel
     ====================================================
 */
-$(document).on('click', '.color_pattel',function() {
-  canvasBgColor = $(this).data("colorcode");
-  var colorType     =  $(this).data("type");
+$(".selectstyle").delegate("ul#select_style_ul li", "click", function(e) {
+  canvasBgColor = $(this).attr('value');
+  var colorType     = $(this).attr('data-type');
   if(colorType == "white" || colorType == "black")        // set default colors if bg is of white or black color
   {
     gridStrokeCPara = '#FFE793';

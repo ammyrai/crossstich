@@ -11,6 +11,7 @@
         <!-- Styles -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
@@ -59,13 +60,33 @@
                     </div>
                     <div class="col-md-4 float-left canvas_tool_bar">
                       <h3>Canvas Colors Section</h3>
-                        <p class="font-weight-bold text-left">
+                      <div class="selectBgColor">
+                      <select theme="google" width="400" style="" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
+                      	<option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
+                      	<option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
+                        <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
+                        <option value="#A77C49" data-type="dark">Yellow Beige V Dk</option>
+                        <option value="#F2E3CE" data-type="light">Beige Brown Ult Vy Lt</option>
+                        <option value="#CBB69C" data-type="light">Mocha Beige Light</option>
+                        <option value="#FFD7D7" data-type="light">Dusty Rose Ult Vy Lt</option>
+                        <option value="#FFFFFF" data-type="white">Snow White</option>
+                        <option value="#000000" data-type="black">Black</option>
+                        <option value="#E7D6C1" data-type="light">3047</option>
+                      	<option value="#D8BC9A" data-type="dark">3046</option>
+                      	<option value="#BC966A" data-type="dark">3045</option>
+                      	<option value="#A77C49" data-type="dark">167</option>
+                      	<option value="#F2E3CE" data-type="light">543</option>
+                      	<option value="#CBB69C" data-type="light">3864</option>
+                      	<option value="#FFFFFF" data-type="white">B5200</option>
+                      	<option value="#000000" data-type="black">310</option>
+                      </select>
+                    </div>
+                        <!-- <p class="font-weight-bold text-left">
                           Click to change canvas background color
                           <button class="btn btn-success show-colors-btn" data-toggle="collapse" data-target="#pattel_container"> + </button>
                         </p>
                         <div class="color_pattel_container collapse text-left" id="pattel_container">
-                        </div>
-
+                        </div> -->
                         <p class="font-weight-bold text-left">
                           Click to change text color
                           <button class="btn btn-success show-text-colors-btn" data-toggle="collapse" data-target="#text_pattel_container"> + </button>
@@ -192,7 +213,18 @@
             <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="{{ asset('js/custom_canvas.js') }}" defer></script>
+            <script src="{{ asset('js/selectstyle.js') }}" defer></script>
             <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
              <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+             <script>
+             jQuery(document).ready(function($) {
+             	$('.select_style').selectstyle({
+             		width  : 400,
+             		height : 300,
+             		theme  : 'light',
+             		onchange : function(val){}
+             	});
+             });
+             </script>
     </body>
 </html>
