@@ -12,8 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('gridcanvas');
 });
+
+
+Route::get('/gridcanvas', 'GridCanvasController@index');
 
 Auth::routes();
 

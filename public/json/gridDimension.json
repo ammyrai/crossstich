@@ -1,0 +1,179 @@
+{
+  "dimensions":[{
+  "7": [{
+      "frame_size": "3.5 X 5",
+      "squares": "24.5 X 35"
+    },
+    {
+      "frame_size": "4 X 6",
+      "squares": "28 X 42"
+    },
+    {
+      "frame_size": "5 X 7",
+      "squares": "35 X 49"
+    },
+    {
+      "frame_size": "6 X 8",
+      "squares": "42 X 56"
+    },
+    {
+      "frame_size": "8 X 10",
+      "squares": "56 X 70"
+    },
+    {
+      "frame_size": "8 X 12",
+      "squares": "56 X 84"
+    }
+  ],
+  "11": [{
+      "frame_size": "3.5 X 5",
+      "squares": "38.5 X 55"
+    },
+    {
+      "frame_size": "4 X 6",
+      "squares": "44 X 66"
+    },
+    {
+      "frame_size": "5 X 7",
+      "squares": "55 X 77"
+    },
+    {
+      "frame_size" : "6 X 8",
+      "squares" : "66 X 88"
+    },
+    {
+      "frame_size": "8 X 10",
+      "squares": "88 X 110"
+    },
+    {
+      "frame_size": "8 X 12",
+      "squares": "88 X 132"
+    }
+  ],
+  "12": [{
+      "frame_size" : "3.5 X 5",
+      "squares":  "42 X 60"
+    },
+    {
+      "frame_size": "4 X 6",
+      "squares": "48 X 72"
+    },
+    {
+      "frame_size": "5 X 7",
+      "squares": "60 X 84"
+    },
+    {
+      "frame_size": "6 X 8",
+      "squares": "72 X 96"
+    },
+    {
+      "frame_size": "8 X 10",
+      "squares": "96 X 120"
+    },
+    {
+      "frame_size": "8 X 12",
+      "squares": "96 X 144"
+    }
+  ],
+  "14": [{
+      "frame_size": "3.5 X 5",
+      "squares": "49 X 70"
+    },
+    {
+      "frame_size": "4 X 6",
+      "squares": "56 X 84"
+    },
+    {
+      "frame_size": "5 X 7",
+      "squares": "70 X 98"
+    },
+    {
+      "frame_size": "6 X 8",
+      "squares": "84 X 112"
+    },
+    {
+      "frame_size": "8 X 10",
+      "squares": "112 X 140"
+    },
+    {
+      "frame_size": "8 X 12",
+      "squares": "112 X 168"
+    }
+  ],
+  "18": [{
+      "frame_size": "3.5 X 5",
+      "squares": "24.5 X 35"
+    },
+    {
+      "frame_size": "4 X 6",
+      "squares": "28 X 42"
+    },
+    {
+      "frame_size": "5 X 7",
+      "squares": "35 X 49"
+    },
+    {
+      "frame_size": "6 X 8",
+      "squares": "42 X 56"
+    },
+    {
+      "frame_size": "8 X 10",
+      "squares": "56 X 70"
+    },
+    {
+      "frame_size": "8 X 12",
+      "squares": "56 X 84"
+    }
+  ],
+  "20": [{
+      "frame_size": "3.5 X 5",
+      "squares": "38.5 X 55"
+    },
+    {
+      "frame_size": "4 X 6",
+      "squares": "44 X 66"
+    },
+    {
+      "frame_size": "5 X 7",
+      "squares": "55 X 77"
+    },
+    {
+      "frame_size": "6 X 8",
+      "squares": "66 X 88"
+    },
+    {
+      "frame_size": "8 X 10",
+      "squares": "88 X 110"
+    },
+    {
+      "frame_size": "8 X 12",
+      "squares": "88 X 132"
+    }
+  ],
+  "22": [{
+      "frame_size": "3.5 X 5",
+      "squares": "42 X 60"
+    },
+    {
+      "frame_size": "4 X 6",
+      "squares": "48 X 72"
+    },
+    {
+      "frame_size": "5 X 7",
+      "squares": "60 X 84"
+    },
+    {
+      "frame_size": "6 X 8",
+      "squares": "72 X 96"
+    },
+    {
+      "frame_size": "8 X 10",
+      "squares": "96 X 120"
+    },
+    {
+      "frame_size": "8 X 12",
+      "squares": "96 X 144"
+    }
+  ]
+  }]
+}

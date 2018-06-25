@@ -11,6 +11,7 @@
         <!-- Styles -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/steps_style.css') }}" rel="stylesheet">
         <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
@@ -31,191 +32,103 @@
                 <div class="title m-b-md">
                     Craft World
                 </div>
-                <div class="col-md-12 canvas_container">
-                    <div class="col-md-6 float-left canvas_content">
-                        <div id="canvas"></div>
-                    </div>
-                    <div class="col-md-2">
-                        <h3>Toolbar Section</h3>
-                        <ul class="toolbar_list" id="">
-                          <li class="canvas_tool active" id="pencil" data-mode="pencil" title="pencil">
-                              <i class="fa fa-pencil" aria-hidden="true"></i>
-                          </li>
-                          <li class="canvas_tool" id="eraser" data-mode="eraser" title="eraser">
-                              <i class="fa fa-eraser" aria-hidden="true"></i>
-                          </li>
-                          <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
-                            <img src="{{ asset('imgs/select.png') }}" alt="select shape"/>
-                          </li>
-                          <li class="canvas_tool" id="back_stich" data-mode="back_stich" title="Back Stich">
-                            <img src="{{ asset('imgs/back_stich.png') }}" alt="Back Stich" width='54px' height='41px' />
-                          </li>
-                          <li class="canvas_tool" id="text_modal" data-mode="text" title="Text" data-toggle="modal" data-target="#textModal" data-backdrop="false" >
-                              <i class="fa fa-text-width" aria-hidden="true"></i>
-                          </li>
-                          <li class="canvas_tool" id="refresh_canvas" data-mode="refresh" title="Refresh">
-                              <i class="fa fa-refresh" aria-hidden="true"></i>
-                          </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4 float-left canvas_tool_bar">
-                      <h3>Canvas Colors Section</h3>
-                      <div class="selectBgColor">
-                      <select theme="google" width="400" style="" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
-                      	<option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
-                      	<option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
-                        <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
-                        <option value="#A77C49" data-type="dark">Yellow Beige V Dk</option>
-                        <option value="#F2E3CE" data-type="light">Beige Brown Ult Vy Lt</option>
-                        <option value="#CBB69C" data-type="light">Mocha Beige Light</option>
-                        <option value="#FFD7D7" data-type="light">Dusty Rose Ult Vy Lt</option>
-                        <option value="#FFFFFF" data-type="white">Snow White</option>
-                        <option value="#000000" data-type="black">Black</option>
-                        <option value="#E7D6C1" data-type="light">3047</option>
-                      	<option value="#D8BC9A" data-type="dark">3046</option>
-                      	<option value="#BC966A" data-type="dark">3045</option>
-                      	<option value="#A77C49" data-type="dark">167</option>
-                      	<option value="#F2E3CE" data-type="light">543</option>
-                      	<option value="#CBB69C" data-type="light">3864</option>
-                      	<option value="#FFFFFF" data-type="white">B5200</option>
-                      	<option value="#000000" data-type="black">310</option>
-                      </select>
-                    </div>
-                        <!-- <p class="font-weight-bold text-left">
-                          Click to change canvas background color
-                          <button class="btn btn-success show-colors-btn" data-toggle="collapse" data-target="#pattel_container"> + </button>
-                        </p>
-                        <div class="color_pattel_container collapse text-left" id="pattel_container">
-                        </div> -->
-                        <p class="font-weight-bold text-left">
-                          Click to change text color
-                          <button class="btn btn-success show-text-colors-btn" data-toggle="collapse" data-target="#text_pattel_container"> + </button>
-                        </p>
-                        <div class="text_color_pattel_container collapse text-left" id="text_pattel_container">
-                        </div>
-                </div>
-            </div>
 
+                <!-- Bootstrap setps form starts here-->
+                <div class="col-md-8 col-sm-offset-2">
+                  <div class="row">
+                		<section>
+                        <div class="wizard">
+                              <ul class="nav nav-wizard">
+                                    <li class="active">
+                                        <a href="#step1" data-toggle="tab">Select Aida Cloth for Design</a>
+                                    </li>
+                                    <li class="disabled">
+                                        <a href="#step2" data-toggle="tab">Select Aida Cloth Frame Size</a>
+                                    </li>
+                                    <li class="disabled">
+                                        <a href="#step3" data-toggle="tab">Select Aida Cloth Colour</a>
+                                    </li>
+                                </ul>
+                                <form action="{{ url('/gridcanvas') }}" method="post">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="step1">
+                                        <h3>Aida Cloth Selection</h3>
+                                        <div class="selectAidaCloth">
+                                          <select class="select_cloth" placeholder="Select Aida Cloth for Design">
+                                          	<option value="7">7</option>
+                                          	<option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="14">14</option>
+                                            <option value="18">18</option>
+                                            <option value="20">20</option>
+                                            <option value="22">22</option>
+                                          </select>
+                                        </div>
+                                        <ul class="list-inline pull-right">
+                                            <li><button type="button" class="btn btn-primary">Continue</button></li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane" id="step2">
+                                        <h3>Aida Cloth Frame Selection</h3>
 
-            <!-- Modal -->
-            <div id="textModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="col-md-12 modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                             <h4 class="modal-title">Draw Text</h4>
+                                          <div class="selectClothFrame">
 
-                        </div>
-                        <div class="modal-body">
-                          <form class="form-horizontal textPopup">
-                          <div class="form-group">
-                                <label class="control-label col-sm-2" for="email">Text</label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="textfill">
+                                          </div>
+                                        <ul class="list-inline pull-right">
+                                           <li><button type="button" class="btn btn-primary">Continue</button></li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane" id="step3">
+                                        <h3>Aida Cloth Background Colour Selection</h3>
+                                        <div class="selectBgColor">
+                                          <select theme="google" width="400" style="" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
+                                          	<option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
+                                          	<option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
+                                            <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
+                                            <option value="#A77C49" data-type="dark">Yellow Beige V Dk</option>
+                                            <option value="#F2E3CE" data-type="light">Beige Brown Ult Vy Lt</option>
+                                            <option value="#CBB69C" data-type="light">Mocha Beige Light</option>
+                                            <option value="#FFD7D7" data-type="light">Dusty Rose Ult Vy Lt</option>
+                                            <option value="#FFFFFF" data-type="white">Snow White</option>
+                                            <option value="#000000" data-type="black">Black</option>
+                                            <option value="#E7D6C1" data-type="light">3047</option>
+                                          	<option value="#D8BC9A" data-type="dark">3046</option>
+                                          	<option value="#BC966A" data-type="dark">3045</option>
+                                          	<option value="#A77C49" data-type="dark">167</option>
+                                          	<option value="#F2E3CE" data-type="light">543</option>
+                                          	<option value="#CBB69C" data-type="light">3864</option>
+                                          	<option value="#FFFFFF" data-type="white">B5200</option>
+                                          	<option value="#000000" data-type="black">310</option>
+                                          </select>
+                                        </div>
+                                        <ul class="list-inline pull-right">
+                                          <input type="hidden" name="canvasBgColor" id="canvasBgColor" value=""/>
+                                          <input type="hidden" name="gridStrokeCPara" id="gridStrokeCPara" value=""/>
+                                          <input type="hidden" name="gridShadowCPara" id="gridShadowCPara" value=""/>
+                                          <input type="hidden" name="circleStrokeCPara" id="circleStrokeCPara" value=""/>
+                                          <input type="hidden" name="circleFillCPara" id="circleFillCPara" value=""/>
+                                          <li><input type="submit" class="btn btn-primary">Next</button></li>
+                                        </ul>
+                                    </div>
+                                    <div class="clearfix"></div>
                                 </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-sm-2" for="pwd">Font:</label>
-                                <div class="col-sm-10">
-                                  <select id="textFontSelect">
-                                    <option value="sans-serif" style="font-family:'sans-serif';">sans-serif</option>
-                                    <option value="serif" style="font-family:'serif';">serif</option>
-                                    <option value="monospace" style="font-family:'monospace';">monospace</option>
-                                    <option value="American Typewriter" style="font-family:'American Typewriter';">American Typewriter</option>
-                                    <option value="Andale Mono" style="font-family:'Andale Mono';">Andale Mono</option>
-                                    <option value="Apple Chancery" style="font-family:'Apple Chancery';">Apple Chancery</option>
-                                    <option value="Arial" style="font-family:'Arial';">Arial</option>
-                                    <option value="Arial Black" style="font-family:'Arial Black';">Arial Black</option>
-                                    <option value="Baskerville" style="font-family:'Baskerville';">Baskerville</option>
-                                    <option value="Big Caslon" style="font-family:'Big Caslon';">Big Caslon</option>
-                                    <option value="Charter" style="font-family:'Charter';">Charter</option>
-                                    <option value="Comic Sans MS" style="font-family:'Comic Sans MS';">Comic Sans MS</option>
-                                    <option value="Copperplate" style="font-family:'Copperplate';">Copperplate</option>
-                                    <option value="Courier" style="font-family:'Courier';">Courier</option>
-                                    <option value="Courier New" style="font-family:'Courier New';">Courier New</option>
-                                    <option value="cursive" style="font-family:'cursive';">cursive</option>
-                                    <option value="fantasy" style="font-family:'fantasy';">fantasy</option>
-                                    <option value="Futura" style="font-family:'Futura';">Futura</option>
-                                    <option value="Georgia" style="font-family:'Georgia';">Georgia</option>
-                                    <option value="Gill Sans" style="font-family:'Gill Sans';">Gill Sans</option>
-                                    <option value="Helvetica" style="font-family:'Helvetica';">Helvetica</option>
-                                    <option value="Herculanum" style="font-family:'Herculanum';">Herculanum</option>
-                                    <option value="Hoefler Text" style="font-family:'Hoefler Text';">Hoefler Text</option>
-                                    <option value="Impact" style="font-family:'Impact';">Impact</option>
-                                    <option value="Lucida Grande" style="font-family:'Lucida Grande';">Lucida Grande</option>
-                                    <option value="Marker Felt" style="font-family:'Marker Felt';">Marker Felt</option>
-                                    <option value="Optima" style="font-family:'Optima';">Optima</option>
-                                    <option value="Osaka" style="font-family:'Osaka';">Osaka</option>
-                                    <option value="Palatino" style="font-family:'Palatino';">Palatino</option>
-                                    <option value="Papyrus" style="font-family:'Papyrus';">Papyrus</option>
-                                    <option value="Skia" style="font-family:'Skia';">Skia</option>
-                                    <option value="Symbol" style="font-family:'Symbol';">Symbol</option>
-                                    <option value="Tahoma" style="font-family:'Tahoma';">Tahoma</option>
-                                    <option value="Times" style="font-family:'Times';">Times</option>
-                                    <option value="Times New Roman" style="font-family:'Times New Roman';">Times New Roman</option>
-                                    <option value="Trebuchet MS" style="font-family:'Trebuchet MS';">Trebuchet MS</option>
-                                    <option value="Verdana" style="font-family:'Verdana';">Verdana</option>
-                                    <option value="Webdings" style="font-family:'Webdings';">Webdings</option>
-                                    <option value="Zapf Dingbats" style="font-family:'Zapf Dingbats';">Zapf Dingbats</option>
-                                    <option value="Zapfino" style="font-family:'Zapfino';">Zapfino</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-sm-2" for="pwd">Size:</label>
-                                <div class="col-sm-10">
-                                  <input type="number" class="form-control" id="textFontsize" value="12">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-sm-2" for="pwd">Bold:</label>
-                                <div class="col-sm-10">
-                                  <input type="checkbox" name='bold' id='textFontBold'/>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-sm-2" for="pwd">Italic:</label>
-                                <div class="col-sm-10">
-                                  <input type="checkbox" name='italic' id='textFontItalic'/>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-sm-2" for="pwd">Weight:</label>
-                                <div class="col-sm-10">
-                                  <div class="slidecontainer">
-                                    <input type="range" min="1" max="100" value="80" class="slider" id="myRange">
-                                    <p>Value: <span id="demo"></span></p>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-sm-2" for="pwd">Sample:</label>
-                                <div class="col-sm-10">
-                                  <div id="textSample"></div>
-                                  <div id="textSample1" style="display:none;"></div>
-                                </div>
-                              </div>
-
                             </form>
                         </div>
-                        <div class="modal-footer">
-                            <button id="cloneSampleText" type="button" class="btn btn-primary">Ok</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
+                    </section>
+                  </div>
                 </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- /.modal -->
+
+                    <!-- Bootstrap setps form ends here-->
+           </div>
+
+
 
             <!--  Scripts   -->
-            <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-            <script src="{{ asset('js/custom_canvas.js') }}" defer></script>
+            <script src="{{ asset('js/steps_script.js') }}" defer></script>
             <script src="{{ asset('js/selectstyle.js') }}" defer></script>
             <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
-             <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
              <script>
              jQuery(document).ready(function($) {
              	$('.select_style').selectstyle({
