@@ -78,7 +78,7 @@ $(function() {
     var c = $('.select_cloth').val();
       var dimension = [];              // Set an empty array.
       /*  get data from json array  starts here! */
-
+      dimension.push( "<option value=''>Select cloth Frame</option>");
       $.each( json.dimensions, function( key, val ) {
           $.each(val[c],function(key,dval){
                 dimension.push( "<option value='"+ dval.squares +"'>"+ dval.frame_size +"</option>");
@@ -90,6 +90,7 @@ $(function() {
       {
           name: "cloth_frame",
           id:"select_cloth_frame",
+          class: "cloth_frame_dropdown",
           placeholder : "Select Aida Cloth Frame Size",
           html: dimension.join( "" )
       }));
@@ -104,8 +105,9 @@ $(function() {
     {
         var dimension = [];              // Set an empty array.
         /*  get data from json array  starts here! */
-
+        dimension.push( "<option value=''>Select cloth Frame</option>");
         $.each( json.dimensions, function( key, val ) {
+          // localStorage.setItem("clothframe", $('#select_cloth_frame').val());
             $.each(val[c],function(key,dval){
                 dimension.push( "<option value='"+ dval.squares +"'>"+ dval.frame_size +"</option>");
             })
@@ -117,6 +119,7 @@ $(function() {
         {
             name: "cloth_frame",
             id:"select_cloth_frame",
+            class: "cloth_frame_dropdown",
             placeholder : "Select Aida Cloth Frame Size",
             html: dimension.join( "" )
         }));
@@ -125,9 +128,13 @@ $(function() {
         */
     });
   });
+
+
   $(document).on('change', '#select_cloth_frame',function() {
+    $(".framevalidate").hide();
       localStorage.setItem("clothframe", $(this).val());
   })
+
 
   /*
       ====================================================
@@ -135,6 +142,7 @@ $(function() {
       ====================================================
   */
   $(".selectstyle").delegate("ul#select_style_ul li", "click", function(e) {
+    $(".clothcolorvalidate").hide();
     canvasBgColor = $(this).attr('value');
     var colorType     = $(this).attr('data-type');
     if(colorType == "white" || colorType == "black")        // set default colors if bg is of white or black color

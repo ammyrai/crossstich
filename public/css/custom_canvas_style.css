@@ -139,3 +139,17 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
 .selectBgColor {
     margin-bottom: 8px;
 }
+
+.select_cloth, .cloth_frame_dropdown {
+    width: 23%;
+    height: 38px;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+.aidavalidate, .framevalidate, .clothcolorvalidate {
+    display: none;
+    color: red;
+    width: 100%;
+    float: left;
+    font-size: 15px;
+}

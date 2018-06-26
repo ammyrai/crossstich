@@ -789,3 +789,14 @@ function reverse(r1, r2){
   }
     return ({x1: r1x, y1: r1y, x2: r2x, y2: r2y}); // return the corrected rect.
 }
+
+// 
+// window.onbeforeunload = function() {
+//     localStorage.removeItem('clothframe');
+//     localStorage.removeItem('canvasBgColor');
+//     localStorage.removeItem('gridStrokeCPara');
+//     localStorage.removeItem('gridShadowCPara');
+//     localStorage.removeItem('circleStrokeCPara');
+//     localStorage.removeItem('circleFillCPara');
+//     return '';
+// }

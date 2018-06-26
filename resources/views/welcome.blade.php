@@ -54,7 +54,8 @@
                                     <div class="tab-pane active" id="step1">
                                         <h3>Aida Cloth Selection</h3>
                                         <div class="selectAidaCloth">
-                                          <select name="cloth" class="select_cloth" placeholder="Select Aida Cloth for Design">
+                                          <select name="cloth" class="select_cloth" id="aida_cloth" placeholder="Select Aida Cloth for Design" onchange="$('.aidavalidate').hide();">
+                                            <option value="">Select Aida cloth</option>
                                           	<option value="7">7</option>
                                           	<option value="11">11</option>
                                             <option value="12">12</option>
@@ -63,25 +64,27 @@
                                             <option value="20">20</option>
                                             <option value="22">22</option>
                                           </select>
+                                          <span class="aidavalidate">Please Select Aida Cloth</span>
                                         </div>
                                         <ul class="list-inline pull-right">
-                                            <li><button type="button" class="btn btn-primary">Continue</button></li>
+                                            <li><button type="button" class="btn btn-primary" data-item="step1">Continue</button></li>
                                         </ul>
                                     </div>
                                     <div class="tab-pane" id="step2">
                                         <h3>Aida Cloth Frame Selection</h3>
-
                                           <div class="selectClothFrame">
 
                                           </div>
+                                          <span class="framevalidate">Please Select Aida Cloth</span>
                                         <ul class="list-inline pull-right">
-                                           <li><button type="button" class="btn btn-primary">Continue</button></li>
+                                           <li><button type="button" class="btn btn-primary" data-item="step2">
+                                             Continue </button></li>
                                         </ul>
                                     </div>
                                     <div class="tab-pane" id="step3">
                                         <h3>Aida Cloth Background Colour Selection</h3>
                                         <div class="selectBgColor">
-                                          <select theme="google" width="400" style="" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
+                                          <select theme="google" width="400" style="" id="clothColorId" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
                                           	<option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
                                           	<option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
                                             <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
@@ -101,14 +104,15 @@
                                           	<option value="#000000" data-type="black">310</option>
                                           </select>
                                         </div>
+                                        <span class="clothcolorvalidate">Please Select Aida Cloth</span>
                                         <ul class="list-inline pull-right">
                                           <input type="hidden" name="canvasBgColor" id="canvasBgColor" value=""/>
                                           <input type="hidden" name="gridStrokeCPara" id="gridStrokeCPara" value=""/>
                                           <input type="hidden" name="gridShadowCPara" id="gridShadowCPara" value=""/>
                                           <input type="hidden" name="circleStrokeCPara" id="circleStrokeCPara" value=""/>
                                           <input type="hidden" name="circleFillCPara" id="circleFillCPara" value=""/>
-
-                                          <li><a href="{{ url('/gridcanvas') }}"><button type="button" class="btn btn-primary">Next</button></a></li>
+                                          <input type="hidden" id="gridPageLink" value="{{ url('/gridcanvas') }}"/>
+                                          <li><button type="button" class="btn btn-primary" data-item="step3">Next</button></li>
                                         </ul>
                                     </div>
                                     <div class="clearfix"></div>

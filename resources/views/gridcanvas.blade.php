@@ -35,6 +35,27 @@
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </li>
                   </ul>
+                      <!-- <select theme="google" style="" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
+                          <option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
+                          <option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
+                          <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
+                          <option value="#A77C49" data-type="dark">Yellow Beige V Dk</option>
+                          <option value="#F2E3CE" data-type="light">Beige Brown Ult Vy Lt</option>
+                          <option value="#CBB69C" data-type="light">Mocha Beige Light</option>
+                          <option value="#FFD7D7" data-type="light">Dusty Rose Ult Vy Lt</option>
+                          <option value="#FFFFFF" data-type="white">Snow White</option>
+                          <option value="#000000" data-type="black">Black</option>
+                          <option value="#E7D6C1" data-type="light">3047</option>
+                          <option value="#D8BC9A" data-type="dark">3046</option>
+                          <option value="#BC966A" data-type="dark">3045</option>
+                          <option value="#A77C49" data-type="dark">167</option>
+                          <option value="#F2E3CE" data-type="light">543</option>
+                          <option value="#CBB69C" data-type="light">3864</option>
+                          <option value="#FFFFFF" data-type="white">B5200</option>
+                          <option value="#000000" data-type="black">310</option>
+                        </select> -->
+
+
                   <p class="font-weight-bold text-left">
                     Click to change text color
                     <button class="btn btn-success show-text-colors-btn" data-toggle="collapse" data-target="#text_pattel_container"> + </button>
