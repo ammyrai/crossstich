@@ -767,7 +767,7 @@ $( window ).on( "load", function() {
       * Parameter6 : Text Fill color
       */
     canvasInit('#000000');
-    var myVar = setTimeout(showPage, 2000);
+    var myVar = setTimeout(showPage, 1000);
 });
 
 function showPage() {
