@@ -3,8 +3,6 @@
 
 clothframe = localStorage.getItem("clothframe");
 var frame = clothframe.split(" X ");
-console.log(frame);
-
 var
     stageWidth = 800,
     gridSize = stageWidth/frame[0],                      // Grid Tile Size
@@ -769,7 +767,16 @@ $( window ).on( "load", function() {
       * Parameter6 : Text Fill color
       */
     canvasInit('#000000');
+    myFunction();
 });
+function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
 
 
 function startDrag(posIn){
@@ -790,7 +797,7 @@ function reverse(r1, r2){
     return ({x1: r1x, y1: r1y, x2: r2x, y2: r2y}); // return the corrected rect.
 }
 
-// 
+//
 // window.onbeforeunload = function() {
 //     localStorage.removeItem('clothframe');
 //     localStorage.removeItem('canvasBgColor');
