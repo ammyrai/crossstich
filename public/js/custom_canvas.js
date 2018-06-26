@@ -767,11 +767,8 @@ $( window ).on( "load", function() {
       * Parameter6 : Text Fill color
       */
     canvasInit('#000000');
-    myFunction();
+    var myVar = setTimeout(showPage, 3000);
 });
-function myFunction() {
-    myVar = setTimeout(showPage, 3000);
-}
 
 function showPage() {
   document.getElementById("loader").style.display = "none";

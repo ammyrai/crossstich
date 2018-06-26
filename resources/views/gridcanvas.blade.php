@@ -35,25 +35,25 @@
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </li>
                   </ul>
-                      <!-- <select theme="google" style="" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
-                          <option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
-                          <option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
-                          <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
-                          <option value="#A77C49" data-type="dark">Yellow Beige V Dk</option>
-                          <option value="#F2E3CE" data-type="light">Beige Brown Ult Vy Lt</option>
-                          <option value="#CBB69C" data-type="light">Mocha Beige Light</option>
-                          <option value="#FFD7D7" data-type="light">Dusty Rose Ult Vy Lt</option>
-                          <option value="#FFFFFF" data-type="white">Snow White</option>
-                          <option value="#000000" data-type="black">Black</option>
-                          <option value="#E7D6C1" data-type="light">3047</option>
-                          <option value="#D8BC9A" data-type="dark">3046</option>
-                          <option value="#BC966A" data-type="dark">3045</option>
-                          <option value="#A77C49" data-type="dark">167</option>
-                          <option value="#F2E3CE" data-type="light">543</option>
-                          <option value="#CBB69C" data-type="light">3864</option>
-                          <option value="#FFFFFF" data-type="white">B5200</option>
-                          <option value="#000000" data-type="black">310</option>
-                        </select> -->
+                      <select theme="google" style="" width="200" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
+                          <option value="#E7D6C1" data-type="">Yellow Beige Lt</option>
+                          <option value="#D8BC9A" data-type="">Yellow Beige Md</option>
+                          <option value="#BC966A" data-type="">Yellow Beige Dk</option>
+                          <option value="#A77C49" data-type="">Yellow Beige V Dk</option>
+                          <option value="#F2E3CE" data-type="">Beige Brown Ult Vy Lt</option>
+                          <option value="#CBB69C" data-type="">Mocha Beige Light</option>
+                          <option value="#FFD7D7" data-type="">Dusty Rose Ult Vy Lt</option>
+                          <option value="#FFFFFF" data-type="">Snow White</option>
+                          <option value="#000000" data-type="">Black</option>
+                          <option value="#E7D6C1" data-type="">3047</option>
+                          <option value="#D8BC9A" data-type="">3046</option>
+                          <option value="#BC966A" data-type="">3045</option>
+                          <option value="#A77C49" data-type="">167</option>
+                          <option value="#F2E3CE" data-type="">543</option>
+                          <option value="#CBB69C" data-type="">3864</option>
+                          <option value="#FFFFFF" data-type="">B5200</option>
+                          <option value="#000000" data-type="">310</option>
+                        </select>
 
 
                   <p class="font-weight-bold text-left">
@@ -163,8 +163,6 @@
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="pwd">Sample:</label>
                     <div class="col-sm-10">
-                      <!-- <canvas id="textSample" width="300" height="100" style="border:1px solid #ccc;">
-                      </canvas> -->
                       <div id="textSample"></div>
                       <div id="textSample1" style="display:none;"></div>
                     </div>
@@ -182,84 +180,9 @@
 </div>
 <!-- /.modal -->
 
-
 </div>
 @endsection
 
-<style>
-/* Center the loader */
-#loader {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  width: 150px;
-  height: 150px;
-  margin: -75px 0 0 -75px;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Add animation to "page content" */
-
-#myDiv {
-  display: none;
-  text-align: center;
-}
-
-.slidecontainer {
-    width: 100%;
-}
-
-.slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 15px;
-    border-radius: 5px;
-    background: #d3d3d3;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-}
-
-.slider:hover {
-    opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-}
-</style>
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -277,5 +200,5 @@
     onchange : function(val){}
   });
  });
- var myVar;
+ 
  </script>
