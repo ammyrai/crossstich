@@ -219,7 +219,7 @@ canvasGridLayer.on('mousedown', function(evt)
                strokeWidth: 3,
                drawLine : true,
            });
-           gridRectGroup.add(line);
+           canvasGridLayer.add(line);
            canvasGridLayer.draw();
            box.attrs.lineDraw = true;
        break;
@@ -400,8 +400,6 @@ function updateDrag(posIn,updateSelect){
 canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);   // Add Groups to layer
 stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
 json = stage.toJSON();      // Save entire canvas as json
-
-
 
 
 /* Text popup starts here    */
