@@ -72,6 +72,7 @@
                                     </div>
                                     <div class="tab-pane" id="step2">
                                         <h3>Aida Cloth Frame Selection</h3>
+                                        <p>Frame size is in Height X width in Inches</p>
                                           <div class="selectClothFrame">
 
                                           </div>
@@ -84,7 +85,7 @@
                                     <div class="tab-pane" id="step3">
                                         <h3>Aida Cloth Background Colour Selection</h3>
                                         <div class="selectBgColor">
-                                          <select theme="google" width="400" style="" id="clothColorId" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
+                                          <select theme="google" width="400" style="" id="clothColorId" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="bgSelect">
                                           	<option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
                                           	<option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
                                             <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
@@ -106,11 +107,6 @@
                                         </div>
                                         <span class="clothcolorvalidate">Please Select Aida Cloth</span>
                                         <ul class="list-inline pull-right">
-                                          <input type="hidden" name="canvasBgColor" id="canvasBgColor" value=""/>
-                                          <input type="hidden" name="gridStrokeCPara" id="gridStrokeCPara" value=""/>
-                                          <input type="hidden" name="gridShadowCPara" id="gridShadowCPara" value=""/>
-                                          <input type="hidden" name="circleStrokeCPara" id="circleStrokeCPara" value=""/>
-                                          <input type="hidden" name="circleFillCPara" id="circleFillCPara" value=""/>
                                           <input type="hidden" id="gridPageLink" value="{{ url('/gridcanvas') }}"/>
                                           <li><button type="button" class="btn btn-primary" data-item="step3">Next</button></li>
                                         </ul>

@@ -5,47 +5,29 @@ $(function() {
   jQuery.getJSON( "../json/colors.json").then(function(json)
   {
       /*
-       *
-       *    Canvas Background Color pattel section
-       *    Starts Here!
-       *
-      */
-      var colors = [];              // Set an empty array.
-      /*  get data from json array  starts here! */
-      $.each( json.colors, function( key, val ) {
-          var color_style = "background-color:"+ val.color_code;
-          colors.push( "<li class='color_pattel' data-floss = '"+ val.floss +"' id='" + val.floss + "' data-type= '"+ val.color_type +"' data-colorcode='"+ val.color_code +"' style='"+color_style+"'> </li>" );
-      });
-      /*  get data from json array  ends here! */
-      /*  Append dynamic list of color pattel to color pattel container */
-      $( "<ul/>",
-      {
-          "class": "my-new-list",
-          html: colors.join( "" )
-      }).appendTo( ".color_pattel_container" );
-      /*
-          Canvas Background Color pattel section Ends Here!
+       *    Text Color pattel section Starts Here!
       */
 
-      /*
-       *
-       *    Text Color pattel section
-       *    Starts Here!
-       *
-      */
       var colors = [];              // Set an empty array.
       /*  get data from json array  starts here! */
       $.each( json.colors, function( key, val ) {
-          var color_style = "background-color:"+ val.color_code;
-          colors.push( "<li class='text_color_pattel' data-floss = '"+ val.floss +"' id='" + val.floss + "' data-type= '"+ val.color_type +"' data-colorcode='"+ val.color_code +"' style='"+color_style+"'> </li>" );
+          colors.push( "  <option value='"+ val.color_code +"'>"+ val.floss +"</option>" );
       });
       /*  get data from json array  ends here! */
       /*  Append dynamic list of color pattel to color pattel container */
-      $( "<ul/>",
-      {
-          "class": "text-color-list",
-          html: colors.join( "" )
-      }).appendTo( ".text_color_pattel_container" );
+
+      // $("#selectTxtColor").append(colors);
+      //
+      // $( "<select/>",
+      // {
+      //     "id": "selectTxtColor1",
+      //     "class": "text-color-list",
+      //     "width" : 200,
+      //     "placeholder" : "Select Your Favorite Colour for Canvas",
+      //     "data-search" : true,
+      //     "data-item" : "txtColorSelect",
+      //     html: colors.join( "" )
+      // }).appendTo( ".text_color_pattel_container" );
       /*
           Text Color pattel section Ends Here!
       */
@@ -55,6 +37,7 @@ $(function() {
   })
   .always(function() {
   });
+
   /*  Read color pattel jason and render html to canvas color tool bar  Ends here! */
 
   /*  Show canvas background colors btn script Starts here!  */
@@ -174,11 +157,6 @@ $(function() {
     localStorage.setItem("circleStrokeCPara", circleStrokeCPara);
     localStorage.setItem("circleFillCPara", circleFillCPara);
 
-    $('#canvasBgColor').val(canvasBgColor);
-    $('#gridStrokeCPara').val(gridStrokeCPara);
-    $('#gridShadowCPara').val(gridShadowCPara);
-    $("#circleStrokeCPara").val(circleStrokeCPara);
-    $("#circleFillCPara").val(circleFillCPara);
   });
 });
   /*
@@ -206,3 +184,12 @@ $(function() {
     return rgb;
   }
   /*  Generate new color codes script ends here!  */
+
+  // $(window).on('load',function(){
+  //   $('#selectTxtColor1').selectstyle({
+  //     width  : 400,
+  //     height : 300,
+  //     theme  : 'light',
+  //     onchange : function(val){}
+  //   });
+  // })

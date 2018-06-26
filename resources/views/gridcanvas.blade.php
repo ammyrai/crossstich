@@ -35,7 +35,7 @@
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </li>
                   </ul>
-                      <select theme="google" style="" width="200" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true">
+                      <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
                           <option value="#E7D6C1" data-type="">Yellow Beige Lt</option>
                           <option value="#D8BC9A" data-type="">Yellow Beige Md</option>
                           <option value="#BC966A" data-type="">Yellow Beige Dk</option>
@@ -54,14 +54,11 @@
                           <option value="#FFFFFF" data-type="">B5200</option>
                           <option value="#000000" data-type="">310</option>
                         </select>
-
-
-                  <p class="font-weight-bold text-left">
+                  <!-- <p class="font-weight-bold text-left">
                     Click to change text color
-                    <button class="btn btn-success show-text-colors-btn" data-toggle="collapse" data-target="#text_pattel_container"> + </button>
                   </p>
-                  <div class="text_color_pattel_container collapse text-left" id="text_pattel_container">
-                  </div>
+                  <div class="text_color_pattel_container text-left" id="">
+                  </div> -->
                 </div>
         </div>
     </div>
@@ -189,16 +186,20 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('js/custom_canvas.js') }}" defer></script>
 <script src="{{ asset('js/selectstyle.js') }}" defer></script>
+
 <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
+
 
  <script>
  jQuery(document).ready(function($) {
-  $('.select_style').selectstyle({
+
+  $('#selectTxtColor').selectstyle({
     width  : 400,
     height : 300,
     theme  : 'light',
     onchange : function(val){}
   });
+
  });
- 
+
  </script>

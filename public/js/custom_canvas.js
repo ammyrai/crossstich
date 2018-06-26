@@ -26,7 +26,21 @@ var
     json,                               // Json variable for final canvas output
     posStart,
     posNow,
-    rectPoints = [];
+    rectPoints = [],
+    cr;
+
+var txtFillSize = Math.round(gridSize);
+if(Math.round(gridSize) >= 20)
+{
+  cr = 2;
+}
+else if(Math.round(gridSize) >= 10)
+{
+  cr = 1;
+}
+else {
+  cr = 0;
+}
 /*
       =========================================================
       * canvasInit(Para1, Para2, Para3, Para3, Para4, Para5)
@@ -40,7 +54,6 @@ var
 
 */
 function canvasInit(textFillColor){
-
 canvasMainBgcolor = localStorage.getItem("canvasBgColor");
 gridStrokeColor = localStorage.getItem("gridStrokeCPara");
 gridShadowColor = localStorage.getItem("gridShadowCPara");
@@ -76,16 +89,19 @@ stageRect =  new Konva.Rect({
 })
 backgroundCanvas.add(stageRect);
 /*  Layer1 work ends here! */
+
+/*  Text color  */
 textFillCPara = textFillColor;
 var textColor = "";
-$(document).on('click','.text_color_pattel',function(){
-    var textClr = $(this).data("colorcode");
+$(document).on('click', 'ul#select_style_color_ul li',function() {
+  var textClr = $(this).attr('value');
     changeColor(textClr);
 })
 function changeColor(x)
 {
   textFillColor = x;
 }
+
 /*  Layer2 Create a grid on canvas work starts here!*/
 
 for (var ix = 0; ix < canvasWidth; ix++) {
@@ -107,7 +123,7 @@ for (var ix = 0; ix < canvasWidth; ix++) {
       circle = new Konva.Circle({
         x: box.attrs.x,
         y: box.attrs.y,
-        radius: 2,
+        radius: cr,
         stroke: circleStrokeColor,
         strokeWidth: 1,
       });
@@ -115,7 +131,7 @@ for (var ix = 0; ix < canvasWidth; ix++) {
       gridCircleGroup.add(circle);              // Add rectangle to group
     }
   }
-
+gridRectGroup.cache();
 
 /*   Change tool mode function starts here!   */
 $(".canvas_tool").click(function(){
@@ -144,36 +160,38 @@ canvasGridLayer.on('mousedown', function(evt)
     switch (mode)
     {
       case 'pencil':
+
            // stage.container().style.cursor = 'move';
            if(box.attrs.filled == false)
            {
              box.shadowEnabled(false);
              text = new Konva.Text({
                  text: 'X',
-                 x: box.attrs.x+5,
-                 y: box.attrs.y+4,
+                 x: box.attrs.x,
+                 y: box.attrs.y,
                  fontFamily: 'sans-serif',
-                 fontSize: gridSize,
+                 fontSize: txtFillSize,
                  fill: textFillColor,
                  fontStyle : 'normal',
                  filled : true,
-                 fontSize: 18,
-                 align: 'center'
+                 align: 'center',
+                 transformsEnabled : 'position'
              });
              box.attrs.filled = true;
              box.height = text.getHeight();
              gridTextGroup.add(text);
-             canvasGridLayer.draw();
+             gridTextGroup.draw();
+             canvasGridLayer.batchDraw();
            }
-           else {
-             box.attrs.filled = false;
-             box.shadowEnabled(true);
-             if(evt.target.className == 'Text')
-             {
-               evt.target.destroy();
-             }
-             canvasGridLayer.draw();
-          }
+          //  else {
+          //    box.attrs.filled = false;
+          //    box.shadowEnabled(true);
+          //    if(evt.target.className == 'Text')
+          //    {
+          //      evt.target.destroy();
+          //    }
+          //    canvasGridLayer.draw();
+          // }
       break;
       case 'eraser':
           if(box.attrs.filled == true)
@@ -185,7 +203,7 @@ canvasGridLayer.on('mousedown', function(evt)
                  box.shadowEnabled(true);
              }
           }
-      canvasGridLayer.draw();
+      canvasGridLayer.batchDraw();
       break;
        case 'select_shape':
           startDrag({x: box.attrs.x, y: box.attrs.y})
@@ -202,7 +220,6 @@ canvasGridLayer.on('mousedown', function(evt)
                drawLine : true,
            });
            gridRectGroup.add(line);
-
            canvasGridLayer.draw();
            box.attrs.lineDraw = true;
        break;
@@ -270,31 +287,33 @@ canvasGridLayer.on('mousemove', function(evt) {
     switch (mode)
     {
        case 'pencil':
+            console.log(box)
             // stage.container().style.cursor = 'move';
             if(box.attrs.filled == false)
             {
               box.shadowEnabled(false);
               text = new Konva.Text({
                   text: 'X',
-                  x: box.attrs.x+5,
-                  y: box.attrs.y+4,
+                  x: box.attrs.x,
+                  y: box.attrs.y,
                   fontFamily: 'sans-serif',
-                  fontSize: gridSize,
+                  fontSize: txtFillSize,
                   fill: textFillColor,
                   fontStyle : 'normal',
                   filled : true,
-                  fontSize: 18,
-                  align: 'center'
+                  align: 'center',
+                  transformsEnabled : 'position'
               });
               box.attrs.filled = true;
               box.height = text.getHeight();
               gridTextGroup.add(text);
-              canvasGridLayer.draw();
+              gridTextGroup.draw();
+              canvasGridLayer.batchDraw();
             }
             if(box.className === 'Rect' && box.attrs.filled === true)
-               {
-                  selected_rect.push(box);
-               }
+            {
+                selected_rect.push(box);
+            }
        break;
        case 'eraser':
            if(box.className == 'Rect' && box.attrs.filled == true)
@@ -311,7 +330,7 @@ canvasGridLayer.on('mousemove', function(evt) {
              box.attrs.filled = false;
              box.shadowEnabled(true);
            }
-           canvasGridLayer.draw();
+           canvasGridLayer.batchDraw();
        break;
        case 'select_shape':
           updateDrag({x: box.attrs.x, y: box.attrs.y},false)
@@ -440,7 +459,7 @@ json = stage.toJSON();      // Save entire canvas as json
   updateSampleStage.add(updateSampleLayer);
   var updateSampleGroup = new Konva.Group();
   function updateSample(textpara,fontfamily,textsize,bold,italic,weight) {
-      var f = text(textpara,fontfamily,textsize,bold,italic,weight)
+      var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
       updateSampleLayer.clearBeforeDraw(true);
       updateSampleLayer.clearCache();
       updateSampleGroup.destroy();
@@ -481,43 +500,43 @@ json = stage.toJSON();      // Save entire canvas as json
 
   var hiddenSampleStage = new Konva.Stage({
 	     container: 'textSample1',
-	     width: 50 * gridSize,
+	     width: 80 * gridSize,
 	     height: canvasWidth * gridSize,
 	     visible: false
 	    });
-	    var hiddenSampleLayer = new Konva.Layer();
-      var sampleGridRectGroup = new Konva.Group()
-      for (var ix = 0; ix < 50; ix++) {
-          for (var iy = 0; iy < 50; iy++) {
-            var sampleRect = new Konva.Rect({
-                x : ix * gridSize,
-                y : iy * gridSize,
-                width : gridSize ,
-                height: gridSize,
-                stroke: gridStrokeColor,
-                strokeWidth: 0,
-                lineJoin : 'round',
-                shadowEnabled : true,
-                shadowColor: gridShadowColor,
-                shadowOffset: {  x: 3,   y: 3 },
-                shadowOpacity: 1,
-                filled : false,
-            });
-            sampleGridRectGroup.add(sampleRect);                   // Add rectangle to group
-          }
-        }
-        hiddenSampleLayer.add(sampleGridRectGroup);
-	    hiddenSampleStage.add(hiddenSampleLayer);
+  var hiddenSampleLayer = new Konva.Layer();
+  var sampleGridRectGroup = new Konva.Group()
+  for (var ix = 0; ix < 50; ix++) {
+      for (var iy = 0; iy < 50; iy++) {
+        var sampleRect = new Konva.Rect({
+            x : ix * gridSize,
+            y : iy * gridSize,
+            width : gridSize ,
+            height: gridSize,
+            stroke: gridStrokeColor,
+            strokeWidth: 0,
+            lineJoin : 'round',
+            shadowEnabled : true,
+            shadowColor: gridShadowColor,
+            shadowOffset: {  x: 3,   y: 3 },
+            shadowOpacity: 1,
+            filled : false,
+        });
+        sampleGridRectGroup.add(sampleRect);                   // Add rectangle to group
+      }
+    }
+    hiddenSampleLayer.add(sampleGridRectGroup);
+    hiddenSampleStage.add(hiddenSampleLayer);
 
   var hiddenSampleGroup = new Konva.Group();
 
   function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
-      var f = text(textpara,fontfamily,textsize,bold,italic,weight)
+      var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
       hiddenSampleLayer.clearBeforeDraw(true);
       hiddenSampleLayer.clearCache();
       hiddenSampleGroup.destroy();
       hiddenSampleLayer.draw();
-      var q = 25;
+      var q = gridSize;
       var g = applyDeselRatio(q);
       var d = Math.ceil(hiddenSampleStage.width() / g);
       var p = Math.ceil(hiddenSampleStage.height() / q);
@@ -556,7 +575,7 @@ json = stage.toJSON();      // Save entire canvas as json
       }
       return a
   }
-  function text(textpara, b, m, h, g,weight)
+  function getText(textpara, b, m, h, g,weight)
   {
     this.canvas = document.createElement("canvas");
     this.canvas.width = 200;
@@ -636,8 +655,8 @@ json = stage.toJSON();      // Save entire canvas as json
            val.destroy();
             hiddenSampleLayer.draw();
          }
-         val.fontSize(18);
-         var xx = (Math.round(val.attrs.x / gridSize) * gridSize)+5, yy = (Math.round(val.attrs.y / gridSize) * gridSize)+4;
+         val.fontSize(txtFillSize);
+         var xx = (Math.round(val.attrs.x / gridSize) * gridSize), yy = (Math.round(val.attrs.y / gridSize) * gridSize);
          val.attrs.x = xx;
          val.attrs.y = yy;
          val.attrs.fill = 'red'
@@ -674,8 +693,8 @@ function update(mouseX,mouseY,aa)
 
     var b = aa.clone({name:'sampleGroupCloned', visible:true});
 
-    b.attrs.x = mouseX-450
-    b.attrs.y = mouseY-450
+    b.attrs.x = mouseX-350
+    b.attrs.y = mouseY-350
     canvasGridLayer.add(b);
     canvasGridLayer.draw();
     stage.batchDraw();
@@ -699,8 +718,8 @@ function stopfollow(e)
          var fillTextArr = [];
          //console.log(val.children);
          $(val.children).each(function(key,ctextval){
-           var xVal = ctextval.attrs.x - 5
-           var yVal = ctextval.attrs.y - 4
+           var xVal = ctextval.attrs.x
+           var yVal = ctextval.attrs.y
            fillTextArr.push(`{x : ${xVal},y : ${yVal}}`)
          })
 
