@@ -5,9 +5,9 @@ clothframe = localStorage.getItem("clothframe");
 var frame = clothframe.split(" X ");
 var
     stageWidth = 800,
-    gridSize = stageWidth/frame[0],                      // Grid Tile Size
-    canvasWidth = frame[0],                   // Grid Width
-    canvasHeight = frame[1],                  // Grid Height
+    gridSize = stageWidth/frame[1],                      // Grid Tile Size
+    canvasWidth = frame[1],                   // Grid Width
+    canvasHeight = frame[0],                  // Grid Height
     box,                                // Variable for rectangle element
     circle,                             // Variable for circle element
     text,                               // Variable for circle element
