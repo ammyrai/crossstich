@@ -6,7 +6,9 @@ html, body {
     height: 100vh;
     margin: 0;
 }
-
+main.py-4 {
+    height: 850px;
+}
 .full-height {
     height: auto;
 }
@@ -94,6 +96,13 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
     background: #efe8e8;
 }
 
+.popup_font_family {
+    width: 164px;
+    height: 34px;
+    font-size: 14px;
+    color: #555;
+}
+
 .slidecontainer {
     width: 100%;
 }
@@ -130,6 +139,9 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
     border-radius: 50%;
     background: #4CAF50;
     cursor: pointer;
+}
+#myRange{
+	direction: rtl
 }
 .textPopup input, .textPopup select
 {

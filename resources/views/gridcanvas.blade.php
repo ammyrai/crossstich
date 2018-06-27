@@ -71,12 +71,11 @@
     <div class="modal-dialog">
         <div class="col-md-12 modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">Draw Text</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title">Draw Text</h4>
-
             </div>
             <div class="modal-body">
-              <form class="form-horizontal">
+              <form class="form-horizontal" id="popupForm">
               <div class="form-group">
                     <label class="control-label col-sm-2" for="email">Text</label>
                     <div class="col-sm-10">
@@ -86,7 +85,7 @@
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="pwd">Font:</label>
                     <div class="col-sm-10">
-                      <select id="textFontSelect">
+                      <select id="textFontSelect" class="popup_font_family">
                         <option value="sans-serif" style="font-family:'sans-serif';">sans-serif</option>
                         <option value="serif" style="font-family:'serif';">serif</option>
                         <option value="monospace" style="font-family:'monospace';">monospace</option>
@@ -152,8 +151,8 @@
                     <label class="control-label col-sm-2" for="pwd">Weight:</label>
                     <div class="col-sm-10">
                       <div class="slidecontainer">
-                        <input type="range" min="1" max="100" value="80" class="slider" id="myRange">
-                        <p>Value: <span id="demo"></span></p>
+                        <input type="range" min="20" max="220" value="100" class="slider" id="myRange">
+                        <span class="float-left text-left">Light</span> <span class="float-right text-right"> Dark</span>
                       </div>
                     </div>
                   </div>
