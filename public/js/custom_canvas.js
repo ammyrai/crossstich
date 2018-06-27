@@ -27,8 +27,7 @@ var
     cr,
     txtFillSize = Math.round(gridSize),
     posStart,
-    posNow,
-    rectPoints = [];
+    posNow;
 
 /*
       =========================================================
@@ -80,7 +79,7 @@ canvasGridLayer = new Konva.Layer();         //  a Layer2 for canvas Grid
 var gridRectGroup = new Konva.Group();
 var gridCircleGroup = new Konva.Group();
 var gridTextGroup = new Konva.Group();
-var gridcloneGroup = new Konva.Group({draggable: true});
+var gridcloneGroup = new Konva.Group();
 
 /*  Layer1 work starts here! */
 stageRect =  new Konva.Rect({
@@ -215,15 +214,18 @@ canvasGridLayer.on('mouseup',function(evt){
   switch (mode)
   {
      case 'select_shape':
-       updateDrag({x: box.attrs.x, y: box.attrs.y},true)
+        updateDrag({x: box.attrs.x, y: box.attrs.y},true)
          var textList = canvasGridLayer.find("Text");
 
          $( textList ).each(function(key, val) {
            if(val.attrs.selected === 'selected')
            {
-               var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect'});
+               var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect',selected : ''});
                gridcloneGroup.add(clonerect);
+               gridcloneGroup.draggable(true);
+               gridcloneGroup.name('newgrup');
                canvasGridLayer.add(gridcloneGroup);
+               val.attrs.selected = '';
                $( selected_rect ).each(function(key, rect) {
                  if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
                  {
@@ -238,7 +240,6 @@ canvasGridLayer.on('mouseup',function(evt){
              }
          })
          r2.visible(true);
-         stage.draw();
      break;
      case 'back_stich':
      break;
@@ -312,6 +313,9 @@ canvasGridLayer.on('mouseover', function(evt) {
 
 gridcloneGroup.on('dragstart', function(e) {
     r2.visible(false);
+    selected_rect = [];
+    posStart ='';
+    posNow = '';
 });
 gridcloneGroup.on('dragend', function() {
     gridcloneGroup.position({
@@ -319,7 +323,9 @@ gridcloneGroup.on('dragend', function() {
       y: Math.round(gridcloneGroup.y() / gridSize) * gridSize
     });
     stage.batchDraw();
-    gridcloneGroup.draggable(false)
+    gridcloneGroup.draggable(false);
+    mode = '';
+    $('.toolbar_list li').removeClass('active');
 });
 
 function startDrag(posIn){
@@ -343,9 +349,8 @@ function updateDrag(posIn,updateSelect){
          val.attrs.selected = 'selected';
        }
      })
-     rectPoints.push(posNow);
    }
-   stage.draw(); // redraw any changes.
+   canvasGridLayer.draw(); // redraw any changes.
 }
 
 function reverse(r1, r2){
@@ -638,7 +643,6 @@ json = stage.toJSON();      // Save entire canvas as json
           canvasGridLayer.addEventListener("mousemove", function setMousePosition(e){
             mouseX = e.clientX - 700;
             mouseY = e.clientY - 700;
-            console.log("mouseX", mouseX,"mouseY", mouseY)
             if(toAnimate){
               update(mouseX,mouseY,aa);
             }
@@ -715,6 +719,7 @@ json = stage.toJSON();      // Save entire canvas as json
                 if(fillTextArr.indexOf(xY) !== -1)
                 {
                   rectval.attrs.filled = true;
+                  selected_rect.push(rectval);
                 }
               });
           }
