@@ -1,13 +1,11 @@
 /*    Konva canvas file   */
 $( window ).on( "load", function() {
     /*    Declare Global Variables    */
-
     clothframe = localStorage.getItem("clothframe");
     var frame = clothframe.split(" X ");
-    var
-        stageWidth = 800,
-        canvasWidth = frame[1],                   // Grid Width
-        canvasHeight = frame[0],                  // Grid Height
+    var stageWidth = 805,
+        canvasWidth = frame[1],                             // Grid Width
+        canvasHeight = frame[0],                            // Grid Height
         gridSize = Math.round(stageWidth/canvasWidth),        // Grid Tile Size
         box,                                // Variable for rectangle element
         circle,                             // Variable for circle element
@@ -23,26 +21,15 @@ $( window ).on( "load", function() {
         gridShadowCPara,                    // Grid Stroke Color code parameter
         circleStrokeCPara,                  // Circle Stroke Color code parameter
         circleFillCPara,                    // Circle Fill Color code parameter
-        textFillCPara,                      // Text color fill parameter
         json,                               // Json variable for final canvas output
-        cr,
-        txtFillSize = Math.round(gridSize),
-        posStart,
-        posNow;
+        cr,                                 // Circle radius variable
+        lineStroke,                         // Line width for back stitch
+        txtFillSize = Math.round(gridSize), // Text font size
+        posStart,                           // Select tool position start
+        posNow,                             // Select tool Current position.
+        selected_rect = [],                 // For Select Tool
+        points =[];                         // For BAck Stitch
 
-    /*
-          =========================================================
-          * canvasInit(Para1, Para2, Para3, Para3, Para4, Para5)
-          * Canavs initiation function with 5 parameters
-          * Para1 : Canvas Background Color code
-          * Para2 : Grid Stroke Color code parameter
-          * Para3 : Grid Stroke Color code parameter
-          * Para4 : Circle Stroke Color code parameter
-          * Para5 : Circle Fill Color code parameter
-          =========================================================
-
-    */
-    // function canvasInit(textFillColor){
     canvasMainBgcolor = localStorage.getItem("canvasBgColor");
     gridStrokeColor = localStorage.getItem("gridStrokeCPara");
     gridShadowColor = localStorage.getItem("gridShadowCPara");
@@ -50,7 +37,6 @@ $( window ).on( "load", function() {
     circleFillColor = localStorage.getItem("circleFillCPara");
     textFillColor = '#000000'
     /*  Text color  */
-    textFillCPara = textFillColor;
     var textColor = "";
     $(document).on('click', 'ul#select_style_color_ul li',function() {
       var textClr = $(this).attr('value');
@@ -60,7 +46,6 @@ $( window ).on( "load", function() {
     {
       textFillColor = x;
     }
-
 
     /*  create stage for main canvas  */
     stage = new Konva.Stage({
@@ -96,13 +81,16 @@ $( window ).on( "load", function() {
     if(Math.round(gridSize) >= 20)
     {
       cr = 2;
+      lineStroke = 4;
     }
     else if(Math.round(gridSize) >= 10)
     {
       cr = 1;
+      lineStroke = 3;
     }
     else {
       cr = 0;
+      lineStroke = 1;
     }
 
     /*  Layer2 Create a grid on canvas work starts here!*/
@@ -122,6 +110,7 @@ $( window ).on( "load", function() {
               shadowOffset: {  x: 3,   y: 3 },
               shadowOpacity: 1,
               filled : false,
+              lineDraw: false
           });
           circle = new Konva.Circle({
             x: box.attrs.x,
@@ -149,13 +138,8 @@ $( window ).on( "load", function() {
     r2.listening(false); // stop r2 catching our mouse events.
     gridRectGroup.add(r2);
 
-    var selected_rect = [];
-
-    var points =[];
-
     /*    Fill Grid cell   */
-    canvasGridLayer.on('mousedown', function(evt)
-    {
+    canvasGridLayer.on('mousedown', function(evt){
       isMouseDown = true;
       if (isMouseDown)
       {
@@ -163,43 +147,59 @@ $( window ).on( "load", function() {
         switch (mode)
         {
            case 'pencil':
-           if(box.attrs.filled === false)
-           {
-               box.shadowEnabled(false);
-               text = new Konva.Text({
-                 text: 'X',
-                 x: box.attrs.x,
-                 y: box.attrs.y,
-                 fontFamily: 'sans-serif',
-                 fontSize: txtFillSize,
-                 fill: textFillColor,
-                 fontStyle : 'normal',
-                 filled : true,
-                 transformsEnabled : 'position'
-               });
-               box.attrs.filled = true;
-               box.height = text.getHeight();
-               gridTextGroup.add(text);
-               text.draw();
-            }
+               if(box.attrs.filled === false)
+               {
+                   box.shadowEnabled(false);
+                   text = new Konva.Text({
+                     text: 'X',
+                     x: box.attrs.x,
+                     y: box.attrs.y,
+                     fontFamily: 'sans-serif',
+                     fontSize: txtFillSize,
+                     fill: textFillColor,
+                     fontStyle : 'normal',
+                     filled : true,
+                     transformsEnabled : 'position'
+                   });
+                   box.attrs.filled = true;
+                   box.height = text.getHeight();
+                   gridTextGroup.add(text);
+                   text.draw();
+                }
            break;
            case 'eraser':
-           if(box.attrs.filled === true)
-           {
-              if(evt.target.className === 'Text')
-              {
-                  evt.target.destroy();
+               if(box.attrs.filled === true)
+               {
+                  if(evt.target.className === 'Text')
+                  {
+                      evt.target.destroy();
+                  }
                   box.attrs.filled = false;
                   box.shadowEnabled(true);
-              }
-           }
-           canvasGridLayer.batchDraw();
+                }
+                canvasGridLayer.draw();
            break;
            case 'select_shape':
              startDrag({x: box.attrs.x, y: box.attrs.y})
            break;
            case 'back_stich':
-             console.log('Back stitch!');
+
+               points=[];
+
+               var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
+               var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
+               points.push(box.attrs.x,box.attrs.y,secondX,secondY)
+               var line = new Konva.Line({
+                   points :points,
+                   stroke: '#000000',
+                   strokeWidth: lineStroke,
+                   drawLine : true,
+               });
+               box.attrs.lineDraw = true;
+               canvasGridLayer.add(line);
+               line.draw();
+               // canvasGridLayer.draw();
+
            break;
            case 'case text':
              console.log('Text Mode!');
@@ -211,7 +211,6 @@ $( window ).on( "load", function() {
     canvasGridLayer.on('mouseup',function(evt){
       isMouseDown= false
       box = evt.target;
-
       switch (mode)
       {
          case 'select_shape':
@@ -243,12 +242,13 @@ $( window ).on( "load", function() {
              r2.visible(true);
          break;
          case 'back_stich':
+             var line = canvasGridLayer.find("Line");
+             line[line.length-1].attrs.drawLine = false;
          break;
          default:
          // stage.container().style.cursor = 'pointer';
        }
     })
-
     canvasGridLayer.on('mouseover', function(evt) {
       if (isMouseDown)
       {
@@ -295,23 +295,54 @@ $( window ).on( "load", function() {
              box.attrs.filled = false;
              box.shadowEnabled(true);
            }
-           canvasGridLayer.batchDraw();
+           // if(box.className === 'Rect' && box.attrs.lineDraw === true)
+           // {
+           //    var textList = canvasGridLayer.find("Line");
+           //    $( textList ).each(function(key, val) {
+           //       val.on('mouseenter', function(evt) {
+           //         if(evt.target.className == 'Line')
+           //         {
+           //           evt.target.destroy();
+           //         }
+           //       });
+           //   });
+           //   box.attrs.filled = false;
+           //   box.shadowEnabled(true);
+           // }
+           canvasGridLayer.draw();
            break;
            case 'select_shape':
              updateDrag({x: box.attrs.x, y: box.attrs.y},false)
            break;
            case 'back_stich':
-             console.log('Back stitch!');
+              var line = canvasGridLayer.find("Line");
+              line[line.length-1].attrs.drawLine = true;
+              if(line[line.length-1].attrs.drawLine === true)
+              {
+                  var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
+                  var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
+                  if ( ((secondX - evt.evt.layerX) < 6) && ((secondX - evt.evt.layerX) > 0)) {
+                    points.push(secondX,secondY);
+                  }
+                  else if(((secondY - evt.evt.layerY) < 6) && ((secondY - evt.evt.layerY) > 0)){
+                    points.push(secondX,secondY);
+                  }
+                  line[line.length-1].points(points);
+                  box.attrs.lineDraw = true;
+                  line.draw();
+                  // canvasGridLayer.draw();
+                  line[line.length-1].attrs.drawLine = true;
+              }
            break;
            case 'case text':
              console.log('Text Mode!');
            break;
            default:
-
-        }
+         }
       }
     });
 
+    /*  Select tool Functionality   */
     gridcloneGroup.on('dragstart', function(e) {
         r2.visible(false);
         selected_rect = [];
@@ -319,15 +350,15 @@ $( window ).on( "load", function() {
         posNow = '';
     });
     gridcloneGroup.on('dragend', function() {
-    gridcloneGroup.position({
-      x: Math.round(gridcloneGroup.x() / gridSize) * gridSize,
-      y: Math.round(gridcloneGroup.y() / gridSize) * gridSize
-    });
-    stage.batchDraw();
-    gridcloneGroup.draggable(false);
-    mode = '';
-    $('.toolbar_list li').removeClass('active');
-    });
+      gridcloneGroup.position({
+        x: Math.round(gridcloneGroup.x() / gridSize) * gridSize,
+        y: Math.round(gridcloneGroup.y() / gridSize) * gridSize
+      });
+      stage.batchDraw();
+      gridcloneGroup.draggable(false);
+      mode = '';
+      $('.toolbar_list li').removeClass('active');
+      });
 
     function startDrag(posIn){
       posStart = {x: posIn.x, y: posIn.y};
@@ -366,8 +397,18 @@ $( window ).on( "load", function() {
       }
         return ({x1: r1x, y1: r1y, x2: r2x, y2: r2y}); // return the corrected rect.
     }
+
+    function nearest(value, min, max){
+      if((value-min)>(max-value)){
+          return max;
+       } else {
+        return min;
+       }
+    }
+    /*  Select Tool Functionality ends here!  */
+
     /*  Layer2 Create a grid on canvas work ends here!*/
-    canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);
+    canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);     // Add Groups to layer
     stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
     json = stage.toJSON();      // Save entire canvas as json
 
@@ -459,281 +500,296 @@ $( window ).on( "load", function() {
     // popup sample canvas ends here!
 
     // CREATE KONVE STAGE AND LAYER for sample grid canvas starts here!
-    var hiddenSampleStage = new Konva.Stage({
-  	     container: 'textSample1',
-  	     width: 80 * gridSize,
-  	     height: canvasWidth * gridSize,
-  	     visible: false
-  	    });
-    var hiddenSampleLayer = new Konva.Layer();
-    var sampleGridRectGroup = new Konva.Group()
-    for (var ix = 0; ix < 50; ix++) {
-        for (var iy = 0; iy < 50; iy++) {
-          var sampleRect = new Konva.Rect({
-              x : ix * gridSize,
-              y : iy * gridSize,
-              width : gridSize ,
-              height: gridSize,
-              stroke: gridStrokeColor,
-              strokeWidth: 0,
-              lineJoin : 'round',
-              shadowEnabled : true,
-              shadowColor: gridShadowColor,
-              shadowOffset: {  x: 3,   y: 3 },
-              shadowOpacity: 1,
-              filled : false,
-          });
-          sampleGridRectGroup.add(sampleRect);                   // Add rectangle to group
+      var hiddenSampleStage = new Konva.Stage({
+    	     container: 'textSample1',
+    	     width: 80 * gridSize,
+    	     height: canvasWidth * gridSize,
+    	     visible: false
+    	    });
+      var hiddenSampleLayer = new Konva.Layer();
+      var sampleGridRectGroup = new Konva.Group()
+      for (var ix = 0; ix < 50; ix++) {
+          for (var iy = 0; iy < 50; iy++) {
+            var sampleRect = new Konva.Rect({
+                x : ix * gridSize,
+                y : iy * gridSize,
+                width : gridSize ,
+                height: gridSize,
+                stroke: gridStrokeColor,
+                strokeWidth: 0,
+                lineJoin : 'round',
+                shadowEnabled : true,
+                shadowColor: gridShadowColor,
+                shadowOffset: {  x: 3,   y: 3 },
+                shadowOpacity: 1,
+                filled : false,
+            });
+            sampleGridRectGroup.add(sampleRect);                   // Add rectangle to group
+          }
         }
+        hiddenSampleLayer.add(sampleGridRectGroup);
+        hiddenSampleStage.add(hiddenSampleLayer);
+
+      var hiddenSampleGroup = new Konva.Group({width:200, height:200, offset:10});
+
+      function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
+          var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
+          hiddenSampleLayer.clearBeforeDraw(true);
+          hiddenSampleLayer.clearCache();
+          hiddenSampleGroup.destroy();
+          hiddenSampleLayer.batchDraw();
+          var q = gridSize;
+          var g = applyDeselRatio(q);
+          var d = Math.ceil(hiddenSampleStage.width() / g);
+          var p = Math.ceil(hiddenSampleStage.height() / q);
+          var o = Math.max(0, Math.floor((f.width - d) / 2));
+          var m = Math.max(0, Math.floor((f.height - p) / 2));
+          var j = Math.min(f.width, 1 + Math.ceil((f.width + d) / 2));
+          var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
+          var b = Math.floor(hiddenSampleStage.width() / 2 - g * f.width / 2);
+          var a = Math.floor(hiddenSampleStage.height() / 2 - q * f.height / 2);
+          for (var l = m; l < h; l++) {
+              var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
+              for (var n = o; n < j; n++) {
+                  var e = (l * f.width + n) * 4;
+                  var fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
+                  var complexText = new Konva.Text({
+                    x: b + n * g + k,
+                    y: a + l * q,
+                    text: 'X',
+                    fill: fillStyle,
+                    align: 'center',
+                  });
+                  hiddenSampleGroup.add(complexText);
+              }
+          }
+          hiddenSampleLayer.add(hiddenSampleGroup);
+          hiddenSampleLayer.batchDraw();
+          hiddenSampleStage.batchDraw();
       }
-      hiddenSampleLayer.add(sampleGridRectGroup);
-      hiddenSampleStage.add(hiddenSampleLayer);
 
-    var hiddenSampleGroup = new Konva.Group();
+      function getText(textpara, b, m, h, g,weight)
+      {
+        this.canvas = document.createElement("canvas");
+        this.canvas.width = 200;
+        this.canvas.height = 200;
+        this.ctx = this.canvas.getContext("2d")
 
-    function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
-        var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
-        hiddenSampleLayer.clearBeforeDraw(true);
-        hiddenSampleLayer.clearCache();
+        this.ctx.clearRect(0, 0, 600, 600);
+        this.ctx.fillStyle = "#000000";
+        var d = fontSpec(b, m, h, g);
+        this.ctx.font = d;
+        var c = this.ctx.measureText(textpara);
+        var p = getTextHeight(d);
+        this.ctx.fillText(textpara, 0, p.ascent);
+
+        var k = Math.max(1, c.width);
+        var e = this.ctx.getImageData(0, 0, k, p.height);
+
+        var n = 600;
+        var j = 0;
+        for (var f = 3; f < e.data.length; f += 4) {
+
+            var a = 0;
+            if (e.data[f] >= weight) {
+                a = 255;
+                var l = (f / 4) % k;
+                n = Math.min(n, l);
+                j = Math.max(j, l)
+            }
+            e.data[f] = a
+        }
+        this.textWidth = 1 + j - n;
+        if (this.textWidth > 580) {
+            this.textWidth = c.width
+        }
+        return e
+      }
+      function fontSpec(e, d, c, b)
+      {
+          var a = "";
+          if (b) {
+              a += "italic "
+          }
+          if (c) {
+              a += "bold "
+          }
+          return a + d + "px " + e
+      }
+
+      function getTextHeight(c)
+      {
+          var e = $('<span style="font: ' + c + '">Hg</span>');
+          var d = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
+          var f = $("<div></div>");
+          f.append(e, d);
+          var b = $("body");
+          b.append(f);
+          try {
+              var a = {};
+              d.css({
+                  verticalAlign: "baseline"
+              });
+              a.ascent = d.offset().top - e.offset().top;
+              d.css({
+                  verticalAlign: "bottom"
+              });
+              a.height = d.offset().top - e.offset().top;
+              a.descent = a.height - a.ascent
+          } finally {
+              f.remove()
+          }
+          return a
+      }
+
+      function applyDeselRatio(b) {
+      var deselRatio = 1;
+          var a = b * deselRatio;
+          if (deselRatio >= 1) {
+              a = Math.floor(a)
+          } else {
+              a = Math.ceil(a)
+          }
+          return a
+      }
+
+      $("#cloneSampleText").click(function()
+      {
+          $( hiddenSampleGroup.children ).each(function(key, val)
+          {
+             if(val.attrs.fill === '#ffffff')
+             {
+                val.destroy();
+                hiddenSampleLayer.draw();
+             }
+             val.fontSize(txtFillSize);
+             var xx = (Math.round(val.attrs.x / gridSize) * gridSize), yy = (Math.round(val.attrs.y / gridSize) * gridSize);
+             val.attrs.x = xx;
+             val.attrs.y = yy;
+             val.attrs.fill = textFillColor;
+             val.attrs.transformsEnabled = 'position';
+          });
+          $('.close').click();
+          $('#popupForm')[0].reset();
+          updateSampleGroup.destroy();
+          updateSampleLayer.draw();
+          newfunction(hiddenSampleGroup);
+      });
+
+      var toAnimate = true;
+      function newfunction(aa)
+      {
+            var canvasPos = getPosition(stage);
+            var mouseX = 0;
+            var mouseY = 0;
+            var posmin;
+            if(Math.round(gridSize) >= 20)
+            {
+              posmin = 580;
+            }
+            else if(Math.round(gridSize) >= 10)
+            {
+              console.log(" less")
+              posmin = 480;
+            }
+            else {
+              console.log("very less")
+              posmin = 300;
+            }
+
+            canvasGridLayer.addEventListener("mousemove", function setMousePosition(e){
+              mouseX = e.layerX - canvasPos.x - posmin;
+              mouseY = e.layerY - canvasPos.y - posmin;
+              if(toAnimate){
+                update(mouseX,mouseY,aa);
+              }
+            }, false);
+            canvasGridLayer.addEventListener("click", stopfollow, false);
+      }
+      function getPosition(el)
+      {
+            var xPosition = 0;
+            var yPosition = 0;
+            var offsetLeft = el.content.offsetLeft;
+            var scrollLeft = el.content.scrollLeft;
+            var clientLeft = el.content.clientLeft;
+
+            var offsetTop = el.content.offsetTop;
+            var scrollTop = el.content.scrollTop;
+            var clientTop = el.content.clientTop;
+
+            var offsetParent = el.content.offsetParent;
+            while (el) {
+              // console.log(el)
+              xPosition += (offsetLeft - scrollLeft + clientLeft);
+              yPosition += (offsetTop - scrollTop + clientTop);
+              el = offsetParent;
+              break;
+            }
+            return {
+              x: xPosition,
+              y: yPosition
+            };
+      }
+      function update(mouseX,mouseY,aa)
+      {
+          canvasGridLayer.clearBeforeDraw(true);
+          canvasGridLayer.clearCache();
+          $(canvasGridLayer.children).each(function(key, val){
+            if(val.attrs.name === "sampleGroupCloned"){
+              val.destroy();
+            }
+          })
+          canvasGridLayer.draw();
+          var b = aa.clone({name:'sampleGroupCloned', visible:true});
+          b.attrs.x = mouseX;
+          b.attrs.y = mouseY;
+          canvasGridLayer.add(b);
+          b.draw();
+      }
+      function stopfollow(e)
+      {
         hiddenSampleGroup.destroy();
         hiddenSampleLayer.batchDraw();
-        var q = gridSize;
-        var g = applyDeselRatio(q);
-        var d = Math.ceil(hiddenSampleStage.width() / g);
-        var p = Math.ceil(hiddenSampleStage.height() / q);
-        var o = Math.max(0, Math.floor((f.width - d) / 2));
-        var m = Math.max(0, Math.floor((f.height - p) / 2));
-        var j = Math.min(f.width, 1 + Math.ceil((f.width + d) / 2));
-        var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
-        var b = Math.floor(hiddenSampleStage.width() / 2 - g * f.width / 2);
-        var a = Math.floor(hiddenSampleStage.height() / 2 - q * f.height / 2);
-        for (var l = m; l < h; l++) {
-            var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
-            for (var n = o; n < j; n++) {
-                var e = (l * f.width + n) * 4;
-                var fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
-                var complexText = new Konva.Text({
-                  x: b + n * g + k,
-                  y: a + l * q,
-                  text: 'X',
-                  fill: fillStyle,
-                  align: 'center',
-                });
-                hiddenSampleGroup.add(complexText);
-            }
-        }
-        hiddenSampleLayer.add(hiddenSampleGroup);
-        hiddenSampleLayer.batchDraw();
-        hiddenSampleStage.batchDraw();
-    }
-
-    function getText(textpara, b, m, h, g,weight)
-    {
-      this.canvas = document.createElement("canvas");
-      this.canvas.width = 200;
-      this.canvas.height = 200;
-      this.ctx = this.canvas.getContext("2d")
-
-      this.ctx.clearRect(0, 0, 600, 600);
-      this.ctx.fillStyle = "#000000";
-      var d = fontSpec(b, m, h, g);
-      this.ctx.font = d;
-      var c = this.ctx.measureText(textpara);
-      var p = getTextHeight(d);
-      this.ctx.fillText(textpara, 0, p.ascent);
-
-      var k = Math.max(1, c.width);
-      var e = this.ctx.getImageData(0, 0, k, p.height);
-
-      var n = 600;
-      var j = 0;
-      for (var f = 3; f < e.data.length; f += 4) {
-
-          var a = 0;
-          if (e.data[f] >= weight) {
-              a = 255;
-              var l = (f / 4) % k;
-              n = Math.min(n, l);
-              j = Math.max(j, l)
-          }
-          e.data[f] = a
-      }
-      this.textWidth = 1 + j - n;
-      if (this.textWidth > 580) {
-          this.textWidth = c.width
-      }
-      return e
-    }
-    function fontSpec(e, d, c, b)
-    {
-        var a = "";
-        if (b) {
-            a += "italic "
-        }
-        if (c) {
-            a += "bold "
-        }
-        return a + d + "px " + e
-    }
-
-    function getTextHeight(c)
-    {
-        var e = $('<span style="font: ' + c + '">Hg</span>');
-        var d = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
-        var f = $("<div></div>");
-        f.append(e, d);
-        var b = $("body");
-        b.append(f);
-        try {
-            var a = {};
-            d.css({
-                verticalAlign: "baseline"
-            });
-            a.ascent = d.offset().top - e.offset().top;
-            d.css({
-                verticalAlign: "bottom"
-            });
-            a.height = d.offset().top - e.offset().top;
-            a.descent = a.height - a.ascent
-        } finally {
-            f.remove()
-        }
-        return a
-    }
-
-    function applyDeselRatio(b) {
-    var deselRatio = 1;
-        var a = b * deselRatio;
-        if (deselRatio >= 1) {
-            a = Math.floor(a)
-        } else {
-            a = Math.ceil(a)
-        }
-        return a
-    }
-
-    $("#cloneSampleText").click(function()
-    {
-        $( hiddenSampleGroup.children ).each(function(key, val)
-        {
-          if(val.attrs.fill === '#ffffff')
-           {
-              val.destroy();
-              hiddenSampleLayer.draw();
-           }
-           val.fontSize(txtFillSize);
-           var xx = (Math.round(val.attrs.x / gridSize) * gridSize), yy = (Math.round(val.attrs.y / gridSize) * gridSize);
-           val.attrs.x = xx;
-           val.attrs.y = yy;
-           val.attrs.fill = textFillColor;
-           val.attrs.transformsEnabled = 'position';
+        var groups = stage.find(node => {
+          return node.getType() === 'Group';
         });
-        $('.close').click();
-        $('#popupForm')[0].reset();
-        updateSampleGroup.destroy();
-        updateSampleLayer.draw();
-        newfunction(hiddenSampleGroup);
-    });
+        var RectList = canvasGridLayer.find("Rect");
 
-    var toAnimate = true;
-    function newfunction(aa)
-    {
-          var canvasPos = getPosition(stage);
-          var mouseX = 0;
-          var mouseY = 0;
-          canvasGridLayer.addEventListener("mousemove", function setMousePosition(e){
-            mouseX = e.clientX - 700;
-            mouseY = e.clientY - 700;
-            if(toAnimate){
-              update(mouseX,mouseY,aa);
+        $( groups).each(function(key, val) {
+            if(val.attrs.name === "sampleGroupCloned")
+             {
+               val.position({
+                 x: Math.round(val.x() / gridSize) * gridSize,
+                 y: Math.round(val.y() / gridSize) * gridSize
+               });
+               canvasGridLayer.draw();
+               var fillTextArr = [];
+               $(val.children).each(function(key,ctextval){
+                 var xVal = ctextval.attrs.x
+                 var yVal = ctextval.attrs.y
+                 fillTextArr.push(`{x : ${xVal},y : ${yVal}}`)
+               })
+               $( RectList ).each(function(key, rectval) {
+                  var xY = `{x : ${rectval.attrs.x},y : ${rectval.attrs.y}}`
+
+                  if(fillTextArr.indexOf(xY) !== -1)
+                  {
+                    rectval.attrs.filled = true;
+                    selected_rect.push(rectval);
+                  }
+                });
             }
-          }, false);
-          canvasGridLayer.addEventListener("click", stopfollow, false);
-    }
-    function getPosition(el)
-    {
-          var xPosition = 0;
-          var yPosition = 0;
-          var offsetLeft = el.content.offsetLeft;
-          var scrollLeft = el.content.scrollLeft;
-          var clientLeft = el.content.clientLeft;
-
-          var offsetTop = el.content.offsetTop;
-          var scrollTop = el.content.scrollTop;
-          var clientTop = el.content.clientTop;
-
-          var offsetParent = el.content.offsetParent;
-          while (el) {
-            // console.log(el)
-            xPosition += (offsetLeft - scrollLeft + clientLeft);
-            yPosition += (offsetTop - scrollTop + clientTop);
-            el = offsetParent;
-            break;
-          }
-          return {
-            x: xPosition,
-            y: yPosition
-          };
-    }
-    function update(mouseX,mouseY,aa)
-    {
-        canvasGridLayer.clearBeforeDraw(true);
-        canvasGridLayer.clearCache();
-        $(canvasGridLayer.children).each(function(key, val){
-          if(val.attrs.name === "sampleGroupCloned"){
-            val.destroy();
-          }
-        })
-        canvasGridLayer.draw();
-        var b = aa.clone({name:'sampleGroupCloned', visible:true});
-        b.attrs.x = mouseX;
-        b.attrs.y = mouseY;
-        canvasGridLayer.add(b);
-        canvasGridLayer.draw();
-    }
-    function stopfollow(e)
-    {
-      hiddenSampleGroup.destroy();
-      hiddenSampleLayer.batchDraw();
-      var groups = stage.find(node => {
-        return node.getType() === 'Group';
-      });
-      var RectList = canvasGridLayer.find("Rect");
-
-      $( groups).each(function(key, val) {
-          if(val.attrs.name === "sampleGroupCloned")
-           {
-             val.position({
-               x: Math.round(val.x() / gridSize) * gridSize,
-               y: Math.round(val.y() / gridSize) * gridSize
-             });
-             stage.batchDraw();
-             var fillTextArr = [];
-             $(val.children).each(function(key,ctextval){
-               var xVal = ctextval.attrs.x
-               var yVal = ctextval.attrs.y
-               fillTextArr.push(`{x : ${xVal},y : ${yVal}}`)
-             })
-             $( RectList ).each(function(key, rectval) {
-                var xY = `{x : ${rectval.attrs.x},y : ${rectval.attrs.y}}`
-
-                if(fillTextArr.indexOf(xY) !== -1)
-                {
-                  rectval.attrs.filled = true;
-                  selected_rect.push(rectval);
-                }
-              });
-          }
-      });
-      toAnimate = false;
-      $('.toolbar_list li').removeClass('active');
-      $("#select_shape").addClass('active');
-      mode = $("#select_shape").data('mode')
-    }
-      /*  Text popup ends here  */
-/*   Loader on page load  */
-var myVar = setTimeout(function(){
-  $("#loader").hide();
-  $("#myDiv").show();
-}, 1000);
-});
+        });
+        toAnimate = false;
+        $('.toolbar_list li').removeClass('active');
+        $("#select_shape").addClass('active');
+        mode = $("#select_shape").data('mode')
+      }
+        /*  Text popup ends here  */
+      /*   Loader on page load  */
+      var myVar = setTimeout(function(){
+        $("#loader").hide();
+        $("#myDiv").show();
+      }, 1000);
+  });
