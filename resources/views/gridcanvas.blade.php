@@ -167,6 +167,7 @@
                 </form>
             </div>
             <div class="modal-footer">
+              <span id="textToolTooWide" class="" style="color:red; display:none" title="You can change the pattern size in &quot;Grid settings&quot; in the Edit menu.">Text is too wide for pattern</span>
                 <button id="cloneSampleText" type="button" class="btn btn-primary">Ok</button>
             </div>
         </div>

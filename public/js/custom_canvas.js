@@ -461,6 +461,7 @@ $( window ).on( "load", function() {
     var updateSampleGroup = new Konva.Group();
     function updateSample(textpara,fontfamily,textsize,bold,italic,weight) {
         var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
+
         updateSampleLayer.clearBeforeDraw(true);
         updateSampleLayer.clearCache();
         updateSampleGroup.destroy();
@@ -503,6 +504,13 @@ $( window ).on( "load", function() {
 
     function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
         var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
+         if(f.textWidth <= gridSize)
+         {
+           $("#textToolTooWide").hide();
+         }
+         else {
+           $("#textToolTooWide").show();
+         }
         newlayer.clearBeforeDraw(true);
         newlayer.clearCache();
         gridHiddenTextGroup.destroy();
@@ -570,7 +578,8 @@ $( window ).on( "load", function() {
           }
           e.data[f] = a
       }
-      this.textWidth = 1 + j - n;
+
+      e['textWidth'] = Math.round(ctx.measureText(textpara).width);
       if (this.textWidth > 580) {
           this.textWidth = c.width
       }
@@ -662,7 +671,7 @@ $( window ).on( "load", function() {
             posmin = 290;
           }
           else {
-            posmin = 210;
+            posmin = 300;
           }
 
           canvasGridLayer.addEventListener("mousemove", function setMousePosition(e){
