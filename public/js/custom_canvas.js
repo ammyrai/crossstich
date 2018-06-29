@@ -58,7 +58,7 @@ $( window ).on( "load", function() {
 
     backgroundCanvas = new Konva.Layer();        // Layer1 for canvas main background
     canvasGridLayer = new Konva.Layer();         //  a Layer2 for canvas Grid
-    var newlayer = new Konva.Layer({name:'newlayer'});
+    var newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});
     /*  Layers creation ends here! */
 
     /*  Create new group  */
@@ -504,12 +504,12 @@ $( window ).on( "load", function() {
 
     function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
         var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
-         if(f.textWidth <= gridSize)
+         if(f.textWidth >=45)
          {
-           $("#textToolTooWide").hide();
+           $("#textToolTooWide").show();
          }
          else {
-           $("#textToolTooWide").show();
+           $("#textToolTooWide").hide();
          }
         newlayer.clearBeforeDraw(true);
         newlayer.clearCache();
