@@ -66,6 +66,7 @@ $( window ).on( "load", function() {
     var gridCircleGroup = new Konva.Group();
     var gridTextGroup = new Konva.Group();
     var gridcloneGroup = new Konva.Group();
+    var gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});
 
     /*  Layer1 work starts here! */
     stageRect =  new Konva.Rect({
@@ -408,7 +409,7 @@ $( window ).on( "load", function() {
     /*  Select Tool Functionality ends here!  */
 
     /*  Layer2 Create a grid on canvas work ends here!*/
-    canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup);     // Add Groups to layer
+    canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup,gridHiddenTextGroup);     // Add Groups to layer
     stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
     json = stage.toJSON();      // Save entire canvas as json
 
@@ -500,292 +501,255 @@ $( window ).on( "load", function() {
     // popup sample canvas ends here!
 
     // CREATE KONVE STAGE AND LAYER for sample grid canvas starts here!
-      var hiddenSampleStage = new Konva.Stage({
-    	     container: 'textSample1',
-    	     width: 80 * gridSize,
-    	     height: canvasWidth * gridSize,
-    	     visible: false
-    	    });
-      var hiddenSampleLayer = new Konva.Layer();
-      var sampleGridRectGroup = new Konva.Group()
-      for (var ix = 0; ix < 50; ix++) {
-          for (var iy = 0; iy < 50; iy++) {
-            var sampleRect = new Konva.Rect({
-                x : ix * gridSize,
-                y : iy * gridSize,
-                width : gridSize ,
-                height: gridSize,
-                stroke: gridStrokeColor,
-                strokeWidth: 0,
-                lineJoin : 'round',
-                shadowEnabled : true,
-                shadowColor: gridShadowColor,
-                shadowOffset: {  x: 3,   y: 3 },
-                shadowOpacity: 1,
-                filled : false,
-            });
-            sampleGridRectGroup.add(sampleRect);                   // Add rectangle to group
-          }
-        }
-        hiddenSampleLayer.add(sampleGridRectGroup);
-        hiddenSampleStage.add(hiddenSampleLayer);
-
-      var hiddenSampleGroup = new Konva.Group({width:200, height:200, offset:10});
-
-      function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
-          var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
-          hiddenSampleLayer.clearBeforeDraw(true);
-          hiddenSampleLayer.clearCache();
-          hiddenSampleGroup.destroy();
-          hiddenSampleLayer.batchDraw();
-          var q = gridSize;
-          var g = applyDeselRatio(q);
-          var d = Math.ceil(hiddenSampleStage.width() / g);
-          var p = Math.ceil(hiddenSampleStage.height() / q);
-          var o = Math.max(0, Math.floor((f.width - d) / 2));
-          var m = Math.max(0, Math.floor((f.height - p) / 2));
-          var j = Math.min(f.width, 1 + Math.ceil((f.width + d) / 2));
-          var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
-          var b = Math.floor(hiddenSampleStage.width() / 2 - g * f.width / 2);
-          var a = Math.floor(hiddenSampleStage.height() / 2 - q * f.height / 2);
-          for (var l = m; l < h; l++) {
-              var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
-              for (var n = o; n < j; n++) {
-                  var e = (l * f.width + n) * 4;
-                  var fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
-                  var complexText = new Konva.Text({
-                    x: b + n * g + k,
-                    y: a + l * q,
-                    text: 'X',
-                    fill: fillStyle,
-                    align: 'center',
-                  });
-                  hiddenSampleGroup.add(complexText);
-              }
-          }
-          hiddenSampleLayer.add(hiddenSampleGroup);
-          hiddenSampleLayer.batchDraw();
-          hiddenSampleStage.batchDraw();
-      }
-
-      function getText(textpara, b, m, h, g,weight)
-      {
-        this.canvas = document.createElement("canvas");
-        this.canvas.width = 200;
-        this.canvas.height = 200;
-        this.ctx = this.canvas.getContext("2d")
-
-        this.ctx.clearRect(0, 0, 600, 600);
-        this.ctx.fillStyle = "#000000";
-        var d = fontSpec(b, m, h, g);
-        this.ctx.font = d;
-        var c = this.ctx.measureText(textpara);
-        var p = getTextHeight(d);
-        this.ctx.fillText(textpara, 0, p.ascent);
-
-        var k = Math.max(1, c.width);
-        var e = this.ctx.getImageData(0, 0, k, p.height);
-
-        var n = 600;
-        var j = 0;
-        for (var f = 3; f < e.data.length; f += 4) {
-
-            var a = 0;
-            if (e.data[f] >= weight) {
-                a = 255;
-                var l = (f / 4) % k;
-                n = Math.min(n, l);
-                j = Math.max(j, l)
-            }
-            e.data[f] = a
-        }
-        this.textWidth = 1 + j - n;
-        if (this.textWidth > 580) {
-            this.textWidth = c.width
-        }
-        return e
-      }
-      function fontSpec(e, d, c, b)
-      {
-          var a = "";
-          if (b) {
-              a += "italic "
-          }
-          if (c) {
-              a += "bold "
-          }
-          return a + d + "px " + e
-      }
-
-      function getTextHeight(c)
-      {
-          var e = $('<span style="font: ' + c + '">Hg</span>');
-          var d = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
-          var f = $("<div></div>");
-          f.append(e, d);
-          var b = $("body");
-          b.append(f);
-          try {
-              var a = {};
-              d.css({
-                  verticalAlign: "baseline"
-              });
-              a.ascent = d.offset().top - e.offset().top;
-              d.css({
-                  verticalAlign: "bottom"
-              });
-              a.height = d.offset().top - e.offset().top;
-              a.descent = a.height - a.ascent
-          } finally {
-              f.remove()
-          }
-          return a
-      }
-
-      function applyDeselRatio(b) {
-      var deselRatio = 1;
-          var a = b * deselRatio;
-          if (deselRatio >= 1) {
-              a = Math.floor(a)
-          } else {
-              a = Math.ceil(a)
-          }
-          return a
-      }
-
-      $("#cloneSampleText").click(function()
-      {
-          $( hiddenSampleGroup.children ).each(function(key, val)
-          {
-             if(val.attrs.fill === '#ffffff')
-             {
-                val.destroy();
-                hiddenSampleLayer.draw();
-             }
-             val.fontSize(txtFillSize);
-             var xx = (Math.round(val.attrs.x / gridSize) * gridSize), yy = (Math.round(val.attrs.y / gridSize) * gridSize);
-             val.attrs.x = xx;
-             val.attrs.y = yy;
-             val.attrs.fill = textFillColor;
-             val.attrs.transformsEnabled = 'position';
-          });
-          $('.close').click();
-          $('#popupForm')[0].reset();
-          updateSampleGroup.destroy();
-          updateSampleLayer.draw();
-          newfunction(hiddenSampleGroup);
-      });
-
-      var toAnimate = true;
-      function newfunction(aa)
-      {
-            var canvasPos = getPosition(stage);
-            var mouseX = 0;
-            var mouseY = 0;
-            var posmin;
-            if(Math.round(gridSize) >= 20)
-            {
-              posmin = 580;
-            }
-            else if(Math.round(gridSize) >= 10)
-            {
-              console.log(" less")
-              posmin = 480;
-            }
-            else {
-              console.log("very less")
-              posmin = 300;
-            }
-
-            canvasGridLayer.addEventListener("mousemove", function setMousePosition(e){
-              mouseX = e.layerX - canvasPos.x - posmin;
-              mouseY = e.layerY - canvasPos.y - posmin;
-              if(toAnimate){
-                update(mouseX,mouseY,aa);
-              }
-            }, false);
-            canvasGridLayer.addEventListener("click", stopfollow, false);
-      }
-      function getPosition(el)
-      {
-            var xPosition = 0;
-            var yPosition = 0;
-            var offsetLeft = el.content.offsetLeft;
-            var scrollLeft = el.content.scrollLeft;
-            var clientLeft = el.content.clientLeft;
-
-            var offsetTop = el.content.offsetTop;
-            var scrollTop = el.content.scrollTop;
-            var clientTop = el.content.clientTop;
-
-            var offsetParent = el.content.offsetParent;
-            while (el) {
-              // console.log(el)
-              xPosition += (offsetLeft - scrollLeft + clientLeft);
-              yPosition += (offsetTop - scrollTop + clientTop);
-              el = offsetParent;
-              break;
-            }
-            return {
-              x: xPosition,
-              y: yPosition
-            };
-      }
-      function update(mouseX,mouseY,aa)
-      {
-          canvasGridLayer.clearBeforeDraw(true);
-          canvasGridLayer.clearCache();
-          $(canvasGridLayer.children).each(function(key, val){
-            if(val.attrs.name === "sampleGroupCloned"){
-              val.destroy();
-            }
-          })
-          canvasGridLayer.draw();
-          var b = aa.clone({name:'sampleGroupCloned', visible:true});
-          b.attrs.x = mouseX;
-          b.attrs.y = mouseY;
-          canvasGridLayer.add(b);
-          b.draw();
-      }
-      function stopfollow(e)
-      {
-        hiddenSampleGroup.destroy();
-        hiddenSampleLayer.batchDraw();
-        var groups = stage.find(node => {
-          return node.getType() === 'Group';
-        });
-        var RectList = canvasGridLayer.find("Rect");
-
-        $( groups).each(function(key, val) {
-            if(val.attrs.name === "sampleGroupCloned")
-             {
-               val.position({
-                 x: Math.round(val.x() / gridSize) * gridSize,
-                 y: Math.round(val.y() / gridSize) * gridSize
-               });
-               canvasGridLayer.draw();
-               var fillTextArr = [];
-               $(val.children).each(function(key,ctextval){
-                 var xVal = ctextval.attrs.x
-                 var yVal = ctextval.attrs.y
-                 fillTextArr.push(`{x : ${xVal},y : ${yVal}}`)
-               })
-               $( RectList ).each(function(key, rectval) {
-                  var xY = `{x : ${rectval.attrs.x},y : ${rectval.attrs.y}}`
-
-                  if(fillTextArr.indexOf(xY) !== -1)
-                  {
-                    rectval.attrs.filled = true;
-                    selected_rect.push(rectval);
-                  }
+    function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
+        var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
+        canvasGridLayer.clearBeforeDraw(true);
+        canvasGridLayer.clearCache();
+        gridHiddenTextGroup.destroy();
+        canvasGridLayer.draw();
+        var q = gridSize;
+        var g = applyDeselRatio(q);
+        var d = Math.ceil(stage.width() / g);
+        var p = Math.ceil(stage.height() / q);
+        var o = Math.max(0, Math.floor((f.width - d) / 2));
+        var m = Math.max(0, Math.floor((f.height - p) / 2));
+        var j = Math.min(f.width, 1 + Math.ceil((f.width + d) / 2));
+        var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
+        var b = Math.floor(stage.width() / 2 - g * f.width / 2);
+        var a = Math.floor(stage.height() / 2 - q * f.height / 2);
+        for (var l = m; l < h; l++) {
+            var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
+            for (var n = o; n < j; n++) {
+                var e = (l * f.width + n) * 4;
+                var fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
+                var complexText = new Konva.Text({
+                  x: b + n * g + k,
+                  y: a + l * q,
+                  text: 'X',
+                  fill: fillStyle,
+                  align: 'center',
                 });
+                gridHiddenTextGroup.add(complexText);
             }
-        });
-        toAnimate = false;
-        $('.toolbar_list li').removeClass('active');
-        $("#select_shape").addClass('active');
-        mode = $("#select_shape").data('mode')
+        }
+        canvasGridLayer.add(gridHiddenTextGroup);
+        gridHiddenTextGroup.draw();
+        stage.batchDraw();
+    }
+
+    function getText(textpara, b, m, h, g,weight)
+    {
+      this.canvas = document.createElement("canvas");
+      this.canvas.width = 200;
+      this.canvas.height = 200;
+      this.ctx = this.canvas.getContext("2d")
+
+      this.ctx.clearRect(0, 0, 600, 600);
+      this.ctx.fillStyle = "#000000";
+      var d = fontSpec(b, m, h, g);
+      this.ctx.font = d;
+      var c = this.ctx.measureText(textpara);
+      var p = getTextHeight(d);
+      this.ctx.fillText(textpara, 0, p.ascent);
+
+      var k = Math.max(1, c.width);
+      var e = this.ctx.getImageData(0, 0, k, p.height);
+
+      var n = 600;
+      var j = 0;
+      for (var f = 3; f < e.data.length; f += 4) {
+
+          var a = 0;
+          if (e.data[f] >= weight) {
+              a = 255;
+              var l = (f / 4) % k;
+              n = Math.min(n, l);
+              j = Math.max(j, l)
+          }
+          e.data[f] = a
       }
+      this.textWidth = 1 + j - n;
+      if (this.textWidth > 580) {
+          this.textWidth = c.width
+      }
+      return e
+    }
+    function fontSpec(e, d, c, b)
+    {
+        var a = "";
+        if (b) {
+            a += "italic "
+        }
+        if (c) {
+            a += "bold "
+        }
+        return a + d + "px " + e
+    }
+
+    function getTextHeight(c)
+    {
+        var e = $('<span style="font: ' + c + '">Hg</span>');
+        var d = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
+        var f = $("<div></div>");
+        f.append(e, d);
+        var b = $("body");
+        b.append(f);
+        try {
+            var a = {};
+            d.css({
+                verticalAlign: "baseline"
+            });
+            a.ascent = d.offset().top - e.offset().top;
+            d.css({
+                verticalAlign: "bottom"
+            });
+            a.height = d.offset().top - e.offset().top;
+            a.descent = a.height - a.ascent
+        } finally {
+            f.remove()
+        }
+        return a
+    }
+
+    function applyDeselRatio(b) {
+        var deselRatio = 1;
+        var a = b * deselRatio;
+        if (deselRatio >= 1) {
+            a = Math.floor(a)
+        } else {
+            a = Math.ceil(a)
+        }
+        return a
+    }
+
+    $("#cloneSampleText").click(function()
+    {
+        $( gridHiddenTextGroup.children ).each(function(key, val)
+        {
+           if(val.attrs.fill === '#ffffff')
+           {
+              val.destroy();
+           }
+           val.fontSize(txtFillSize);
+           var xx = (Math.round(val.attrs.x / gridSize) * gridSize), yy = (Math.round(val.attrs.y / gridSize) * gridSize);
+           val.attrs.x = xx;
+           val.attrs.y = yy;
+           val.attrs.fill = textFillColor;
+           val.attrs.transformsEnabled = 'position';
+        });
+        $('.close').click();
+        $('#popupForm')[0].reset();
+        updateSampleGroup.destroy();
+        updateSampleLayer.draw();
+        newfunction(gridHiddenTextGroup);
+    });
+    var toAnimate = true;
+    function newfunction(aa)
+    {
+          var canvasPos = getPosition(stage);
+          var mouseX = 0;
+          var mouseY = 0;
+          var posmin;
+          if(Math.round(gridSize) >= 20)
+          {
+            posmin = 320;
+          }
+          else if(Math.round(gridSize) >= 10)
+          {
+            posmin = 290;
+          }
+          else {
+            posmin = 210;
+          }
+
+          canvasGridLayer.addEventListener("mousemove", function setMousePosition(e){
+            mouseX = e.layerX - canvasPos.x-posmin;
+            mouseY = e.layerY - canvasPos.y-posmin;
+            if(toAnimate){
+              update(mouseX,mouseY,aa);
+            }
+          }, false);
+          canvasGridLayer.addEventListener("click", stopfollow, false);
+    }
+    function getPosition(el)
+    {
+          var xPosition = 0;
+          var yPosition = 0;
+          var offsetLeft = el.content.offsetLeft;
+          var scrollLeft = el.content.scrollLeft;
+          var clientLeft = el.content.clientLeft;
+
+          var offsetTop = el.content.offsetTop;
+          var scrollTop = el.content.scrollTop;
+          var clientTop = el.content.clientTop;
+
+          var offsetParent = el.content.offsetParent;
+          while (el) {
+            // console.log(el)
+            xPosition += (offsetLeft - scrollLeft + clientLeft);
+            yPosition += (offsetTop - scrollTop + clientTop);
+            el = offsetParent;
+            break;
+          }
+          return {
+            x: xPosition,
+            y: yPosition
+          };
+    }
+    function update(mouseX,mouseY,aa)
+    {
+        canvasGridLayer.clearBeforeDraw(true);
+        canvasGridLayer.clearCache();
+        $(canvasGridLayer.children).each(function(key, val){
+          if(val.attrs.name === "sampleGroupCloned"){
+            val.destroy();
+          }
+        })
+        canvasGridLayer.draw();
+        var b = aa.clone({x:mouseX, y: mouseY, name:'sampleGroupCloned', visible:true});
+        canvasGridLayer.add(b);
+        b.draw();
+    }
+    function stopfollow(e)
+    {
+      gridHiddenTextGroup.destroy();
+      canvasGridLayer.draw();
+      var groups = stage.find(node => {
+        return node.getType() === 'Group';
+      });
+      var RectList = canvasGridLayer.find("Rect");
+
+      $( groups).each(function(key, val) {
+          if(val.attrs.name === "sampleGroupCloned")
+           {
+             val.position({
+               x: Math.round(val.x() / gridSize) * gridSize,
+               y: Math.round(val.y() / gridSize) * gridSize
+             });
+             canvasGridLayer.draw();
+             var fillTextArr = [];
+             $(val.children).each(function(key,ctextval){
+               var xVal = ctextval.attrs.x
+               var yVal = ctextval.attrs.y
+               fillTextArr.push(`{x : ${xVal},y : ${yVal}}`)
+             })
+             $( RectList ).each(function(key, rectval) {
+                var xY = `{x : ${rectval.attrs.x},y : ${rectval.attrs.y}}`
+
+                if(fillTextArr.indexOf(xY) !== -1)
+                {
+                  rectval.attrs.filled = true;
+                  selected_rect.push(rectval);
+                }
+              });
+          }
+      });
+      toAnimate = false;
+      $('.toolbar_list li').removeClass('active');
+      $("#select_shape").addClass('active');
+      mode = $("#select_shape").data('mode')
+    }
+
         /*  Text popup ends here  */
       /*   Loader on page load  */
       var myVar = setTimeout(function(){
