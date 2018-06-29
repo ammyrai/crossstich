@@ -650,6 +650,7 @@ $( window ).on( "load", function() {
         });
         $('.close').click();
         $('#popupForm')[0].reset();
+        $("#textToolTooWide").hide();
         updateSampleGroup.destroy();
         updateSampleLayer.draw();
         newfunction();
