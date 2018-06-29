@@ -58,7 +58,7 @@ $( window ).on( "load", function() {
 
     backgroundCanvas = new Konva.Layer();        // Layer1 for canvas main background
     canvasGridLayer = new Konva.Layer();         //  a Layer2 for canvas Grid
-
+    var newlayer = new Konva.Layer({name:'newlayer'});
     /*  Layers creation ends here! */
 
     /*  Create new group  */
@@ -135,7 +135,7 @@ $( window ).on( "load", function() {
     /*   Change tool mode function ends here!   */
 
     // draw a rectangle to be used as the rubber area
-    var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, stroke: 'red', dash: [2,2]})
+    var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, stroke: 'red', dash: [2,2], name:'selectShape'})
     r2.listening(false); // stop r2 catching our mouse events.
     gridRectGroup.add(r2);
 
@@ -410,7 +410,7 @@ $( window ).on( "load", function() {
 
     /*  Layer2 Create a grid on canvas work ends here!*/
     canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup,gridHiddenTextGroup);     // Add Groups to layer
-    stage.add(backgroundCanvas,canvasGridLayer);          // Add Layer to stage
+    stage.add(backgroundCanvas,canvasGridLayer,newlayer);          // Add Layer to stage
     json = stage.toJSON();      // Save entire canvas as json
 
 
@@ -499,14 +499,14 @@ $( window ).on( "load", function() {
         updateSampleStage.draw();
     }
     // popup sample canvas ends here!
-
     // CREATE KONVE STAGE AND LAYER for sample grid canvas starts here!
+
     function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
         var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
-        canvasGridLayer.clearBeforeDraw(true);
-        canvasGridLayer.clearCache();
+        newlayer.clearBeforeDraw(true);
+        newlayer.clearCache();
         gridHiddenTextGroup.destroy();
-        canvasGridLayer.draw();
+        newlayer.draw();
         var q = gridSize;
         var g = applyDeselRatio(q);
         var d = Math.ceil(stage.width() / g);
@@ -517,12 +517,13 @@ $( window ).on( "load", function() {
         var h = Math.min(f.height, 1 + Math.ceil((f.height + p) / 2));
         var b = Math.floor(stage.width() / 2 - g * f.width / 2);
         var a = Math.floor(stage.height() / 2 - q * f.height / 2);
+
         for (var l = m; l < h; l++) {
             var k = (false && (l & 1)) ? Math.round(g / 2) : 0;
             for (var n = o; n < j; n++) {
                 var e = (l * f.width + n) * 4;
                 var fillStyle = f.data[e + 3] == 255 ? "#000000" : "#ffffff";
-                var complexText = new Konva.Text({
+                 var complexText = new Konva.Text({
                   x: b + n * g + k,
                   y: a + l * q,
                   text: 'X',
@@ -530,9 +531,10 @@ $( window ).on( "load", function() {
                   align: 'center',
                 });
                 gridHiddenTextGroup.add(complexText);
+                // complexText.draw();
             }
         }
-        canvasGridLayer.add(gridHiddenTextGroup);
+        newlayer.add(gridHiddenTextGroup);
         gridHiddenTextGroup.draw();
         stage.batchDraw();
     }
@@ -641,11 +643,12 @@ $( window ).on( "load", function() {
         $('#popupForm')[0].reset();
         updateSampleGroup.destroy();
         updateSampleLayer.draw();
-        newfunction(gridHiddenTextGroup);
+        newfunction();
     });
     var toAnimate = true;
-    function newfunction(aa)
+    function newfunction()
     {
+          toAnimate = true;
           var canvasPos = getPosition(stage);
           var mouseX = 0;
           var mouseY = 0;
@@ -666,10 +669,10 @@ $( window ).on( "load", function() {
             mouseX = e.layerX - canvasPos.x-posmin;
             mouseY = e.layerY - canvasPos.y-posmin;
             if(toAnimate){
-              update(mouseX,mouseY,aa);
+              update(mouseX,mouseY);
             }
-          }, false);
-          canvasGridLayer.addEventListener("click", stopfollow, false);
+          });
+          canvasGridLayer.addEventListener("click", stopfollow);
     }
     function getPosition(el)
     {
@@ -696,18 +699,19 @@ $( window ).on( "load", function() {
             y: yPosition
           };
     }
-    function update(mouseX,mouseY,aa)
+    function update(mouseX,mouseY)
     {
-        canvasGridLayer.clearBeforeDraw(true);
-        canvasGridLayer.clearCache();
-        $(canvasGridLayer.children).each(function(key, val){
+        newlayer.visible(true)
+        newlayer.clearBeforeDraw(true);
+        newlayer.clearCache();
+        $(newlayer.children).each(function(key, val){
           if(val.attrs.name === "sampleGroupCloned"){
             val.destroy();
           }
         })
-        canvasGridLayer.draw();
-        var b = aa.clone({x:mouseX, y: mouseY, name:'sampleGroupCloned', visible:true});
-        canvasGridLayer.add(b);
+        newlayer.draw();
+        var b = gridHiddenTextGroup.clone({x:mouseX, y: mouseY, name:'sampleGroupCloned', visible:true});
+        newlayer.add(b);
         b.draw();
     }
     function stopfollow(e)
@@ -726,6 +730,8 @@ $( window ).on( "load", function() {
                x: Math.round(val.x() / gridSize) * gridSize,
                y: Math.round(val.y() / gridSize) * gridSize
              });
+             newlayer.visible(false)
+             canvasGridLayer.add(val)
              canvasGridLayer.draw();
              var fillTextArr = [];
              $(val.children).each(function(key,ctextval){
@@ -742,6 +748,7 @@ $( window ).on( "load", function() {
                   selected_rect.push(rectval);
                 }
               });
+              val.attrs.name = "sampleGroupCpoied"
           }
       });
       toAnimate = false;
