@@ -184,23 +184,21 @@ $( window ).on( "load", function() {
              startDrag({x: box.attrs.x, y: box.attrs.y})
            break;
            case 'back_stich':
-
-               points=[];
-
-               var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
-               var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
-               points.push(box.attrs.x,box.attrs.y,secondX,secondY)
-               var line = new Konva.Line({
-                   points :points,
-                   stroke: '#000000',
-                   strokeWidth: lineStroke,
-                   drawLine : true,
-               });
-               box.attrs.lineDraw = true;
-               canvasGridLayer.add(line);
-               line.draw();
-               // canvasGridLayer.draw();
-
+                points=[];
+                var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
+                var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
+                points.push(box.attrs.x,box.attrs.y,secondX,secondY)
+                var line = new Konva.Line({
+                    points :points,
+                    stroke: '#000000',
+                    strokeWidth: lineStroke,
+                    drawLine : true,
+                    tension: 0,
+                    perfectDrawEnabled: false,
+                });
+                box.attrs.lineDraw = true;
+                canvasGridLayer.add(line);
+                line.draw();
            break;
            case 'case text':
              console.log('Text Mode!');
@@ -224,7 +222,6 @@ $( window ).on( "load", function() {
                    var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect',selected : ''});
                    gridcloneGroup.add(clonerect);
                    gridcloneGroup.draggable(true);
-                   gridcloneGroup.name('newgrup');
                    canvasGridLayer.add(gridcloneGroup);
                    val.attrs.selected = '';
                    $( selected_rect ).each(function(key, rect) {
@@ -282,58 +279,62 @@ $( window ).on( "load", function() {
              }
            break;
            case 'eraser':
-           if(box.className === 'Rect' && box.attrs.filled === true)
-           {
-              var textList = canvasGridLayer.find("Text");
-              $( textList ).each(function(key, val) {
-                 val.on('mouseenter', function(evt) {
-                   if(evt.target.className == 'Text')
-                   {
-                     evt.target.destroy();
-                   }
+               if(box.className === 'Rect' && box.attrs.filled === true)
+               {
+                  var textList = canvasGridLayer.find("Text");
+                  $( textList ).each(function(key, val) {
+                     val.on('mouseenter', function(evt) {
+                       if(evt.target.className == 'Text')
+                       {
+                         evt.target.destroy();
+                       }
+                     });
                  });
-             });
-             box.attrs.filled = false;
-             box.shadowEnabled(true);
-           }
-           // if(box.className === 'Rect' && box.attrs.lineDraw === true)
-           // {
-           //    var textList = canvasGridLayer.find("Line");
-           //    $( textList ).each(function(key, val) {
-           //       val.on('mouseenter', function(evt) {
-           //         if(evt.target.className == 'Line')
-           //         {
-           //           evt.target.destroy();
-           //         }
-           //       });
-           //   });
-           //   box.attrs.filled = false;
-           //   box.shadowEnabled(true);
-           // }
-           canvasGridLayer.draw();
+                 box.attrs.filled = false;
+                 box.shadowEnabled(true);
+               }
+               // if(box.className === 'Rect' && box.attrs.lineDraw === true)
+               // {
+               //    var textList = canvasGridLayer.find("Line");
+               //    $( textList ).each(function(key, val) {
+               //       val.on('mouseenter', function(evt) {
+               //         if(evt.target.className == 'Line')
+               //         {
+               //           evt.target.destroy();
+               //         }
+               //       });
+               //   });
+               //   box.attrs.filled = false;
+               //   box.shadowEnabled(true);
+               // }
+               canvasGridLayer.draw();
            break;
            case 'select_shape':
              updateDrag({x: box.attrs.x, y: box.attrs.y},false)
            break;
            case 'back_stich':
-              var line = canvasGridLayer.find("Line");
-              line[line.length-1].attrs.drawLine = true;
-              if(line[line.length-1].attrs.drawLine === true)
-              {
-                  var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+gridSize);
-                  var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+gridSize);
-                  if ( ((secondX - evt.evt.layerX) < 6) && ((secondX - evt.evt.layerX) > 0)) {
-                    points.push(secondX,secondY);
-                  }
-                  else if(((secondY - evt.evt.layerY) < 6) && ((secondY - evt.evt.layerY) > 0)){
-                    points.push(secondX,secondY);
-                  }
-                  line[line.length-1].points(points);
+               points=[];
+
+               var line = canvasGridLayer.find("Line");
+
+               var last_two_values = line[line.length-1].points().slice(-2);
+
+               if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined")){
+                 var secondX = nearest(evt.evt.layerX,box.attrs.x,box.attrs.x+Math.round(gridSize));
+                 var secondY = nearest(evt.evt.layerY,box.attrs.y,box.attrs.y+Math.round(gridSize));
+                 points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
+                 var line = new Konva.Line({
+                      points :points,
+                      stroke: '#000000',
+                      strokeWidth: lineStroke,
+                      drawLine : true,
+                      tension: 0,
+                      perfectDrawEnabled: false,
+                  });
                   box.attrs.lineDraw = true;
+                  canvasGridLayer.add(line);
                   line.draw();
-                  // canvasGridLayer.draw();
-                  line[line.length-1].attrs.drawLine = true;
-              }
+               }
            break;
            case 'case text':
              console.log('Text Mode!');
@@ -357,6 +358,7 @@ $( window ).on( "load", function() {
       });
       stage.batchDraw();
       gridcloneGroup.draggable(false);
+      gridcloneGroup.name('myClonedGroup');
       mode = '';
       $('.toolbar_list li').removeClass('active');
       });
@@ -399,12 +401,16 @@ $( window ).on( "load", function() {
         return ({x1: r1x, y1: r1y, x2: r2x, y2: r2y}); // return the corrected rect.
     }
 
-    function nearest(value, min, max){
-      if((value-min)>(max-value)){
-          return max;
-       } else {
-        return min;
-       }
+    function nearest(value, min, max)
+    {
+        if((value-min)>(max-value))
+        {
+            return max;
+        }
+        else
+        {
+          return min;
+        }
     }
     /*  Select Tool Functionality ends here!  */
 
@@ -500,8 +506,8 @@ $( window ).on( "load", function() {
         updateSampleStage.draw();
     }
     // popup sample canvas ends here!
-    // CREATE KONVE STAGE AND LAYER for sample grid canvas starts here!
 
+    // CREATE KONVE STAGE AND LAYER for sample grid canvas starts here!
     function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
         var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
          if(f.textWidth >=45)
@@ -546,7 +552,6 @@ $( window ).on( "load", function() {
         gridHiddenTextGroup.draw();
         stage.batchDraw();
     }
-
     function getText(textpara, b, m, h, g,weight)
     {
       this.canvas = document.createElement("canvas");
@@ -766,10 +771,9 @@ $( window ).on( "load", function() {
       $("#select_shape").addClass('active');
       mode = $("#select_shape").data('mode')
     }
-
-        /*  Text popup ends here  */
+    /*  Text popup ends here  */
       /*   Loader on page load  */
-      var myVar = setTimeout(function(){
+    var myVar = setTimeout(function(){
         $("#loader").hide();
         $("#myDiv").show();
       }, 1000);
