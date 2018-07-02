@@ -178,6 +178,11 @@ $( window ).on( "load", function() {
                   box.attrs.filled = false;
                   box.shadowEnabled(true);
                 }
+                if(evt.target.className === 'Line')
+                {
+                    evt.target.destroy();
+                    box.attrs.lineDraw = false;
+                }
                 canvasGridLayer.draw();
            break;
            case 'select_shape':
@@ -196,7 +201,6 @@ $( window ).on( "load", function() {
                     tension: 0,
                     perfectDrawEnabled: false,
                 });
-                box.attrs.lineDraw = true;
                 canvasGridLayer.add(line);
                 line.draw();
            break;
@@ -283,7 +287,8 @@ $( window ).on( "load", function() {
                {
                   var textList = canvasGridLayer.find("Text");
                   $( textList ).each(function(key, val) {
-                     val.on('mouseenter', function(evt) {
+                     val.on('mouseenter', function(evt)
+                     {
                        if(evt.target.className == 'Text')
                        {
                          evt.target.destroy();
@@ -293,21 +298,16 @@ $( window ).on( "load", function() {
                  box.attrs.filled = false;
                  box.shadowEnabled(true);
                }
-               // if(box.className === 'Rect' && box.attrs.lineDraw === true)
-               // {
-               //    var textList = canvasGridLayer.find("Line");
-               //    $( textList ).each(function(key, val) {
-               //       val.on('mouseenter', function(evt) {
-               //         if(evt.target.className == 'Line')
-               //         {
-               //           evt.target.destroy();
-               //         }
-               //       });
-               //   });
-               //   box.attrs.filled = false;
-               //   box.shadowEnabled(true);
-               // }
-               canvasGridLayer.draw();
+               var lineList = canvasGridLayer.find("Line");
+                  $( lineList ).each(function(key, val) {
+                     val.on('mouseenter', function(evt) {
+                       if(evt.target.className == 'Line')
+                       {
+                         evt.target.destroy();
+                       }
+                     });
+                 });
+                canvasGridLayer.draw();
            break;
            case 'select_shape':
              updateDrag({x: box.attrs.x, y: box.attrs.y},false)
@@ -331,7 +331,6 @@ $( window ).on( "load", function() {
                       tension: 0,
                       perfectDrawEnabled: false,
                   });
-                  box.attrs.lineDraw = true;
                   canvasGridLayer.add(line);
                   line.draw();
                }
