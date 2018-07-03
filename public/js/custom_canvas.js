@@ -170,20 +170,20 @@ $( window ).on( "load", function() {
            break;
            case 'eraser':
                if(box.attrs.filled === true)
+              {
+                 if(evt.target.className === 'Text')
+                 {
+                     evt.target.destroy();
+                 }
+                 box.attrs.filled = false;
+                 box.shadowEnabled(true);
+               }
+               if(evt.target.className === 'Line')
                {
-                  if(evt.target.className === 'Text')
-                  {
-                      evt.target.destroy();
-                  }
-                  box.attrs.filled = false;
-                  box.shadowEnabled(true);
-                }
-                if(evt.target.className === 'Line')
-                {
-                    evt.target.destroy();
-                    box.attrs.lineDraw = false;
-                }
-                canvasGridLayer.draw();
+                   evt.target.destroy();
+                   box.attrs.lineDraw = false;
+               }
+               canvasGridLayer.draw();
            break;
            case 'select_shape':
              startDrag({x: box.attrs.x, y: box.attrs.y})
@@ -351,6 +351,7 @@ $( window ).on( "load", function() {
         posNow = '';
     });
     gridcloneGroup.on('dragend', function() {
+      //console.log(gridcloneGroup.x(), gridcloneGroup.y())
       gridcloneGroup.position({
         x: Math.round(gridcloneGroup.x() / gridSize) * gridSize,
         y: Math.round(gridcloneGroup.y() / gridSize) * gridSize
@@ -449,7 +450,8 @@ $( window ).on( "load", function() {
   });
 
   var slider = document.getElementById("myRange");
-  slider.oninput = function() {
+  slider.oninput = function()
+  {
     updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value)
     updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value)
   }
@@ -730,8 +732,14 @@ $( window ).on( "load", function() {
     }
     function stopfollow(e)
     {
-      gridHiddenTextGroup.destroy();
-      canvasGridLayer.draw();
+      var z =0;
+      var fillTextArr = [];
+
+      var firstpostionXY = {x : gridHiddenTextGroup.children[0]['attrs']['x'], y : gridHiddenTextGroup.children[0]['attrs']['y']}
+
+      var xPosition ;
+      var yPosition;
+
       var groups = stage.find(node => {
         return node.getType() === 'Group';
       });
@@ -740,29 +748,71 @@ $( window ).on( "load", function() {
       $( groups).each(function(key, val) {
           if(val.attrs.name === "sampleGroupCloned")
            {
-             val.position({
-               x: Math.round(val.x() / gridSize) * gridSize,
-               y: Math.round(val.y() / gridSize) * gridSize
-             });
+             for($i = 0 ; $i < gridHiddenTextGroup.children.length ; $i ++){
+               if(z == 0)
+                {
+                   if((Math.round(val.attrs.x / gridSize) * gridSize) > 0 ){
+                     var xVal  = firstpostionXY.x + Math.abs(Math.round(val.attrs.x / gridSize) * gridSize);
+                  } else {
+
+                    var xVal = firstpostionXY.x - Math.abs(Math.round(val.attrs.x / gridSize) * gridSize);
+                  }
+                    if((Math.round(val.attrs.y / gridSize) * gridSize) > 0 ){
+                      var yVal = firstpostionXY.y + Math.abs(Math.round(val.attrs.y / gridSize) * gridSize);
+                    } else {
+                      var yVal  = firstpostionXY.y - Math.abs(Math.round(val.attrs.y / gridSize) * gridSize);
+                    }
+                    fillTextArr.push(`{x : ${Math.abs(Math.round(xVal/gridSize)*gridSize)},y : ${Math.abs(Math.round(yVal/gridSize)*gridSize)}}`)
+                }
+                else {
+                  if((Math.round(val.attrs.x / gridSize) * gridSize) > 0 ){
+                     var xVal  = gridHiddenTextGroup.children[z]['attrs']['x'] + Math.abs(Math.round(val.attrs.x / gridSize) * gridSize);
+                   } else {
+                     var xVal = gridHiddenTextGroup.children[z]['attrs']['x'] - Math.abs(Math.round(val.attrs.x / gridSize) * gridSize);
+                   }
+                   if((Math.round(val.attrs.y / gridSize) * gridSize) > 0 ){
+                     var yVal = gridHiddenTextGroup.children[z]['attrs']['y'] + Math.abs(Math.round(val.attrs.y / gridSize) * gridSize);
+                   } else{
+                     var yVal = gridHiddenTextGroup.children[z]['attrs']['y'] - Math.abs(Math.round(val.attrs.y / gridSize) * gridSize);
+                   }
+                  fillTextArr.push(`{x : ${Math.abs(Math.round(xVal/gridSize)*gridSize)},y : ${Math.abs(Math.round(yVal/gridSize)*gridSize)}}`)
+                }
+                z++;
+             };
              newlayer.visible(false)
-             canvasGridLayer.add(val)
-             canvasGridLayer.draw();
-             var fillTextArr = [];
-             $(val.children).each(function(key,ctextval){
-               var xVal = ctextval.attrs.x
-               var yVal = ctextval.attrs.y
-               fillTextArr.push(`{x : ${xVal},y : ${yVal}}`)
-             })
              $( RectList ).each(function(key, rectval) {
                 var xY = `{x : ${rectval.attrs.x},y : ${rectval.attrs.y}}`
 
                 if(fillTextArr.indexOf(xY) !== -1)
                 {
+                  newlayer.visible(true)
+                  newlayer.clearBeforeDraw(true);
+                  newlayer.clearCache();
+                  $(newlayer.children).each(function(key, val){
+                    if(val.attrs.name === "sampleGroupCloned"){
+                      val.destroy();
+                    }
+                  })
+                  newlayer.draw();
                   rectval.attrs.filled = true;
+                  text = new Konva.Text({
+                    text: 'X',
+                    x: rectval.attrs.x,
+                    y: rectval.attrs.y,
+                    fontFamily: 'sans-serif',
+                    fontSize: txtFillSize,
+                    fill: textFillColor,
+                    fontStyle : 'normal',
+                    filled : true,
+                    transformsEnabled : 'position'
+                  });
+                  rectval.attrs.filled = true;
+                  rectval.height = text.getHeight();
+                  gridTextGroup.add(text);
+                  text.draw();
                   selected_rect.push(rectval);
                 }
               });
-              val.attrs.name = "sampleGroupCpoied"
           }
       });
       toAnimate = false;
