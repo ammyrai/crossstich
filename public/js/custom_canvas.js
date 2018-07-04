@@ -302,25 +302,20 @@ $( window ).on( "load", function() {
                {
                   var textList = canvasGridLayer.find("Text");
                   $( textList ).each(function(key, val) {
-                     val.on('mouseenter', function(evt)
-                     {
-                       if(evt.target.className == 'Text')
-                       {
-                         evt.target.destroy();
-                       }
-                     });
+                    if(val.x() === box.x() && val.y() === box.y())
+                      {
+                        val.destroy();
+                      }
                  });
                  box.attrs.filled = false;
                  box.shadowEnabled(true);
                }
                var lineList = canvasGridLayer.find("Line");
                   $( lineList ).each(function(key, val) {
-                     val.on('mouseenter', function(evt) {
-                       if(evt.target.className == 'Line')
-                       {
-                         evt.target.destroy();
-                       }
-                     });
+                    if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
+                    {
+                      val.destroy();
+                    }
                  });
                 canvasGridLayer.draw();
            break;
@@ -827,6 +822,12 @@ $( window ).on( "load", function() {
               update(mouseX,mouseY);
             }
           });
+          setTimeout(function(){
+            $('.toolbar_list li').removeClass('active');
+            $("#select_shape").addClass('active');
+            mode = $("#select_shape").data('mode')
+          }, 2000);
+
           canvasGridLayer.addEventListener("click", stopfollow);
     }
     function getPosition(el)
@@ -955,9 +956,6 @@ $( window ).on( "load", function() {
           }
       });
       toAnimate = false;
-      $('.toolbar_list li').removeClass('active');
-      $("#select_shape").addClass('active');
-      mode = $("#select_shape").data('mode')
     }
     /*  Text popup ends here  */
       /*   Loader on page load  */
