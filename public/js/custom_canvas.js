@@ -28,7 +28,8 @@ $( window ).on( "load", function() {
         posStart,                           // Select tool position start
         posNow,                             // Select tool Current position.
         selected_rect = [],                 // For Select Tool
-        points =[];                         // For BAck Stitch
+        points =[],                         // For BAck Stitch
+        positionXY = [];
 
     canvasMainBgcolor = localStorage.getItem("canvasBgColor");
     gridStrokeColor = localStorage.getItem("gridStrokeCPara");
@@ -186,7 +187,7 @@ $( window ).on( "load", function() {
                canvasGridLayer.draw();
            break;
            case 'select_shape':
-             startDrag({x: box.attrs.x, y: box.attrs.y})
+             startDrag({x: Math.round(box.attrs.x / gridSize) * gridSize, y: Math.round(box.attrs.y / gridSize) * gridSize})
            break;
            case 'back_stich':
                 points=[];
@@ -217,31 +218,45 @@ $( window ).on( "load", function() {
       switch (mode)
       {
          case 'select_shape':
-            updateDrag({x: box.attrs.x, y: box.attrs.y},true)
-             var textList = canvasGridLayer.find("Text");
-
-             $( textList ).each(function(key, val) {
-               if(val.attrs.selected === 'selected')
-               {
-                   var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect',selected : ''});
-                   gridcloneGroup.add(clonerect);
-                   gridcloneGroup.draggable(true);
-                   canvasGridLayer.add(gridcloneGroup);
-                   val.attrs.selected = '';
-                   $( selected_rect ).each(function(key, rect) {
-                     if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
-                     {
-                       rect.attrs.filled = false;
-                       rect.attrs.shadowEnabled = true;
-                       rect.attrs.shadowColor = gridShadowColor;
-                       rect.attrs.shadowOffset = {  x: 3,   y: 3 };
+             updateDrag({x: Math.round(box.attrs.x / gridSize) * gridSize, y: Math.round(box.attrs.y / gridSize) * gridSize},true)
+             var lineList = canvasGridLayer.find("Line");
+             $( lineList ).each(function(key, lineval)
+             {
+                 if(lineval.attrs.selected === 'selected')
+                 {
+                       var cloneline  = lineval.clone({name :'cloneLine',selected : ''});
+                       gridcloneGroup.add(cloneline);
+                       gridcloneGroup.draggable(true);
+                       canvasGridLayer.add(gridcloneGroup);
+                       lineval.attrs.selected = '';
+                       lineval.destroy();
                        canvasGridLayer.draw();
-                     }
-                    });
-                   val.destroy();
                  }
-             })
-             r2.visible(true);
+             });
+              var textList = canvasGridLayer.find("Text");
+              $( textList ).each(function(key, val) {
+                if(val.attrs.selected === 'selected')
+                {
+                    var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect',selected : ''});
+                    gridcloneGroup.add(clonerect);
+                    gridcloneGroup.draggable(true);
+                    canvasGridLayer.add(gridcloneGroup);
+                    val.attrs.selected = '';
+                    positionXY.push(`{"x":${val.attrs.x},"y":${val.attrs.y}}`)
+                    $( selected_rect ).each(function(key, rect) {
+                      if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                      {
+                        rect.attrs.filled = false;
+                        rect.attrs.shadowEnabled = true;
+                        rect.attrs.shadowColor = gridShadowColor;
+                        rect.attrs.shadowOffset = {  x: 3,   y: 3 };
+                        canvasGridLayer.draw();
+                      }
+                     });
+                    val.destroy();
+                  }
+              })
+              r2.visible(true);
          break;
          case 'back_stich':
              var line = canvasGridLayer.find("Line");
@@ -310,7 +325,7 @@ $( window ).on( "load", function() {
                 canvasGridLayer.draw();
            break;
            case 'select_shape':
-             updateDrag({x: box.attrs.x, y: box.attrs.y},false)
+             updateDrag({x: Math.round(box.attrs.x / gridSize) * gridSize, y: Math.round(box.attrs.y / gridSize) * gridSize},false)
            break;
            case 'back_stich':
                points=[];
@@ -350,18 +365,136 @@ $( window ).on( "load", function() {
         posStart ='';
         posNow = '';
     });
-    gridcloneGroup.on('dragend', function() {
-      //console.log(gridcloneGroup.x(), gridcloneGroup.y())
-      gridcloneGroup.position({
-        x: Math.round(gridcloneGroup.x() / gridSize) * gridSize,
-        y: Math.round(gridcloneGroup.y() / gridSize) * gridSize
-      });
-      stage.batchDraw();
-      gridcloneGroup.draggable(false);
-      gridcloneGroup.name('myClonedGroup');
-      mode = '';
-      $('.toolbar_list li').removeClass('active');
-      });
+    gridcloneGroup.on('dragend', function()
+    {
+        var zText =0;
+        var z = 0 ;
+        var fillTextArrGp = [];
+        var fillLineArrGp = [];
+        $(gridcloneGroup.children).each(function(){
+            if(gridcloneGroup.children[z]['className'] === "Line")
+            {
+              if((Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize) > 0 ){
+               var x1Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][0]/ gridSize) * gridSize) + Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+               var x2Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][2]/ gridSize) * gridSize) + Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+              } else {
+                var x1Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][0]/ gridSize) * gridSize) - Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+                var x2Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][2]/ gridSize) * gridSize) - Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+              }
+               if((Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize) > 0 ){
+                 var y1Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][1]/ gridSize) * gridSize) + Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+                 var y2Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][3]/ gridSize) * gridSize) + Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+               } else{
+                 var y1Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][1]/ gridSize) * gridSize) - Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+                 var y2Val = Math.abs(Math.round(gridcloneGroup.children[z]['attrs']['points'][3]/ gridSize) * gridSize) - Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+               }
+               var obj ={
+                  'newpoints': [x1Val,y1Val,x2Val,y2Val],
+                  'nstroke': gridcloneGroup.children[z]['attrs']['stroke'],
+                  'nswidth': gridcloneGroup.children[z]['attrs']['strokeWidth'],
+                  'ndrawline' : gridcloneGroup.children[z]['attrs']['drawLine'],
+                  'ntension' : gridcloneGroup.children[z]['attrs']['tension'],
+                  'npdraw' : gridcloneGroup.children[z]['attrs']['perfectDrawEnabled']
+              }
+              fillLineArrGp.push(obj);
+            } else {
+              //console.log(positionXY[z])
+                var xPosition ;
+                var yPosition;
+                if(zText == 0)
+                {
+                  var firstpostionXY = JSON.parse(positionXY[zText]);
+
+                   if((Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize) > 0 ){
+                    var xVal = gridcloneGroup.children[z]['attrs']['x'] = firstpostionXY.x + Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+                  } else {
+                    var xVal = gridcloneGroup.children[z]['attrs']['x'] = firstpostionXY.x - Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+                  }
+                    if((Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize) > 0 ){
+                      var yVal = gridcloneGroup.children[z]['attrs']['y'] = firstpostionXY.y + Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+                    } else {
+                      var yVal = gridcloneGroup.children[z]['attrs']['y'] = firstpostionXY.y - Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+                    }
+                    fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`)
+                }
+                else {
+              var postionXY = JSON.parse(positionXY[zText]);
+              var prevPostionXY = JSON.parse(positionXY[zText-1]);
+              if(postionXY.x !== prevPostionXY.x){
+                 xPosition = postionXY.x;
+              }else {
+                 xPosition = prevPostionXY.x;
+              }
+              if(postionXY.y !== prevPostionXY.y){
+                 yPosition = postionXY.y;
+              }else {
+                 yPosition = prevPostionXY.y;
+              }
+              if((Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize) > 0 ){
+               var xVal = gridcloneGroup.children[z]['attrs']['x'] = xPosition + Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+             } else {
+               var xVal = gridcloneGroup.children[z]['attrs']['x'] = xPosition - Math.abs(Math.round(gridcloneGroup.attrs.x / gridSize) * gridSize);
+             }
+               if((Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize) > 0 ){
+                 var yVal = gridcloneGroup.children[z]['attrs']['y'] = yPosition + Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+               } else{
+                 var yVal = gridcloneGroup.children[z]['attrs']['y'] = yPosition - Math.abs(Math.round(gridcloneGroup.attrs.y / gridSize) * gridSize);
+               }
+              fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`)
+            }
+            zText++;
+            }
+            z++;
+        })
+
+        var RectList = canvasGridLayer.find("Rect");
+        $( RectList ).each(function(key, rectval)
+        {
+           var xY = `{x : ${rectval.attrs.x},y : ${rectval.attrs.y}}`
+
+           if(fillTextArrGp.indexOf(xY) !== -1)
+           {
+                 rectval.shadowEnabled(false);
+                 text = new Konva.Text({
+                   text: 'X',
+                   x: rectval.attrs.x,
+                   y: rectval.attrs.y,
+                   fontFamily: 'sans-serif',
+                   fontSize: txtFillSize,
+                   fill: textFillColor,
+                   fontStyle : 'normal',
+                   filled : true,
+                   transformsEnabled : 'position'
+                 });
+                 rectval.attrs.filled = true;
+                 rectval.height = text.getHeight();
+                 gridTextGroup.add(text);
+                 text.draw();
+                 rectval.attrs.filled = true;
+                 selected_rect.push(rectval);
+           }
+        });
+        for(var t = 0; t<fillLineArrGp.length; t++)
+        {
+          var line = new Konva.Line({
+              points :fillLineArrGp[t]['newpoints'],
+              stroke: fillLineArrGp[t]['nstroke'],
+              strokeWidth: fillLineArrGp[t]['nswidth'],
+              drawLine : fillLineArrGp[t]['ndrawline'],
+              tension: fillLineArrGp[t]['ntension'],
+              perfectDrawEnabled: fillLineArrGp[t]['npdraw'],
+          });
+          canvasGridLayer.add(line);
+          line.draw();
+        }
+        gridcloneGroup.destroy();
+        gridcloneGroup.clearCache();
+        canvasGridLayer.clearCache();
+        canvasGridLayer.draw();
+        positionXY = [];
+        mode = '';
+        $('.toolbar_list li').removeClass('active');
+    });
 
     function startDrag(posIn){
       posStart = {x: posIn.x, y: posIn.y};
@@ -382,6 +515,12 @@ $( window ).on( "load", function() {
          $( textList ).each(function(key, val) {
            if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
              val.attrs.selected = 'selected';
+           }
+         })
+         var lineList = canvasGridLayer.find("Line");
+         $( lineList ).each(function(key, lineval) {
+           if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height)){
+             lineval.attrs.selected = 'selected';
            }
          })
        }
