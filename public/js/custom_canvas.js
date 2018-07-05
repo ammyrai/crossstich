@@ -59,6 +59,7 @@ $( window ).on( "load", function() {
 
     backgroundCanvas = new Konva.Layer();        // Layer1 for canvas main background
     canvasGridLayer = new Konva.Layer();         //  a Layer2 for canvas Grid
+    var textlayer = new Konva.Layer();
     var newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});
     /*  Layers creation ends here! */
 
@@ -67,8 +68,9 @@ $( window ).on( "load", function() {
     var gridCircleGroup = new Konva.Group();
     var gridTextGroup = new Konva.Group();
     var gridcloneGroup = new Konva.Group();
+    var gridSelectGroup = new Konva.Group();
     var gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});
-
+    //textlayer.add(gridcloneGroup);
     /*  Layer1 work starts here! */
     stageRect =  new Konva.Rect({
       x:0,
@@ -121,8 +123,8 @@ $( window ).on( "load", function() {
             stroke: circleStrokeColor,
             strokeWidth: 1,
           });
-          gridRectGroup.add(box);                   // Add rectangle to group
-          gridCircleGroup.add(circle);             // Add rectangle to background layer
+          canvasGridLayer.add(box);                   // Add rectangle to group
+          canvasGridLayer.add(circle);             // Add rectangle to background layer
         }
       }
 
@@ -138,10 +140,11 @@ $( window ).on( "load", function() {
     // draw a rectangle to be used as the rubber area
     var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, stroke: 'red', dash: [2,2], name:'selectShape'})
     r2.listening(false); // stop r2 catching our mouse events.
-    gridRectGroup.add(r2);
+    gridSelectGroup.add(r2);
+    textlayer.add(gridSelectGroup);
 
     /*    Fill Grid cell   */
-    canvasGridLayer.on('mousedown', function(evt){
+    stage.on('mousedown', function(evt){
       isMouseDown = true;
       if (isMouseDown)
       {
@@ -149,9 +152,8 @@ $( window ).on( "load", function() {
         switch (mode)
         {
            case 'pencil':
-               if(box.attrs.filled === false)
+               if(box.attrs.filled !== true)
                {
-                   box.shadowEnabled(false);
                    text = new Konva.Text({
                      text: 'X',
                      x: box.attrs.x,
@@ -163,9 +165,8 @@ $( window ).on( "load", function() {
                      filled : true,
                      transformsEnabled : 'position'
                    });
-                   box.attrs.filled = true;
-                   box.height = text.getHeight();
                    gridTextGroup.add(text);
+                   textlayer.add(gridTextGroup)
                    text.draw();
                 }
            break;
@@ -184,7 +185,7 @@ $( window ).on( "load", function() {
                    evt.target.destroy();
                    box.attrs.lineDraw = false;
                }
-               canvasGridLayer.draw();
+               textlayer.draw();
            break;
            case 'select_shape':
              startDrag({x: Math.round(box.attrs.x / gridSize) * gridSize, y: Math.round(box.attrs.y / gridSize) * gridSize})
@@ -202,7 +203,7 @@ $( window ).on( "load", function() {
                     tension: 0,
                     perfectDrawEnabled: false,
                 });
-                canvasGridLayer.add(line);
+                textlayer.add(line);
                 line.draw();
            break;
            case 'case text':
@@ -212,14 +213,14 @@ $( window ).on( "load", function() {
          }
       }
     });
-    canvasGridLayer.on('mouseup',function(evt){
+    stage.on('mouseup',function(evt){
       isMouseDown= false
       box = evt.target;
       switch (mode)
       {
          case 'select_shape':
              updateDrag({x: Math.round(box.attrs.x / gridSize) * gridSize, y: Math.round(box.attrs.y / gridSize) * gridSize},true)
-             var lineList = canvasGridLayer.find("Line");
+             var lineList = textlayer.find("Line");
              $( lineList ).each(function(key, lineval)
              {
                  if(lineval.attrs.selected === 'selected')
@@ -227,20 +228,21 @@ $( window ).on( "load", function() {
                        var cloneline  = lineval.clone({name :'cloneLine',selected : ''});
                        gridcloneGroup.add(cloneline);
                        gridcloneGroup.draggable(true);
-                       canvasGridLayer.add(gridcloneGroup);
+                       textlayer.add(gridcloneGroup);
                        lineval.attrs.selected = '';
                        lineval.destroy();
-                       canvasGridLayer.draw();
+                       textlayer.draw();
                  }
              });
-              var textList = canvasGridLayer.find("Text");
+              var textList = textlayer.find("Text");
               $( textList ).each(function(key, val) {
-                if(val.attrs.selected === 'selected')
+                if(val.attrs.selected === 'select')
                 {
                     var clonerect  = val.clone({x: val.attrs.x, y: val.attrs.y, name :'cloneRect',selected : ''});
                     gridcloneGroup.add(clonerect);
                     gridcloneGroup.draggable(true);
-                    canvasGridLayer.add(gridcloneGroup);
+                    textlayer.add(gridcloneGroup);
+                    textlayer.draw();
                     val.attrs.selected = '';
                     positionXY.push(`{"x":${val.attrs.x},"y":${val.attrs.y}}`)
                     $( selected_rect ).each(function(key, rect) {
@@ -250,7 +252,7 @@ $( window ).on( "load", function() {
                         rect.attrs.shadowEnabled = true;
                         rect.attrs.shadowColor = gridShadowColor;
                         rect.attrs.shadowOffset = {  x: 3,   y: 3 };
-                        canvasGridLayer.draw();
+                        textlayer.draw();
                       }
                      });
                     val.destroy();
@@ -259,38 +261,36 @@ $( window ).on( "load", function() {
               r2.visible(true);
          break;
          case 'back_stich':
-             var line = canvasGridLayer.find("Line");
+             var line = textlayer.find("Line");
              line[line.length-1].attrs.drawLine = false;
          break;
          default:
          // stage.container().style.cursor = 'pointer';
        }
     })
-    canvasGridLayer.on('mouseover', function(evt) {
+    stage.on('mouseover', function(evt) {
       if (isMouseDown)
       {
         box = evt.target;
         switch (mode)
         {
            case 'pencil':
-             if(box.attrs.filled === false)
+             if(box.attrs.filled !== true)
              {
-                 box.shadowEnabled(false);
-                 text = new Konva.Text({
-                   text: 'X',
-                   x: box.attrs.x,
-                   y: box.attrs.y,
-                   fontFamily: 'sans-serif',
-                   fontSize: txtFillSize,
-                   fill: textFillColor,
-                   fontStyle : 'normal',
-                   filled : true,
-                   transformsEnabled : 'position'
-                 });
-                 box.attrs.filled = true;
-                 box.height = text.getHeight();
-                 gridTextGroup.add(text);
-                 text.draw();
+                text = new Konva.Text({
+                 text: 'X',
+                 x: box.attrs.x,
+                 y: box.attrs.y,
+                 fontFamily: 'sans-serif',
+                 fontSize: txtFillSize,
+                 fill: textFillColor,
+                 fontStyle : 'normal',
+                 filled : true,
+                 transformsEnabled : 'position'
+               });
+               gridTextGroup.add(text);
+               textlayer.add(gridTextGroup)
+               text.draw();
              }
              if(box.className === 'Rect' && box.attrs.filled === true)
              {
@@ -298,26 +298,24 @@ $( window ).on( "load", function() {
              }
            break;
            case 'eraser':
-               if(box.className === 'Rect' && box.attrs.filled === true)
-               {
-                  var textList = canvasGridLayer.find("Text");
-                  $( textList ).each(function(key, val) {
-                    if(val.x() === box.x() && val.y() === box.y())
-                      {
-                        val.destroy();
-                      }
-                 });
-                 box.attrs.filled = false;
-                 box.shadowEnabled(true);
-               }
-               var lineList = canvasGridLayer.find("Line");
+           if(box.attrs.filled == true)
+             {
+                var textList = textlayer.find("Text");
+                $( textList ).each(function(key, val) {
+                     if(evt.target.className == 'Text')
+                     {
+                       evt.target.destroy();
+                     }
+               });
+             }
+               var lineList = textlayer.find("Line");
                   $( lineList ).each(function(key, val) {
                     if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
                     {
                       val.destroy();
                     }
                  });
-                canvasGridLayer.draw();
+                textlayer.batchDraw();
            break;
            case 'select_shape':
              updateDrag({x: Math.round(box.attrs.x / gridSize) * gridSize, y: Math.round(box.attrs.y / gridSize) * gridSize},false)
@@ -325,7 +323,7 @@ $( window ).on( "load", function() {
            case 'back_stich':
                points=[];
 
-               var line = canvasGridLayer.find("Line");
+               var line = textlayer.find("Line");
 
                var last_two_values = line[line.length-1].points().slice(-2);
 
@@ -341,7 +339,7 @@ $( window ).on( "load", function() {
                       tension: 0,
                       perfectDrawEnabled: false,
                   });
-                  canvasGridLayer.add(line);
+                  textlayer.add(line);
                   line.draw();
                }
            break;
@@ -442,7 +440,7 @@ $( window ).on( "load", function() {
             z++;
         })
 
-        var RectList = canvasGridLayer.find("Rect");
+        var RectList = stage.find("Rect");
         $( RectList ).each(function(key, rectval)
         {
            var xY = `{x : ${rectval.attrs.x},y : ${rectval.attrs.y}}`
@@ -479,13 +477,13 @@ $( window ).on( "load", function() {
               tension: fillLineArrGp[t]['ntension'],
               perfectDrawEnabled: fillLineArrGp[t]['npdraw'],
           });
-          canvasGridLayer.add(line);
+          textlayer.add(line);
           line.draw();
         }
         gridcloneGroup.destroy();
         gridcloneGroup.clearCache();
-        canvasGridLayer.clearCache();
-        canvasGridLayer.draw();
+        textlayer.clearCache();
+        textlayer.draw();
         positionXY = [];
         mode = '';
         $('.toolbar_list li').removeClass('active');
@@ -506,20 +504,21 @@ $( window ).on( "load", function() {
        r2.height(posRect.y2 - posRect.y1);
        r2.visible(true);
        if(updateSelect == true){
-         var textList = canvasGridLayer.find("Text");
+         var textList = textlayer.find("Text");
          $( textList ).each(function(key, val) {
            if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
-             val.attrs.selected = 'selected';
-           }
+               val.setAttr('selected','select');
+            }
+          // console.log(val.attrs);
          })
-         var lineList = canvasGridLayer.find("Line");
+         var lineList = textlayer.find("Line");
          $( lineList ).each(function(key, lineval) {
            if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height)){
              lineval.attrs.selected = 'selected';
            }
          })
        }
-       canvasGridLayer.draw(); // redraw any changes.
+       textlayer.draw(); // redraw any changes.
     }
 
     function reverse(r1, r2){
@@ -549,23 +548,25 @@ $( window ).on( "load", function() {
     /*  Select Tool Functionality ends here!  */
 
     /*  Layer2 Create a grid on canvas work ends here!*/
-    canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup,gridHiddenTextGroup);     // Add Groups to layer
-    stage.add(backgroundCanvas,canvasGridLayer,newlayer);          // Add Layer to stage
+    canvasGridLayer.add(gridRectGroup,gridCircleGroup);     // Add Groups to layer
+    textlayer.add(gridcloneGroup);
+    stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
     json = stage.toJSON();      // Save entire canvas as json
     $("#download_canvas").click(function(){
       // newjson = stage.toJSON();
       // console.log(newjson);
-
-      backgroundCanvas.cache();
-      backgroundCanvas.filters([Konva.Filters.Grayscale]);
       canvasGridLayer.cache();
       canvasGridLayer.filters([Konva.Filters.Grayscale]);
-      stage.add(backgroundCanvas, canvasGridLayer)
+      stage.add(canvasGridLayer)
+      textlayer.cache();
+      textlayer.filters([Konva.Filters.Grayscale]);
+      stage.add(canvasGridLayer,textlayer)
       jsonStage = stage.toDataURL();
       save_canvas(jsonStage);
-      backgroundCanvas.clearCache();
       canvasGridLayer.clearCache();
-      stage.add(backgroundCanvas,canvasGridLayer)
+      textlayer.clearCache();
+      stage.add(canvasGridLayer,textlayer)
+
     })
 
 /*  Text Popup script starts  */
@@ -829,7 +830,7 @@ $( window ).on( "load", function() {
             posmin = 300;
           }
 
-          canvasGridLayer.addEventListener("mousemove", function setMousePosition(e){
+          stage.addEventListener("mousemove", function setMousePosition(e){
             mouseX = e.layerX - canvasPos.x-posmin;
             mouseY = e.layerY - canvasPos.y-posmin;
             if(toAnimate){
@@ -842,7 +843,7 @@ $( window ).on( "load", function() {
             mode = $("#select_shape").data('mode')
           }, 2000);
 
-          canvasGridLayer.addEventListener("click", stopfollow);
+          stage.addEventListener("click", stopfollow);
     }
     function getPosition(el)
     {
@@ -897,7 +898,7 @@ $( window ).on( "load", function() {
       var groups = stage.find(node => {
         return node.getType() === 'Group';
       });
-      var RectList = canvasGridLayer.find("Rect");
+      var RectList = stage.find("Rect");
 
       $( groups).each(function(key, val) {
           if(val.attrs.name === "sampleGroupCloned")
@@ -978,6 +979,7 @@ $( window ).on( "load", function() {
         doc.addImage(jsonStage, 'JPEG', 15, 40, 180, 100);
         doc.save('pattern.pdf');
     }
+
 
     /*  Text popup ends here  */
       /*   Loader on page load  */
