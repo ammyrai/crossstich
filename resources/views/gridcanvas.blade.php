@@ -34,7 +34,17 @@
                     <li class="canvas_tool" id="refresh_canvas" data-mode="refresh" title="Refresh">
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </li>
+                    <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                    </li>
+                    <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
+                        <i class="fa fa-upload" aria-hidden="true"></i>
+                    </li> -->
+                    <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    </li>
                   </ul>
+
                       <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
                           <option value="#E7D6C1" data-type="">Yellow Beige Lt</option>
                           <option value="#D8BC9A" data-type="">Yellow Beige Md</option>
@@ -54,19 +64,14 @@
                           <option value="#FFFFFF" data-type="">B5200</option>
                           <option value="#000000" data-type="">310</option>
                         </select>
-                  <!-- <p class="font-weight-bold text-left">
-                    Click to change text color
-                  </p>
-                  <div class="text_color_pattel_container text-left" id="">
-                  </div> -->
                 </div>
         </div>
     </div>
 </div>
-
+<img src="" id="canvasimg"/>
 <div id="loader"></div>
 
-<!-- Modal -->
+<!-- Text Modal -->
 <div id="textModal" class="modal fade">
     <div class="modal-dialog">
         <div class="col-md-12 modal-content">
@@ -176,6 +181,33 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<!-- Upload Modal -->
+<div id="uploadModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="col-md-12 modal-content">
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Open file</h4> -->
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" id="uploadForm">
+              <div class="form-group">
+                    <label class="control-label col-sm-4" for="open file">Open File</label>
+                    <div class="col-sm-8">
+                      <input type='file' id="upload_file">
+                    </div>
+                </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button id="cloneSampleText" type="button" class="btn btn-primary">Ok</button>
+            </div> -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 </div>
 @endsection
@@ -186,20 +218,17 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('js/custom_canvas.js') }}" defer></script>
 <script src="{{ asset('js/selectstyle.js') }}" defer></script>
-
 <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
 
  <script>
  jQuery(document).ready(function($) {
-
   $('#selectTxtColor').selectstyle({
     width  : 400,
     height : 300,
     theme  : 'light',
     onchange : function(val){}
   });
-
  });
 
  </script>

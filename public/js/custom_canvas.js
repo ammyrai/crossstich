@@ -552,7 +552,12 @@ $( window ).on( "load", function() {
     canvasGridLayer.add(gridRectGroup,gridCircleGroup,gridTextGroup,gridHiddenTextGroup);     // Add Groups to layer
     stage.add(backgroundCanvas,canvasGridLayer,newlayer);          // Add Layer to stage
     json = stage.toJSON();      // Save entire canvas as json
-
+    $("#download_canvas").click(function(){
+      // newjson = stage.toJSON();
+      // console.log(newjson);
+      jsonStage = stage.toDataURL();
+      save_canvas(jsonStage);
+    })
 
 /*  Text Popup script starts  */
 /*  Text field value on keyup  */
@@ -957,6 +962,14 @@ $( window ).on( "load", function() {
       });
       toAnimate = false;
     }
+
+    function save_canvas(jsonStage)
+    {
+      var doc = new jsPDF();
+        doc.addImage(jsonStage, 'JPEG', 15, 40, 180, 100);
+        doc.save('pattern.pdf');
+    }
+
     /*  Text popup ends here  */
       /*   Loader on page load  */
     var myVar = setTimeout(function(){
