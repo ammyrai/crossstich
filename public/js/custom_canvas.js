@@ -555,8 +555,17 @@ $( window ).on( "load", function() {
     $("#download_canvas").click(function(){
       // newjson = stage.toJSON();
       // console.log(newjson);
+
+      backgroundCanvas.cache();
+      backgroundCanvas.filters([Konva.Filters.Grayscale]);
+      canvasGridLayer.cache();
+      canvasGridLayer.filters([Konva.Filters.Grayscale]);
+      stage.add(backgroundCanvas, canvasGridLayer)
       jsonStage = stage.toDataURL();
       save_canvas(jsonStage);
+      backgroundCanvas.clearCache();
+      canvasGridLayer.clearCache();
+      stage.add(backgroundCanvas,canvasGridLayer)
     })
 
 /*  Text Popup script starts  */
