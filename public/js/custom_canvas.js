@@ -246,7 +246,13 @@ $( window ).on( "load", function() {
                     textlayer.draw();
                     val.attrs.selected = '';
                     positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
-
+                    $( selected_rect ).each(function(key, rect) {
+                      if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                      {
+                        rect.attrs.filled = false;
+                        textlayer.draw();
+                      }
+                     });
                     val.destroy();
                   }
               })
