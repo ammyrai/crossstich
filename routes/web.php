@@ -25,3 +25,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/upload_pattern', 'UploadPatternController@index');
+
+Route::post('create', ['as' => 'create', 'uses' => 'UploadPatternController@create']);
+
+
+Route::get('/gallery', 'GalleryController@index')->name('gallery');
+Route::get('/mypattern', 'GalleryController@mypattern')->name('mypattern');

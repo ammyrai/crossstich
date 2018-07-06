@@ -11,9 +11,4 @@ class GridCanvasController extends Controller
     {
       return view('gridcanvas');
     }
-    // public function gridview()
-    // {
-    //   // $formData = $request->all(); // the facade
-    //   return view('gridcanvas');
-    // }
 }

@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -37,6 +37,13 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+      $storage =  "<script> document.write(localStorage.getItem('stage_image_url')); </script>";
+      if (isset($storage)) {
+         $this->redirectTo = '/upload_pattern';
+      }
+      else {
+         $this->redirectTo = '/home';
+      }
         $this->middleware('guest');
     }
 

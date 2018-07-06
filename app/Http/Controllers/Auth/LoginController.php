@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '';
 
     /**
      * Create a new controller instance.
@@ -34,6 +34,12 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $storage =  "<script> document.write(localStorage.getItem('stage_image_url')); </script>";
+         $nextPage = '/home';
+        if ($storage !== ' ') {
+          $nextPage = '/upload_pattern';
+        }
+          $this->redirectTo = $nextPage;
         $this->middleware('guest')->except('logout');
     }
 }

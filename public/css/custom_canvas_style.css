@@ -236,3 +236,22 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
     background: #4CAF50;
     cursor: pointer;
 }
+
+
+ul.gallery {
+    list-style: none;
+    float: left;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.gallery li {
+    width: 33%;
+    float: left;
+    margin: 0 0 10px 0;
+}
+.gallery li span {
+    float: left;
+    width: 100%;
+    text-align: left;
+}

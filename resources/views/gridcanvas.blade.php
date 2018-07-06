@@ -44,6 +44,7 @@
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
                     </li>
                   </ul>
+                    <input type="hidden" name="upload_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
 
                       <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
                           <option value="#E7D6C1" data-type="">Yellow Beige Lt</option>
