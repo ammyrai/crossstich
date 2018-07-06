@@ -20,7 +20,9 @@
                 <li>
                 <img src="{{ $image->pattern_img }}" width="150px" height="150px"/>
                 <span>{{ $image->pattren_name }}</span>
-                <span>{{ $image->pattern_info }}</span>
+                @if( !empty($image->pattern_info))
+                  <span>{!! substr($image->pattern_info, 0, 15) !!}</span>
+                @endif
               </li>
             @endforeach
           </ul>

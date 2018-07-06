@@ -49,6 +49,11 @@ class UploadPatternController extends Controller
         else {
             $status = 0;
         }
+        $designinfo = $request->input('proinfo');
+        if($designinfo == '')
+        {
+          $designinfo = '';
+        }
         $patternDesign = new UploadPattern();
         //On left field name in DB and on right field name in Form/view
         $rand = rand(10,100).time();
@@ -62,7 +67,7 @@ class UploadPatternController extends Controller
         \File::put(public_path(). '/uploads/' . $imageName, base64_decode($image));
         $patternDesign->user_id = $id;
         $patternDesign->pattren_name = $request->input('pattername');
-        $patternDesign->pattern_info = $request->input('proinfo');
+        $patternDesign->pattern_info = $designinfo;
         $patternDesign->pattern_img = $imgPath;
         $patternDesign->pattern_status = $status;
         $patternDesign->save();

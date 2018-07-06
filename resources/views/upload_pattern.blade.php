@@ -13,8 +13,8 @@
           <form action="{{ route('create') }}" method="post">
             {{ csrf_field() }}
               <div class="form-group">
-                <label for="email">Pattern Name:</label>
-                <input type="text" class="form-control" id="patternname" name="pattername">
+                <label for="email">Pattern Name<span class="required_field">*</span> :</label>
+                <input type="text" class="form-control" id="patternname" name="pattername" required>
               </div>
               <div class="form-group">
                 <label for="pwd">Info about your project:</label>
