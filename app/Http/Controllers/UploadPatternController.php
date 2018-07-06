@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 use App\UploadPattern;
+use URL;
 
 class UploadPatternController extends Controller
 {
@@ -50,10 +51,19 @@ class UploadPatternController extends Controller
         }
         $patternDesign = new UploadPattern();
         //On left field name in DB and on right field name in Form/view
+        $rand = rand(10,100).time();
+
+        $image = $request->input('designimage'); // your base64 encoded
+        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        $imageName = 'test'.$rand.$id.'.png';
+        $url = URL::to("/uploads/");
+        $imgPath = $url.'/'.$imageName;
+        \File::put(public_path(). '/uploads/' . $imageName, base64_decode($image));
         $patternDesign->user_id = $id;
         $patternDesign->pattren_name = $request->input('pattername');
         $patternDesign->pattern_info = $request->input('proinfo');
-        $patternDesign->pattern_img = $request->input('designimage');
+        $patternDesign->pattern_img = $imgPath;
         $patternDesign->pattern_status = $status;
         $patternDesign->save();
         return redirect('/mypattern');

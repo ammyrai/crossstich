@@ -14,6 +14,7 @@
               Gallery
           </h1>
           <br/>
+
           <ul class="gallery">
             @foreach($allimages as $image)
                 <li>

@@ -119,8 +119,8 @@ $( window ).on( "load", function() {
               lineDraw: false
           });
           circle = new Konva.Circle({
-            x: box.attrs.x,
-            y: box.attrs.y,
+            x: box.x(),
+            y: box.y(),
             radius: cr,
             stroke: circleStrokeColor,
             strokeWidth: 1,
@@ -180,7 +180,6 @@ $( window ).on( "load", function() {
                      evt.target.destroy();
                  }
                  box.attrs.filled = false;
-                 box.shadowEnabled(true);
                }
                if(evt.target.className === 'Line')
                {
@@ -991,7 +990,6 @@ $( window ).on( "load", function() {
         doc.addImage(jsonStage, 'JPEG', 15, 40, 180, 100);
         doc.save('pattern.pdf');
     }
-
 
     /*  Text popup ends here  */
       /*   Loader on page load  */
