@@ -246,12 +246,21 @@ ul.gallery {
     padding: 0;
 }
 .gallery li {
-    width: 33%;
+    width: 24%;
     float: left;
-    margin: 0 0 10px 0;
+    margin: 0 7px 10px 0;
+}
+.gallery li img {
+    width: 175px;
 }
 .gallery li span {
     float: left;
     width: 100%;
     text-align: left;
+    background-color: #000;
+    opacity: 0.2;
+    margin-top: 5px;
+    padding: 5px;
+    color: #fff;
+    font-size: 16px;
 }
