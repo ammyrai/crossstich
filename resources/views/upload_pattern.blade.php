@@ -24,6 +24,7 @@
                 <label><input type="checkbox" name="prostatus"> Tick to request this is published to our public gallery (please ensure you have copyright permissions for any copyrighted source images used).</label>
               </div>
               <textarea name='designimage' id="designImg" style="display:none"></textarea>
+              <textarea name='canvasdata' id="canvasData" style="display:none"></textarea>
               <button type="submit" class="btn btn-default">Submit</button>
               </form>
         </div>
@@ -32,6 +33,7 @@
 <script>
   window.onload = function() {
     document.getElementById("designImg").value = localStorage.getItem('stage_image_url');
+    document.getElementById("canvasData").value = localStorage.getItem('stage_json');
   }
 </script>
 @endsection
