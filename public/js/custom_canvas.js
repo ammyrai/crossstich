@@ -498,13 +498,10 @@ $( window ).on( "load", function() {
                      grup.destroy();
                      textlayer.draw();
                      positionXY = [];
-                     mode = '';
-                     $('.toolbar_list li').removeClass('active');
                  });
              }
         });
     }
-
 
     function startDrag(posIn){
       posStart = {x: posIn.x, y: posIn.y};
