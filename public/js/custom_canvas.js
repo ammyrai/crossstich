@@ -254,9 +254,7 @@ $( window ).on( "load", function() {
                     $( selected_rect ).each(function(key, rect) {
                       if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
                       {
-                        console.log(rect.attrs.filled);
                         rect.setAttr('filled', false);
-                        console.log(rect.attrs.filled);
                         textlayer.draw();
                       }
                      });
@@ -528,7 +526,6 @@ $( window ).on( "load", function() {
          var textList = textlayer.find("Text");
          $( textList ).each(function(key, val) {
            if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
-             console.log(r2.x(), r2.y())
                val.setAttr('selected','select');
                selected_rect.push(r2);
             }
