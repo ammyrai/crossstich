@@ -68,7 +68,9 @@ class GalleryController extends Controller
      */
     public function edit($id)
     {
-        //
+      $pattern = UploadPattern::findOrFail($id);
+
+      return view('patternedit', array('pattern' => $pattern, 'title' => 'Edit Pattern'));
     }
 
     /**
