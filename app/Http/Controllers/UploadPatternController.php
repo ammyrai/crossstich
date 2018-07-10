@@ -136,6 +136,6 @@ class UploadPatternController extends Controller
      */
     public function destroy($id)
     {
-        //
+          
     }
 }

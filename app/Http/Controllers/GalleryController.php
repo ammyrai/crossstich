@@ -91,6 +91,7 @@ class GalleryController extends Controller
      */
     public function destroy($id)
     {
-        //
+          UploadPattern::destroy($id);
+          return redirect('/mypattern')->with('success','Pattern deleted successfully');
     }
 }

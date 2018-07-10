@@ -124,6 +124,8 @@ $( window ).on( "load", function() {
             radius: cr,
             stroke: circleStrokeColor,
             strokeWidth: 1,
+            fillEnabled: false,
+            listening: false,
           });
           canvasGridLayer.add(box);                   // Add rectangle to group
           canvasGridLayer.add(circle);             // Add rectangle to background layer
@@ -340,8 +342,9 @@ $( window ).on( "load", function() {
                        {
                          evt.target.destroy();
                        }
+                       box.setAttr('filled', false);
                  });
-                 box.setAttr('filled', false);
+
                }
                var lineList = textlayer.find("Line");
                   $( lineList ).each(function(key, val) {

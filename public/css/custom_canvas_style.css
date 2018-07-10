@@ -242,7 +242,6 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
     cursor: pointer;
 }
 
-
 ul.gallery {
     list-style: none;
     float: left;
@@ -255,10 +254,15 @@ ul.gallery {
     float: left;
     margin: 0 7px 10px 0;
 }
-.gallery li img {
+.gallery li .pattern_details {
+    float: left;
+    width: 100%;
+    height: 229px;
+}
+.gallery li .pattern_details img {
     width: 175px;
 }
-.gallery li span {
+.gallery li .pattern_details span {
     float: left;
     width: 100%;
     text-align: left;
@@ -268,4 +272,26 @@ ul.gallery {
     padding: 5px;
     color: #fff;
     font-size: 16px;
+}
+
+.actions {
+    float: left;
+    width: 100%;
+    height: 20px;
+    margin: 10px 0 7px 0;
+}
+.actions a {
+    float: left;
+    width: 20%;
+}
+.actions form {
+    float: right;
+    width: 75%;
+}
+.actions form  input[type="submit"] {
+    background: none;
+    border: none;
+    color: #337ab7;
+    padding: 0;
+    margin: 0;
 }
