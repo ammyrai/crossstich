@@ -141,7 +141,7 @@ $( window ).on( "load", function() {
     /*   Change tool mode function ends here!   */
 
     // draw a rectangle to be used as the rubber area
-    var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0,strokeWidth:0.8, stroke: '#2c2c25', dash: [5,6], name:'selectShape'})
+    var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, strokeWidth:0.8, stroke: '#2c2c25', dash: [5,6], name:'selectShape'})
     r2.listening(false); // stop r2 catching our mouse events.
     gridSelectGroup.add(r2);
 
