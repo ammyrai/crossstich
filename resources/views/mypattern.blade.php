@@ -30,16 +30,9 @@
                   @endif
                 </div>
                 <div class="actions">
-                <a href="">Edit</a> |
+                <!-- <a href="">Edit</a> | -->
                     <!-- Delete should be a button -->
-                   {!! Form::open(array(
-                           'method' => 'DELETE',
-                           'route' => ['delete', $image->id],
-                           'onsubmit' => "return confirm('Are you sure you want to delete?')",
-                       ))
-                   !!}
-                       {!! Form::submit('Delete') !!}
-                   {!! Form::close() !!}
+                  
                    <!-- End Delete button -->
                  </div>
               </li>
