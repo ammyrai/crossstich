@@ -223,22 +223,48 @@ $( window ).on( "load", function() {
       switch (mode)
       {
          case 'select_shape':
-             updateDrag({x: box.x(), y: box.y()},true);
-             var gridcloneGroup = new Konva.Group({name:"selectCloneGrup"});  // Group to clone text and lines for select shape
-             var lineList = textlayer.find("Line");
-             $( lineList ).each(function(key, lineval)
-             {
-                 if(lineval.attrs.selected === 'selected')
-                 {
-                       var cloneline  = lineval.clone({name :'cloneLine',selected : ''});
-                       gridcloneGroup.add(cloneline);
-                       gridcloneGroup.draggable(true);
-                       textlayer.add(gridcloneGroup);
-                       lineval.setAttr('selected', '');
-                       lineval.destroy();
-                       textlayer.draw();
-                 }
-             });
+               updateDrag({x: box.x(), y: box.y()},true);
+               var gridcloneGroup = new Konva.Group({name:"selectCloneGrup"});  // Group to clone text and lines for select shape
+               gridcloneGroup.destroy();
+               textlayer.draw();
+               var lineList = textlayer.find("Line");
+               $( lineList ).each(function(key, lineval)
+               {
+                   if(lineval.attrs.selected === 'selected')
+                   {
+                         var cloneline  = lineval.clone({name :'cloneLine',selected : ''});
+                         gridcloneGroup.add(cloneline);
+                         gridcloneGroup.draggable(true);
+                         textlayer.add(gridcloneGroup);
+                         lineval.setAttr('selected', '');
+                         lineval.destroy();
+                         textlayer.draw();
+                   }
+               });
+              var rectList = stage.find("Rect");
+              $( rectList ).each(function(key, rval)
+              {
+                  if(rval.name() !== 'selectShape')
+                  {
+                      if(rval.attrs.selected === 'select')
+                      {
+                          var clonerect  = rval.clone({ x: rval.x(), y: rval.y(), name :'cloneRect',selected : '',shadowEnabled:false,strokeEnabled:false });
+                          gridcloneGroup.add(clonerect);
+                          gridcloneGroup.draggable(true);
+                          textlayer.add(gridcloneGroup);
+                          textlayer.draw();
+                          rval.setAttr('selected', '');
+                          // positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
+                          $( selected_rect ).each(function(key, rect) {
+                            if(rect.attrs.x === rval.attrs.x && rect.attrs.y === rval.attrs.y)
+                            {
+                              rect.setAttr('filled', false);
+                              textlayer.draw();
+                            }
+                           });
+                      }
+                  }
+              })
               var textList = textlayer.find("Text");
               $( textList ).each(function(key, val) {
                 if(val.attrs.selected === 'select')
@@ -250,7 +276,6 @@ $( window ).on( "load", function() {
                     textlayer.draw();
                     val.setAttr('selected', '');
                     positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
-
                     $( selected_rect ).each(function(key, rect) {
                       if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
                       {
@@ -408,7 +433,7 @@ $( window ).on( "load", function() {
                            }
                            fillLineArrGp.push(obj);
                          }
-                         else
+                         else if(val.className === "Text")
                          {
                              var xPosition ;
                              var yPosition;
@@ -457,7 +482,6 @@ $( window ).on( "load", function() {
                          }
                          z++;
                      })
-
                      var RectList = stage.find("Rect");
                      $( RectList ).each(function(key, rectval)
                      {
@@ -523,19 +547,37 @@ $( window ).on( "load", function() {
        r2.height(posRect.y2 - posRect.y1);
        r2.visible(true);
        if(updateSelect == true){
-         var textList = textlayer.find("Text");
-         $( textList ).each(function(key, val) {
-           if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
-               val.setAttr('selected','select');
-               selected_rect.push(r2);
-            }
-         })
-         var lineList = textlayer.find("Line");
-         $( lineList ).each(function(key, lineval) {
-           if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height)){
-             lineval.setAttr('selected', 'selected');
+         /* Find and push selected rect  */
+         var stageRectList = stage.find("Rect");
+         $( stageRectList ).each(function(key, rectval)
+         {
+           if(rectval.name() !== 'selectShape')
+           {
+               if(rectval.attrs.x >= r2.attrs.x && rectval.attrs.x < (r2.attrs.x+r2.attrs.width) && rectval.attrs.y >= r2.attrs.y && rectval.attrs.y < (r2.attrs.y+r2.attrs.height))
+               {
+                   rectval.setAttr('selected','select');
+                   selected_rect.push(rectval);
+               }
            }
          })
+         /* Find and push selected text  */
+         var textList = textlayer.find("Text");
+         $( textList ).each(function(key, val)
+         {
+             if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
+             {
+                 val.setAttr('selected','select');
+             }
+         });
+         /* Find and push selected lines  */
+         var lineList = textlayer.find("Line");
+         $( lineList ).each(function(key, lineval)
+         {
+             if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height))
+             {
+               lineval.setAttr('selected', 'selected');
+             }
+         });
        }
        textlayer.draw(); // redraw any changes.
     }
