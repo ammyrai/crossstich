@@ -469,15 +469,15 @@ $( window ).on( "load", function() {
                                if(val.className === "Text" && val.attrs.x == rectval.attrs.x && val.attrs.y == rectval.attrs.y)
                               {
                                     text = new Konva.Text({
-                                      text: 'X',
+                                      text: val.text(),
                                       x: rectval.x(),
                                       y: rectval.y(),
-                                      fontFamily: 'sans-serif',
-                                      fontSize: txtFillSize,
-                                      fill: textFillColor,
-                                      fontStyle : 'normal',
+                                      fontFamily: val.fontFamily(),
+                                      fontSize: val.fontSize(),
+                                      fill: val.fill(),
+                                      fontStyle : val.fontStyle(),
                                       filled : true,
-                                      transformsEnabled : 'position'
+                                      transformsEnabled : val.transformsEnabled()
                                     });
                                     gridTextGroup.add(text);
                                     rectval.setAttr('filled', true);
@@ -960,8 +960,9 @@ $( window ).on( "load", function() {
         /*  Layer2 Create a grid on canvas work ends here!*/
         textlayer.add(gridTextGroup,gridSelectGroup);
         stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
-        json = stage.toJSON();      // Save entire canvas as json
+
         $("#download_canvas").click(function(){
+          console.log(stage.toJSON())
           canvasGridLayer.cache();
           canvasGridLayer.filters([Konva.Filters.Grayscale]);
           textlayer.cache();
