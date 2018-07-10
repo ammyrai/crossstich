@@ -171,6 +171,10 @@ $( window ).on( "load", function() {
                    box.setAttr('filled', true);
                    text.draw();
                 }
+                if(box.className === 'Rect' && box.attrs.filled === true)
+                {
+                   selected_rect.push(box);
+                }
            break;
            case 'eraser':
                if(box.attrs.filled === true)
@@ -246,10 +250,13 @@ $( window ).on( "load", function() {
                     textlayer.draw();
                     val.setAttr('selected', '');
                     positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
+
                     $( selected_rect ).each(function(key, rect) {
                       if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
                       {
+                        console.log(rect.attrs.filled);
                         rect.setAttr('filled', false);
+                        console.log(rect.attrs.filled);
                         textlayer.draw();
                       }
                      });
@@ -359,9 +366,9 @@ $( window ).on( "load", function() {
         {
             if(grup.name() === "selectCloneGrup")
              {
-                 grup.on('dragstart', function(e) {
+                 grup.on('dragstart', function(e)
+                 {
                      r2.visible(false);
-                     selected_rect = [];
                      posStart ='';
                      posNow = '';
                  });
@@ -521,9 +528,10 @@ $( window ).on( "load", function() {
          var textList = textlayer.find("Text");
          $( textList ).each(function(key, val) {
            if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height)){
+             console.log(r2.x(), r2.y())
                val.setAttr('selected','select');
+               selected_rect.push(r2);
             }
-          // console.log(val.attrs);
          })
          var lineList = textlayer.find("Line");
          $( lineList ).each(function(key, lineval) {
@@ -850,7 +858,6 @@ $( window ).on( "load", function() {
 
               var offsetParent = el.content.offsetParent;
               while (el) {
-                // console.log(el)
                 xPosition += (offsetLeft - scrollLeft + clientLeft);
                 yPosition += (offsetTop - scrollTop + clientTop);
                 el = offsetParent;
