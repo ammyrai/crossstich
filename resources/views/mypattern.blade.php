@@ -22,7 +22,6 @@
               var myVar = setTimeout(function(){
                     document.getElementById("patternDeleteMsg").style.display = "none";
                   }, 1000);
-
               </script>
           @endif
           <ul class="gallery">
