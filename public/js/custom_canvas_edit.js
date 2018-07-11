@@ -1009,12 +1009,12 @@ $( window ).on( "load", function() {
         }
 
         /*  Text popup ends here  */
-
+        var myVar = setTimeout(function(){
+            $("#loader").hide();
+            $("#myDiv").show();
+            $("#editDesignMsg").hide();
+          }, 3000);
     });
     /*   Loader on page load  */
-    var myVar = setTimeout(function(){
-        $("#loader").hide();
-        $("#myDiv").show();
-        $("#editDesignMsg").hide();
-      }, 2000);
+
   });
