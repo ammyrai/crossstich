@@ -18,11 +18,13 @@
           <ul class="gallery">
             @foreach($allimages as $image)
                 <li>
-                <img src="{{ $image->pattern_img }}" width="150px" height="150px"/>
-                <span>{{ $image->pattren_name }}</span>
-                @if( !empty($image->pattern_info))
-                  <span>{!! substr($image->pattern_info, 0, 15) !!}</span>
-                @endif
+                  <div class="pattern_details">
+                    <img src="{{ $image->pattern_img }}" width="150px" height="150px"/>
+                    <span>{{ $image->pattren_name }}</span>
+                    @if( !empty($image->pattern_info))
+                      <span>{!! substr($image->pattern_info, 0, 15) !!}</span>
+                    @endif
+                  </div>
               </li>
             @endforeach
           </ul>
