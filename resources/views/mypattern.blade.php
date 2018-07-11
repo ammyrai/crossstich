@@ -15,9 +15,15 @@
           </h1>
           <br/>
           @if ($message = Session::get('success'))
-              <div class="alert alert-success">
+              <div class="alert alert-success" id="patternDeleteMsg">
                   <p>{{ $message }}</p>
               </div>
+              <script>
+              var myVar = setTimeout(function(){
+                    document.getElementById("patternDeleteMsg").style.display = "none";
+                  }, 1000);
+
+              </script>
           @endif
           <ul class="gallery">
             @foreach($allimages as $image)
@@ -48,4 +54,5 @@
         </div>
     </div>
 </div>
+
 @endsection
