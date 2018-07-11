@@ -1016,5 +1016,5 @@ $( window ).on( "load", function() {
         $("#loader").hide();
         $("#myDiv").show();
         $("#editDesignMsg").hide();
-      }, 1000);
+      }, 2000);
   });
