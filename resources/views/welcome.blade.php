@@ -19,7 +19,7 @@
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/') }}">Home</a>
                         <a href="{{ route('gallery') }}">Gallery</a>
                     @auth
                         <a href="{{ route('mypattern') }}">My Patterns</a>
