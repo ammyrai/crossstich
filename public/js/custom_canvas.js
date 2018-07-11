@@ -25,7 +25,7 @@ $( window ).on( "load", function() {
         json,                               // Json variable for final canvas output
         cr,                                 // Circle radius variable
         lineStroke,                         // Line width for back stitch
-        txtFillSize = Math.round(gridSize), // Text font size
+        txtFillSize = gridSize, // Text font size
         posStart,                           // Select tool position start
         posNow,                             // Select tool Current position.
         selected_rect = [],                 // For Select Tool
@@ -59,15 +59,15 @@ $( window ).on( "load", function() {
     });
 
     /*  Create Multiple Layers for stage  */
-    backgroundCanvas = new Konva.Layer();        // Layer1 for canvas main background
-    canvasGridLayer = new Konva.Layer();         // Layer2 for canvas Grid
-    var textlayer = new Konva.Layer();           // Layer3 for Text
+    backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
+    canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
+    var textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
     var newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});  // Layer4 for Movement of text for text popup
     /*  Layers creation ends here! */
 
     /*  Create new group  */
-    var gridTextGroup = new Konva.Group();      // Group for all the functionlities
-    var gridSelectGroup = new Konva.Group();    // Group for select shape rectangle.
+    var gridTextGroup = new Konva.Group({name:'textGroup'});      // Group for all the functionlities
+    var gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
     var gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
 
     /*  Layer1 work starts here! */
@@ -82,12 +82,12 @@ $( window ).on( "load", function() {
     /*  Layer1 work ends here! */
 
     /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
-    if(Math.round(gridSize) >= 20)
+    if(gridSize >= 20)
     {
       cr = 2;
       lineStroke = 4;
     }
-    else if(Math.round(gridSize) >= 10)
+    else if(gridSize >= 10)
     {
       cr = 1;
       lineStroke = 3;
@@ -174,17 +174,17 @@ $( window ).on( "load", function() {
                    text.draw();
                    selected_rect.push(box);
                 }
-                if(box.getAttr('filled') === true)
-                {
-                  box.setAttr('filled', false);
-                  textlayer.draw();
-                  if(evt.target.className === 'Text')
-                  {
-                      evt.target.destroy();
-                  }
-                  box.setAttr('filled', false);
-                  textlayer.draw();
-                }
+                // if(box.getAttr('filled') === true)
+                // {
+                //   box.setAttr('filled', false);
+                //   textlayer.draw();
+                //   if(evt.target.className === 'Text')
+                //   {
+                //       evt.target.destroy();
+                //   }
+                //   box.setAttr('filled', false);
+                //   textlayer.draw();
+                // }
            break;
            case 'eraser':
                if(box.getAttr('filled') === true)
@@ -366,8 +366,8 @@ $( window ).on( "load", function() {
                var last_two_values = line[line.length-1].points().slice(-2);
 
                if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined")){
-                 var secondX = nearest(evt.evt.layerX,box.x(),box.x()+Math.round(gridSize));
-                 var secondY = nearest(evt.evt.layerY,box.y(),box.y()+Math.round(gridSize));
+                 var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
+                 var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
                  points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
                  var line = new Konva.Line({
                       points :points,
@@ -866,11 +866,11 @@ $( window ).on( "load", function() {
           var mouseX = 0;
           var mouseY = 0;
           var posmin;
-          if(Math.round(gridSize) >= 20)
+          if(gridSize >= 20)
           {
             posmin = 320;
           }
-          else if(Math.round(gridSize) >= 10)
+          else if(gridSize >= 10)
           {
             posmin = 290;
           }
@@ -1031,6 +1031,7 @@ $( window ).on( "load", function() {
     $("#save_canvas").click(function(){
       localStorage.setItem("stage_image_url", stage.toDataURL());
       localStorage.setItem("stage_json", stage.toJSON());
+      localStorage.setItem("stage_gridsize", gridSize);
       window.location.href = $("#upload_page_url").val();
     })
 

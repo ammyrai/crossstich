@@ -17,10 +17,11 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login')) 
+            @if (Route::has('login'))
                 <div class="top-right links">
-                    @auth
                         <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ route('gallery') }}">Gallery</a>
+                    @auth
                         <a href="{{ route('mypattern') }}">My Patterns</a>
                         <a class="nav-link dropdown-toggle" role="button" >
                             {{ Auth::user()->name }}
@@ -39,7 +40,6 @@
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
                     @endauth
-                    <a href="{{ route('gallery') }}">Gallery</a>
                 </div>
             @endif
             </div>

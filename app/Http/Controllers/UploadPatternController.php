@@ -69,7 +69,7 @@ class UploadPatternController extends Controller
 
         /*  Upload canvas data file */
         $canvasdata = $request->input('canvasdata');
-        $file = 'pattern'.$rand.$id.'.txt';
+        $file = 'pattern'.$rand.$id.'.json';
         \File::put(public_path(). '/uploads/' .$file,$canvasdata);
         $canvasFileLink = $url.'/'.$file;
 
@@ -78,6 +78,7 @@ class UploadPatternController extends Controller
         $patternDesign->pattern_info = $designinfo;
         $patternDesign->pattern_img = $imgPath;
         $patternDesign->canvas_data_link = $canvasFileLink;
+        $patternDesign->canvas_grid_size = $request->input('canvasgridsize');
         $patternDesign->pattern_status = $status;
         $patternDesign->save();
         return redirect('/mypattern');
@@ -136,6 +137,6 @@ class UploadPatternController extends Controller
      */
     public function destroy($id)
     {
-          
+
     }
 }

@@ -25,6 +25,7 @@
               </div>
               <textarea name='designimage' id="designImg" style="display:none"></textarea>
               <textarea name='canvasdata' id="canvasData" style="display:none"></textarea>
+              <input type="text" name='canvasgridsize' id="canvasGridSize" val="" style="display:none">
               <button type="submit" class="btn btn-default">Submit</button>
               </form>
         </div>
@@ -34,6 +35,7 @@
   window.onload = function() {
     document.getElementById("designImg").value = localStorage.getItem('stage_image_url');
     document.getElementById("canvasData").value = localStorage.getItem('stage_json');
+    document.getElementById("canvasGridSize").value = localStorage.getItem('stage_gridsize');
   }
 </script>
 @endsection

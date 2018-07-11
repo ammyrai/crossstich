@@ -36,3 +36,4 @@ Route::get('/mypattern', 'GalleryController@mypattern')->name('mypattern');
 
 Route::delete('/delete/{id}', array('as' => 'delete', 'uses' => 'GalleryController@destroy'));
 Route::get('/pattern/edit/{id}', array('as' => 'edit', 'uses' => 'GalleryController@edit'));
+Route::patch('pattern/update/{id}', array('as' => 'update', 'uses' => 'GalleryController@update'));

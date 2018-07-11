@@ -2,9 +2,8 @@
 <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
 @section('content')
-user id: {{$pattern->user_id}}
-post id : {{$pattern->id}}
 <input type="hidden" name="datafile" id="canvas_data_file" value="{{$pattern->canvas_data_link}}"/>
+<input type="hidden" name="pGridSize" id="pGridSize" value="{{$pattern->canvas_grid_size}}"/>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -12,6 +11,11 @@ post id : {{$pattern->id}}
           <div class="title m-b-md">
               Create your Own Designs
           </div>
+          @if ($message = Session::get('success'))
+              <div class="alert alert-success" id="editDesignMsg">
+                  <p>{{ $message }}</p>
+              </div>
+          @endif
           <div class="canvas_container" style="display:none;" id="myDiv">
               <div class="col-md-10 float-left canvas_content">
                   <div id="canvas"></div>
@@ -43,11 +47,22 @@ post id : {{$pattern->id}}
                     <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
                         <i class="fa fa-upload" aria-hidden="true"></i>
                     </li> -->
+
                     <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
                     </li>
                   </ul>
-                    <input type="hidden" name="upload_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
+                  {!! Form::model($pattern, [
+                      'method' => 'PATCH',
+                      'route' => ['update', $pattern->id],
+                      'id' => 'patternUpdate'
+                  ]) !!}
+                    {!! Form::hidden('userid', null, ['id' => 'userId' ]) !!}
+                    {!! Form::hidden('gridsize', null, ['id' => 'gridsize' ]) !!}
+                    {!! Form::textarea('designimage', null, ['id' => 'designimage','style'=>'display:none']) !!}
+                    {!! Form::textarea('canvasdata', null, ['id' => 'canvasdata','style'=>'display:none']) !!}
+                    {!! Form::submit('Submit', ['class' => 'btn btn-submit','style'=>'display:none']) !!}
+                  {!! Form::close() !!}
 
                       <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
                           <option value="#E7D6C1" data-type="">Yellow Beige Lt</option>
@@ -222,7 +237,7 @@ post id : {{$pattern->id}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('js/custom_canvas_edit.js') }}" defer></script>
 <script src="{{ asset('js/selectstyle.js') }}" defer></script>
-<script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
+<!-- <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script> -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
 
  <script>
