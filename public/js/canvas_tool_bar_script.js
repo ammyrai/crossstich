@@ -127,7 +127,8 @@ $(function() {
   $(".selectstyle").delegate("ul#select_style_ul li", "click", function(e) {
     $(".clothcolorvalidate").hide();
     canvasBgColor = $(this).attr('value');
-    var colorType     = $(this).attr('data-type');
+    var colorType = $(this).attr('data-type');
+    var colorfloss = $(this).attr('data-floss');
     if(colorType == "white" || colorType == "black")        // set default colors if bg is of white or black color
     {
       gridStrokeCPara = '#FFE793';
@@ -152,6 +153,7 @@ $(function() {
       circleFillCPara = ColorLuminance(circleStrokeCPara, 0.10);
     }
     localStorage.setItem("canvasBgColor", canvasBgColor);
+    localStorage.setItem("canvascolorfloss", colorfloss);
     localStorage.setItem("gridStrokeCPara", gridStrokeCPara);
     localStorage.setItem("gridShadowCPara", gridShadowCPara);
     localStorage.setItem("circleStrokeCPara", circleStrokeCPara);

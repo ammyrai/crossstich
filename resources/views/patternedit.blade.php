@@ -1,7 +1,7 @@
 @extends('layouts.app')
+@section('content')
 <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
-@section('content')
 <input type="hidden" name="datafile" id="canvas_data_file" value="{{$pattern->canvas_data_link}}"/>
 <input type="hidden" name="pGridSize" id="pGridSize" value="{{$pattern->canvas_grid_size}}"/>
 <div class="container">
@@ -65,23 +65,25 @@
                   {!! Form::close() !!}
 
                       <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
-                          <option value="#E7D6C1" data-type="">Yellow Beige Lt</option>
-                          <option value="#D8BC9A" data-type="">Yellow Beige Md</option>
-                          <option value="#BC966A" data-type="">Yellow Beige Dk</option>
-                          <option value="#A77C49" data-type="">Yellow Beige V Dk</option>
-                          <option value="#F2E3CE" data-type="">Beige Brown Ult Vy Lt</option>
-                          <option value="#CBB69C" data-type="">Mocha Beige Light</option>
-                          <option value="#FFD7D7" data-type="">Dusty Rose Ult Vy Lt</option>
-                          <option value="#FFFFFF" data-type="">Snow White</option>
-                          <option value="#000000" data-type="">Black</option>
-                          <option value="#E7D6C1" data-type="">3047</option>
-                          <option value="#D8BC9A" data-type="">3046</option>
-                          <option value="#BC966A" data-type="">3045</option>
-                          <option value="#A77C49" data-type="">167</option>
-                          <option value="#F2E3CE" data-type="">543</option>
-                          <option value="#CBB69C" data-type="">3864</option>
-                          <option value="#FFFFFF" data-type="">B5200</option>
-                          <option value="#000000" data-type="">310</option>
+                        <option value="#fcfbf8" data-type="">Ecru</option>
+                        <option value="#ffffff" data-type="">White</option>
+                        <option value="#000000" data-type="">Black</option>
+                        <option value="#c72b3b" data-type="">Red</option>
+                        <option value="#fd5d35" data-type="">Orange</option>
+                        <option value="#ffe300" data-type="">Yellow</option>
+                        <option value="#7fb335" data-type="">Green</option>
+                        <option value="#6b9ebf" data-type="">Blue</option>
+                        <option value="#633666" data-type="">Violet</option>
+
+                        <option value="#fcfbf8" data-type="">Ecru</option>
+                        <option value="#ffffff" data-type="">B5200</option>
+                        <option value="#000000" data-type="">310</option>
+                        <option value="#c72b3b" data-type="">321</option>
+                        <option value="#fd5d35" data-type="">608</option>
+                        <option value="#ffe300" data-type="">973</option>
+                        <option value="#7fb335" data-type="">906</option>
+                        <option value="#6b9ebf" data-type="">826</option>
+                        <option value="#633666" data-type="">327</option>
                         </select>
                 </div>
         </div>
@@ -89,6 +91,8 @@
 </div>
 <img src="" id="canvasimg"/>
 <div id="loader"></div>
+<div class="design_floss_list_style" id="design_floss_list" style="display:none;"></div>
+
 
 <!-- Text Modal -->
 <div id="textModal" class="modal fade">
@@ -229,8 +233,6 @@
 <!-- /.modal -->
 
 </div>
-@endsection
-
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -238,16 +240,19 @@
 <script src="{{ asset('js/custom_canvas_edit.js') }}" defer></script>
 <script src="{{ asset('js/selectstyle.js') }}" defer></script>
 <!-- <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script> -->
+<script src="{{ asset('js/jspdf.debug.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
-
- <script>
- jQuery(document).ready(function($) {
-  $('#selectTxtColor').selectstyle({
-    width  : 400,
-    height : 300,
-    theme  : 'light',
-    onchange : function(val){}
-  });
+<script src="{{ asset('js/jspdf.plugin.from_html.js') }}" defer></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script>
+jQuery(document).ready(function($) {
+ jQuery('#selectTxtColor').selectstyle({
+   width  : 400,
+   height : 300,
+   theme  : 'light',
+   onchange : function(val){}
  });
+});
 
- </script>
+</script>
+@endsection

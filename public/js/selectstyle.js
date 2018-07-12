@@ -29,12 +29,13 @@
 				var $this_a = $(this),
 					val = $this_a.val(),
 					color_type = $this_a.attr('data-type')
+					color_floss = $this_a.attr('data-floss')
 					image = $this_a.attr('data-image'),
 					text = $this_a.html();
 				if(val == null){
 					val = text;
 				}
-				html_op += '<li data-title="'+text+'" data-type="'+color_type+'" value="'+val+'"';
+				html_op += '<li data-title="'+text+'" data-type="'+color_type+'" data-floss="'+color_floss+'" value="'+val+'"';
 				if($this_a.attr('font-family') != null){
 					html_op += ' style="font-family'+$this_a.attr('font-family')+'"';
 				}

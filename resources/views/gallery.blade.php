@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
 <script>

@@ -101,23 +101,14 @@
                                         <h3>Aida Cloth Background Colour Selection</h3>
                                         <div class="selectBgColor">
                                           <select theme="google" width="400" style="" id="clothColorId" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="bgSelect">
-                                          	<option value="#E7D6C1" data-type="light">Yellow Beige Lt</option>
-                                          	<option value="#D8BC9A" data-type="dark">Yellow Beige Md</option>
-                                            <option value="#BC966A" data-type="dark">Yellow Beige Dk</option>
-                                            <option value="#A77C49" data-type="dark">Yellow Beige V Dk</option>
-                                            <option value="#F2E3CE" data-type="light">Beige Brown Ult Vy Lt</option>
-                                            <option value="#CBB69C" data-type="light">Mocha Beige Light</option>
-                                            <option value="#FFD7D7" data-type="light">Dusty Rose Ult Vy Lt</option>
-                                            <option value="#FFFFFF" data-type="white">Snow White</option>
-                                            <option value="#000000" data-type="black">Black</option>
-                                            <option value="#E7D6C1" data-type="light">3047</option>
-                                          	<option value="#D8BC9A" data-type="dark">3046</option>
-                                          	<option value="#BC966A" data-type="dark">3045</option>
-                                          	<option value="#A77C49" data-type="dark">167</option>
-                                          	<option value="#F2E3CE" data-type="light">543</option>
-                                          	<option value="#CBB69C" data-type="light">3864</option>
-                                          	<option value="#FFFFFF" data-type="white">B5200</option>
-                                          	<option value="#000000" data-type="black">310</option>
+                                          	<option value="#fcfcee" data-type="light" data-floss="746">Buttermilk</option>
+                                          	<option value="#fffbef" data-type="light" data-floss="712">Ivory</option>
+                                            <option value="#f8e4c8" data-type="light" data-floss="739">Sandstone</option>
+                                            <option value="#b39f8b" data-type="dark" data-floss="3032">Natural Brown</option>
+                                            <option value="#fcfcee" data-type="light" data-floss="746">746</option>
+                                          	<option value="#fffbef" data-type="light" data-floss="712">712</option>
+                                          	<option value="#f8e4c8" data-type="light" data-floss="739">739</option>
+                                          	<option value="#b39f8b" data-type="dark" data-floss="3032">3032</option>
                                           </select>
                                         </div>
                                         <span class="clothcolorvalidate">Please Select Aida Cloth</span>
