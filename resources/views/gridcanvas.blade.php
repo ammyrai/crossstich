@@ -75,7 +75,6 @@
 <img src="" id="canvasimg"/>
 <div id="loader"></div>
 
-<div class="design_floss_list_style" id="design_floss_list" style="display:none;"></div>
 <!-- Text Modal -->
 <div id="textModal" class="modal fade">
     <div class="modal-dialog">
@@ -215,7 +214,7 @@
 <!-- /.modal -->
 
 </div>
-
+<div id="symbolstage" style="display:none"></div>
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -225,6 +224,7 @@
 <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
 <script src="{{ asset('js/jspdf.debug.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.min.js"></script>
 <script src="{{ asset('js/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
  <script>

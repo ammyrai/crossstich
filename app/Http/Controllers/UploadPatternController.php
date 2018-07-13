@@ -79,6 +79,8 @@ class UploadPatternController extends Controller
         $patternDesign->pattern_img = $imgPath;
         $patternDesign->canvas_data_link = $canvasFileLink;
         $patternDesign->canvas_grid_size = $request->input('canvasgridsize');
+        $patternDesign->canvas_cloth = $request->input('stage_cloth');
+        $patternDesign->canvas_cloth_frame = $request->input('canvasclothframe');
         $patternDesign->pattern_status = $status;
         $patternDesign->save();
         return redirect('/mypattern');

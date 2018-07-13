@@ -4,6 +4,8 @@
 <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
 <input type="hidden" name="datafile" id="canvas_data_file" value="{{$pattern->canvas_data_link}}"/>
 <input type="hidden" name="pGridSize" id="pGridSize" value="{{$pattern->canvas_grid_size}}"/>
+<input type="hidden" name="canvas_cloth" id="canvas_cloth" value="{{$pattern->canvas_cloth}}"/>
+<input type="hidden" name="canvas_cloth_frame" id="canvas_cloth_frame" value="{{$pattern->canvas_cloth_frame}}"/>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -233,6 +235,9 @@
 <!-- /.modal -->
 
 </div>
+<div id="symbolstage" style="display:none"></div>
+
+
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -242,6 +247,7 @@
 <!-- <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script> -->
 <script src="{{ asset('js/jspdf.debug.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.min.js"></script>
 <script src="{{ asset('js/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 <script>

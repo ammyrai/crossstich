@@ -1,0 +1,60 @@
+{
+  "colors":[
+    {
+        "floss" : "Buttermilk",
+        "color_name" : "Buttermilk",
+        "floss_code" : 746,
+        "color_code": "#fcfcee",
+        "color_type": "light"
+    },
+    {
+        "floss" : "Ivory",
+        "color_name" : "Ivory",
+        "floss_code" : 712,
+        "color_code": "#fffbef",
+        "color_type": "light"
+    },
+    {
+        "floss" : "Sandstone",
+        "color_name" : "Sandstone",
+        "floss_code" : 739,
+        "color_code": "#f8e4c8",
+        "color_type": "light"
+    },
+    {
+        "floss" : "Natural Brown",
+        "color_name" : "Natural Brown",
+        "floss_code" : 3032,
+        "color_code": "#b39f8b",
+        "color_type": "dark"
+    },
+    {
+        "floss" : "746",
+        "color_name" : "Buttermilk",
+        "floss_code" : 746,
+        "color_code": "#fcfcee",
+        "color_type": "light"
+    },
+    {
+        "floss" : "712",
+        "color_name" : "Ivory",
+        "floss_code" : 712,
+        "color_code": "#fffbef",
+        "color_type": "light"
+    },
+    {
+        "floss" : 739,
+        "color_name" : "Sandstone",
+        "floss_code" : 739,
+        "color_code": "#f8e4c8",
+        "color_type": "light"
+    },
+    {
+        "floss" : 3032,
+        "color_name" : "Natural Brown",
+        "floss_code" : 3032,
+        "color_code": "#b39f8b",
+        "color_type": "dark"
+    }
+]
+}

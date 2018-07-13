@@ -388,7 +388,6 @@ $( window ).on( "load", function() {
       }
     });
 
-
     /*  Select tool Functionality   */
     function draggroup()
     {
@@ -1015,19 +1014,20 @@ $( window ).on( "load", function() {
 
     $("#download_canvas").click(function(){
 
-      var colorArry = [];
-      var carray = [];
-      var uniqueNames = [];
+      var colorHashMap = {},
+      colorArry=[],
+      backstitch = [],
+      carray = [],
+      uniqueNames = [];
 
-      var bgcolr = backgroundCanvas.find('Rect');
-      uniqueNames.push(bgcolr[0].getAttr('fill'));
-
+      /*  For backstitch */
       var canvasline = textlayer.find('Line');
       if(canvasline.length !== 0)
       {
-          colorArry.push({'Colorcode':'#000000', 'floss':310});
+          backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
       }
 
+      /* For text colors  */
       var canvastext = textlayer.find('Text');
       if(canvastext.length != 0)
       {
@@ -1039,21 +1039,63 @@ $( window ).on( "load", function() {
               if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
           });
       }
-      jQuery.getJSON( "../json/colors.json").then(function(json)
+
+      jQuery.getJSON( "../json/floss.json").then(function(json)
       {
             var data = json.colors;
-            $.each( uniqueNames, function( key, val ) {
-              var val = val;
-              data.find(function(item, i){
-               if(item.color_code === val){
-                 if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                   colorArry.push({'Colorcode':item.color_code, 'floss':item.floss_code});
-                }
-               }
-              });
-          });
-          jsonStage = stage.toDataURL();
-          // save_canvas(jsonStage,colorArry);
+            $.each( uniqueNames, function( key, val )
+            {
+                var val = val;
+                data.find(function(item, i){
+                 if(item.color_code === val){
+                   if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
+                     colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
+                    }
+                    colorHashMap[item.color_code] = {
+                      'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
+                    }
+                 }
+                });
+            });
+
+            var canvasJSON = stage.toJSON();
+            var stageParsedJSON = JSON.parse(canvasJSON);
+            var stageChildren = stageParsedJSON.children;
+
+            for(var i = 0; i < stageChildren.length; i++)
+            {
+                if(stageChildren[i].attrs.name == 'textLayer')
+                {
+                    var tLayer = stageChildren[i];
+                    for(var j = 0; j < tLayer.children.length; j++)
+                    {
+                      if(tLayer.children[j].attrs.name == "textGroup")
+                      {
+                          var textGroup = tLayer.children[j];
+                          var textBlocks = textGroup.children;
+                          textGroup.children = textBlocks.map(function (textBlock)
+                          {
+                              textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
+                              textBlock.attrs.fill = "#000000";
+                              return textBlock
+                          })
+                        break;
+                      }
+                    }
+                  }
+            }
+
+            stageParsedJSON.children = stageChildren
+
+            var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
+            var symbollayer = symbolStage.find('Layer');
+            $(symbollayer).each(function(key,val){
+              val.cache();
+              val.filters([Konva.Filters.Grayscale]);
+              symbolStage.add(val)
+            })
+            jsonStage = symbolStage.toDataURL();
+            save_canvas(jsonStage,colorArry,backstitch);
         });
     })
 
@@ -1061,60 +1103,117 @@ $( window ).on( "load", function() {
       localStorage.setItem("stage_image_url", stage.toDataURL());
       localStorage.setItem("stage_json", stage.toJSON());
       localStorage.setItem("stage_gridsize", gridSize);
+      localStorage.setItem("stage_clothframe", clothframe);
+      localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
       window.location.href = $("#upload_page_url").val();
     })
 
-
-
-    function save_canvas(jsonStage,colorArry)
+    function save_canvas(jsonStage,colorArry,backstitch)
     {
-        var colordataimge = '';
-        $('#design_floss_list').show();
-        var htmlcontent = "<html><body style='padding-top:100px'><ul width='100' style='list-style: none;'>";
-        $(colorArry).each(function(key,val){
-             htmlcontent += "<li style='float: left;width: 100%;margin-bottom: 7px;font-size: 15px;'><span style='background-color:"+ val.Colorcode+"; padding: 0px 13px 5px 9px;margin-right: 7px;border: 1px solid #000;'></span>"+ val.floss+"</li>";
-        })
-         htmlcontent += "</ul></body></html>";
-        $('#design_floss_list').html(htmlcontent);
-        if($('#design_floss_list').html() != '')
-        {
-          html2canvas(document.getElementById("design_floss_list"),
-          {
-              onrendered: function(canvas)
-              {
-                    colordataimge = canvas.toDataURL('image/png');
-                    var doc = new jsPDF();
+        var colordataimge = '',
+        htmlcontent = '',
+        text;
 
-                    var specialElementHandlers = {
-                        '#editor': function(element, renderer){
-                            return true;
-                        },
-                      	'.controls': function(element, renderer){
-                      		return true;
-                      	},
-                        '#bypassme': function(element, renderer) {
-                          return true;
-                          }
-                    };
-                    doc.setFontSize(25);
-                    doc.text(45, 25, "Cross Stitch Pattern Design");
-
-                    doc.addImage(colordataimge, 'JPEG', 35, 40);
-                    h = '';
-                    doc.fromHTML(h, 45, 35, {
-                      'width': 170,
-                      'elementHandlers': specialElementHandlers,
-                    });
-                    doc.addPage('a4','');
-                    doc.addImage(jsonStage, 'JPEG', 15, 40, 180, 100);
-                    doc.save('pattern.pdf');
-                    $('#design_floss_list').html('');
-                    $('#design_floss_list').hide();
-              }
-          });
+        if(colorArry.length != 0){
+          htmlcontent = '<h4>Floss</h4>';
+          htmlcontent += "<table cellpadding='0' cellspacing='0' border='0px'><tr><td height='5px'></td><td height='5px'>DMC</td><td height='5px'>Color</td></tr><tbody>";
+            $(colorArry).each(function(key,val){
+                 htmlcontent += "<tr><td align='right'>"+ val.colorSymbol+"</td><td>"+ val.floss+"</td><td>"+ val.colorName+"</td></tr>";
+            })
+            htmlcontent += "</tbody></table>";
+        }
+        if(backstitch.length != 0){
+            htmlcontent += '<h4>Backstitch</h4>';
+            htmlcontent += '<p>Backstitch floss is :' +backstitch.floss+', Colour is : '+backstitch.colorName+'</p>';
+            htmlcontent += '<p>Backstitch- ' +backstitch.strokeWidth+' strands</p>';
         }
 
+        var bgcolr = backgroundCanvas.find('Rect');
+        var clothArray = jQuery.getJSON( "../json/clothColors.json").then(function(clothjson)
+        {
+              var data = clothjson.colors;
+              var val = bgcolr[0].getAttr('fill');
+              var filteredObj = data.find(function(item, i)
+              {
+                  if(item.color_code === val)
+                  {
+                        return item;
+                  }
+              });
 
+              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+clothframe+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+'</p><p> Cloth Colour: '+filteredObj.color_name+'</p></div>';
+
+              // $('#design_floss_list').html(htmlcontent);
+              // if($('#design_floss_list').html() != '')
+              // {
+                // html2canvas(document.getElementById("design_floss_list"),
+                // {
+                //     onrendered: function(canvas)
+                //     {
+                          // $('#design_floss_list').show();
+                          // colordataimge = canvas.toDataURL('image/png');
+                          // $('#design_floss_list').hide();
+                          var doc = new jsPDF('','px');
+
+                          var specialElementHandlers = {
+                              '#editor': function(element, renderer){
+                                  return true;
+                              },
+                              '.controls': function(element, renderer){
+                                return true;
+                              },
+                              '#bypassme': function(element, renderer) {
+                                return true;
+                                }
+                          };
+                          doc.setFontSize(25);
+                          doc.text(45, 25, "Cross Stitch Pattern Design");
+                          doc.setFontSize(18);
+                          doc.setFontStyle('normal');
+                          doc.fromHTML(htmlcontent, 15, 35, {
+                            'width': 170,
+                            'elementHandlers': specialElementHandlers,
+                          });
+                          // doc.addImage(colordataimge, 'JPEG', 35, 40);
+                          // h = '';
+                          // doc.fromHTML(h, 45, 35, {
+                          //   'width': 170,
+                          //   'elementHandlers': specialElementHandlers,
+                          // });
+                          doc.addPage('a4','');
+                          doc.addImage(jsonStage, 'JPEG', 15, 40, 400, 300);
+                          doc.save('pattern.pdf');
+                          // $('#design_floss_list').html('');
+
+                //     }
+                // });
+              // }
+
+              // var doc = new jsPDF();
+              //
+              // var specialElementHandlers = {
+              //     '#editor': function(element, renderer){
+              //         return true;
+              //     },
+              //   	'.controls': function(element, renderer){
+              //   		return true;
+              //   	},
+              //     '#bypassme': function(element, renderer) {
+              //       return true;
+              //       }
+              // };
+              // doc.setFontSize(25);
+              // doc.text(45, 25, "Cross Stitch Pattern Design");
+              // doc.setFontSize(18);
+              // doc.setFontStyle('normal');
+              // doc.fromHTML(htmlcontent, 15, 35, {
+              //   'width': 170,
+              //   'elementHandlers': specialElementHandlers,
+              // });
+              // doc.addPage('a4','');
+              // doc.addImage(jsonStage, 'JPEG', 15, 40, 180, 100);
+              // doc.save('pattern.pdf');
+        });
     }
 
     /*  Text popup ends here  */
