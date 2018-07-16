@@ -43,11 +43,11 @@ window.onload = function() {
     document.getElementById("canvasGridSize").value = localStorage.getItem('stage_gridsize');
     document.getElementById("canvasclothframe").value = localStorage.getItem('stage_clothframe');
     document.getElementById("stage_cloth").value = localStorage.getItem('stage_cloth');
-    localStorage.removeItem('stage_image_url');
-    localStorage.removeItem('stage_json');
-    localStorage.removeItem('stage_gridsize');
-    localStorage.removeItem('stage_clothframe');
-    localStorage.removeItem('stage_cloth');
+    // localStorage.removeItem('stage_image_url');
+    // localStorage.removeItem('stage_json');
+    // localStorage.removeItem('stage_gridsize');
+    // localStorage.removeItem('stage_clothframe');
+    // localStorage.removeItem('stage_cloth');
   }
 </script>
 @endsection
