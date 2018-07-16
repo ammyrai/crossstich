@@ -34,7 +34,8 @@ $( window ).on( "load", function() {
         selected_rect = [],                 // For Select Tool
         points =[],                         // For BAck Stitch
         positionXY = [],
-        lineStrokeColor = '#000000';
+        lineStrokeColor = '#000000',
+        selectedRectNodes = [];
 
     canvasMainBgcolor = localStorage.getItem("canvasBgColor");
     gridStrokeColor = localStorage.getItem("gridStrokeCPara");
@@ -100,11 +101,13 @@ $( window ).on( "load", function() {
       cr = 0;
       lineStroke = 1;
     }
-
+    // for (var ix = 0; ix < canvasWidth; ix++)
+    // {
+    //     document.write(ix);
+    // }
     /*  Layer2 Create a grid on canvas work starts here!*/
     for (var ix = 0; ix < canvasWidth; ix++)
-    {
-        for (var iy = 0; iy < canvasHeight; iy++)
+    {    for (var iy = 0; iy < canvasHeight; iy++)
         {
           box = new Konva.Rect({
               x : ix * gridSize,
@@ -240,6 +243,54 @@ $( window ).on( "load", function() {
                var gridcloneGroup = new Konva.Group({name:"selectCloneGrup"});  // Group to clone text and lines for select shape
                gridcloneGroup.destroy();
                textlayer.draw();
+
+               // console.log(selectedRectNodes)
+               // $(selectedRectNodes).each(function(key,val){
+               //     if(val.className === 'Text')
+               //     {
+               //         var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect',selected : ''});
+               //         gridcloneGroup.add(clonerect);
+               //         gridcloneGroup.draggable(true);
+               //         textlayer.add(gridcloneGroup);
+               //         textlayer.draw();
+               //         val.setAttr('selected', '');
+               //         positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
+               //         $( selected_rect ).each(function(key, rect) {
+               //           if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+               //           {
+               //             rect.setAttr('filled', false);
+               //             textlayer.draw();
+               //           }
+               //          });
+               //         val.destroy();
+               //         textlayer.draw();
+               //     }
+               //     if(val.className === 'Line')
+               //     {
+               //           var cloneline  = val.clone({name :'cloneLine',selected : ''});
+               //           gridcloneGroup.add(cloneline);
+               //           gridcloneGroup.draggable(true);
+               //           textlayer.add(gridcloneGroup);
+               //           val.setAttr('selected', '');
+               //           val.destroy();
+               //           textlayer.draw();
+               //     }
+               //    if(val.className === 'Rect')
+               //    {
+               //        var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect',selected : '',shadowEnabled:false,strokeEnabled:false });
+               //        gridcloneGroup.add(clonerect);
+               //        gridcloneGroup.draggable(true);
+               //        textlayer.add(gridcloneGroup);
+               //        textlayer.draw();
+               //        $( selected_rect ).each(function(key, rect) {
+               //          if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+               //          {
+               //            rect.setAttr('filled', false);
+               //            textlayer.draw();
+               //          }
+               //         });
+               //    }
+               // });
                var lineList = textlayer.find("Line");
                $( lineList ).each(function(key, lineval)
                {
@@ -566,7 +617,8 @@ $( window ).on( "load", function() {
            {
                if(rectval.attrs.x >= r2.attrs.x && rectval.attrs.x < (r2.attrs.x+r2.attrs.width) && rectval.attrs.y >= r2.attrs.y && rectval.attrs.y < (r2.attrs.y+r2.attrs.height))
                {
-                   rectval.setAttr('selected','select');
+                   selectedRectNodes.push(rectval);
+                   rectval  .setAttr('selected','select');
                    selected_rect.push(rectval);
                }
            }
@@ -577,6 +629,7 @@ $( window ).on( "load", function() {
          {
              if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
              {
+                 selectedRectNodes.push(val);
                  val.setAttr('selected','select');
              }
          });
@@ -586,7 +639,8 @@ $( window ).on( "load", function() {
          {
              if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height))
              {
-               lineval.setAttr('selected', 'selected');
+                selectedRectNodes.push(lineval);
+                lineval.setAttr('selected', 'selected');
              }
          });
        }
@@ -1067,6 +1121,27 @@ $( window ).on( "load", function() {
 
             for(var i = 0; i < stageChildren.length; i++)
             {
+                if(stageChildren[i].attrs.name == "canvasGridLayer")
+                {
+                    var gLayer = stageChildren[i];
+                    for(var j = 0; j < gLayer.children.length; j++)
+                    {
+                      if(gLayer.children[j].className == "Rect")
+                      {
+                            var rectBlock = gLayer.children[j];
+                            rectBlock.attrs.shadowEnabled = false;
+                            rectBlock.attrs.shadowOpacity = 0;
+                            rectBlock.attrs.stroke = "#a1a1a19c";
+                            rectBlock.attrs.strokeWidth = 1;
+                      }
+                      if(gLayer.children[j].className == "Circle")
+                      {
+                            var cBlock = gLayer.children[j];
+                            cBlock.attrs.radius = 0;
+                            cBlock.attrs.strokeEnabled = false;
+                      }
+                  }
+                }
                 if(stageChildren[i].attrs.name == 'textLayer')
                 {
                     var tLayer = stageChildren[i];
@@ -1079,6 +1154,7 @@ $( window ).on( "load", function() {
                           textGroup.children = textBlocks.map(function (textBlock)
                           {
                               textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
+                              textBlock.attrs.fill = "#000000";
                               textBlock.attrs.fill = "#000000";
                               return textBlock
                           })
@@ -1115,15 +1191,16 @@ $( window ).on( "load", function() {
     {
         var colordataimge = '',
         htmlcontent = '',
-        text;
+        text,
+        table;
 
         if(colorArry.length != 0){
           htmlcontent = '<h4>Floss</h4>';
-          htmlcontent += "<table cellpadding='0' cellspacing='0' border='0px'><tr><td height='5px'></td><td height='5px'>DMC</td><td height='5px'>Color</td></tr><tbody>";
+          htmlcontent += "<table cellpadding='0' id='table1' cellspacing='0' border='0px'><thead><tr><th></th><th>DMC</th><th>Color</td></tr></thead><tbody>";
             $(colorArry).each(function(key,val){
                  htmlcontent += "<tr><td align='right'>"+ val.colorSymbol+"</td><td>"+ val.floss+"</td><td>"+ val.colorName+"</td></tr>";
             })
-            htmlcontent += "</tbody></table>";
+            htmlcontent +="</tbody></table>";
         }
         if(backstitch.length != 0){
             htmlcontent += '<h4>Backstitch</h4>';
@@ -1144,78 +1221,33 @@ $( window ).on( "load", function() {
                   }
               });
 
-              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+clothframe+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+'</p><p> Cloth Colour: '+filteredObj.color_name+'</p></div>';
+              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+clothframe+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
 
-              // $('#design_floss_list').html(htmlcontent);
-              // if($('#design_floss_list').html() != '')
-              // {
-                // html2canvas(document.getElementById("design_floss_list"),
-                // {
-                //     onrendered: function(canvas)
-                //     {
-                          // $('#design_floss_list').show();
-                          // colordataimge = canvas.toDataURL('image/png');
-                          // $('#design_floss_list').hide();
-                          var doc = new jsPDF('','px');
+              var doc = new jsPDF('','px');
 
-                          var specialElementHandlers = {
-                              '#editor': function(element, renderer){
-                                  return true;
-                              },
-                              '.controls': function(element, renderer){
-                                return true;
-                              },
-                              '#bypassme': function(element, renderer) {
-                                return true;
-                                }
-                          };
-                          doc.setFontSize(25);
-                          doc.text(45, 25, "Cross Stitch Pattern Design");
-                          doc.setFontSize(18);
-                          doc.setFontStyle('normal');
-                          doc.fromHTML(htmlcontent, 15, 35, {
-                            'width': 170,
-                            'elementHandlers': specialElementHandlers,
-                          });
-                          // doc.addImage(colordataimge, 'JPEG', 35, 40);
-                          // h = '';
-                          // doc.fromHTML(h, 45, 35, {
-                          //   'width': 170,
-                          //   'elementHandlers': specialElementHandlers,
-                          // });
-                          doc.addPage('a4','');
-                          doc.addImage(jsonStage, 'JPEG', 15, 40, 400, 300);
-                          doc.save('pattern.pdf');
-                          // $('#design_floss_list').html('');
+              var specialElementHandlers = {
+                  '#editor': function(element, renderer){
+                      return true;
+                  },
+                  '.controls': function(element, renderer){
+                    return true;
+                  },
+                  '#bypassme': function(element, renderer) {
+                    return true;
+                    }
+              };
+              doc.setFontSize(25);
+              doc.text(45, 25, "Cross Stitch Pattern Design");
+              doc.setFontSize(12);
+              doc.setFontStyle('normal');
+              doc.fromHTML(htmlcontent, 15, 35, {
+                'width': 170,
+                'elementHandlers': specialElementHandlers,
+              });
+              doc.addPage('a4','');
+              doc.addImage(jsonStage, 'JPEG', 15, 40, 400, 300);
+              doc.save('pattern.pdf');
 
-                //     }
-                // });
-              // }
-
-              // var doc = new jsPDF();
-              //
-              // var specialElementHandlers = {
-              //     '#editor': function(element, renderer){
-              //         return true;
-              //     },
-              //   	'.controls': function(element, renderer){
-              //   		return true;
-              //   	},
-              //     '#bypassme': function(element, renderer) {
-              //       return true;
-              //       }
-              // };
-              // doc.setFontSize(25);
-              // doc.text(45, 25, "Cross Stitch Pattern Design");
-              // doc.setFontSize(18);
-              // doc.setFontStyle('normal');
-              // doc.fromHTML(htmlcontent, 15, 35, {
-              //   'width': 170,
-              //   'elementHandlers': specialElementHandlers,
-              // });
-              // doc.addPage('a4','');
-              // doc.addImage(jsonStage, 'JPEG', 15, 40, 180, 100);
-              // doc.save('pattern.pdf');
         });
     }
 

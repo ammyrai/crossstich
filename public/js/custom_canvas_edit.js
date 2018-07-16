@@ -231,7 +231,6 @@ $( window ).on( "load", function() {
                                 textlayer.add(gridcloneGroup);
                                 textlayer.draw();
                                 rval.setAttr('selected', '');
-                                // positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
                                 $( selected_rect ).each(function(key, rect) {
                                   if(rect.attrs.x === rval.attrs.x && rect.attrs.y === rval.attrs.y)
                                   {
@@ -1032,6 +1031,27 @@ $( window ).on( "load", function() {
 
                 for(var i = 0; i < stageChildren.length; i++)
                 {
+                    if(stageChildren[i].attrs.name == "canvasGridLayer")
+                    {
+                        var gLayer = stageChildren[i];
+                        for(var j = 0; j < gLayer.children.length; j++)
+                        {
+                          if(gLayer.children[j].className == "Rect")
+                          {
+                                var rectBlock = gLayer.children[j];
+                                rectBlock.attrs.shadowEnabled = false;
+                                rectBlock.attrs.shadowOpacity = 0;
+                                rectBlock.attrs.stroke = "#a1a1a19c";
+                                rectBlock.attrs.strokeWidth = 1;
+                          }
+                          if(gLayer.children[j].className == "Circle")
+                          {
+                                var cBlock = gLayer.children[j];
+                                cBlock.attrs.radius = 0;
+                                cBlock.attrs.strokeEnabled = false;
+                          }
+                      }
+                    }
                     if(stageChildren[i].attrs.name == 'textLayer')
                     {
                         var tLayer = stageChildren[i];
@@ -1106,7 +1126,7 @@ $( window ).on( "load", function() {
                       }
                   });
 
-                  htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+$("#canvas_cloth").val()+'</p><p> Cloth Frame: '+$("#canvas_cloth_frame").val()+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+'</p><p> Cloth Colour: '+filteredObj.color_name+'</p></div>';
+                  htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+$("#canvas_cloth").val()+'</p><p> Cloth Frame: '+$("#canvas_cloth_frame").val()+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
 
                   var doc = new jsPDF('','px');
 
