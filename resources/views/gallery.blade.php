@@ -13,7 +13,7 @@
               Gallery
           </h1>
           <br/>
-
+          @if(count($allimages) > 0)
           <ul class="gallery">
             @foreach($allimages as $image)
                 <li>
@@ -27,6 +27,11 @@
               </li>
             @endforeach
           </ul>
+          @else
+          <div class="alert alert-info">
+               <strong>No record found!</strong> You may create your own design by clicking here. <a href="{{ url('/') }}"> Create Design</a>
+          </div>
+          @endif
         </div>
     </div>
 </div>
