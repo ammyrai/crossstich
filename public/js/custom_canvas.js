@@ -1,6 +1,9 @@
 /*    Konva canvas file   */
 $( window ).on( "load", function() {
     /*    Declare Global Variables    */
+    if (localStorage.getItem("clothframe") === null) {
+        window.location.href= $("#base_url").val();
+    }
     clothframe = localStorage.getItem("clothframe");
 
     var frame = clothframe.split(" X ");
@@ -1095,7 +1098,7 @@ $( window ).on( "load", function() {
               symbolStage.add(val)
             })
             jsonStage = symbolStage.toDataURL();
-            save_canvas(jsonStage,colorArry,backstitch);
+            download_canvas(jsonStage,colorArry,backstitch);
         });
     })
 
@@ -1108,7 +1111,7 @@ $( window ).on( "load", function() {
       window.location.href = $("#upload_page_url").val();
     })
 
-    function save_canvas(jsonStage,colorArry,backstitch)
+    function download_canvas(jsonStage,colorArry,backstitch)
     {
         var colordataimge = '',
         htmlcontent = '',

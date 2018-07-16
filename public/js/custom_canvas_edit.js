@@ -1063,7 +1063,7 @@ $( window ).on( "load", function() {
                   symbolStage.add(val)
                 })
                 jsonStage = symbolStage.toDataURL();
-                save_canvas(jsonStage,colorArry,backstitch);
+                download_canvas(jsonStage,colorArry,backstitch);
             });
         })
 
@@ -1074,7 +1074,7 @@ $( window ).on( "load", function() {
           $( "#patternUpdate" ).submit();
         })
 
-        function save_canvas(jsonStage,colorArry,backstitch)
+        function download_canvas(jsonStage,colorArry,backstitch)
         {
             var colordataimge = '',
             htmlcontent = '',

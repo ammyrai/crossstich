@@ -2,7 +2,7 @@
 @section('content')
 <script>
     window.onload = function() {
-      localStorage.setItem('stage_image_url',' ');
+      localStorage.removeItem('stage_image_url');
     }
 </script>
 <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">

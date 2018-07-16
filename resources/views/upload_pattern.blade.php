@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<input type="hidden" id="base_url" value="{{ url('/') }}"/>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -32,12 +34,20 @@
     </div>
 </div>
 <script>
-  window.onload = function() {
+window.onload = function() {
+    if (localStorage.getItem("stage_image_url") === null) {
+        window.location.href= $("#base_url").val();
+    }
     document.getElementById("designImg").value = localStorage.getItem('stage_image_url');
     document.getElementById("canvasData").value = localStorage.getItem('stage_json');
     document.getElementById("canvasGridSize").value = localStorage.getItem('stage_gridsize');
     document.getElementById("canvasclothframe").value = localStorage.getItem('stage_clothframe');
     document.getElementById("stage_cloth").value = localStorage.getItem('stage_cloth');
+    localStorage.removeItem('stage_image_url');
+    localStorage.removeItem('stage_json');
+    localStorage.removeItem('stage_gridsize');
+    localStorage.removeItem('stage_clothframe');
+    localStorage.removeItem('stage_cloth');
   }
 </script>
 @endsection

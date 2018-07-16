@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-
+<input type="hidden" id="base_url" value="{{ url('/') }}"/>
 <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
 <div class="container">
