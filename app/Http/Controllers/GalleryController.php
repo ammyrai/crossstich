@@ -24,9 +24,15 @@ class GalleryController extends Controller
 
     public function mypattern()
     {
-        $id = \Auth::user()->id;
-        $images  = DB::table('save_pattern_design')->where('user_id', $id)->get()->all();
-        return view('mypattern')->with("allimages", $images);
+        if(\Auth::check()){
+          $id = \Auth::user()->id;
+          $images  = DB::table('save_pattern_design')->where('user_id', $id)->get()->all();
+          return view('mypattern')->with("allimages", $images);
+        }
+        else{
+            return redirect('/login');
+        }
+
     }
 
     /**
