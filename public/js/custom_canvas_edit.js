@@ -26,7 +26,8 @@ $( window ).on( "load", function() {
             textlayer,
             backgroundCanvas,
             canvasGridLayer,
-            newlayer;
+            newlayer,
+            selectedRectNodes = [];
         /*  Text color  */
        $(document).on('click', 'ul#select_style_color_ul li',function()
         {
@@ -84,7 +85,7 @@ $( window ).on( "load", function() {
           }
         });
 
-       //  /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
+        /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
         if(gridSize >= 20)
         {
           lineStroke = 4;
@@ -97,7 +98,6 @@ $( window ).on( "load", function() {
         {
           lineStroke = 1;
         }
-       //
 
         /*   Change tool mode function starts here!   */
         $(".canvas_tool").click(function()
@@ -109,171 +109,154 @@ $( window ).on( "load", function() {
         });
         /*   Change tool mode function ends here!   */
 
-       //  // draw a rectangle to be used as the rubber area
-          var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, strokeWidth:0.8, stroke: '#2c2c25', dash: [5,6], name:'selectShape'})
-          r2.listening(false); // stop r2 catching our mouse events.
-          gridSelectGroup.add(r2);
+        // draw a rectangle to be used as the rubber area
+        var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, strokeWidth:0.8, stroke: '#2c2c25', dash: [5,6], name:'selectShape'})
+        r2.listening(false); // stop r2 catching our mouse events.
+        gridSelectGroup.add(r2);
 
-          /*    Fill Grid cell   */
-          stage.on('mousedown', function(evt){
-            isMouseDown = true;
-            if (isMouseDown)
-            {
-              box = evt.target;
-              switch (mode)
-              {
-                 case 'pencil':
-                     if(box.getAttr('filled') === false)
-                     {
-                         text = new Konva.Text({
-                           text: 'X',
-                           x: box.x(),
-                           y: box.y(),
-                           fontFamily: 'sans-serif',
-                           fontSize: txtFillSize,
-                           fill: textFillColor,
-                           fontStyle : 'normal',
-                           filled : true,
-                           transformsEnabled : 'position'
-                         });
-                         gridTextGroup.add(text);
-                         box.setAttr('filled', true);
-                         text.draw();
-                         selected_rect.push(box);
-                      }
-                      // if(box.getAttr('filled') === true)
-                      // {
-                      //   box.setAttr('filled', false);
-                      //   textlayer.draw();
-                      //   if(evt.target.className === 'Text')
-                      //   {
-                      //       evt.target.destroy();
-                      //   }
-                      //   box.setAttr('filled', false);
-                      //   textlayer.draw();
-                      // }
-                 break;
-                 case 'eraser':
-                     if(box.getAttr('filled') === true)
-                    {
-                       if(evt.target.className === 'Text')
-                       {
-                           evt.target.destroy();
-                       }
-                       box.setAttr('filled', false);
-                     }
-                     if(evt.target.className === 'Line')
-                     {
-                         evt.target.destroy();
-                         box.setAttr('lineDraw', false);
-                     }
-                     textlayer.draw();
-                 break;
-                 case 'select_shape':
-                    startDrag({x: box.x(), y: box.y()})
-                 break;
-                 case 'back_stich':
-                       points=[];
-                       var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
-                       var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
-                       points.push(box.x(),box.y(),secondX,secondY)
-                       var line = new Konva.Line({
-                           points :points,
-                           stroke: lineStrokeColor,
-                           strokeWidth: lineStroke,
-                           drawLine : true,
-                           tension: 0,
-                           perfectDrawEnabled: false,
-                       });
-                       textlayer.add(line);
-                       line.draw();
-                 break;
-                 case 'case text':
-                 break;
-                 default:
-               }
-            }
-          });
-          stage.on('mouseup',function(evt){
-            isMouseDown= false
+        /*    Fill Grid cell   */
+        stage.on('mousedown', function(evt){
+          isMouseDown = true;
+          if (isMouseDown)
+          {
             box = evt.target;
             switch (mode)
             {
-               case 'select_shape':
-                     updateDrag({x: box.x(), y: box.y()},true);
-                     var gridcloneGroup = new Konva.Group({name:"selectCloneGrup"});  // Group to clone text and lines for select shape
-                     gridcloneGroup.destroy();
-                     textlayer.draw();
-                     var lineList = textlayer.find("Line");
-                     $( lineList ).each(function(key, lineval)
+               case 'pencil':
+                   if(box.getAttr('filled') === false)
+                   {
+                       text = new Konva.Text({
+                         text: 'X',
+                         x: box.x(),
+                         y: box.y(),
+                         fontFamily: 'sans-serif',
+                         fontSize: txtFillSize,
+                         fill: textFillColor,
+                         fontStyle : 'normal',
+                         filled : true,
+                         transformsEnabled : 'position'
+                       });
+                       gridTextGroup.add(text);
+                       box.setAttr('filled', true);
+                       text.draw();
+                       selected_rect.push(box);
+                    }
+                    // if(box.getAttr('filled') === true)
+                    // {
+                    //   box.setAttr('filled', false);
+                    //   textlayer.draw();
+                    //   if(evt.target.className === 'Text')
+                    //   {
+                    //       evt.target.destroy();
+                    //   }
+                    //   box.setAttr('filled', false);
+                    //   textlayer.draw();
+                    // }
+               break;
+               case 'eraser':
+                   if(box.getAttr('filled') === true)
+                  {
+                     if(evt.target.className === 'Text')
                      {
-                         if(lineval.getAttr('selected') === 'selected')
-                         {
-                               var cloneline  = lineval.clone({name :'cloneLine',selected : ''});
-                               gridcloneGroup.add(cloneline);
-                               gridcloneGroup.draggable(true);
-                               textlayer.add(gridcloneGroup);
-                               lineval.setAttr('selected', '');
-                               lineval.destroy();
-                               textlayer.draw();
-                         }
-                     });
-                    var rectList = stage.find("Rect");
-                    $( rectList ).each(function(key, rval)
-                    {
-                        if(rval.name() !== 'selectShape')
-                        {
-                            if(rval.getAttr('selected') === 'select')
-                            {
-                                var clonerect  = rval.clone({ x: rval.x(), y: rval.y(), name :'cloneRect',selected : '',shadowEnabled:false,strokeEnabled:false });
-                                gridcloneGroup.add(clonerect);
-                                gridcloneGroup.draggable(true);
-                                textlayer.add(gridcloneGroup);
-                                textlayer.draw();
-                                rval.setAttr('selected', '');
-                                $( selected_rect ).each(function(key, rect) {
-                                  if(rect.attrs.x === rval.attrs.x && rect.attrs.y === rval.attrs.y)
-                                  {
-                                    rect.setAttr('filled', false);
-                                    textlayer.draw();
-                                  }
-                                 });
-                            }
-                        }
-                    })
-                    var textList = textlayer.find("Text");
-                    $( textList ).each(function(key, val) {
-                      if(val.getAttr('selected') === 'select')
-                      {
-                          var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect',selected : ''});
-                          gridcloneGroup.add(clonerect);
-                          gridcloneGroup.draggable(true);
-                          textlayer.add(gridcloneGroup);
-                          textlayer.draw();
-                          val.setAttr('selected', '');
-                          positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
-                          $( selected_rect ).each(function(key, rect) {
-                            if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
-                            {
-                              rect.setAttr('filled', false);
-                              textlayer.draw();
-                            }
-                           });
-                          val.destroy();
-                        }
-                    })
-                    r2.visible(true);
-                    draggroup();
+                         evt.target.destroy();
+                     }
+                     box.setAttr('filled', false);
+                   }
+                   if(evt.target.className === 'Line')
+                   {
+                       evt.target.destroy();
+                       box.setAttr('lineDraw', false);
+                   }
+                   textlayer.draw();
+               break;
+               case 'select_shape':
+                  startDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize})
                break;
                case 'back_stich':
-                   var line = textlayer.find("Line");
-                   line[line.length-1].setAttr('lineDraw', false);
+                     points=[];
+                     var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
+                     var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
+                     points.push(box.x(),box.y(),secondX,secondY)
+                     var line = new Konva.Line({
+                         points :points,
+                         stroke: lineStrokeColor,
+                         strokeWidth: lineStroke,
+                         drawLine : true,
+                         tension: 0,
+                         perfectDrawEnabled: false,
+                     });
+                     textlayer.add(line);
+                     line.draw();
+               break;
+               case 'case text':
                break;
                default:
-               // stage.container().style.cursor = 'pointer';
              }
-          })
-          stage.on('mouseover', function(evt) {
+          }
+        });
+        stage.on('mouseup',function(evt){
+          isMouseDown= false
+          box = evt.target;
+          switch (mode)
+          {
+             case 'select_shape':
+                 updateDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize},true);
+                 var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
+                 gridcloneGroup.destroy();
+                 textlayer.draw();
+                 var lineList = textlayer.find("Line");
+                 $( lineList ).each(function(key, lineval)
+                 {
+                     if(lineval.hasName('lineselected'))
+                     {
+                         var cloneline  = lineval.clone({name :'cloneLine'});
+                         gridcloneGroup.add(cloneline);
+                         textlayer.add(gridcloneGroup);
+                         lineval.setAttr('name', '');
+                         lineval.destroy();
+                     }
+                 });
+                 $(selectedRectNodes).each(function(key,val)
+                 {
+                    var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
+                    gridcloneGroup.add(clonerect);
+                    textlayer.add(gridcloneGroup);
+                });
+                var textList = textlayer.find("Text");
+                $( textList ).each(function(key, val)
+                {
+                  if(val.hasName('textselected'))
+                  {
+                      var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                      gridcloneGroup.add(clonerect);
+                      textlayer.add(gridcloneGroup);
+                      val.setAttr('name', '');
+
+                      positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
+                      $( selected_rect ).each(function(key, rect)
+                      {
+                          if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                          {
+                            rect.setAttr('filled', false);
+                            textlayer.draw();
+                          }
+                       });
+                      val.destroy();
+                    }
+                })
+                textlayer.draw();
+                r2.visible(true);
+                draggroup();
+             break;
+             case 'back_stich':
+                 var line = textlayer.find("Line");
+                 line[line.length-1].setAttr('lineDraw', false);
+             break;
+             default:
+             // stage.container().style.cursor = 'pointer';
+           }
+        })
+        stage.on('mouseover', function(evt) {
             if (isMouseDown)
             {
               box = evt.target;
@@ -322,7 +305,7 @@ $( window ).on( "load", function() {
                       textlayer.batchDraw();
                  break;
                  case 'select_shape':
-                    updateDrag({x: box.x(), y: box.y()},false)
+                    updateDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize},false)
                  break;
                  case 'back_stich':
                      points=[];
@@ -354,7 +337,6 @@ $( window ).on( "load", function() {
             }
           });
 
-       //
         /*  Select tool Functionality   */
         function draggroup()
         {
@@ -371,8 +353,8 @@ $( window ).on( "load", function() {
                      });
                      grup.on('dragend', function()
                      {
+                        // console.time("");
                          var zText =0;
-                         var z = 0 ;
                          var fillTextArrGp = [];
                          var fillLineArrGp = [];
 
@@ -380,20 +362,22 @@ $( window ).on( "load", function() {
                          {
                              if(val.className === "Line")
                              {
-                               if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
-                               {
-                                  var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                  var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                               }
-                               else
-                               {
-                                   var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                   var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                               }
+                                 if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
+                                 {
+                                    var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                    var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 }
+                                 else
+                                 {
+                                     var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                     var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 }
                                 if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
                                   var y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                   var y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                                } else{
+                                }
+                                else
+                                {
                                   var y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                   var y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                 }
@@ -454,8 +438,8 @@ $( window ).on( "load", function() {
                                }
                                zText++;
                              }
-                             z++;
                          })
+
                          var RectList = stage.find("Rect");
                          $( RectList ).each(function(key, rectval)
                          {
@@ -484,7 +468,7 @@ $( window ).on( "load", function() {
                                   }
                                 });
                             }
-                         });
+                          });
                          for(var t = 0; t<fillLineArrGp.length; t++)
                          {
                            var line = new Konva.Line({
@@ -501,6 +485,10 @@ $( window ).on( "load", function() {
                          grup.destroy();
                          textlayer.draw();
                          positionXY = [];
+                         selectedRectNodes = [];
+                         fillTextArrGp = [];
+                         fillLineArrGp = [];
+                         // console.timeEnd("");
                      });
                  }
             });
@@ -513,49 +501,50 @@ $( window ).on( "load", function() {
 
         function updateDrag(posIn,updateSelect){
           // update rubber rect position
-          if(posIn.x !==0 && posIn.y !== 0){
-           posNow = {x: posIn.x, y: posIn.y};
-           var posRect = reverse(posStart,posNow);
-           r2.x(posRect.x1);
-           r2.y(posRect.y1);
-           r2.width(posRect.x2 - posRect.x1);
-           r2.height(posRect.y2 - posRect.y1);
-           r2.visible(true);
-           if(updateSelect == true){
-             /* Find and push selected rect  */
-             var stageRectList = stage.find("Rect");
-             $( stageRectList ).each(function(key, rectval)
-             {
-               if(rectval.name() !== 'selectShape')
+          if(posIn.x !==0 && posIn.y !== 0)
+          {
+               posNow = {x: posIn.x, y: posIn.y};
+               var posRect = reverse(posStart,posNow);
+               r2.x(posRect.x1);
+               r2.y(posRect.y1);
+               r2.width(posRect.x2 - posRect.x1);
+               r2.height(posRect.y2 - posRect.y1);
+               r2.visible(true);
+               if(updateSelect == true)
                {
-                   if(rectval.attrs.x >= r2.attrs.x && rectval.attrs.x < (r2.attrs.x+r2.attrs.width) && rectval.attrs.y >= r2.attrs.y && rectval.attrs.y < (r2.attrs.y+r2.attrs.height))
+                 /* Find and push selected rect  */
+                 var stageRectList = stage.find("Rect");
+                 $( stageRectList ).each(function(key, rectval)
+                 {
+                   if(rectval.name() !== 'selectShape')
                    {
-                       rectval.setAttr('selected','select');
-                       selected_rect.push(rectval);
+                       if(rectval.attrs.x >= r2.attrs.x && rectval.attrs.x < (r2.attrs.x+r2.attrs.width) && rectval.attrs.y >= r2.attrs.y && rectval.attrs.y < (r2.attrs.y+r2.attrs.height))
+                       {
+                           selectedRectNodes.push(rectval);
+                       }
                    }
+                 })
+                 /* Find and push selected text  */
+                 var textList = textlayer.find("Text");
+                 $( textList ).each(function(key, val)
+                 {
+                     if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
+                     {
+                         val.setAttr('name', 'textselected');
+                     }
+                 });
+                 /* Find and push selected lines  */
+                 var lineList = textlayer.find("Line");
+                 $( lineList ).each(function(key, lineval)
+                 {
+                     if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height))
+                     {
+                        lineval.setAttr('name', 'lineselected');
+                     }
+                 });
                }
-             })
-             /* Find and push selected text  */
-             var textList = textlayer.find("Text");
-             $( textList ).each(function(key, val)
-             {
-                 if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
-                 {
-                     val.setAttr('selected','select');
-                 }
-             });
-             /* Find and push selected lines  */
-             var lineList = textlayer.find("Line");
-             $( lineList ).each(function(key, lineval)
-             {
-                 if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height))
-                 {
-                   lineval.setAttr('selected', 'selected');
-                 }
-             });
-           }
-           textlayer.draw(); // redraw any changes.
-             }
+               textlayer.draw(); // redraw any changes.
+          }
         }
 
         function reverse(r1, r2){
