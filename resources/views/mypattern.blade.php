@@ -5,10 +5,10 @@
       localStorage.removeItem('stage_image_url');
     }
 </script>
-<link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
+
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <h1>
               My Saved Patterns
           </h1>
@@ -35,7 +35,7 @@
                   @endif
                 </div>
                 <div class="actions">
-                <a href="{{ route('edit', $image->id) }}">Edit</a> |
+                <a href="{{ route('edit', $image->id) }}" class="btn btn-large btn-primary openbutton">Edit</a>
                     <!-- Delete should be a button -->
                    {!! Form::open(array(
                            'method' => 'DELETE',
@@ -43,7 +43,7 @@
                            'onsubmit' => "return confirm('Are you sure you want to delete?')",
                        ))
                    !!}
-                       {!! Form::submit('Delete') !!}
+                       {!! Form::submit('Delete', ['class' => 'btn btn-large btn-primary openbutton']) !!}
                    {!! Form::close() !!}
                    <!-- End Delete button -->
                  </div>

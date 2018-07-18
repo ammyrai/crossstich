@@ -170,7 +170,7 @@ $( window ).on( "load", function() {
                    textlayer.draw();
                break;
                case 'select_shape':
-                  startDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize})
+                  startDrag({x: box.x(), y: box.y()})
                break;
                case 'back_stich':
                      points=[];
@@ -200,53 +200,57 @@ $( window ).on( "load", function() {
           switch (mode)
           {
              case 'select_shape':
-                 updateDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize},true);
-                 var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
-                 gridcloneGroup.destroy();
-                 textlayer.draw();
-                 var lineList = textlayer.find("Line");
-                 $( lineList ).each(function(key, lineval)
-                 {
-                     if(lineval.hasName('lineselected'))
-                     {
-                         var cloneline  = lineval.clone({name :'cloneLine'});
-                         gridcloneGroup.add(cloneline);
-                         textlayer.add(gridcloneGroup);
-                         lineval.setAttr('name', '');
-                         lineval.destroy();
-                     }
-                 });
-                 $(selectedRectNodes).each(function(key,val)
-                 {
-                    var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
-                    gridcloneGroup.add(clonerect);
-                    textlayer.add(gridcloneGroup);
-                });
-                var textList = textlayer.find("Text");
-                $( textList ).each(function(key, val)
-                {
-                  if(val.hasName('textselected'))
+                  updateDrag({x: box.x(), y: box.y()},true);
+                  var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
+                  gridcloneGroup.destroy();
+                  textlayer.draw();
+                  var lineList = textlayer.find("Line");
+                  lineList.map(function(lineList)
                   {
-                      var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
-                      gridcloneGroup.add(clonerect);
-                      textlayer.add(gridcloneGroup);
-                      val.setAttr('name', '');
-
-                      positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
-                      $( selected_rect ).each(function(key, rect)
+                      var lineval = lineList;
+                      if(lineval.hasName('lineselected'))
                       {
-                          if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
-                          {
-                            rect.setAttr('filled', false);
-                            textlayer.draw();
-                          }
-                       });
-                      val.destroy();
-                    }
-                })
-                textlayer.draw();
-                r2.visible(true);
-                draggroup();
+                          var cloneline  = lineval.clone({name :'cloneLine'});
+                          gridcloneGroup.add(cloneline);
+                          textlayer.add(gridcloneGroup);
+                          lineval.setAttr('name', '');
+                          lineval.destroy();
+                      }
+                  });
+                  selectedRectNodes.map(function(selectedRectNodes)
+                  {
+                     var val = selectedRectNodes;
+                     var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
+                     gridcloneGroup.add(clonerect);
+                     textlayer.add(gridcloneGroup);
+                     // val.destroy();
+                  });
+                  var textList = textlayer.find("Text");
+                  textList.map(function(textList)
+                  {
+                       var val = textList;
+                       if(val.hasName('textselected'))
+                       {
+                         var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                         gridcloneGroup.add(clonerect);
+                         textlayer.add(gridcloneGroup);
+                         val.setAttr('name', '');
+
+                         positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
+                         $( selected_rect ).each(function(key, rect)
+                         {
+                               if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                               {
+                                 rect.setAttr('filled', false);
+                                 textlayer.draw();
+                               }
+                          });
+                         val.destroy();
+                       }
+                  });
+                 textlayer.draw();
+                 r2.visible(true);
+                 draggroup();
              break;
              case 'back_stich':
                  var line = textlayer.find("Line");
@@ -305,7 +309,7 @@ $( window ).on( "load", function() {
                       textlayer.batchDraw();
                  break;
                  case 'select_shape':
-                    updateDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize},false)
+                    updateDrag({x: box.x(), y: box.y()},false);
                  break;
                  case 'back_stich':
                      points=[];
@@ -341,11 +345,12 @@ $( window ).on( "load", function() {
         function draggroup()
         {
             var groups = stage.find(node => { return node.getType() === 'Group'; });
-            $( groups).each(function(key, grup)
+            groups.map(function(groups)
             {
-                if(grup.name() === "selectCloneGrup")
+                var grup = groups;
+                if(grup.hasName("selectCloneGrup"))
                  {
-                     grup.on('dragstart', function(e)
+                     grup.on('dragstart', function()
                      {
                          r2.visible(false);
                          posStart ='';
@@ -358,28 +363,35 @@ $( window ).on( "load", function() {
                          var fillTextArrGp = [];
                          var fillLineArrGp = [];
 
-                         $(grup.children).each(function(key,val)
+                         var grupChild = grup.children;
+                         grupChild.map(function(grupChild)
                          {
+                             var val = grupChild;
                              if(val.className === "Line")
                              {
+                                  var x1Val;
+                                  var x2Val;
+                                  var y1Val;
+                                  var y2Val;
+
                                  if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
                                  {
-                                    var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                    var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                    x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                    x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                  }
                                  else
                                  {
-                                     var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                     var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                     x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                     x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                  }
                                 if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                                  var y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                                  var y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                  y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                  y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                 }
                                 else
                                 {
-                                  var y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                                  var y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                  y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                  y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                 }
                                 var obj ={
                                    'newpoints': [x1Val,y1Val,x2Val,y2Val],
@@ -388,27 +400,29 @@ $( window ).on( "load", function() {
                                    'ndrawline' : val.attrs.drawLine,
                                    'ntension' : val.attrs.tension,
                                    'npdraw' : val.attrs.perfectDrawEnabled
-                               }
+                               };
                                fillLineArrGp.push(obj);
                              }
-                             else if(val.className === "Text")
+                             if(val.className === "Text")
                              {
                                  var xPosition ;
                                  var yPosition;
-                                 if(zText == 0)
+                                 var xVal;
+                                 var yVal;
+                                 if(zText === 0)
                                  {
                                    var firstpostionXY = JSON.parse(positionXY[zText]);
                                     if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 ){
-                                     var xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                     xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                    } else {
-                                     var xVal = val.attrs.x = firstpostionXY.x - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                     xVal = val.attrs.x = firstpostionXY.x - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                    }
                                      if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                                       var yVal = val.attrs.y = firstpostionXY.y + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                       yVal = val.attrs.y = firstpostionXY.y + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                      } else {
-                                       var yVal = val.attrs.y = firstpostionXY.y - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                       yVal = val.attrs.y = firstpostionXY.y - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                      }
-                                     fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`)
+                                     fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
                                  }
                                  else
                                  {
@@ -425,30 +439,33 @@ $( window ).on( "load", function() {
                                         yPosition = prevPostionXY.y;
                                      }
                                      if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 ){
-                                      var xVal = val.attrs.x = xPosition + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                      xVal = val.attrs.x = xPosition + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                     } else {
-                                      var xVal = val.attrs.x = xPosition - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                      xVal = val.attrs.x = xPosition - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                     }
                                       if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                                        var yVal = val.attrs.y = yPosition + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                        yVal = val.attrs.y = yPosition + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                       } else{
-                                        var yVal = val.attrs.y = yPosition - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                        yVal = val.attrs.y = yPosition - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                       }
-                                     fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`)
+                                     fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
                                }
                                zText++;
                              }
-                         })
+                         });
 
                          var RectList = stage.find("Rect");
-                         $( RectList ).each(function(key, rectval)
+                         RectList.map(function(RectList)
                          {
-                            var xY = `{x : ${rectval.x()},y : ${rectval.y()}}`
+                            var rectval = RectList;
+                            var xY = `{x : ${rectval.x()},y : ${rectval.y()}}`;
 
                             if(fillTextArrGp.indexOf(xY) !== -1)
                             {
-                              $(grup.children).each(function(key, val){
-                                   if(val.className === "Text" && val.attrs.x == rectval.attrs.x && val.attrs.y == rectval.attrs.y)
+                              grupChild.map(function(grupChild)
+                              {
+                                var val = grupChild;
+                                  if(val.className === "Text" && val.attrs.x == rectval.attrs.x && val.attrs.y == rectval.attrs.y)
                                   {
                                         text = new Konva.Text({
                                           text: val.text(),
@@ -472,26 +489,33 @@ $( window ).on( "load", function() {
                          for(var t = 0; t<fillLineArrGp.length; t++)
                          {
                            var line = new Konva.Line({
-                               points :fillLineArrGp[t]['newpoints'],
-                               stroke: fillLineArrGp[t]['nstroke'],
-                               strokeWidth: fillLineArrGp[t]['nswidth'],
-                               drawLine : fillLineArrGp[t]['ndrawline'],
-                               tension: fillLineArrGp[t]['ntension'],
-                               perfectDrawEnabled: fillLineArrGp[t]['npdraw'],
+                               points :fillLineArrGp[t].newpoints,
+                               stroke: fillLineArrGp[t].nstroke,
+                               strokeWidth: fillLineArrGp[t].nswidth,
+                               drawLine : fillLineArrGp[t].ndrawline,
+                               tension: fillLineArrGp[t].ntension,
+                               perfectDrawEnabled: fillLineArrGp[t].npdraw,
                            });
                            textlayer.add(line);
                            line.draw();
                          }
-                         grup.destroy();
-                         textlayer.draw();
+                         var findTextLayerGroup = textlayer.find("Group");
+                         findTextLayerGroup.map(function(findTextLayerGroup){
+                             if(findTextLayerGroup.hasName("selectCloneGrup"))
+                             {
+                                  findTextLayerGroup.destroy();
+                                  textlayer.draw();
+                             }
+                         });
+
                          positionXY = [];
                          selectedRectNodes = [];
                          fillTextArrGp = [];
                          fillLineArrGp = [];
-                         // console.timeEnd("");
                      });
                  }
             });
+            return;
         }
 
         function startDrag(posIn){
@@ -510,12 +534,13 @@ $( window ).on( "load", function() {
                r2.width(posRect.x2 - posRect.x1);
                r2.height(posRect.y2 - posRect.y1);
                r2.visible(true);
-               if(updateSelect == true)
+               if(updateSelect === true)
                {
                  /* Find and push selected rect  */
                  var stageRectList = stage.find("Rect");
-                 $( stageRectList ).each(function(key, rectval)
+                 stageRectList.map(function(stageRectList)
                  {
+                   var rectval = stageRectList;
                    if(rectval.name() !== 'selectShape')
                    {
                        if(rectval.attrs.x >= r2.attrs.x && rectval.attrs.x < (r2.attrs.x+r2.attrs.width) && rectval.attrs.y >= r2.attrs.y && rectval.attrs.y < (r2.attrs.y+r2.attrs.height))
@@ -523,11 +548,12 @@ $( window ).on( "load", function() {
                            selectedRectNodes.push(rectval);
                        }
                    }
-                 })
+                 });
                  /* Find and push selected text  */
                  var textList = textlayer.find("Text");
-                 $( textList ).each(function(key, val)
+                 textList.map(function(textList)
                  {
+                     var val = textList;
                      if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
                      {
                          val.setAttr('name', 'textselected');
@@ -535,8 +561,9 @@ $( window ).on( "load", function() {
                  });
                  /* Find and push selected lines  */
                  var lineList = textlayer.find("Line");
-                 $( lineList ).each(function(key, lineval)
+                 lineList.map(function(lineList)
                  {
+                     var lineval = lineList;
                      if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height))
                      {
                         lineval.setAttr('name', 'lineselected');

@@ -1,10 +1,5 @@
-html, body {
-    background-color: #fff;
-    color: #636b6f;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 100;
-    height: 100vh;
-    margin: 0;
+ul.navbar-nav.ml-auto {
+float: right;
 }
 main.py-4 {
     height: 850px;
@@ -42,7 +37,7 @@ main.py-4 {
     font-size: 84px;
 }
 
-.links > a {
+.navbar-nav>li {
     color: #636b6f;
     padding: 0 25px;
     font-size: 12px;
@@ -51,9 +46,13 @@ main.py-4 {
     text-decoration: none;
     text-transform: uppercase;
 }
+.navbar-light .navbar-nav .nav-link {
+    color: #000;
+}
 
 .m-b-md {
     margin-bottom: 30px;
+    text-align: center;
 }
 
 
@@ -158,10 +157,13 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
 }
 
 .select_cloth, .cloth_frame_dropdown {
-    width: 23%;
-    height: 38px;
-    font-size: 16px;
-    margin-bottom: 8px;
+  width: 410px;
+  height: 38px;
+  font-size: 16px;
+  margin-bottom: 8px;
+  border-radius: 3px;
+  border: 1px solid #cbcbcb;
+  color: #595959;
 }
 .aidavalidate, .framevalidate, .clothcolorvalidate {
     display: none;
@@ -250,48 +252,62 @@ ul.gallery {
     padding: 0;
 }
 .gallery li {
-    width: 24%;
+    width: 19%;
     float: left;
     margin: 0 7px 10px 0;
+    border: 1px solid;
+    padding: 10px;
 }
 .gallery li .pattern_details {
     float: left;
     width: 100%;
-    height: 229px;
+    min-height: 204px;
 }
 .gallery li .pattern_details img {
-    width: 175px;
+    width: 190px;
 }
 .gallery li .pattern_details span {
     float: left;
     width: 100%;
     text-align: left;
-    background-color: #000;
-    opacity: 0.2;
     margin-top: 5px;
-    padding: 5px;
-    color: #fff;
+    color: #000;
     font-size: 16px;
 }
-
 .actions {
     float: left;
     width: 100%;
-    height: 20px;
-    margin: 10px 0 7px 0;
+    text-align: center;
 }
-.actions a {
+.actions form {display: inline-block;}
+.openbutton {
+    width: 80px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+/* .actions a {
     float: left;
-    width: 20%;
-}
-.actions form {
+    width: 35%;
+    margin-right: 0;
+    padding: 1px 7px 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    background-color: #f3f3f3;
+    text-align: center;
+    margin-left: 30px;
+    color: #626a6e;
+} */
+/* .actions form {
     float: right;
-    width: 75%;
-}
-.actions form  input[type="submit"] {
+    width: 47%;
+    text-align: left;
+    margin-left: 0;
+} */
+/* .actions form  input[type="submit"] {
     background: none;
     border: none;
     color: #337ab7;
     padding: 0;
     margin: 0;
-}
+} */

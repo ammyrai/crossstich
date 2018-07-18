@@ -7,7 +7,14 @@
 
         <title>Craft World</title>
         <!-- Fonts -->
-        <link href="//fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <!-- Scripts -->
+        <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
+
+        <!-- Fonts -->
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+        <!-- Styles -->
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <!-- Styles -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
@@ -16,40 +23,61 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                        <a href="{{ url('/') }}">Home</a>
-                        <a href="{{ route('gallery') }}">Gallery</a>
-                    @auth
-                        <a href="{{ route('mypattern') }}">My Patterns</a>
-                        <a class="nav-link dropdown-toggle" role="button" >
-                            {{ Auth::user()->name }}
-                        </a>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
+          <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+              <div class="container">
+                  <a class="navbar-brand" href="{{ url('/') }}">
+                      {{ config('app.name', 'Craft World') }}
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <!-- Left Side Of Navbar -->
+                      <!-- <ul class="navbar-nav mr-auto">
 
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-            </div>
+                      </ul> -->
+
+                      <!-- Right Side Of Navbar -->
+                      <ul class="navbar-nav ml-auto">
+                          <!-- Authentication Links -->
+                          <li><a class="nav-link" href="{{ url('/') }}">Home</a></li>
+                          <li><a class="nav-link" href="{{route('gallery')}}">Gallery</a></li>
+                          @guest
+                              <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                              <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                          @else
+                              <li><a class="nav-link" href="{{ route('mypattern') }}">My Patterns</a></li>
+                              <li class="nav-item dropdown">
+                                  <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                      {{ Auth::user()->name }}
+                                  </a>
+
+                                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                      <a class="dropdown-item" href="{{ route('logout') }}"
+                                         onclick="event.preventDefault();
+                                                       document.getElementById('logout-form').submit();">
+                                          {{ __('Logout') }}
+                                      </a>
+
+                                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                          @csrf
+                                      </form>
+                                  </div>
+                              </li>
+                          @endguest
+
+                      </ul>
+                  </div>
+              </div>
+          </nav>
             <div class="content">
                 <div class="title m-b-md">
                     Craft World
                 </div>
 
                 <!-- Bootstrap setps form starts here-->
-                <div class="col-md-8 col-sm-offset-2">
+                <div class="col-md-9 col-sm-offset-3 cloth-steps">
                   <div class="row">
                 		<section>
                         <div class="wizard">
@@ -127,7 +155,6 @@
 
                     <!-- Bootstrap setps form ends here-->
            </div>
-
             <!--  Scripts   -->
             <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -136,7 +163,7 @@
             <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
              <script>
              jQuery(document).ready(function($) {
-             	$('.select_style').selectstyle({
+             	jQuery('.select_style').selectstyle({
              		width  : 400,
              		height : 300,
              		theme  : 'light',

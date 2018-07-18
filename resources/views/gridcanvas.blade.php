@@ -5,7 +5,7 @@
 <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-12 grid-canvas-page">
 
           <div class="title m-b-md">
               Create your Own Designs

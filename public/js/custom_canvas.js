@@ -35,7 +35,7 @@ $( window ).on( "load", function() {
         points =[],                         // For BAck Stitch
         positionXY = [],
         lineStrokeColor = '#000000',
-        selectedRectNodes = [];
+        selectedRectNodes = [],moved = 0;
 
     canvasMainBgcolor = localStorage.getItem("canvasBgColor");
     gridStrokeColor = localStorage.getItem("gridStrokeCPara");
@@ -45,11 +45,12 @@ $( window ).on( "load", function() {
     textFillColor = '#000000';
     /*  Text color  */
     var textColor = "";
+
     $(document).on('click', 'ul#select_style_color_ul li',function()
     {
         var textClr = $(this).attr('value');
         changeColor(textClr);
-    })
+    });
     function changeColor(x)
     {
       textFillColor = x;
@@ -81,7 +82,7 @@ $( window ).on( "load", function() {
       width: stageWidth,
       height: canvasHeight * gridSize,
       fill: canvasMainBgcolor,
-    })
+    });
     backgroundCanvas.add(stageRect);
     /*  Layer1 work ends here! */
 
@@ -146,7 +147,7 @@ $( window ).on( "load", function() {
     /*   Change tool mode function ends here!   */
 
     // draw a rectangle to be used as the rubber area
-    var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, strokeWidth:0.8, stroke: '#2c2c25', dash: [5,6], name:'selectShape'})
+    var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, strokeWidth:0.8, stroke: '#2c2c25', dash: [5,6], name:'selectShape'});
     r2.listening(false); // stop r2 catching our mouse events.
     gridSelectGroup.add(r2);
 
@@ -206,13 +207,13 @@ $( window ).on( "load", function() {
                textlayer.draw();
            break;
            case 'select_shape':
-              startDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize})
+              startDrag({x: box.x(), y: box.y()})
            break;
            case 'back_stich':
                  points=[];
                  var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
                  var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
-                 points.push(box.x(),box.y(),secondX,secondY)
+                 points.push(box.x(),box.y(),secondX,secondY);
                  var line = new Konva.Line({
                      points :points,
                      stroke: lineStrokeColor,
@@ -230,59 +231,64 @@ $( window ).on( "load", function() {
          }
       }
     });
-    stage.on('mouseup',function(evt){
-      isMouseDown= false
+    stage.on('mouseup',function(evt)
+    {
+      isMouseDown= false;
       box = evt.target;
       switch (mode)
       {
          case 'select_shape':
-               updateDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize},true);
-               var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
-               gridcloneGroup.destroy();
-               textlayer.draw();
-               var lineList = textlayer.find("Line");
-               $( lineList ).each(function(key, lineval)
-               {
-                   if(lineval.hasName('lineselected'))
-                   {
-                       var cloneline  = lineval.clone({name :'cloneLine'});
-                       gridcloneGroup.add(cloneline);
-                       textlayer.add(gridcloneGroup);
-                       lineval.setAttr('name', '');
-                       lineval.destroy();
-                   }
-               });
-               $(selectedRectNodes).each(function(key,val)
-               {
-                  var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
-                  gridcloneGroup.add(clonerect);
-                  textlayer.add(gridcloneGroup);
-              });
-              var textList = textlayer.find("Text");
-              $( textList ).each(function(key, val)
-              {
-                if(val.hasName('textselected'))
-                {
-                    var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                updateDrag({x: box.x(), y: box.y()},true);
+                var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
+                 gridcloneGroup.destroy();
+                 textlayer.draw();
+                 var lineList = textlayer.find("Line");
+                 lineList.map(function(lineList)
+                 {
+                     var lineval = lineList;
+                     if(lineval.hasName('lineselected'))
+                     {
+                         var cloneline  = lineval.clone({name :'cloneLine'});
+                         gridcloneGroup.add(cloneline);
+                         textlayer.add(gridcloneGroup);
+                         lineval.setAttr('name', '');
+                         lineval.destroy();
+                     }
+                 });
+                 selectedRectNodes.map(function(selectedRectNodes)
+                 {
+                    var val = selectedRectNodes;
+                    var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
                     gridcloneGroup.add(clonerect);
                     textlayer.add(gridcloneGroup);
-                    val.setAttr('name', '');
+                    // val.destroy();
+                 });
+                 var textList = textlayer.find("Text");
+                 textList.map(function(textList)
+                 {
+                      var val = textList;
+                      if(val.hasName('textselected'))
+                      {
+                        var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                        gridcloneGroup.add(clonerect);
+                        textlayer.add(gridcloneGroup);
+                        val.setAttr('name', '');
 
-                    positionXY.push(`{"x":${val.x()},"y":${val.y()}}`)
-                    $( selected_rect ).each(function(key, rect)
-                    {
-                        if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                        positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
+                        $( selected_rect ).each(function(key, rect)
                         {
-                          rect.setAttr('filled', false);
-                          textlayer.draw();
-                        }
-                     });
-                    val.destroy();
-                  }
-              })
-              textlayer.draw();
-              r2.visible(true);
-              draggroup();
+                              if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                              {
+                                rect.setAttr('filled', false);
+                                textlayer.draw();
+                              }
+                         });
+                        val.destroy();
+                      }
+                 });
+                 textlayer.draw();
+                 r2.visible(true);
+                 draggroup();
          break;
          case 'back_stich':
              var line = textlayer.find("Line");
@@ -291,7 +297,7 @@ $( window ).on( "load", function() {
          default:
          // stage.container().style.cursor = 'pointer';
        }
-    })
+    });
     stage.on('mouseover', function(evt) {
       if (isMouseDown)
       {
@@ -322,7 +328,7 @@ $( window ).on( "load", function() {
               if(box.getAttr('filled') === true)
                {
                   var textList = textlayer.find("Text");
-                  $( textList ).each(function(key, val) {
+                  $( textList ).each(function() {
                        if(evt.target.className == 'Text')
                        {
                          evt.target.destroy();
@@ -341,7 +347,7 @@ $( window ).on( "load", function() {
                 textlayer.batchDraw();
            break;
            case 'select_shape':
-              updateDrag({x: Math.round(box.x() / gridSize) * gridSize, y: Math.round(box.y() / gridSize) * gridSize},false)
+              updateDrag({x: box.x(), y: box.y()},false);
            break;
            case 'back_stich':
                points=[];
@@ -354,7 +360,7 @@ $( window ).on( "load", function() {
                  var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
                  var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
                  points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
-                 var line = new Konva.Line({
+                  line = new Konva.Line({
                       points :points,
                       stroke: lineStrokeColor,
                       strokeWidth: lineStroke,
@@ -377,15 +383,17 @@ $( window ).on( "load", function() {
     function draggroup()
     {
         var groups = stage.find(node => { return node.getType() === 'Group'; });
-        $( groups).each(function(key, grup)
+        groups.map(function(groups)
         {
-            if(grup.name() === "selectCloneGrup")
+            var grup = groups;
+            if(grup.hasName("selectCloneGrup"))
              {
-                 grup.on('dragstart', function(e)
+                 grup.on('dragstart', function()
                  {
                      r2.visible(false);
                      posStart ='';
                      posNow = '';
+
                  });
                  grup.on('dragend', function()
                  {
@@ -394,28 +402,35 @@ $( window ).on( "load", function() {
                      var fillTextArrGp = [];
                      var fillLineArrGp = [];
 
-                     $(grup.children).each(function(key,val)
+                     var grupChild = grup.children;
+                     grupChild.map(function(grupChild)
                      {
+                         var val = grupChild;
                          if(val.className === "Line")
                          {
+                              var x1Val;
+                              var x2Val;
+                              var y1Val;
+                              var y2Val;
+
                              if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
                              {
-                                var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                              }
                              else
                              {
-                                 var x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                 var x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                              }
                             if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                              var y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                              var y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                              y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                              y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                             }
                             else
                             {
-                              var y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                              var y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                              y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                              y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                             }
                             var obj ={
                                'newpoints': [x1Val,y1Val,x2Val,y2Val],
@@ -424,27 +439,29 @@ $( window ).on( "load", function() {
                                'ndrawline' : val.attrs.drawLine,
                                'ntension' : val.attrs.tension,
                                'npdraw' : val.attrs.perfectDrawEnabled
-                           }
+                           };
                            fillLineArrGp.push(obj);
                          }
-                         else if(val.className === "Text")
+                         if(val.className === "Text")
                          {
                              var xPosition ;
                              var yPosition;
-                             if(zText == 0)
+                             var xVal;
+                             var yVal;
+                             if(zText === 0)
                              {
                                var firstpostionXY = JSON.parse(positionXY[zText]);
                                 if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 ){
-                                 var xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                } else {
-                                 var xVal = val.attrs.x = firstpostionXY.x - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 xVal = val.attrs.x = firstpostionXY.x - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                }
                                  if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                                   var yVal = val.attrs.y = firstpostionXY.y + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                   yVal = val.attrs.y = firstpostionXY.y + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                  } else {
-                                   var yVal = val.attrs.y = firstpostionXY.y - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                   yVal = val.attrs.y = firstpostionXY.y - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                  }
-                                 fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`)
+                                 fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
                              }
                              else
                              {
@@ -461,30 +478,33 @@ $( window ).on( "load", function() {
                                     yPosition = prevPostionXY.y;
                                  }
                                  if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 ){
-                                  var xVal = val.attrs.x = xPosition + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                  xVal = val.attrs.x = xPosition + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                 } else {
-                                  var xVal = val.attrs.x = xPosition - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                  xVal = val.attrs.x = xPosition - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                 }
                                   if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                                    var yVal = val.attrs.y = yPosition + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                    yVal = val.attrs.y = yPosition + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                   } else{
-                                    var yVal = val.attrs.y = yPosition - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                    yVal = val.attrs.y = yPosition - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                   }
-                                 fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`)
+                                 fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
                            }
                            zText++;
                          }
-                     })
+                     });
 
                      var RectList = stage.find("Rect");
-                     $( RectList ).each(function(key, rectval)
+                     RectList.map(function(RectList)
                      {
-                        var xY = `{x : ${rectval.x()},y : ${rectval.y()}}`
+                        var rectval = RectList;
+                        var xY = `{x : ${rectval.x()},y : ${rectval.y()}}`;
 
                         if(fillTextArrGp.indexOf(xY) !== -1)
                         {
-                          $(grup.children).each(function(key, val){
-                               if(val.className === "Text" && val.attrs.x == rectval.attrs.x && val.attrs.y == rectval.attrs.y)
+                          grupChild.map(function(grupChild)
+                          {
+                            var val = grupChild;
+                              if(val.className === "Text" && val.attrs.x == rectval.attrs.x && val.attrs.y == rectval.attrs.y)
                               {
                                     text = new Konva.Text({
                                       text: val.text(),
@@ -508,26 +528,33 @@ $( window ).on( "load", function() {
                      for(var t = 0; t<fillLineArrGp.length; t++)
                      {
                        var line = new Konva.Line({
-                           points :fillLineArrGp[t]['newpoints'],
-                           stroke: fillLineArrGp[t]['nstroke'],
-                           strokeWidth: fillLineArrGp[t]['nswidth'],
-                           drawLine : fillLineArrGp[t]['ndrawline'],
-                           tension: fillLineArrGp[t]['ntension'],
-                           perfectDrawEnabled: fillLineArrGp[t]['npdraw'],
+                           points :fillLineArrGp[t].newpoints,
+                           stroke: fillLineArrGp[t].nstroke,
+                           strokeWidth: fillLineArrGp[t].nswidth,
+                           drawLine : fillLineArrGp[t].ndrawline,
+                           tension: fillLineArrGp[t].ntension,
+                           perfectDrawEnabled: fillLineArrGp[t].npdraw,
                        });
                        textlayer.add(line);
                        line.draw();
                      }
-                     grup.destroy();
-                     textlayer.draw();
+                     var findTextLayerGroup = textlayer.find("Group");
+                     findTextLayerGroup.map(function(findTextLayerGroup){
+                         if(findTextLayerGroup.hasName("selectCloneGrup"))
+                         {
+                              findTextLayerGroup.destroy();
+                              textlayer.draw();
+                         }
+                     });
                      positionXY = [];
                      selectedRectNodes = [];
                      fillTextArrGp = [];
                      fillLineArrGp = [];
-                     // console.timeEnd("");
+                     moved = 1;
                  });
              }
         });
+        return;
     }
 
     function startDrag(posIn){
@@ -546,12 +573,13 @@ $( window ).on( "load", function() {
            r2.width(posRect.x2 - posRect.x1);
            r2.height(posRect.y2 - posRect.y1);
            r2.visible(true);
-           if(updateSelect == true)
+           if(updateSelect === true)
            {
              /* Find and push selected rect  */
              var stageRectList = stage.find("Rect");
-             $( stageRectList ).each(function(key, rectval)
+             stageRectList.map(function(stageRectList)
              {
+               var rectval = stageRectList;
                if(rectval.name() !== 'selectShape')
                {
                    if(rectval.attrs.x >= r2.attrs.x && rectval.attrs.x < (r2.attrs.x+r2.attrs.width) && rectval.attrs.y >= r2.attrs.y && rectval.attrs.y < (r2.attrs.y+r2.attrs.height))
@@ -559,11 +587,12 @@ $( window ).on( "load", function() {
                        selectedRectNodes.push(rectval);
                    }
                }
-             })
+             });
              /* Find and push selected text  */
              var textList = textlayer.find("Text");
-             $( textList ).each(function(key, val)
+             textList.map(function(textList)
              {
+                 var val = textList;
                  if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
                  {
                      val.setAttr('name', 'textselected');
@@ -571,8 +600,9 @@ $( window ).on( "load", function() {
              });
              /* Find and push selected lines  */
              var lineList = textlayer.find("Line");
-             $( lineList ).each(function(key, lineval)
+             lineList.map(function(lineList)
              {
+                 var lineval = lineList;
                  if(lineval.attrs.points[0] >= r2.attrs.x && lineval.attrs.points[2] <= (r2.attrs.x+r2.attrs.width) && lineval.attrs.points[1] >= r2.attrs.y && lineval.attrs.points[3] <= (r2.attrs.y+r2.attrs.height))
                  {
                     lineval.setAttr('name', 'lineselected');
@@ -612,38 +642,38 @@ $( window ).on( "load", function() {
     /*  Text Popup script starts  */
     /*  Text field value on keyup  */
     $("#textfill").keyup(function() {
-      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-      updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
+      updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
     });
 
     /* Text font family value on change  */
     $('#textFontSelect').change(function(){
-        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
+        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
     });
 
     /* Text Font size value on change  */
     $('#textFontsize').change(function(){
-        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
+        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
     });
     /* Text Font Bold value on change  */
     $('#textFontBold').change(function(){
-        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+        updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
+        updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
     });
     /* Text Font Italic value on change  */
     $('#textFontItalic').change(function(){
-          updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
-          updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val())
+          updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
+          updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),$('#myRange').val());
       });
 
     var slider = document.getElementById("myRange");
     slider.oninput = function()
     {
-      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value)
-      updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value)
-    }
+      updateSample($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value);
+      updateSample1($("#textfill").val(),$('#textFontSelect').val(),$('#textFontsize').val(),$("#textFontBold").prop("checked"), $("#textFontItalic").prop("checked"),this.value);
+    };
     // CREATE KONVE STAGE AND LAYER for popup sample canvas starts here!
     var updateSampleStage = new Konva.Stage({
      container: 'textSample',
@@ -656,7 +686,7 @@ $( window ).on( "load", function() {
     updateSampleStage.add(updateSampleLayer);
     var updateSampleGroup = new Konva.Group();
     function updateSample(textpara,fontfamily,textsize,bold,italic,weight) {
-        var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
+        var f = getText(textpara,fontfamily,textsize,bold,italic,weight);
 
         updateSampleLayer.clearBeforeDraw(true);
         updateSampleLayer.clearCache();
@@ -664,7 +694,7 @@ $( window ).on( "load", function() {
         updateSampleLayer.draw();
         var q = 9;
         if (q >= 10) {
-            q = 5
+            q = 5;
         }
         var g = applyDeselRatio(q);
         var d = Math.ceil(updateSampleStage.width() / g);
@@ -699,7 +729,7 @@ $( window ).on( "load", function() {
 
     // CREATE KONVE STAGE AND LAYER for sample grid canvas starts here!
     function updateSample1(textpara,fontfamily,textsize,bold,italic,weight) {
-        var f = getText(textpara,fontfamily,textsize,bold,italic,weight)
+        var f = getText(textpara,fontfamily,textsize,bold,italic,weight);
          if(f.textWidth >=45)
          {
            $("#textToolTooWide").show();
@@ -746,7 +776,7 @@ $( window ).on( "load", function() {
       this.canvas = document.createElement("canvas");
       this.canvas.width = 200;
       this.canvas.height = 200;
-      this.ctx = this.canvas.getContext("2d")
+      this.ctx = this.canvas.getContext("2d");
 
       this.ctx.clearRect(0, 0, 600, 600);
       this.ctx.fillStyle = "#000000";
@@ -768,27 +798,27 @@ $( window ).on( "load", function() {
               a = 255;
               var l = (f / 4) % k;
               n = Math.min(n, l);
-              j = Math.max(j, l)
+              j = Math.max(j, l);
           }
-          e.data[f] = a
+          e.data[f] = a;
       }
 
-      e['textWidth'] = Math.round(ctx.measureText(textpara).width);
+      e.textWidth = Math.round(ctx.measureText(textpara).width);
       if (this.textWidth > 580) {
-          this.textWidth = c.width
+          this.textWidth = c.width;
       }
-      return e
+      return e;
     }
     function fontSpec(e, d, c, b)
     {
         var a = "";
         if (b) {
-            a += "italic "
+            a += "italic ";
         }
         if (c) {
-            a += "bold "
+            a += "bold ";
         }
-        return a + d + "px " + e
+        return a + d + "px " + e;
     }
 
     function getTextHeight(c)
@@ -799,8 +829,9 @@ $( window ).on( "load", function() {
         f.append(e, d);
         var b = $("body");
         b.append(f);
+        var a = {};
         try {
-            var a = {};
+
             d.css({
                 verticalAlign: "baseline"
             });
@@ -809,22 +840,22 @@ $( window ).on( "load", function() {
                 verticalAlign: "bottom"
             });
             a.height = d.offset().top - e.offset().top;
-            a.descent = a.height - a.ascent
+            a.descent = a.height - a.ascent;
         } finally {
-            f.remove()
+            f.remove();
         }
-        return a
+        return a;
     }
 
     function applyDeselRatio(b) {
         var deselRatio = 1;
         var a = b * deselRatio;
         if (deselRatio >= 1) {
-            a = Math.floor(a)
+            a = Math.floor(a);
         } else {
-            a = Math.ceil(a)
+            a = Math.ceil(a);
         }
-        return a
+        return a;
     }
 
     $("#cloneSampleText").click(function()
@@ -837,10 +868,10 @@ $( window ).on( "load", function() {
            }
            val.fontSize(txtFillSize);
            var xx = (Math.round(val.x() / gridSize) * gridSize), yy = (Math.round(val.y() / gridSize) * gridSize);
-           val.setAttr('x', xx)
-           val.setAttr('y', yy)
-           val.setAttr('fill', textFillColor)
-           val.setAttr('transformsEnabled', 'position')
+           val.setAttr('x', xx);
+           val.setAttr('y', yy);
+           val.setAttr('fill', textFillColor);
+           val.setAttr('transformsEnabled', 'position');
         });
         $('.close').click();
         $('#popupForm')[0].reset();
@@ -879,7 +910,7 @@ $( window ).on( "load", function() {
           setTimeout(function(){
             $('.toolbar_list li').removeClass('active');
             $("#select_shape").addClass('active');
-            mode = $("#select_shape").data('mode')
+            mode = $("#select_shape").data('mode');
           }, 2000);
 
           stage.addEventListener("click", stopfollow);
@@ -910,26 +941,23 @@ $( window ).on( "load", function() {
     }
     function update(mouseX,mouseY)
     {
-        newlayer.visible(true)
+        newlayer.visible(true);
         newlayer.clearBeforeDraw(true);
         newlayer.clearCache();
         $(newlayer.children).each(function(key, val){
           if(val.name() === "sampleGroupCloned"){
             val.destroy();
           }
-        })
+        });
         newlayer.draw();
         var b = gridHiddenTextGroup.clone({x:mouseX, y: mouseY, name:'sampleGroupCloned', visible:true});
         newlayer.add(b);
         b.draw();
     }
-    function stopfollow(e)
+    function stopfollow()
     {
       var z =0;
       var fillTextArr = [];
-
-      var xPosition ;
-      var yPosition;
 
       var groups = stage.find(node => { return node.getType() === 'Group'; });
       var RectList = stage.find("Rect");
@@ -937,39 +965,41 @@ $( window ).on( "load", function() {
           if(val.name() === "sampleGroupCloned")
            {
              $( val.children ).each(function(key, grupval) {
-
-               if(z == 0)
+               var xVal;
+               var yVal;
+               if(z === 0)
                 {
+
                    if((Math.round(val.x() / gridSize) * gridSize) > 0 ){
-                     var xVal  = grupval.x() + Math.abs(Math.round(val.x() / gridSize) * gridSize);
+                     xVal  = grupval.x() + Math.abs(Math.round(val.x() / gridSize) * gridSize);
                   } else {
 
-                    var xVal = grupval.x() - Math.abs(Math.round(val.x() / gridSize) * gridSize);
+                    xVal = grupval.x() - Math.abs(Math.round(val.x() / gridSize) * gridSize);
                   }
                     if((Math.round(val.y() / gridSize) * gridSize) > 0 ){
-                      var yVal = grupval.y() + Math.abs(Math.round(val.y() / gridSize) * gridSize);
+                      yVal = grupval.y() + Math.abs(Math.round(val.y() / gridSize) * gridSize);
                     } else {
-                      var yVal  = grupval.y() - Math.abs(Math.round(val.y() / gridSize) * gridSize);
+                      yVal  = grupval.y() - Math.abs(Math.round(val.y() / gridSize) * gridSize);
                     }
-                    fillTextArr.push(`{x : ${Math.abs(Math.round(xVal/gridSize)*gridSize)},y : ${Math.abs(Math.round(yVal/gridSize)*gridSize)}}`)
+                    fillTextArr.push(`{x : ${Math.abs(Math.round(xVal/gridSize)*gridSize)},y : ${Math.abs(Math.round(yVal/gridSize)*gridSize)}}`);
                 }
                 else {
                   if((Math.round(val.x() / gridSize) * gridSize) > 0 ){
-                     var xVal  = grupval.x() + Math.abs(Math.round(val.x() / gridSize) * gridSize);
+                     xVal  = grupval.x() + Math.abs(Math.round(val.x() / gridSize) * gridSize);
                    } else {
-                     var xVal = grupval.x() - Math.abs(Math.round(val.x() / gridSize) * gridSize);
+                     xVal = grupval.x() - Math.abs(Math.round(val.x() / gridSize) * gridSize);
                    }
                    if((Math.round(val.y() / gridSize) * gridSize) > 0 ){
-                     var yVal = grupval.y() + Math.abs(Math.round(val.y() / gridSize) * gridSize);
+                     yVal = grupval.y() + Math.abs(Math.round(val.y() / gridSize) * gridSize);
                    } else{
-                     var yVal = grupval.y() - Math.abs(Math.round(val.y() / gridSize) * gridSize);
+                     yVal = grupval.y() - Math.abs(Math.round(val.y() / gridSize) * gridSize);
                    }
-                  fillTextArr.push(`{x : ${Math.abs(Math.round(xVal/gridSize)*gridSize)},y : ${Math.abs(Math.round(yVal/gridSize)*gridSize)}}`)
+                  fillTextArr.push(`{x : ${Math.abs(Math.round(xVal/gridSize)*gridSize)},y : ${Math.abs(Math.round(yVal/gridSize)*gridSize)}}`);
                 }
                 z++;
              });
              $( RectList ).each(function(key, rectval) {
-                var xY = `{x : ${rectval.x()},y : ${rectval.y()}}`
+                var xY = `{x : ${rectval.x()},y : ${rectval.y()}}`;
                 if(fillTextArr.indexOf(xY) !== -1)
                 {
                       text = new Konva.Text({
@@ -993,7 +1023,7 @@ $( window ).on( "load", function() {
                 if(val.name() === "sampleGroupCloned"){
                   val.destroy();
                 }
-              })
+              });
               newlayer.draw();
           }
       });
@@ -1021,31 +1051,31 @@ $( window ).on( "load", function() {
 
       /* For text colors  */
       var canvastext = textlayer.find('Text');
-      if(canvastext.length != 0)
+      if(canvastext.length !== 0)
       {
           $(canvastext).each(function(key,val){
             var fillc = val.getAttr('fill');
             carray.push(fillc);
-          })
+          });
           $.each(carray, function(i, el){
               if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
           });
       }
 
-      jQuery.getJSON( "../json/floss.json").then(function(json)
+      jQuery.getJSON("../json/floss.json").then(function(json)
       {
             var data = json.colors;
             $.each( uniqueNames, function( key, val )
             {
-                var val = val;
-                data.find(function(item, i){
+                // var val = val;
+                data.find(function(item){
                  if(item.color_code === val){
                    if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
                      colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
                     }
                     colorHashMap[item.color_code] = {
                       'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
-                    }
+                    };
                  }
                 });
             });
@@ -1080,38 +1110,38 @@ $( window ).on( "load", function() {
                 if(stageChildren[i].attrs.name == 'textLayer')
                 {
                     var tLayer = stageChildren[i];
-                    for(var j = 0; j < tLayer.children.length; j++)
+                    for(var k = 0; k < tLayer.children.length; k++)
                     {
-                      if(tLayer.children[j].attrs.name == "textGroup")
+                      if(tLayer.children[k].attrs.name == "textGroup")
                       {
-                          var textGroup = tLayer.children[j];
+                          var textGroup = tLayer.children[k];
                           var textBlocks = textGroup.children;
                           textGroup.children = textBlocks.map(function (textBlock)
                           {
                               textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
                               textBlock.attrs.fill = "#000000";
                               textBlock.attrs.fill = "#000000";
-                              return textBlock
-                          })
+                              return textBlock;
+                          });
                         break;
                       }
                     }
                   }
             }
 
-            stageParsedJSON.children = stageChildren
+            stageParsedJSON.children = stageChildren;
 
             var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
             var symbollayer = symbolStage.find('Layer');
             $(symbollayer).each(function(key,val){
               val.cache();
               val.filters([Konva.Filters.Grayscale]);
-              symbolStage.add(val)
-            })
+              symbolStage.add(val);
+            });
             jsonStage = symbolStage.toDataURL();
             download_canvas(jsonStage,colorArry,backstitch);
         });
-    })
+    });
 
     $("#save_canvas").click(function(){
       localStorage.setItem("stage_image_url", stage.toDataURL());
@@ -1125,30 +1155,28 @@ $( window ).on( "load", function() {
     function download_canvas(jsonStage,colorArry,backstitch)
     {
         var colordataimge = '',
-        htmlcontent = '',
-        text,
-        table;
+        htmlcontent = '';
 
-        if(colorArry.length != 0){
+        if(colorArry.length !== 0){
           htmlcontent = '<h4>Floss</h4>';
           htmlcontent += "<table cellpadding='0' id='table1' cellspacing='0' border='0px'><thead><tr><th></th><th>DMC</th><th>Color</td></tr></thead><tbody>";
             $(colorArry).each(function(key,val){
                  htmlcontent += "<tr><td align='right'>"+ val.colorSymbol+"</td><td>"+ val.floss+"</td><td>"+ val.colorName+"</td></tr>";
-            })
+            });
             htmlcontent +="</tbody></table>";
         }
-        if(backstitch.length != 0){
+        if(backstitch.length !== 0){
             htmlcontent += '<h4>Backstitch</h4>';
             htmlcontent += '<p>Backstitch floss is :' +backstitch.floss+', Colour is : '+backstitch.colorName+'</p>';
             htmlcontent += '<p>Backstitch- ' +backstitch.strokeWidth+' strands</p>';
         }
 
         var bgcolr = backgroundCanvas.find('Rect');
-        var clothArray = jQuery.getJSON( "../json/clothColors.json").then(function(clothjson)
+        jQuery.getJSON( "../json/clothColors.json").then(function(clothjson)
         {
               var data = clothjson.colors;
               var val = bgcolr[0].getAttr('fill');
-              var filteredObj = data.find(function(item, i)
+              var filteredObj = data.find(function(item)
               {
                   if(item.color_code === val)
                   {
@@ -1189,7 +1217,7 @@ $( window ).on( "load", function() {
     /*  Text popup ends here  */
 
     /*   Loader on page load  */
-    var myVar = setTimeout(function(){
+      setTimeout(function(){
         $("#loader").hide();
         $("#myDiv").show();
       }, 1000);
