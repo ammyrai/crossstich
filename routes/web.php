@@ -20,11 +20,11 @@ Route::get('/gridcanvas', 'GridCanvasController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('home');
 
 Route::get('/upload_pattern', 'UploadPatternController@index');
 

@@ -1,5 +1,18 @@
 /*    Konva canvas file   */
 $( window ).on( "load", function() {
+  loadScript();
+});
+$(document).ready(function(){
+  $("#refresh_canvas").click(function()
+  {
+      console.log("hii")
+      $(this).removeClass('active')
+      // $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
+      loadScript();
+  });
+});
+
+function loadScript(){
     /*    Declare Global Variables    */
     var jsondata = '';
 
@@ -105,7 +118,7 @@ $( window ).on( "load", function() {
             $('.toolbar_list li').removeClass('active');
             $(this).addClass('active');
             mode = $(this).data('mode');
-            if(mode == 'refresh') location.reload();
+            // if(mode == 'refresh') location.reload();
         });
         /*   Change tool mode function ends here!   */
 
@@ -1180,4 +1193,4 @@ $( window ).on( "load", function() {
     });
     /*   Loader on page load  */
 
-  });
+  }

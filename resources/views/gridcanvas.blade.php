@@ -16,7 +16,7 @@
               </div>
               <div class="col-md-2">
                   <h3>Toolbar Section</h3>
-                  <ul class="toolbar_list" id="">
+                  <ul class="toolbar_list" id="toolbar_section">
                     <li class="canvas_tool active" id="pencil" data-mode="pencil" title="pencil">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </li>
