@@ -54,19 +54,19 @@ function loadScript(){
         /*  Create Multiple Layers for stage  */
         var stagelayer = stage.getLayers();
         $(stagelayer).each(function(key,val){
-            if(val.name() === 'backgroundLayer')
+            if(val.hasName('backgroundLayer'))
             {
                 backgroundCanvas = val;
             }
-            if(val.name() === 'canvasGridLayer')
+            if(val.hasName('canvasGridLayer'))
             {
                 canvasGridLayer = val;
             }
-            if(val.name() === 'textLayer')
+            if(val.hasName('textLayer'))
             {
                 textlayer = val;
             }
-            if(val.name() === 'newlayer')
+            if(val.hasName('newlayer'))
             {
                 newlayer = val;
             }
@@ -1083,6 +1083,7 @@ function loadScript(){
                     }
                     if(stageChildren[i].attrs.name == 'textLayer')
                     {
+
                         var tLayer = stageChildren[i];
                         for(var j = 0; j < tLayer.children.length; j++)
                         {
@@ -1096,7 +1097,7 @@ function loadScript(){
                                   textBlock.attrs.fill = "#000000";
                                   return textBlock
                               })
-                            break;
+                            // break;
                           }
                         }
                       }
