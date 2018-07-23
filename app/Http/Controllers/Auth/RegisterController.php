@@ -66,11 +66,7 @@ class RegisterController extends Controller
             'company_name' => $data['company_name'],
             'password' => Hash::make($data['password']),
         ]);
-        $maildata = array('name'=> $user->name,'email'=>$user->email);
-        Mail::send('mails.register',$maildata, function($message) {
-            $message->to($user->email, $user->name)->subject('Welcome to the crossstitch!');
-        });
-        // Mail::to($data['email'])->send(new WelcomeMail($user));
+        Mail::to($data['email'])->send(new WelcomeMail($user));
 
        return $user;
     }
