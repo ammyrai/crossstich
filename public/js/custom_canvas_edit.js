@@ -2,14 +2,12 @@
 $( window ).on( "load", function() {
   loadScript();
 });
-$(document).ready(function(){
-  $("#refresh_canvas").click(function()
-  {
-      console.log("hii")
-      $(this).removeClass('active')
-      // $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
-      loadScript();
-  });
+$(document).on("click","#refresh_canvas",function()
+{
+    $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
+    $("#loader").show();
+    $("#myDiv").hide();
+    loadScript();
 });
 
 function loadScript(){
@@ -113,7 +111,7 @@ function loadScript(){
         }
 
         /*   Change tool mode function starts here!   */
-        $(".canvas_tool").click(function()
+        $(document).on("click",".canvas_tool",function()
         {
             $('.toolbar_list li').removeClass('active');
             $(this).addClass('active');
