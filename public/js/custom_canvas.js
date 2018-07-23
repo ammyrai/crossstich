@@ -89,6 +89,23 @@ function loadScript(){
     var gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
     var gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
 
+    if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
+    {
+      stageWidth = 787;
+    }
+    if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
+    {
+      stageWidth = 795;
+    }
+    if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
+    {
+      stageWidth = 773;
+    }
+    if(clothframe === "66 X 88")
+    {
+      stageWidth = 794;
+    }
+
     /*  Layer1 work starts here! */
     stageRect =  new Konva.Rect({
       x:0,
