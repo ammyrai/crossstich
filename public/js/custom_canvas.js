@@ -75,12 +75,11 @@ function loadScript(){
     /*  create stage for main canvas  */
     stage = new Konva.Stage({
         container: 'canvas',                  // Canvas container
-        width: stageWidth + gridSize,        // Canvas Width
-        height: (canvasHeight * gridSize) + gridSize   // Canvas Height
+        width: stageWidth,        // Canvas Width
+        height: canvasHeight * gridSize       // Canvas Height
     });
 
     /*  Create Multiple Layers for stage  */
-    backgroundCount = new Konva.Layer({name:'backgroundCountLayer'});        // Layer1 for canvas main background
     backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
     canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
     var textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
@@ -111,8 +110,8 @@ function loadScript(){
 
     /*  Layer1 work starts here! */
     stageRect =  new Konva.Rect({
-      x:gridSize,
-      y:gridSize,
+      x:0,
+      y:0,
       width: stageWidth,
       height: canvasHeight * gridSize,
       fill: canvasMainBgcolor,
@@ -136,38 +135,14 @@ function loadScript(){
       cr = 0;
       lineStroke = 1;
     }
-    for (var ix = 0; ix < (parseInt(canvasWidth) + 1); ix++)
-    {
-      var counterText = new Konva.Text({
-        x: (ix * gridSize) + 5,
-        y: 0,
-        text: ix,
-        fontSize: txtFillSize - 5,
-        fontFamily: 'Calibri',
-        fill: 'green'
-      });
-      backgroundCount.add(counterText);
-    }
 
-    for (var iy = 0; iy < (parseInt(canvasHeight) + 1); iy++)
-    {
-      var counterText = new Konva.Text({
-        x: 0,
-        y: iy * gridSize + 5,
-        text: iy,
-        fontSize: txtFillSize - 5,
-        fontFamily: 'Calibri',
-        fill: 'green'
-      });
-      backgroundCount.add(counterText);
-    }
     /*  Layer2 Create a grid on canvas work starts here!*/
     for (var ix = 0; ix < canvasWidth; ix++)
-    {    for (var iy = 0; iy < canvasHeight + 1; iy++)
+    {    for (var iy = 0; iy < canvasHeight; iy++)
         {
           box = new Konva.Rect({
-              x : ix * gridSize + gridSize,
-              y : iy * gridSize + gridSize,
+              x : ix * gridSize,
+              y : iy * gridSize,
               width : gridSize ,
               height: gridSize,
               stroke: gridStrokeColor,
@@ -1090,7 +1065,7 @@ function loadScript(){
 
     /*  Layer2 Create a grid on canvas work ends here!*/
     textlayer.add(gridTextGroup,gridSelectGroup);
-    stage.add(backgroundCanvas,canvasGridLayer, backgroundCount, textlayer,newlayer);          // Add Layer to stage
+    stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
 
     $("#download_canvas").click(function(){
 
