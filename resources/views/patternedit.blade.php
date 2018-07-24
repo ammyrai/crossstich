@@ -236,8 +236,6 @@
 
 </div>
 <div id="symbolstage" style="display:none"></div>
-
-
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

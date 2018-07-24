@@ -1006,120 +1006,113 @@ function loadScript(){
         textlayer.add(gridTextGroup,gridSelectGroup);
         stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
 
-        $("#download_canvas").click(function(){
+        $(document).on("click","#download_canvas",function()
+        {
+            var colorHashMap = {},
+            colorArry=[],
+            backstitch = [],
+            carray = [],
+            uniqueNames = [];
 
-          var colorHashMap = {},
-          colorArry=[],
-          backstitch = [],
-          carray = [],
-          uniqueNames = [];
+            /*  For backstitch */
+            var canvasline = textlayer.find('Line');
+            if(canvasline.length !== 0)
+            {
+                backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
+            }
 
-          /*  For backstitch */
-          var canvasline = textlayer.find('Line');
-          if(canvasline.length !== 0)
-          {
-              backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
-          }
-
-          /* For text colors  */
-          var canvastext = textlayer.find('Text');
-          if(canvastext.length != 0)
-          {
-              $(canvastext).each(function(key,val){
-                var fillc = val.getAttr('fill');
-                carray.push(fillc);
-              })
-              $.each(carray, function(i, el){
-                  if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-              });
-          }
-
-          jQuery.getJSON( "../../json/floss.json").then(function(json)
-          {
-                var data = json.colors;
-                $.each( uniqueNames, function( key, val )
-                {
-                    var val = val;
-                    data.find(function(item, i){
-                     if(item.color_code === val){
-                       if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                         colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
-                        }
-                        colorHashMap[item.color_code] = {
-                          'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
-                        }
-                     }
-                    });
-                });
-
-                var canvasJSON = stage.toJSON();
-                var stageParsedJSON = JSON.parse(canvasJSON);
-                var stageChildren = stageParsedJSON.children;
-
-                for(var i = 0; i < stageChildren.length; i++)
-                {
-                    if(stageChildren[i].attrs.name == "canvasGridLayer")
-                    {
-                        var gLayer = stageChildren[i];
-                        for(var j = 0; j < gLayer.children.length; j++)
-                        {
-                          if(gLayer.children[j].className == "Rect")
-                          {
-                                var rectBlock = gLayer.children[j];
-                                rectBlock.attrs.shadowEnabled = false;
-                                rectBlock.attrs.shadowOpacity = 0;
-                                rectBlock.attrs.stroke = "#a1a1a19c";
-                                rectBlock.attrs.strokeWidth = 1;
-                          }
-                          if(gLayer.children[j].className == "Circle")
-                          {
-                                var cBlock = gLayer.children[j];
-                                cBlock.attrs.radius = 0;
-                                cBlock.attrs.strokeEnabled = false;
-                          }
-                      }
-                    }
-                    if(stageChildren[i].attrs.name == 'textLayer')
-                    {
-
-                        var tLayer = stageChildren[i];
-                        for(var j = 0; j < tLayer.children.length; j++)
-                        {
-                          if(tLayer.children[j].attrs.name == "textGroup")
-                          {
-                              var textGroup = tLayer.children[j];
-                              var textBlocks = textGroup.children;
-                              textGroup.children = textBlocks.map(function (textBlock)
-                              {
-                                  textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
-                                  textBlock.attrs.fill = "#000000";
-                                  return textBlock
-                              })
-                            // break;
-                          }
-                        }
-                      }
-                }
-
-                stageParsedJSON.children = stageChildren
-
-                var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
-                var symbollayer = symbolStage.find('Layer');
-                $(symbollayer).each(function(key,val){
-                  val.cache();
-                  val.filters([Konva.Filters.Grayscale]);
-                  symbolStage.add(val)
+            /* For text colors  */
+            var canvastext = textlayer.find('Text');
+            if(canvastext.length != 0)
+            {
+                $(canvastext).each(function(key,val){
+                  var fillc = val.getAttr('fill');
+                  carray.push(fillc);
                 })
-                jsonStage = symbolStage.toDataURL();
-                download_canvas(jsonStage,colorArry,backstitch);
-            });
-        })
+                $.each(carray, function(i, el){
+                    if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+                });
+            }
 
-        $("#save_canvas").click(function(){
-          $("#designimage").val(stage.toDataURL());
-          $("#canvasdata").val(stage.toJSON());
-          $("#gridsize").val(gridSize);
-          $( "#patternUpdate" ).submit();
+            jQuery.getJSON( "../../json/floss.json").then(function(json)
+            {
+                  var data = json.colors;
+                  $.each( uniqueNames, function( key, val )
+                  {
+                      var val = val;
+                      data.find(function(item, i){
+                       if(item.color_code === val){
+                         if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
+                           colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
+                          }
+                          colorHashMap[item.color_code] = {
+                            'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
+                          }
+                       }
+                      });
+                  });
+
+                  var canvasJSON = stage.toJSON();
+                  var stageParsedJSON = JSON.parse(canvasJSON);
+                  var stageChildren = stageParsedJSON.children;
+
+                  for(var i = 0; i < stageChildren.length; i++)
+                  {
+                      if(stageChildren[i].attrs.name == "canvasGridLayer")
+                      {
+                          var gLayer = stageChildren[i];
+                          for(var j = 0; j < gLayer.children.length; j++)
+                          {
+                            if(gLayer.children[j].className == "Rect")
+                            {
+                                  var rectBlock = gLayer.children[j];
+                                  rectBlock.attrs.shadowEnabled = false;
+                                  rectBlock.attrs.shadowOpacity = 0;
+                                  rectBlock.attrs.stroke = "#a1a1a19c";
+                                  rectBlock.attrs.strokeWidth = 1;
+                            }
+                            if(gLayer.children[j].className == "Circle")
+                            {
+                                  var cBlock = gLayer.children[j];
+                                  cBlock.attrs.radius = 0;
+                                  cBlock.attrs.strokeEnabled = false;
+                            }
+                        }
+                      }
+                      if(stageChildren[i].attrs.name == 'textLayer')
+                      {
+
+                          var tLayer = stageChildren[i];
+                          for(var j = 0; j < tLayer.children.length; j++)
+                          {
+                            if(tLayer.children[j].attrs.name == "textGroup")
+                            {
+                                var textGroup = tLayer.children[j];
+                                var textBlocks = textGroup.children;
+                                textGroup.children = textBlocks.map(function (textBlock)
+                                {
+                                    textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
+                                    textBlock.attrs.fill = "#000000";
+                                    return textBlock
+                                })
+                              // break;
+                            }
+                          }
+                        }
+                  }
+
+                  stageParsedJSON.children = stageChildren
+
+                  var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
+                  var symbollayer = symbolStage.find('Layer');
+                  $(symbollayer).each(function(key,val){
+                    val.cache();
+                    val.filters([Konva.Filters.Grayscale]);
+                    symbolStage.add(val)
+                  })
+                  jsonStage = symbolStage.toDataURL();
+                  download_canvas(jsonStage,colorArry,backstitch);
+              });
         })
 
         function download_canvas(jsonStage,colorArry,backstitch)
@@ -1182,6 +1175,14 @@ function loadScript(){
                   doc.save('pattern.pdf');
             });
         }
+
+        $(document).on("click","#save_canvas",function()
+        {
+            $("#designimage").val(stage.toDataURL());
+            $("#canvasdata").val(stage.toJSON());
+            $("#gridsize").val(gridSize);
+            $( "#patternUpdate" ).submit();
+        })
 
         /*  Text popup ends here  */
         var myVar = setTimeout(function(){

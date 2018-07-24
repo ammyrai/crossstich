@@ -75,11 +75,12 @@ function loadScript(){
     /*  create stage for main canvas  */
     stage = new Konva.Stage({
         container: 'canvas',                  // Canvas container
-        width: stageWidth,        // Canvas Width
-        height: canvasHeight * gridSize       // Canvas Height
+        width: stageWidth + gridSize,        // Canvas Width
+        height: (canvasHeight * gridSize) + gridSize   // Canvas Height
     });
 
     /*  Create Multiple Layers for stage  */
+    backgroundCount = new Konva.Layer({name:'backgroundCountLayer'});        // Layer1 for canvas main background
     backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
     canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
     var textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
@@ -110,8 +111,8 @@ function loadScript(){
 
     /*  Layer1 work starts here! */
     stageRect =  new Konva.Rect({
-      x:0,
-      y:0,
+      x:gridSize,
+      y:gridSize,
       width: stageWidth,
       height: canvasHeight * gridSize,
       fill: canvasMainBgcolor,
@@ -135,14 +136,38 @@ function loadScript(){
       cr = 0;
       lineStroke = 1;
     }
-
+    // for (var ix = 0; ix < (parseInt(canvasWidth) + 1); ix++)
+    // {
+    //   var counterText = new Konva.Text({
+    //     x: (ix * gridSize) + 5,
+    //     y: 0,
+    //     text: ix,
+    //     fontSize: txtFillSize - 5,
+    //     fontFamily: 'Calibri',
+    //     fill: 'green'
+    //   });
+    //   backgroundCount.add(counterText);
+    // }
+    //
+    // for (var iy = 0; iy < (parseInt(canvasHeight) + 1); iy++)
+    // {
+    //   var counterText = new Konva.Text({
+    //     x: 0,
+    //     y: iy * gridSize + 5,
+    //     text: iy,
+    //     fontSize: txtFillSize - 5,
+    //     fontFamily: 'Calibri',
+    //     fill: 'green'
+    //   });
+    //   backgroundCount.add(counterText);
+    // }
     /*  Layer2 Create a grid on canvas work starts here!*/
     for (var ix = 0; ix < canvasWidth; ix++)
-    {    for (var iy = 0; iy < canvasHeight; iy++)
+    {    for (var iy = 0; iy < canvasHeight + 1; iy++)
         {
           box = new Konva.Rect({
-              x : ix * gridSize,
-              y : iy * gridSize,
+              x : ix * gridSize + gridSize,
+              y : iy * gridSize + gridSize,
               width : gridSize ,
               height: gridSize,
               stroke: gridStrokeColor,
@@ -1065,126 +1090,116 @@ function loadScript(){
 
     /*  Layer2 Create a grid on canvas work ends here!*/
     textlayer.add(gridTextGroup,gridSelectGroup);
-    stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
+    stage.add(backgroundCanvas,canvasGridLayer, backgroundCount, textlayer,newlayer);          // Add Layer to stage
 
-    $("#download_canvas").click(function(){
+    $(document).on("click","#download_canvas",function()
+    {
+        var colorHashMap = {},
+        colorArry=[],
+        backstitch = [],
+        carray = [],
+        uniqueNames = [];
 
-      var colorHashMap = {},
-      colorArry=[],
-      backstitch = [],
-      carray = [],
-      uniqueNames = [];
+        /*  For backstitch */
+        var canvasline = textlayer.find('Line');
+        if(canvasline.length !== 0)
+        {
+            backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
+        }
 
-      /*  For backstitch */
-      var canvasline = textlayer.find('Line');
-      if(canvasline.length !== 0)
-      {
-          backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
-      }
-
-      /* For text colors  */
-      var canvastext = textlayer.find('Text');
-      if(canvastext.length !== 0)
-      {
-          $(canvastext).each(function(key,val){
-            var fillc = val.getAttr('fill');
-            carray.push(fillc);
-          });
-          $.each(carray, function(i, el){
-              if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-          });
-      }
-
-      jQuery.getJSON("../json/floss.json").then(function(json)
-      {
-            var data = json.colors;
-            $.each( uniqueNames, function( key, val )
-            {
-                // var val = val;
-                data.find(function(item){
-                 if(item.color_code === val){
-                   if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                     colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
-                    }
-                    colorHashMap[item.color_code] = {
-                      'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
-                    };
-                 }
-                });
+        /* For text colors  */
+        var canvastext = textlayer.find('Text');
+        if(canvastext.length !== 0)
+        {
+            $(canvastext).each(function(key,val){
+              var fillc = val.getAttr('fill');
+              carray.push(fillc);
             });
+            $.each(carray, function(i, el){
+                if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+            });
+        }
 
-            var canvasJSON = stage.toJSON();
-            var stageParsedJSON = JSON.parse(canvasJSON);
-            var stageChildren = stageParsedJSON.children;
+        jQuery.getJSON("../json/floss.json").then(function(json)
+        {
+              var data = json.colors;
+              $.each( uniqueNames, function( key, val )
+              {
+                  // var val = val;
+                  data.find(function(item){
+                   if(item.color_code === val){
+                     if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
+                       colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
+                      }
+                      colorHashMap[item.color_code] = {
+                        'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
+                      };
+                   }
+                  });
+              });
 
-            for(var i = 0; i < stageChildren.length; i++)
-            {
-                if(stageChildren[i].attrs.name == "canvasGridLayer")
-                {
-                    var gLayer = stageChildren[i];
-                    for(var j = 0; j < gLayer.children.length; j++)
-                    {
-                      if(gLayer.children[j].className == "Rect")
+              var canvasJSON = stage.toJSON();
+              var stageParsedJSON = JSON.parse(canvasJSON);
+              var stageChildren = stageParsedJSON.children;
+
+              for(var i = 0; i < stageChildren.length; i++)
+              {
+                  if(stageChildren[i].attrs.name == "canvasGridLayer")
+                  {
+                      var gLayer = stageChildren[i];
+                      for(var j = 0; j < gLayer.children.length; j++)
                       {
-                            var rectBlock = gLayer.children[j];
-                            rectBlock.attrs.shadowEnabled = false;
-                            rectBlock.attrs.shadowOpacity = 0;
-                            rectBlock.attrs.stroke = "#a1a1a19c";
-                            rectBlock.attrs.strokeWidth = 1;
-                      }
-                      if(gLayer.children[j].className == "Circle")
-                      {
-                            var cBlock = gLayer.children[j];
-                            cBlock.attrs.radius = 0;
-                            cBlock.attrs.strokeEnabled = false;
-                      }
-                  }
-                }
-                if(stageChildren[i].attrs.name == 'textLayer')
-                {
-                    var tLayer = stageChildren[i];
-                    for(var k = 0; k < tLayer.children.length; k++)
-                    {
-                      if(tLayer.children[k].attrs.name == "textGroup")
-                      {
-                          var textGroup = tLayer.children[k];
-                          var textBlocks = textGroup.children;
-                          textGroup.children = textBlocks.map(function (textBlock)
-                          {
-                              textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
-                              textBlock.attrs.fill = "#000000";
-                              textBlock.attrs.fill = "#000000";
-                              return textBlock;
-                          });
-                        break;
-                      }
+                        if(gLayer.children[j].className == "Rect")
+                        {
+                              var rectBlock = gLayer.children[j];
+                              rectBlock.attrs.shadowEnabled = false;
+                              rectBlock.attrs.shadowOpacity = 0;
+                              rectBlock.attrs.stroke = "#a1a1a19c";
+                              rectBlock.attrs.strokeWidth = 1;
+                        }
+                        if(gLayer.children[j].className == "Circle")
+                        {
+                              var cBlock = gLayer.children[j];
+                              cBlock.attrs.radius = 0;
+                              cBlock.attrs.strokeEnabled = false;
+                        }
                     }
                   }
-            }
+                  if(stageChildren[i].attrs.name == 'textLayer')
+                  {
+                      var tLayer = stageChildren[i];
+                      for(var k = 0; k < tLayer.children.length; k++)
+                      {
+                        if(tLayer.children[k].attrs.name == "textGroup")
+                        {
+                            var textGroup = tLayer.children[k];
+                            var textBlocks = textGroup.children;
+                            textGroup.children = textBlocks.map(function (textBlock)
+                            {
+                                textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
+                                textBlock.attrs.fill = "#000000";
+                                textBlock.attrs.fill = "#000000";
+                                return textBlock;
+                            });
+                          break;
+                        }
+                      }
+                    }
+              }
 
-            stageParsedJSON.children = stageChildren;
+              stageParsedJSON.children = stageChildren;
 
-            var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
-            var symbollayer = symbolStage.find('Layer');
-            $(symbollayer).each(function(key,val){
-              val.cache();
-              val.filters([Konva.Filters.Grayscale]);
-              symbolStage.add(val);
-            });
-            jsonStage = symbolStage.toDataURL();
-            download_canvas(jsonStage,colorArry,backstitch);
-        });
+              var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
+              var symbollayer = symbolStage.find('Layer');
+              $(symbollayer).each(function(key,val){
+                val.cache();
+                val.filters([Konva.Filters.Grayscale]);
+                symbolStage.add(val);
+              });
+              jsonStage = symbolStage.toDataURL();
+              download_canvas(jsonStage,colorArry,backstitch);
+          });
     });
-
-    $("#save_canvas").click(function(){
-      localStorage.setItem("stage_image_url", stage.toDataURL());
-      localStorage.setItem("stage_json", stage.toJSON());
-      localStorage.setItem("stage_gridsize", gridSize);
-      localStorage.setItem("stage_clothframe", clothframe);
-      localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
-      window.location.href = $("#upload_page_url").val();
-    })
-
     function download_canvas(jsonStage,colorArry,backstitch)
     {
         var colordataimge = '',
@@ -1246,6 +1261,14 @@ function loadScript(){
 
         });
     }
+    $(document).on("click","#save_canvas",function(){
+      localStorage.setItem("stage_image_url", stage.toDataURL());
+      localStorage.setItem("stage_json", stage.toJSON());
+      localStorage.setItem("stage_gridsize", gridSize);
+      localStorage.setItem("stage_clothframe", clothframe);
+      localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
+      window.location.href = $("#upload_page_url").val();
+    })
 
     /*  Text popup ends here  */
 }
