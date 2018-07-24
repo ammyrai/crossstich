@@ -9,10 +9,7 @@
     }
   }
 </script>
-@if ($message = Session::get('success'))
-    <div class="alert alert-success" id="patternDeleteMsg">
-        <p>{{ $message }}</p>
-    </div>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
