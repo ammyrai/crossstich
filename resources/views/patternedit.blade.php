@@ -236,6 +236,7 @@
 
 </div>
 <div id="symbolstage" style="display:none"></div>
+<div id="pdfloader"><p>Pdf downloading is in progress... Please Wait for a while!</p><img src="{{ asset('imgs/download.gif') }}"/></div>
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -248,6 +249,7 @@
 <script src="{{ asset('js/jspdf/jspdf.plugin.autotable.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="{{ asset('js/lz-string.js') }}" defer></script>
 <script>
 jQuery(document).ready(function($) {
  jQuery('#selectTxtColor').selectstyle({

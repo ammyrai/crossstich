@@ -48,17 +48,17 @@
                     <input type="hidden" name="upload_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
 
                       <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
-                          <option value="#fcfbf8" data-type="">Ecru</option>
-                          <option value="#ffffff" data-type="">White</option>
-                          <option value="#000000" data-type="">Black</option>
-                          <option value="#c72b3b" data-type="">Red</option>
-                          <option value="#fd5d35" data-type="">Orange</option>
-                          <option value="#ffe300" data-type="">Yellow</option>
-                          <option value="#7fb335" data-type="">Green</option>
-                          <option value="#6b9ebf" data-type="">Blue</option>
-                          <option value="#633666" data-type="">Violet</option>
+                          <option value="#fcfbf8" data-type="">Ecru - Ecru</option>
+                          <option value="#ffffff" data-type="">White - B5200</option>
+                          <option value="#000000" data-type="">Black - 310</option>
+                          <option value="#c72b3b" data-type="">Red - 321</option>
+                          <option value="#fd5d35" data-type="">Orange - 608</option>
+                          <option value="#ffe300" data-type="">Yellow - 973</option>
+                          <option value="#7fb335" data-type="">Green - 906</option>
+                          <option value="#6b9ebf" data-type="">Blue - 826</option>
+                          <option value="#633666" data-type="">Violet - 327</option>
 
-                          <option value="#fcfbf8" data-type="">Ecru</option>
+                          <!-- <option value="#fcfbf8" data-type="">Ecru</option>
                           <option value="#ffffff" data-type="">B5200</option>
                           <option value="#000000" data-type="">310</option>
                           <option value="#c72b3b" data-type="">321</option>
@@ -66,7 +66,7 @@
                           <option value="#ffe300" data-type="">973</option>
                           <option value="#7fb335" data-type="">906</option>
                           <option value="#6b9ebf" data-type="">826</option>
-                          <option value="#633666" data-type="">327</option>
+                          <option value="#633666" data-type="">327</option> -->
                         </select>
                 </div>
         </div>
@@ -212,7 +212,7 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
+<div id="pdfloader"><p>Please Wait for a while! PDF downloading is in progress...</p><img src="{{ asset('imgs/download.gif') }}"/></div>
 </div>
 <div id="symbolstage" style="display:none"></div>
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
@@ -227,7 +227,8 @@
 <script src="{{ asset('js/jspdf/jspdf.plugin.autotable.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
- <script>
+<script src="{{ asset('js/lz-string.js') }}" defer></script>
+<script>
  jQuery(document).ready(function($) {
   jQuery('#selectTxtColor').selectstyle({
     width  : 400,

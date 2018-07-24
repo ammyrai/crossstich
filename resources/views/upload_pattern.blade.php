@@ -33,11 +33,15 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('js/lz-string.js') }}" defer></script>
 <script>
 window.onload = function() {
     if (localStorage.getItem("stage_image_url") === null) {
         window.location.href= $("#base_url").val();
     }
+    // var stageUrl = LZString.decompress(localStorage.getItem('stage_image_url'));
+    // var stageJson = LZString.decompress(localStorage.getItem('stage_json'));
+
     document.getElementById("designImg").value = localStorage.getItem('stage_image_url');
     document.getElementById("canvasData").value = localStorage.getItem('stage_json');
     document.getElementById("canvasGridSize").value = localStorage.getItem('stage_gridsize');

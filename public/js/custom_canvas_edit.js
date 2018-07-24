@@ -15,6 +15,7 @@ function loadScript(){
     var jsondata = '';
 
     var jsonurl = $('#canvas_data_file').val();
+
     jQuery.getJSON(jsonurl).then(function(json)
     {
         var stage = Konva.Node.create(json, 'canvas');
@@ -1008,6 +1009,7 @@ function loadScript(){
 
         $(document).on("click","#download_canvas",function()
         {
+            $("#pdfloader").show();
             var colorHashMap = {},
             colorArry=[],
             backstitch = [],
@@ -1173,6 +1175,7 @@ function loadScript(){
                   doc.addPage('a4','');
                   doc.addImage(jsonStage, 'JPEG', 15, 40, 400, 300);
                   doc.save('pattern.pdf');
+                  $("#pdfloader").hide();
             });
         }
 

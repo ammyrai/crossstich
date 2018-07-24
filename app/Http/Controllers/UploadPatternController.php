@@ -29,8 +29,6 @@ class UploadPatternController extends Controller
       else {
          redirect('/home');
       }
-
-
     }
 
     /**

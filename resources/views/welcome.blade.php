@@ -130,14 +130,14 @@
                                         <h3>Aida Cloth Background Colour Selection</h3>
                                         <div class="selectBgColor">
                                           <select theme="google" width="400" style="" id="clothColorId" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="bgSelect">
-                                          	<option value="#fcfcee" data-type="light" data-floss="746">Buttermilk</option>
-                                          	<option value="#fffbef" data-type="light" data-floss="712">Ivory</option>
-                                            <option value="#f8e4c8" data-type="light" data-floss="739">Sandstone</option>
-                                            <option value="#b39f8b" data-type="dark" data-floss="3032">Natural Brown</option>
-                                            <option value="#fcfcee" data-type="light" data-floss="746">746</option>
+                                          	<option value="#fcfcee" data-type="light" data-floss="746">Buttermilk - 746</option>
+                                          	<option value="#fffbef" data-type="light" data-floss="712">Ivory - 712</option>
+                                            <option value="#f8e4c8" data-type="light" data-floss="739">Sandstone - 739</option>
+                                            <option value="#b39f8b" data-type="dark" data-floss="3032">Natural Brown - 3032</option>
+                                            <!-- <option value="#fcfcee" data-type="light" data-floss="746">746</option>
                                           	<option value="#fffbef" data-type="light" data-floss="712">712</option>
                                           	<option value="#f8e4c8" data-type="light" data-floss="739">739</option>
-                                          	<option value="#b39f8b" data-type="dark" data-floss="3032">3032</option>
+                                          	<option value="#b39f8b" data-type="dark" data-floss="3032">3032</option> -->
                                           </select>
                                         </div>
                                         <span class="clothcolorvalidate">Please Select Aida Cloth</span>
