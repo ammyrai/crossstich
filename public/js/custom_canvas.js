@@ -175,11 +175,9 @@ function canvasInit()
               canvasGridLayer.add(circle);             // Add rectangle to background layer
           }
         }
-        console.log('fresh')
     }
     else
     {
-      console.log('local')
         var cached_json = localStorage.getItem("auto_save_canvas");
         stage = Konva.Node.create(cached_json, 'canvas');
         stageWidth = stage.width();                // Grid Height
@@ -1166,6 +1164,10 @@ function canvasInit()
     $(document).on('click',"#downloadLoginPopup",function(){
         updateLocalStorage(stage.toJSON(),gridSize)
         localStorage.setItem("download_canvas", stage.toJSON());
+    })
+    $(document).on("click","#cancel_download",function(){
+        localStorage.removeItem("download_canvas");
+        console.log(localStorage.getItem("download_canvas"))
     })
 
     $(document).on("click","#download_canvas",function()

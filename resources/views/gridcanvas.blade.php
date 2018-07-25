@@ -227,7 +227,7 @@
         <div class="col-md-12 modal-content">
             <div class="modal-header">
                 <!-- <h4 class="modal-title">Open file</h4> -->
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" id="cancel_download" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
               <div class="form-group login-modal-text">
