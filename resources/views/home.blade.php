@@ -2,8 +2,12 @@
 
 @section('content')
 <input type="hidden" id="upload_url" value="{{ url('/upload_pattern') }}"/>
+<input type="hidden" id="gridCanvasPage" value="{{ url('/gridcanvas') }}"/>
 <script>
   window.onload = function() {
+    if (localStorage.getItem("download_canvas") !== null) {
+        window.location.href= $("#gridCanvasPage").val();
+    }
     if (localStorage.getItem("stage_image_url") !== null) {
         window.location.href= $("#upload_url").val();
     }

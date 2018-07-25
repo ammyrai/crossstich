@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/createdesign','GridCanvasController@createdesign')->name('createdesign');
 Route::get('/gridcanvas', 'GridCanvasController@index');
 
 Auth::routes();

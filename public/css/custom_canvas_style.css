@@ -312,29 +312,12 @@ ul.gallery {
     font-size: 13px;
     margin-bottom: 10px;
 }
-/* .actions a {
-    float: left;
-    width: 35%;
-    margin-right: 0;
-    padding: 1px 7px 2px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
-    background-color: #f3f3f3;
+#loginPopupModal .modal-header, #loginPopupModal .modal-footer {
+    border: 0;
+}
+.login-modal-text {
     text-align: center;
-    margin-left: 30px;
-    color: #626a6e;
-} */
-/* .actions form {
-    float: right;
-    width: 47%;
-    text-align: left;
-    margin-left: 0;
-} */
-/* .actions form  input[type="submit"] {
-    background: none;
-    border: none;
-    color: #337ab7;
-    padding: 0;
-    margin: 0;
-} */
+    font-size: 16px;
+    line-height: 23px;
+    letter-spacing: 1px;
+}

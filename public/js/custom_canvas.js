@@ -1,67 +1,246 @@
 /*    Konva canvas file   */
-$( window ).on( "load", function() {
-  loadScript();
+$( window ).on( "load", function()
+{
+    canvasInit();
 });
+/*  Refresh canvas script */
 $(document).on("click","#refresh_canvas",function()
 {
     $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
     $("#loader").show();
     $("#myDiv").hide();
-    loadScript();
+    canvasInit();
 });
-function loadScript(){
+
+$(document).on('click',"#clear_canvas",function(){
+    localStorage.removeItem("auto_save_canvas");
+    $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
+    $("#loader").show();
+    $("#myDiv").hide();
+    canvasInit();
+})
+
+/*  Load canvas script */
+function canvasInit()
+{
 
   /*   Loader on page load  */
-    setTimeout(function(){
-      $("#loader").hide();
-      $("#myDiv").show();
+    setTimeout(function()
+    {
+        $("#loader").hide();
+        $("#myDiv").show();
     }, 1000);
     /*    Declare Global Variables    */
-    if (localStorage.getItem("clothframe") === null) {
-        window.location.href= $("#base_url").val();
+    var   stage,                       // Stage variable
+          backgroundCanvas,            // Main background canvas variable
+          canvasGridLayer,             // Grid canvas variable
+          textlayer,                   // Canvas Text layer
+          newlayer,                    // Canvas New Layer for text movements
+          gridHiddenTextGroup,         // Hidden Text Group
+          gridTextGroup,               // Grid Text Group
+          gridSelectGroup,             // Select grid group
+          stageWidth,                  // Stage Width
+          gridSize,                    // Grid Size
+          stageRect,                   // Main canvas rectangle variable
+          box,                         // Variable for rectangle element
+          circle,                      // Variable for circle element
+          text,                        // Variable for circle element
+          mode = "pencil",             // Variable for mode with default pencil
+          isMouseDown = false,         // Set Mouse down property false
+          json,                        // Json variable for final canvas output
+          cr,                          // Circle radius variable
+          lineStroke,                  // Line width for back stitch
+          posStart,                    // Select tool position start
+          posNow,                      // Select tool Current position.
+          selected_rect = [],          // For Select Tool
+          points =[],                  // For BAck Stitch
+          positionXY = [],             // For text posotion XY
+          lineStrokeColor = '#000000', // Line stroke color
+          textFillColor = '#000000',   // Text default fill color
+          selectedRectNodes = [],      // Selected rectangle nodes.
+          moved = 0,                   // Move
+          canvasMainBgcolor = localStorage.getItem("canvasBgColor"),    // Canvas bg color
+          gridStrokeColor = localStorage.getItem("gridStrokeCPara"),    // Grid stroke color
+          gridShadowColor = localStorage.getItem("gridShadowCPara"),    // Grid shadow color
+          circleStrokeColor = localStorage.getItem("circleStrokeCPara"),  // Circle stroke color
+          circleFillColor = localStorage.getItem("circleFillCPara");      // Circle fill color
+
+    if (localStorage.getItem("auto_save_canvas") === null)
+    {
+        if (localStorage.getItem("clothframe") === null)
+        {
+            window.location.href= $("#create_design_url").val();
+        }
+        clothframe = localStorage.getItem("clothframe");
+        var frame = clothframe.split(" X "),
+            canvasWidth = frame[1],                       // Grid Width
+            canvasHeight = frame[0];                      // Grid Height
+            stageWidth = 805;                             // Stage widht
+            gridSize = Math.round(stageWidth/canvasWidth),    // Grid Tile Size
+            txtFillSize = gridSize;      // Text font size
+
+        /*  create stage for main canvas  */
+        stage = new Konva.Stage({
+            container: 'canvas',                  // Canvas container
+            width: stageWidth,        // Canvas Width
+            height: canvasHeight * gridSize       // Canvas Height
+        });
+
+        /*  Create Multiple Layers for stage  */
+        backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
+        canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
+        textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
+        newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});  // Layer4 for Movement of text for text popup
+        /*  Layers creation ends here! */
+
+        /*  Create new group  */
+        gridTextGroup = new Konva.Group({name:'textGroup'});      // Group for all the functionlities
+        gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
+        gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
+
+        if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
+        {
+          stageWidth = 787;
+        }
+        if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
+        {
+          stageWidth = 795;
+        }
+        if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
+        {
+          stageWidth = 773;
+        }
+        if(clothframe === "66 X 88")
+        {
+          stageWidth = 794;
+        }
+
+        /*  Layer1 work starts here! */
+        stageRect =  new Konva.Rect({
+          x:0,
+          y:0,
+          width: stageWidth,
+          height: canvasHeight * gridSize,
+          fill: canvasMainBgcolor,
+        });
+        backgroundCanvas.add(stageRect);
+        /*  Layer1 work ends here! */
+
+        /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
+        if(gridSize >= 20)
+        {
+          cr = 2;
+          lineStroke = 4;
+        }
+        else if(gridSize >= 10)
+        {
+          cr = 1;
+          lineStroke = 3;
+        }
+        else
+        {
+          cr = 0;
+          lineStroke = 1;
+        }
+
+        /*  Layer2 Create a grid on canvas work starts here!*/
+        for (var ix = 0; ix < canvasWidth; ix++)
+        {
+          for (var iy = 0; iy < canvasHeight; iy++)
+          {
+              box = new Konva.Rect({
+                  x : ix * gridSize,
+                  y : iy * gridSize,
+                  width : gridSize ,
+                  height: gridSize,
+                  stroke: gridStrokeColor,
+                  strokeWidth: 0,
+                  lineJoin : 'round',
+                  shadowEnabled : true,
+                  shadowColor: gridShadowColor,
+                  shadowOffset: {  x: 3,   y: 3 },
+                  shadowOpacity: 1,
+                  filled : false,
+                  lineDraw: false
+              });
+              circle = new Konva.Circle({
+                x: box.x(),
+                y: box.y(),
+                radius: cr,
+                stroke: circleStrokeColor,
+                strokeWidth: 1,
+                fillEnabled: false,
+                listening: false,
+              });
+              canvasGridLayer.add(box);                   // Add rectangle to group
+              canvasGridLayer.add(circle);             // Add rectangle to background layer
+          }
+        }
+        console.log('fresh')
     }
-    clothframe = localStorage.getItem("clothframe");
+    else
+    {
+      console.log('local')
+        var cached_json = localStorage.getItem("auto_save_canvas");
+        stage = Konva.Node.create(cached_json, 'canvas');
+        stageWidth = stage.width();                // Grid Height
+        gridSize = localStorage.getItem("stage_gridsize");      // Grid Tile Size
+        var txtFillSize = gridSize;      // Text font size
 
-    var frame = clothframe.split(" X ");
-    var stageWidth = 805,
-        canvasWidth = frame[1],                             // Grid Width
-        canvasHeight = frame[0],                            // Grid Height
-        gridSize = Math.round(stageWidth/canvasWidth),        // Grid Tile Size
-        box,                                // Variable for rectangle element
-        circle,                             // Variable for circle element
-        text,                               // Variable for circle element
-        mode = "pencil",                    // Variable for mode with default pencil
-        stage,                              // Stage variable
-        backgroundCanvas,                   // Main background canvas variable
-        canvasGridLayer,                    // Grid canvas variable
-        stageRect,                          // Main canvas rectangle variable
-        isMouseDown = false,                // Set Mouse down property false
-        canvasBgCPara,                      // Canvas Background Color code parameter
-        gridStrokeCPara,                    // Grid Stroke Color code parameter
-        gridShadowCPara,                    // Grid Stroke Color code parameter
-        circleStrokeCPara,                  // Circle Stroke Color code parameter
-        circleFillCPara,                    // Circle Fill Color code parameter
-        json,                               // Json variable for final canvas output
-        cr,                                 // Circle radius variable
-        lineStroke,                         // Line width for back stitch
-        txtFillSize = gridSize, // Text font size
-        posStart,                           // Select tool position start
-        posNow,                             // Select tool Current position.
-        selected_rect = [],                 // For Select Tool
-        points =[],                         // For BAck Stitch
-        positionXY = [],
-        lineStrokeColor = '#000000',
-        selectedRectNodes = [],moved = 0;
+        /*  Create Multiple Layers for stage  */
+        var stagelayer = stage.getLayers();
+        $(stagelayer).each(function(key,val)
+        {
+            if(val.hasName('backgroundLayer'))
+            {
+                backgroundCanvas = val;
+            }
+            if(val.hasName('canvasGridLayer'))
+            {
+                canvasGridLayer = val;
+            }
+            if(val.hasName('textLayer'))
+            {
+                textlayer = val;
+            }
+            if(val.hasName('newlayer'))
+            {
+                newlayer = val;
+            }
+        })
+        var groups = stage.find(node => {
+                return node.getType() === 'Group';
+            });
+        $(groups).each(function(key,val)
+        {
+            if(val.hasName('textGroup')){ gridTextGroup = val;  }
+            else { gridTextGroup = new Konva.Group({name:'textGroup'}); }
+            if(val.hasName('gridSelectGroup')) { gridSelectGroup = val; }
+            else { gridSelectGroup = new Konva.Group({name:'gridSelectGroup'}); }
+            if(val.hasName('hiddenGroup')){ gridHiddenTextGroup = val; }
+            else { gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  }
+        });
 
-    canvasMainBgcolor = localStorage.getItem("canvasBgColor");
-    gridStrokeColor = localStorage.getItem("gridStrokeCPara");
-    gridShadowColor = localStorage.getItem("gridShadowCPara");
-    circleStrokeColor = localStorage.getItem("circleStrokeCPara");
-    circleFillColor = localStorage.getItem("circleFillCPara");
-    textFillColor = '#000000';
+        /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
+        if(gridSize >= 20)
+        {
+          lineStroke = 4;
+        }
+        else if(gridSize >= 10)
+        {
+          lineStroke = 3;
+        }
+        else
+        {
+          lineStroke = 1;
+        }
+    }
+
+    if (localStorage.getItem("download_canvas") !== null)
+    {
+        download_canvas_script(localStorage.getItem("download_canvas"));
+    }
     /*  Text color  */
-    var textColor = "";
-
     $(document).on('click', 'ul#select_style_color_ul li',function()
     {
         var textClr = $(this).attr('value');
@@ -69,113 +248,14 @@ function loadScript(){
     });
     function changeColor(x)
     {
-      textFillColor = x;
+        textFillColor = x;
     }
-
-    /*  create stage for main canvas  */
-    stage = new Konva.Stage({
-        container: 'canvas',                  // Canvas container
-        width: stageWidth,        // Canvas Width
-        height: canvasHeight * gridSize       // Canvas Height
-    });
-
-    /*  Create Multiple Layers for stage  */
-    backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
-    canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
-    var textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
-    var newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});  // Layer4 for Movement of text for text popup
-    /*  Layers creation ends here! */
-
-    /*  Create new group  */
-    var gridTextGroup = new Konva.Group({name:'textGroup'});      // Group for all the functionlities
-    var gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
-    var gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
-
-    if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
-    {
-      stageWidth = 787;
-    }
-    if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
-    {
-      stageWidth = 795;
-    }
-    if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
-    {
-      stageWidth = 773;
-    }
-    if(clothframe === "66 X 88")
-    {
-      stageWidth = 794;
-    }
-
-    /*  Layer1 work starts here! */
-    stageRect =  new Konva.Rect({
-      x:0,
-      y:0,
-      width: stageWidth,
-      height: canvasHeight * gridSize,
-      fill: canvasMainBgcolor,
-    });
-    backgroundCanvas.add(stageRect);
-    /*  Layer1 work ends here! */
-
-    /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
-    if(gridSize >= 20)
-    {
-      cr = 2;
-      lineStroke = 4;
-    }
-    else if(gridSize >= 10)
-    {
-      cr = 1;
-      lineStroke = 3;
-    }
-    else
-    {
-      cr = 0;
-      lineStroke = 1;
-    }
-
-    /*  Layer2 Create a grid on canvas work starts here!*/
-    for (var ix = 0; ix < canvasWidth; ix++)
-    {    for (var iy = 0; iy < canvasHeight; iy++)
-        {
-          box = new Konva.Rect({
-              x : ix * gridSize,
-              y : iy * gridSize,
-              width : gridSize ,
-              height: gridSize,
-              stroke: gridStrokeColor,
-              strokeWidth: 0,
-              lineJoin : 'round',
-              shadowEnabled : true,
-              shadowColor: gridShadowColor,
-              shadowOffset: {  x: 3,   y: 3 },
-              shadowOpacity: 1,
-              filled : false,
-              lineDraw: false
-          });
-          circle = new Konva.Circle({
-            x: box.x(),
-            y: box.y(),
-            radius: cr,
-            stroke: circleStrokeColor,
-            strokeWidth: 1,
-            fillEnabled: false,
-            listening: false,
-          });
-          canvasGridLayer.add(box);                   // Add rectangle to group
-          canvasGridLayer.add(circle);             // Add rectangle to background layer
-        }
-    }
-
     /*   Change tool mode function starts here!   */
     $(document).on("click",".canvas_tool",function()
     {
         $('.toolbar_list li').removeClass('active');
         $(this).addClass('active');
         mode = $(this).data('mode');
-        // location.reload();
     });
     /*   Change tool mode function ends here!   */
 
@@ -185,231 +265,229 @@ function loadScript(){
     gridSelectGroup.add(r2);
 
     /*    Fill Grid cell   */
-    stage.on('mousedown', function(evt){
-      isMouseDown = true;
-      if (isMouseDown)
-      {
-        box = evt.target;
-        switch (mode)
+    stage.on('mousedown', function(evt)
+    {
+        isMouseDown = true;
+        if (isMouseDown)
         {
-           case 'pencil':
-               if(box.getAttr('filled') === false)
-               {
-                   text = new Konva.Text({
-                     text: 'X',
-                     x: box.x(),
-                     y: box.y(),
-                     fontFamily: 'sans-serif',
-                     fontSize: txtFillSize,
-                     fill: textFillColor,
-                     fontStyle : 'normal',
-                     filled : true,
-                     transformsEnabled : 'position'
-                   });
-                   gridTextGroup.add(text);
-                   box.setAttr('filled', true);
-                   text.draw();
-                   selected_rect.push(box);
-                }
-                // if(box.getAttr('filled') === true)
-                // {
-                //   box.setAttr('filled', false);
-                //   textlayer.draw();
-                //   if(evt.target.className === 'Text')
-                //   {
-                //       evt.target.destroy();
-                //   }
-                //   box.setAttr('filled', false);
-                //   textlayer.draw();
-                // }
-           break;
-           case 'eraser':
-               if(box.getAttr('filled') === true)
-              {
-                 if(evt.target.className === 'Text')
-                 {
-                     evt.target.destroy();
-                 }
-                 box.setAttr('filled', false);
-               }
-               if(evt.target.className === 'Line')
-               {
-                   evt.target.destroy();
-                   box.setAttr('lineDraw', false);
-               }
-               textlayer.draw();
-           break;
-           case 'select_shape':
-              startDrag({x: box.x(), y: box.y()})
-           break;
-           case 'back_stich':
-                 points=[];
-                 var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
-                 var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
-                 points.push(box.x(),box.y(),secondX,secondY);
-                 var line = new Konva.Line({
-                     points :points,
-                     stroke: lineStrokeColor,
-                     strokeWidth: lineStroke,
-                     drawLine : true,
-                     tension: 0,
-                     perfectDrawEnabled: false,
-                 });
-                 textlayer.add(line);
-                 line.draw();
-           break;
-           case 'case text':
-           break;
-           default:
-         }
-      }
+            box = evt.target;
+            switch (mode)
+            {
+               case 'pencil':
+
+                   if(box.getAttr('filled') === false)
+                   {
+                       text = new Konva.Text({
+                         text: 'X',
+                         x: box.x(),
+                         y: box.y(),
+                         fontFamily: 'sans-serif',
+                         fontSize: txtFillSize,
+                         fill: textFillColor,
+                         fontStyle : 'normal',
+                         filled : true,
+                         transformsEnabled : 'position'
+                       });
+                       gridTextGroup.add(text);
+                       box.setAttr('filled', true);
+                       text.draw();
+                       selected_rect.push(box);
+                    }
+                    // if(box.getAttr('filled') === true)
+                    // {
+                    //   box.setAttr('filled', false);
+                    //   textlayer.draw();
+                    //   if(evt.target.className === 'Text')
+                    //   {
+                    //       evt.target.destroy();
+                    //   }
+                    //   box.setAttr('filled', false);
+                    //   textlayer.draw();
+                    // }
+               break;
+               case 'eraser':
+                   if(box.getAttr('filled') === true)
+                   {
+                     if(evt.target.className === 'Text')
+                     {
+                         evt.target.destroy();
+                     }
+                     box.setAttr('filled', false);
+                   }
+                   if(evt.target.className === 'Line')
+                   {
+                       evt.target.destroy();
+                       box.setAttr('lineDraw', false);
+                   }
+                   textlayer.draw();
+               break;
+               case 'select_shape':
+                  startDrag({x: box.x(), y: box.y()})
+               break;
+               case 'back_stich':
+                     points=[];
+                     var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
+                     var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
+                     points.push(box.x(),box.y(),secondX,secondY);
+                     var line = new Konva.Line({
+                         points :points,
+                         stroke: lineStrokeColor,
+                         strokeWidth: lineStroke,
+                         drawLine : true,
+                         tension: 0,
+                         perfectDrawEnabled: false,
+                     });
+                     textlayer.add(line);
+                     line.draw();
+               break;
+               default:
+             }
+        }
+        // updateLocalStorage(stage.toJSON(),gridSize)
     });
     stage.on('mouseup',function(evt)
     {
-      isMouseDown= false;
-      box = evt.target;
-      switch (mode)
-      {
-         case 'select_shape':
-                updateDrag({x: box.x(), y: box.y()},true);
-                var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
-                 gridcloneGroup.destroy();
-                 textlayer.draw();
-                 var lineList = textlayer.find("Line");
-                 lineList.map(function(lineList)
-                 {
-                     var lineval = lineList;
-                     if(lineval.hasName('lineselected'))
-                     {
-                         var cloneline  = lineval.clone({name :'cloneLine'});
-                         gridcloneGroup.add(cloneline);
-                         textlayer.add(gridcloneGroup);
-                         lineval.setAttr('name', '');
-                         lineval.destroy();
-                     }
-                 });
-                 selectedRectNodes.map(function(selectedRectNodes)
-                 {
-                    var val = selectedRectNodes;
-                    var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
-                    gridcloneGroup.add(clonerect);
-                    textlayer.add(gridcloneGroup);
-                    // val.destroy();
-                 });
-                 var textList = textlayer.find("Text");
-                 textList.map(function(textList)
-                 {
-                      var val = textList;
-                      if(val.hasName('textselected'))
-                      {
-                        var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
-                        gridcloneGroup.add(clonerect);
-                        textlayer.add(gridcloneGroup);
-                        val.setAttr('name', '');
-
-                        positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
-                        $( selected_rect ).each(function(key, rect)
-                        {
-                              if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
-                              {
-                                rect.setAttr('filled', false);
-                                textlayer.draw();
-                              }
-                         });
-                        val.destroy();
-                      }
-                 });
-                 textlayer.draw();
-                 r2.visible(true);
-                 draggroup();
-         break;
-         case 'back_stich':
-             var line = textlayer.find("Line");
-             line[line.length-1].setAttr('lineDraw', false);
-         break;
-         default:
-         // stage.container().style.cursor = 'pointer';
-       }
-    });
-    stage.on('mouseover', function(evt) {
-      if (isMouseDown)
-      {
+        isMouseDown= false;
         box = evt.target;
         switch (mode)
         {
-           case 'pencil':
-             if(box.getAttr('filled') === false)
-             {
-                 text = new Konva.Text({
-                   text: 'X',
-                   x: box.x(),
-                   y: box.y(),
-                   fontFamily: 'sans-serif',
-                   fontSize: txtFillSize,
-                   fill: textFillColor,
-                   fontStyle : 'normal',
-                   filled : true,
-                   transformsEnabled : 'position'
-                 });
-                 gridTextGroup.add(text);
-                 box.setAttr('filled', true);
-                 text.draw();
-                 selected_rect.push(box);
-             }
-           break;
-           case 'eraser':
-              if(box.getAttr('filled') === true)
-               {
-                  var textList = textlayer.find("Text");
-                  $( textList ).each(function() {
-                       if(evt.target.className == 'Text')
-                       {
-                         evt.target.destroy();
-                       }
-                       box.setAttr('filled', false);
-                 });
+             case 'select_shape':
+                    updateDrag({x: box.x(), y: box.y()},true);
+                    var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
+                     gridcloneGroup.destroy();
+                     textlayer.draw();
+                     var lineList = textlayer.find("Line");
+                     lineList.map(function(lineList)
+                     {
+                         var lineval = lineList;
+                         if(lineval.hasName('lineselected'))
+                         {
+                             var cloneline  = lineval.clone({name :'cloneLine'});
+                             gridcloneGroup.add(cloneline);
+                             textlayer.add(gridcloneGroup);
+                             lineval.setAttr('name', '');
+                             lineval.destroy();
+                         }
+                     });
+                     selectedRectNodes.map(function(selectedRectNodes)
+                     {
+                        var val = selectedRectNodes;
+                        var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
+                        gridcloneGroup.add(clonerect);
+                        textlayer.add(gridcloneGroup);
+                     });
+                     var textList = textlayer.find("Text");
+                     textList.map(function(textList)
+                     {
+                          var val = textList;
+                          if(val.hasName('textselected'))
+                          {
+                            var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                            gridcloneGroup.add(clonerect);
+                            textlayer.add(gridcloneGroup);
+                            val.setAttr('name', '');
 
-               }
-               var lineList = textlayer.find("Line");
-                  $( lineList ).each(function(key, val) {
-                    if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
-                    {
-                      val.destroy();
-                    }
-                 });
-                textlayer.batchDraw();
-           break;
-           case 'select_shape':
-              updateDrag({x: box.x(), y: box.y()},false);
-           break;
-           case 'back_stich':
-               points=[];
-
-               var line = textlayer.find("Line");
-
-               var last_two_values = line[line.length-1].points().slice(-2);
-
-               if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined")){
-                 var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
-                 var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
-                 points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
-                  line = new Konva.Line({
-                      points :points,
-                      stroke: lineStrokeColor,
-                      strokeWidth: lineStroke,
-                      drawLine : true,
-                      tension: 0,
-                      perfectDrawEnabled: false,
-                  });
-                  textlayer.add(line);
-                  line.draw();
-               }
-           break;
-           case 'case text':
-           break;
-           default:
+                            positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
+                            $( selected_rect ).each(function(key, rect)
+                            {
+                                  if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
+                                  {
+                                    rect.setAttr('filled', false);
+                                    textlayer.draw();
+                                  }
+                             });
+                            val.destroy();
+                          }
+                     });
+                     textlayer.draw();
+                     r2.visible(true);
+                     draggroup();
+             break;
+             case 'back_stich':
+                 var line = textlayer.find("Line");
+                 line[line.length-1].setAttr('lineDraw', false);
+             break;
+             default:
+             // stage.container().style.cursor = 'pointer';
          }
-      }
+         updateLocalStorage(stage.toJSON(),gridSize)
+    });
+    stage.on('mouseover', function(evt)
+    {
+        if (isMouseDown)
+        {
+            box = evt.target;
+            switch (mode)
+            {
+                 case 'pencil':
+                   if(box.getAttr('filled') === false)
+                   {
+                       text = new Konva.Text({
+                         text: 'X',
+                         x: box.x(),
+                         y: box.y(),
+                         fontFamily: 'sans-serif',
+                         fontSize: txtFillSize,
+                         fill: textFillColor,
+                         fontStyle : 'normal',
+                         filled : true,
+                         transformsEnabled : 'position'
+                       });
+                       gridTextGroup.add(text);
+                       box.setAttr('filled', true);
+                       text.draw();
+                       selected_rect.push(box);
+                   }
+                 break;
+                 case 'eraser':
+                    if(box.getAttr('filled') === true)
+                     {
+                        var textList = textlayer.find("Text");
+                        $( textList ).each(function() {
+                             if(evt.target.className == 'Text')
+                             {
+                               evt.target.destroy();
+                             }
+                             box.setAttr('filled', false);
+                       });
+                     }
+                     var lineList = textlayer.find("Line");
+                        $( lineList ).each(function(key, val) {
+                          if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
+                          {
+                            val.destroy();
+                          }
+                       });
+                      textlayer.batchDraw();
+                 break;
+                 case 'select_shape':
+                    updateDrag({x: box.x(), y: box.y()},false);
+                 break;
+                 case 'back_stich':
+                     points=[];
+                     var line = textlayer.find("Line");
+                     var last_two_values = line[line.length-1].points().slice(-2);
+                     if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
+                     {
+                         var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
+                         var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
+                         points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
+                         line = new Konva.Line({
+                            points :points,
+                            stroke: lineStrokeColor,
+                            strokeWidth: lineStroke,
+                            drawLine : true,
+                            tension: 0,
+                            perfectDrawEnabled: false,
+                          });
+                          textlayer.add(line);
+                          line.draw();
+                      }
+                 break;
+                 default:
+             }
+        }
+        // updateLocalStorage(stage.toJSON(),gridSize)
     });
 
     /*  Select tool Functionality   */
@@ -430,7 +508,6 @@ function loadScript(){
                  });
                  grup.on('dragend', function()
                  {
-                    // console.time("");
                      var zText =0;
                      var fillTextArrGp = [];
                      var fillLineArrGp = [];
@@ -445,35 +522,35 @@ function loadScript(){
                               var x2Val;
                               var y1Val;
                               var y2Val;
-
-                             if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
-                             {
-                                x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                             }
-                             else
-                             {
+                              if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
+                              {
+                                  x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                  x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                              }
+                              else
+                              {
                                  x1Val = Math.abs(Math.round(val.attrs.points[0]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
                                  x2Val = Math.abs(Math.round(val.attrs.points[2]/ gridSize) * gridSize) - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                             }
-                            if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                              y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                              y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                            }
-                            else
-                            {
-                              y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                              y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                            }
-                            var obj ={
+                              }
+                              if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 )
+                              {
+                                y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                              }
+                              else
+                              {
+                                y1Val = Math.abs(Math.round(val.attrs.points[1]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                y2Val = Math.abs(Math.round(val.attrs.points[3]/ gridSize) * gridSize) - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                              }
+                              var obj ={
                                'newpoints': [x1Val,y1Val,x2Val,y2Val],
                                'nstroke': val.attrs.stroke,
                                'nswidth': val.attrs.strokeWidth,
                                'ndrawline' : val.attrs.drawLine,
                                'ntension' : val.attrs.tension,
                                'npdraw' : val.attrs.perfectDrawEnabled
-                           };
-                           fillLineArrGp.push(obj);
+                              };
+                              fillLineArrGp.push(obj);
                          }
                          if(val.className === "Text")
                          {
@@ -484,44 +561,62 @@ function loadScript(){
                              if(zText === 0)
                              {
                                var firstpostionXY = JSON.parse(positionXY[zText]);
-                                if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 ){
-                                 xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                               } else {
-                                 xVal = val.attrs.x = firstpostionXY.x - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                               }
-                                 if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
+                                if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
+                                {
+                                  xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                }
+                                else
+                                {
+                                  xVal = val.attrs.x = firstpostionXY.x - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                }
+                                if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 )
+                                {
                                    yVal = val.attrs.y = firstpostionXY.y + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                                 } else {
+                                }
+                                else
+                                {
                                    yVal = val.attrs.y = firstpostionXY.y - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                                 }
-                                 fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
+                                }
+                                fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
                              }
                              else
                              {
                                  var postionXY = JSON.parse(positionXY[zText]);
                                  var prevPostionXY = JSON.parse(positionXY[zText-1]);
-                                 if(postionXY.x !== prevPostionXY.x){
+                                 if(postionXY.x !== prevPostionXY.x)
+                                 {
                                     xPosition = postionXY.x;
-                                 }else {
+                                 }
+                                 else
+                                 {
                                     xPosition = prevPostionXY.x;
                                  }
-                                 if(postionXY.y !== prevPostionXY.y){
+                                 if(postionXY.y !== prevPostionXY.y)
+                                 {
                                     yPosition = postionXY.y;
-                                 }else {
+                                 }
+                                 else
+                                 {
                                     yPosition = prevPostionXY.y;
                                  }
-                                 if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 ){
-                                  xVal = val.attrs.x = xPosition + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                } else {
-                                  xVal = val.attrs.x = xPosition - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
-                                }
-                                  if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 ){
-                                    yVal = val.attrs.y = yPosition + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
-                                  } else{
-                                    yVal = val.attrs.y = yPosition - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                 if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
+                                 {
+                                    xVal = val.attrs.x = xPosition + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 }
+                                 else
+                                 {
+                                    xVal = val.attrs.x = xPosition - Math.abs(Math.round(grup.x() / gridSize) * gridSize);
+                                 }
+                                 if((Math.round(grup.attrs.y / gridSize) * gridSize) > 0 )
+                                 {
+                                      yVal = val.attrs.y = yPosition + Math.abs(Math.round(grup.y() / gridSize) * gridSize);
                                   }
-                                 fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
-                           }
+                                  else
+                                  {
+                                      yVal = val.attrs.y = yPosition - Math.abs(Math.round(grup.y() / gridSize) * gridSize);
+                                  }
+                                  fillTextArrGp.push(`{x : ${xVal},y : ${yVal}}`);
+                              }
                            zText++;
                          }
                      });
@@ -536,7 +631,7 @@ function loadScript(){
                         {
                           grupChild.map(function(grupChild)
                           {
-                            var val = grupChild;
+                              var val = grupChild;
                               if(val.className === "Text" && val.attrs.x == rectval.attrs.x && val.attrs.y == rectval.attrs.y)
                               {
                                     text = new Konva.Text({
@@ -572,7 +667,8 @@ function loadScript(){
                        line.draw();
                      }
                      var findTextLayerGroup = textlayer.find("Group");
-                     findTextLayerGroup.map(function(findTextLayerGroup){
+                     findTextLayerGroup.map(function(findTextLayerGroup)
+                     {
                          if(findTextLayerGroup.hasName("selectCloneGrup"))
                          {
                               findTextLayerGroup.destroy();
@@ -587,6 +683,7 @@ function loadScript(){
                  });
              }
         });
+        updateLocalStorage(stage.toJSON(),gridSize)
         return;
     }
 
@@ -594,7 +691,6 @@ function loadScript(){
       posStart = {x: posIn.x, y: posIn.y};
       posNow = {x: posIn.x, y: posIn.y};
     }
-
     function updateDrag(posIn,updateSelect){
       // update rubber rect position
       if(posIn.x !==0 && posIn.y !== 0)
@@ -658,7 +754,6 @@ function loadScript(){
       }
         return ({x1: r1x, y1: r1y, x2: r2x, y2: r2y}); // return the corrected rect.
     }
-    /*  Select Tool Functionality ends here!  */
 
     function nearest(value, min, max)
     {
@@ -671,6 +766,7 @@ function loadScript(){
           return min;
         }
     }
+    /*  Select Tool Functionality ends here!  */
 
     /*  Text Popup script starts  */
     /*  Text field value on keyup  */
@@ -804,6 +900,7 @@ function loadScript(){
         gridHiddenTextGroup.draw();
         stage.batchDraw();
     }
+
     function getText(textpara, b, m, h, g,weight)
     {
       this.canvas = document.createElement("canvas");
@@ -1061,123 +1158,132 @@ function loadScript(){
           }
       });
       toAnimate = false;
+      updateLocalStorage(stage.toJSON(),gridSize)
     }
-
-    /*  Layer2 Create a grid on canvas work ends here!*/
+    /*  Text popup ends here  */
     textlayer.add(gridTextGroup,gridSelectGroup);
     stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
 
+    $(document).on('click',"#downloadLoginPopup",function(){
+        updateLocalStorage(stage.toJSON(),gridSize)
+        localStorage.setItem("download_canvas", stage.toJSON());
+    })
+
     $(document).on("click","#download_canvas",function()
     {
-
-      $("#pdfloader").show();
-      var colorHashMap = {},
-      colorArry=[],
-      backstitch = [],
-      carray = [],
-      uniqueNames = [];
-
-      /*  For backstitch */
-      var canvasline = textlayer.find('Line');
-      if(canvasline.length !== 0)
-      {
-          backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
-      }
-
-      /* For text colors  */
-      var canvastext = textlayer.find('Text');
-      if(canvastext.length !== 0)
-      {
-          $(canvastext).each(function(key,val){
-            var fillc = val.getAttr('fill');
-            carray.push(fillc);
-          });
-          $.each(carray, function(i, el){
-              if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-          });
-      }
-
-      jQuery.getJSON("../json/floss.json").then(function(json)
-      {
-            var data = json.colors;
-            $.each( uniqueNames, function( key, val )
-            {
-                // var val = val;
-                data.find(function(item){
-                 if(item.color_code === val){
-                   if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                     colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
-                    }
-                    colorHashMap[item.color_code] = {
-                      'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
-                    };
-                 }
-                });
-            });
-
-            var canvasJSON = stage.toJSON();
-            var stageParsedJSON = JSON.parse(canvasJSON);
-            var stageChildren = stageParsedJSON.children;
-
-            for(var i = 0; i < stageChildren.length; i++)
-            {
-                if(stageChildren[i].attrs.name == "canvasGridLayer")
-                {
-                    var gLayer = stageChildren[i];
-                    for(var j = 0; j < gLayer.children.length; j++)
-                    {
-                      if(gLayer.children[j].className == "Rect")
-                      {
-                            var rectBlock = gLayer.children[j];
-                            rectBlock.attrs.shadowEnabled = false;
-                            rectBlock.attrs.shadowOpacity = 0;
-                            rectBlock.attrs.stroke = "#a1a1a19c";
-                            rectBlock.attrs.strokeWidth = 1;
-                      }
-                      if(gLayer.children[j].className == "Circle")
-                      {
-                            var cBlock = gLayer.children[j];
-                            cBlock.attrs.radius = 0;
-                            cBlock.attrs.strokeEnabled = false;
-                      }
-                  }
-                }
-                if(stageChildren[i].attrs.name == 'textLayer')
-                {
-                    var tLayer = stageChildren[i];
-                    for(var k = 0; k < tLayer.children.length; k++)
-                    {
-                      if(tLayer.children[k].attrs.name == "textGroup")
-                      {
-                          var textGroup = tLayer.children[k];
-                          var textBlocks = textGroup.children;
-                          textGroup.children = textBlocks.map(function (textBlock)
-                          {
-                              textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
-                              textBlock.attrs.fill = "#000000";
-                              textBlock.attrs.fill = "#000000";
-                              return textBlock;
-                          });
-                        break;
-                      }
-                    }
-                  }
-            }
-
-            stageParsedJSON.children = stageChildren;
-
-            var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
-            var symbollayer = symbolStage.find('Layer');
-            $(symbollayer).each(function(key,val){
-              val.cache();
-              val.filters([Konva.Filters.Grayscale]);
-              symbolStage.add(val);
-            });
-            jsonStage = symbolStage.toDataURL();
-            download_canvas(jsonStage,colorArry,backstitch);
-        });
+        updateLocalStorage(stage.toJSON(),gridSize)
+        download_canvas_script(stage.toJSON());
     });
 
+    function download_canvas_script(canvasJSON)
+    {
+        $("#pdfloader").show();
+        var colorHashMap = {},
+        colorArry=[],
+        backstitch = [],
+        carray = [],
+        uniqueNames = [];
+
+        /*  For backstitch */
+        var canvasline = textlayer.find('Line');
+        if(canvasline.length !== 0)
+        {
+            backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
+        }
+
+        /* For text colors  */
+        var canvastext = textlayer.find('Text');
+        if(canvastext.length !== 0)
+        {
+            $(canvastext).each(function(key,val){
+              var fillc = val.getAttr('fill');
+              carray.push(fillc);
+            });
+            $.each(carray, function(i, el){
+                if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+            });
+        }
+
+        jQuery.getJSON("../json/floss.json").then(function(json)
+        {
+              var data = json.colors;
+              $.each( uniqueNames, function( key, val )
+              {
+                  // var val = val;
+                  data.find(function(item){
+                   if(item.color_code === val){
+                     if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
+                       colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
+                      }
+                      colorHashMap[item.color_code] = {
+                        'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
+                      };
+                   }
+                  });
+              });
+
+              // var canvasJSON = stage.toJSON();
+              var stageParsedJSON = JSON.parse(canvasJSON);
+              var stageChildren = stageParsedJSON.children;
+
+              for(var i = 0; i < stageChildren.length; i++)
+              {
+                  if(stageChildren[i].attrs.name == "canvasGridLayer")
+                  {
+                      var gLayer = stageChildren[i];
+                      for(var j = 0; j < gLayer.children.length; j++)
+                      {
+                        if(gLayer.children[j].className == "Rect")
+                        {
+                              var rectBlock = gLayer.children[j];
+                              rectBlock.attrs.shadowEnabled = false;
+                              rectBlock.attrs.shadowOpacity = 0;
+                              rectBlock.attrs.stroke = "#a1a1a19c";
+                              rectBlock.attrs.strokeWidth = 1;
+                        }
+                        if(gLayer.children[j].className == "Circle")
+                        {
+                              var cBlock = gLayer.children[j];
+                              cBlock.attrs.radius = 0;
+                              cBlock.attrs.strokeEnabled = false;
+                        }
+                    }
+                  }
+                  if(stageChildren[i].attrs.name == 'textLayer')
+                  {
+                      var tLayer = stageChildren[i];
+                      for(var k = 0; k < tLayer.children.length; k++)
+                      {
+                        if(tLayer.children[k].attrs.name == "textGroup")
+                        {
+                            var textGroup = tLayer.children[k];
+                            var textBlocks = textGroup.children;
+                            textGroup.children = textBlocks.map(function (textBlock)
+                            {
+                                textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
+                                textBlock.attrs.fill = "#000000";
+                                textBlock.attrs.fill = "#000000";
+                                return textBlock;
+                            });
+                          // break;
+                        }
+                      }
+                    }
+              }
+
+              stageParsedJSON.children = stageChildren;
+
+              var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
+              var symbollayer = symbolStage.find('Layer');
+              $(symbollayer).each(function(key,val){
+                val.cache();
+                val.filters([Konva.Filters.Grayscale]);
+                symbolStage.add(val);
+              });
+              jsonStage = symbolStage.toDataURL();
+              download_canvas(jsonStage,colorArry,backstitch);
+          });
+    }
     function download_canvas(jsonStage,colorArry,backstitch)
     {
         var colordataimge = '',
@@ -1194,7 +1300,7 @@ function loadScript(){
         if(backstitch.length !== 0){
             htmlcontent += '<h4>Backstitch</h4>';
             htmlcontent += '<p>Backstitch floss is :' +backstitch.floss+', Colour is : '+backstitch.colorName+'</p>';
-            htmlcontent += '<p>Backstitch- ' +backstitch.strokeWidth+' strands</p>';
+            htmlcontent += '<p>Backstitch- 3 strands</p>';
         }
 
         var bgcolr = backgroundCanvas.find('Rect');
@@ -1210,7 +1316,7 @@ function loadScript(){
                   }
               });
 
-              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+clothframe+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
+              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+localStorage.getItem("clothFrame")+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
 
               var doc = new jsPDF('','px');
 
@@ -1237,17 +1343,26 @@ function loadScript(){
               doc.addImage(jsonStage, 'JPEG', 15, 40, 400, 300);
               doc.save('pattern.pdf');
               $("#pdfloader").hide();
+              localStorage.removeItem("download_canvas");
         });
+
     }
 
     $(document).on("click","#save_canvas",function()
     {
-      localStorage.setItem("stage_image_url", stage.toDataURL());
-      localStorage.setItem("stage_json", stage.toJSON());
-      localStorage.setItem("stage_gridsize", gridSize);
-      localStorage.setItem("stage_clothframe", clothframe);
-      localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
-      window.location.href = $("#upload_page_url").val();
+        updateLocalStorage(stage.toJSON(),gridSize)
+        localStorage.setItem("stage_image_url", stage.toDataURL());
+        localStorage.setItem("stage_json", stage.toJSON());
+        localStorage.setItem("stage_gridsize", gridSize);
+        localStorage.setItem("stage_clothframe", localStorage.getItem("clothFrame"));
+        localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
+        window.location.href = $("#upload_page_url").val();
     })
-    /*  Text popup ends here  */
+
+    function updateLocalStorage(stageJson,gridSize)
+    {
+      localStorage.removeItem("auto_save_canvas");
+      localStorage.setItem("auto_save_canvas", stageJson);
+      localStorage.setItem("stage_gridsize", gridSize);
+    }
 }

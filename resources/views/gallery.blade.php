@@ -4,6 +4,9 @@
 <script>
     window.onload = function() {
       localStorage.removeItem('stage_image_url');
+      localStorage.removeItem('stage_json');
+      localStorage.removeItem('stage_clothframe');
+      localStorage.removeItem('stage_cloth');
     }
 </script>
 <div class="container">

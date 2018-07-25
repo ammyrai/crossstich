@@ -1133,7 +1133,7 @@ function loadScript(){
             if(backstitch.length != 0){
                 htmlcontent += '<h4>Backstitch</h4>';
                 htmlcontent += '<p>floss :' +backstitch.floss+', Colour : '+backstitch.colorName+'</p>';
-                htmlcontent += '<p>Backstitch- ' +backstitch.strokeWidth+' strands</p>';
+                htmlcontent += '<p>Backstitch- 3 strands</p>';
             }
 
             var bgcolr = backgroundCanvas.find('Rect');

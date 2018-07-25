@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<input type="hidden" id="base_url" value="{{ url('/') }}"/>
+<input type="hidden" id="create_design_url" value="{{ url('/createdesign') }}"/>
 <link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
 <div class="container">
@@ -35,14 +35,23 @@
                     <li class="canvas_tool" id="refresh_canvas" data-mode="refresh" title="Refresh">
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </li>
-                    <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
-                        <i class="fa fa-download" aria-hidden="true"></i>
-                    </li>
+                    @guest
+                        <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                        </li>
+                    @else
+                        <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                        </li>
+                    @endguest
                     <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
                         <i class="fa fa-upload" aria-hidden="true"></i>
                     </li> -->
                     <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    </li>
+                    <li class="canvas_tool" id="clear_canvas" data-mode="clear" title="Clear Canvas">
+                        <i class="fa fa-undo" aria-hidden="true"></i>
                     </li>
                   </ul>
                     <input type="hidden" name="upload_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
@@ -206,6 +215,27 @@
             <!-- <div class="modal-footer">
                 <button id="cloneSampleText" type="button" class="btn btn-primary">Ok</button>
             </div> -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- Upload Modal -->
+<div id="loginPopupModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="col-md-12 modal-content">
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Open file</h4> -->
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group login-modal-text">
+                <p>Please <a href="{{ route('login') }}">Login</a> first to Download the design.</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+            </div>
         </div>
         <!-- /.modal-content -->
     </div>
