@@ -23,7 +23,6 @@ $(document).on('click',"#clear_canvas",function(){
 /*  Load canvas script */
 function canvasInit()
 {
-
   /*   Loader on page load  */
     setTimeout(function()
     {
