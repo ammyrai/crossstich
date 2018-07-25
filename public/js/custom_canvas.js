@@ -14,10 +14,7 @@ $(document).on("click","#refresh_canvas",function()
 
 $(document).on('click',"#clear_canvas",function(){
     localStorage.removeItem("auto_save_canvas");
-    $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
-    $("#loader").show();
-    $("#myDiv").hide();
-    canvasInit();
+    window.location.href= $("#create_design_url").val();
 })
 
 /*  Load canvas script */

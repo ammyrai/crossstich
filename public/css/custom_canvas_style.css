@@ -321,3 +321,12 @@ ul.gallery {
     line-height: 23px;
     letter-spacing: 1px;
 }
+.create_new_design {
+    float: left;
+    margin: 8px 0 0;
+    height: 34px;
+    padding: 8px;
+    background-color: #cccc;
+    color: #000;
+    cursor: pointer;
+}

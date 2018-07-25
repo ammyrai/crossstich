@@ -50,9 +50,6 @@
                     <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
                     </li>
-                    <li class="canvas_tool" id="clear_canvas" data-mode="clear" title="Clear Canvas">
-                        <i class="fa fa-undo" aria-hidden="true"></i>
-                    </li>
                   </ul>
                     <input type="hidden" name="upload_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
 
@@ -77,6 +74,10 @@
                           <option value="#6b9ebf" data-type="">826</option>
                           <option value="#633666" data-type="">327</option> -->
                         </select>
+
+                        <span class="create_new_design" id="clear_canvas" data-mode="clear" title="Clear Canvas">
+                            Create New Design
+                        </span>
                 </div>
         </div>
     </div>
