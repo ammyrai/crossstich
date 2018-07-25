@@ -29,6 +29,7 @@ function canvasInit()
     /*    Declare Global Variables    */
     var   stage,                       // Stage variable
           backgroundCanvas,            // Main background canvas variable
+          backgroundCount,             // Layer to show grid numbers
           canvasGridLayer,             // Grid canvas variable
           textlayer,                   // Canvas Text layer
           newlayer,                    // Canvas New Layer for text movements
@@ -78,11 +79,12 @@ function canvasInit()
         /*  create stage for main canvas  */
         stage = new Konva.Stage({
             container: 'canvas',                  // Canvas container
-            width: stageWidth,        // Canvas Width
-            height: canvasHeight * gridSize       // Canvas Height
+            width: stageWidth + gridSize,        // Canvas Width
+            height: canvasHeight * gridSize + gridSize      // Canvas Height
         });
 
         /*  Create Multiple Layers for stage  */
+        backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});        // Layer1 for canvas main background
         backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
         canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
         textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
@@ -113,8 +115,8 @@ function canvasInit()
 
         /*  Layer1 work starts here! */
         stageRect =  new Konva.Rect({
-          x:0,
-          y:0,
+          x:gridSize,
+          y:gridSize,
           width: stageWidth,
           height: canvasHeight * gridSize,
           fill: canvasMainBgcolor,
@@ -127,17 +129,43 @@ function canvasInit()
         {
           cr = 2;
           lineStroke = 4;
+          countfontSize = txtFillSize - 5;
         }
         else if(gridSize >= 10)
         {
           cr = 1;
           lineStroke = 3;
+          countfontSize = txtFillSize - 4;
         }
         else
         {
           cr = 0;
           lineStroke = 1;
+          countfontSize = txtFillSize - 2;
         }
+        for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
+        {
+          var counterText = new Konva.Text({
+            x: (icx * gridSize) + 5,
+            y: 0,
+            text: icx,
+            fontSize: countfontSize,
+          });
+          backgroundCount.add(counterText);
+        }
+
+        for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
+        {
+          var counterText = new Konva.Text({
+            x: 0,
+            y: icy * gridSize + 2,
+            text: icy,
+            fontSize: countfontSize,
+          });
+          backgroundCount.add(counterText);
+        }
+
+        backgroundCount.cache();
 
         /*  Layer2 Create a grid on canvas work starts here!*/
         for (var ix = 0; ix < canvasWidth; ix++)
@@ -145,8 +173,8 @@ function canvasInit()
           for (var iy = 0; iy < canvasHeight; iy++)
           {
               box = new Konva.Rect({
-                  x : ix * gridSize,
-                  y : iy * gridSize,
+                  x : ix * gridSize + gridSize,
+                  y : iy * gridSize + gridSize,
                   width : gridSize ,
                   height: gridSize,
                   stroke: gridStrokeColor,
@@ -188,6 +216,10 @@ function canvasInit()
             if(val.hasName('backgroundLayer'))
             {
                 backgroundCanvas = val;
+            }
+            if(val.hasName('backgroundCount'))
+            {
+                backgroundCount = val;
             }
             if(val.hasName('canvasGridLayer'))
             {
@@ -1156,7 +1188,7 @@ function canvasInit()
     }
     /*  Text popup ends here  */
     textlayer.add(gridTextGroup,gridSelectGroup);
-    stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
+    stage.add(backgroundCount,backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
 
     $(document).on('click',"#downloadLoginPopup",function(){
         updateLocalStorage(stage.toJSON(),gridSize)
