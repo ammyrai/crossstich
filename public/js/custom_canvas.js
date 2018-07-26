@@ -56,6 +56,7 @@ function canvasInit()
           textFillColor = '#000000',   // Text default fill color
           selectedRectNodes = [],      // Selected rectangle nodes.
           moved = 0,                   // Move
+          xplus,
           canvasMainBgcolor = localStorage.getItem("canvasBgColor"),    // Canvas bg color
           gridStrokeColor = localStorage.getItem("gridStrokeCPara"),    // Grid stroke color
           gridShadowColor = localStorage.getItem("gridShadowCPara"),    // Grid shadow color
@@ -129,7 +130,7 @@ function canvasInit()
         {
           cr = 2;
           lineStroke = 4;
-          countfontSize = txtFillSize - 5;
+          countfontSize = txtFillSize - 7;
         }
         else if(gridSize >= 10)
         {
@@ -188,8 +189,8 @@ function canvasInit()
                   lineDraw: false
               });
               circle = new Konva.Circle({
-                x: box.x(),
-                y: box.y(),
+                x: box.x()+ gridSize,
+                y: box.y()+ gridSize,
                 radius: cr,
                 stroke: circleStrokeColor,
                 strokeWidth: 1,
@@ -200,6 +201,8 @@ function canvasInit()
               canvasGridLayer.add(circle);             // Add rectangle to background layer
           }
         }
+        textlayer.add(gridTextGroup,gridSelectGroup);
+        stage.add(backgroundCount,backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
     }
     else
     {
@@ -260,6 +263,8 @@ function canvasInit()
         {
           lineStroke = 1;
         }
+        textlayer.add(gridTextGroup,gridSelectGroup);
+        // stage.add(backgroundCount,backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
     }
 
     if (localStorage.getItem("download_canvas") !== null)
@@ -275,6 +280,18 @@ function canvasInit()
     function changeColor(x)
     {
         textFillColor = x;
+    }
+    if(gridSize >= 20)
+    {
+      xplus = 4;
+    }
+    else if(gridSize >= 10)
+    {
+      xplus = 2;
+    }
+    else
+    {
+      xplus = 1;
     }
     /*   Change tool mode function starts here!   */
     $(document).on("click",".canvas_tool",function()
@@ -750,6 +767,7 @@ function canvasInit()
                  var val = textList;
                  if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
                  {
+                   console.log(val)
                      val.setAttr('name', 'textselected');
                  }
              });
@@ -1187,8 +1205,7 @@ function canvasInit()
       updateLocalStorage(stage.toJSON(),gridSize)
     }
     /*  Text popup ends here  */
-    textlayer.add(gridTextGroup,gridSelectGroup);
-    stage.add(backgroundCount,backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
+
 
     $(document).on('click',"#downloadLoginPopup",function(){
         updateLocalStorage(stage.toJSON(),gridSize)
@@ -1395,4 +1412,10 @@ function canvasInit()
       localStorage.setItem("auto_save_canvas", stageJson);
       localStorage.setItem("stage_gridsize", gridSize);
     }
+}
+
+window.onbeforeunload = confirmExit;
+function confirmExit()
+{
+  return "Do you want to leave this page without saving?";
 }

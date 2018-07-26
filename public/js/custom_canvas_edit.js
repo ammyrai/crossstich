@@ -1,16 +1,16 @@
 /*    Konva canvas file   */
 $( window ).on( "load", function() {
-  loadScript();
+  canvasInit();
 });
 $(document).on("click","#refresh_canvas",function()
 {
     $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
     $("#loader").show();
     $("#myDiv").hide();
-    loadScript();
+    canvasInit();
 });
 
-function loadScript(){
+function canvasInit(){
     /*    Declare Global Variables    */
     var jsondata = '';
 
@@ -1196,4 +1196,9 @@ function loadScript(){
     });
     /*   Loader on page load  */
 
+  }
+  window.onbeforeunload = confirmExit;
+  function confirmExit()
+  {
+    return "Do you want to leave this page without saving?";
   }
