@@ -63,16 +63,6 @@
                           <option value="#7fb335" data-type="">Green - 906</option>
                           <option value="#6b9ebf" data-type="">Blue - 826</option>
                           <option value="#633666" data-type="">Violet - 327</option>
-
-                          <!-- <option value="#fcfbf8" data-type="">Ecru</option>
-                          <option value="#ffffff" data-type="">B5200</option>
-                          <option value="#000000" data-type="">310</option>
-                          <option value="#c72b3b" data-type="">321</option>
-                          <option value="#fd5d35" data-type="">608</option>
-                          <option value="#ffe300" data-type="">973</option>
-                          <option value="#7fb335" data-type="">906</option>
-                          <option value="#6b9ebf" data-type="">826</option>
-                          <option value="#633666" data-type="">327</option> -->
                         </select>
 
                         <span class="create_new_design" id="clear_canvas" data-mode="clear" title="Clear Canvas">

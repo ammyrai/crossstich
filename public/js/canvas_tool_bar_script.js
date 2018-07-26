@@ -114,7 +114,7 @@ $(function()
     });
     $(document).on('change', '#select_cloth_frame',function() {
       $(".framevalidate").hide();
-        localStorage.setItem("clothframe", $(this).val());
+      localStorage.setItem("clothframe", $(this).val());
     })
     /*
         ====================================================
