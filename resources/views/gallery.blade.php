@@ -35,7 +35,7 @@
           </ul>
           @else
           <div class="alert alert-info">
-               <strong>No record found!</strong> You may create your own design by clicking here. <a href="{{ url('/') }}"> Create Design</a>
+               <strong>No record found!</strong> You may create your own design by clicking here. <a href="{{ route('createdesign') }}"> Create Design</a>
           </div>
           @endif
         </div>

@@ -1423,6 +1423,10 @@ window.onload = function() {
         if (savedesign) {
             return undefined;
         }
+        if(localStorage.getItem("auto_save_canvas") === null)
+        {
+          return undefined;
+        }
         var confirmationMessage = 'It looks like you have been editing something. '
                                 + 'If you leave before saving, your changes will be lost.';
 
