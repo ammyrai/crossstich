@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\UploadPattern;
 use DB;
 use URL;
@@ -17,7 +18,6 @@ class GalleryController extends Controller
     public function index()
     {
         $images  = DB::table('save_pattern_design')->where('pattern_status', 1)->get()->all();
-
         return view('gallery')->with("allimages", $images);
     }
 
@@ -73,11 +73,11 @@ class GalleryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$edit)
     {
-      $pattern = UploadPattern::findOrFail($id);
-
-      return view('patternedit', array('pattern' => $pattern, 'title' => 'Edit Pattern'));
+        $pattern = UploadPattern::findOrFail($id);
+        $pattern['gallery_edit'] = $edit;
+        return view('patternedit', array('pattern' => $pattern, 'title' => 'Edit Pattern'));
     }
 
     /**
@@ -89,29 +89,30 @@ class GalleryController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $userId = \Auth::user()->id;
-      $rand = rand(10,100).time();
-      $pattern = UploadPattern::findOrFail($id);
+        $userId = \Auth::user()->id;
 
-      $image = $request->input('designimage'); // your base64 encoded
-      $image = str_replace('data:image/png;base64,', '', $image);
-      $image = str_replace(' ', '+', $image);
-      $imageName = 'pattern'.$rand.$userId.'.png';
-      $url = URL::to("/uploads/");
-      $imgPath = $url.'/'.$imageName;
-      \File::put(public_path(). '/uploads/' . $imageName, base64_decode($image));
+        $rand = rand(10,100).time();
+        $pattern = UploadPattern::findOrFail($id);
 
-      /*  Upload canvas data file */
-      $canvasdata = $request->input('canvasdata');
-      $file = 'pattern'.$rand.$userId.'.json';
-      \File::put(public_path(). '/uploads/' .$file,$canvasdata);
-      $canvasFileLink = $url.'/'.$file;
+        $image = $request->input('designimage'); // your base64 encoded
+        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        $imageName = 'pattern'.$rand.$userId.'.png';
+        $url = URL::to("/uploads/");
+        $imgPath = $url.'/'.$imageName;
+        \File::put(public_path(). '/uploads/' . $imageName, base64_decode($image));
 
-      DB::table('save_pattern_design')
-            ->where('id', $id)
-            ->update(['pattern_img' => $imgPath,'canvas_data_link'=>$canvasFileLink,'canvas_grid_size'=>$request->input('gridsize')]);
+        /*  Upload canvas data file */
+        $canvasdata = $request->input('canvasdata');
+        $file = 'pattern'.$rand.$userId.'.json';
+        \File::put(public_path(). '/uploads/' .$file,$canvasdata);
+        $canvasFileLink = $url.'/'.$file;
 
-      return redirect('/pattern/edit/'.$id)->with('success','Pattern Updated successfully');
+        DB::table('save_pattern_design')
+              ->where('id', $id)
+              ->update(['pattern_img' => $imgPath,'canvas_data_link'=>$canvasFileLink,'canvas_grid_size'=>$request->input('gridsize')]);
+
+        return redirect('/pattern/edit/'.$id.'/0')->with('success','Pattern Updated successfully');
     }
 
     /**

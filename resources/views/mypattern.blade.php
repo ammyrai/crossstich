@@ -38,7 +38,7 @@
                   @endif
                 </div>
                 <div class="actions">
-                <a href="{{ route('edit', $image->id) }}" class="btn btn-large btn-primary openbutton">Edit</a>
+                <a href="{{ route('edit', [$image->id,0]) }}" class="btn btn-large btn-primary openbutton">Edit</a>
                     <!-- Delete should be a button -->
                    {!! Form::open(array(
                            'method' => 'DELETE',

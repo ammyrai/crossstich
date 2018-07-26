@@ -27,6 +27,9 @@
                       <span>{!! substr($image->pattern_info, 0, 15) !!}</span>
                     @endif
                   </div>
+                  <div class="actions">
+                      <a href="{{ route('edit', [$image->id,1]) }}" class="btn btn-large btn-primary openbutton">Edit</a>
+                  </div>
               </li>
             @endforeach
           </ul>

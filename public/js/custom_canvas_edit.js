@@ -1186,6 +1186,15 @@ function canvasInit(){
             $("#gridsize").val(gridSize);
             $( "#patternUpdate" ).submit();
         })
+        $(document).on("click","#save_new_design",function()
+        {
+            localStorage.setItem("stage_image_url", stage.toDataURL());
+            localStorage.setItem("stage_json", stage.toJSON());
+            localStorage.setItem("stage_gridsize", gridSize);
+            localStorage.setItem("stage_clothframe", $("#canvas_cloth_frame").val());
+            localStorage.setItem("stage_cloth", $("#canvas_cloth").val());
+            window.location.href = $("#upload_page_url").val();
+        })
 
         /*  Text popup ends here  */
         var myVar = setTimeout(function(){

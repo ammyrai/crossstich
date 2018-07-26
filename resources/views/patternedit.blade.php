@@ -6,6 +6,7 @@
 <input type="hidden" name="pGridSize" id="pGridSize" value="{{$pattern->canvas_grid_size}}"/>
 <input type="hidden" name="canvas_cloth" id="canvas_cloth" value="{{$pattern->canvas_cloth}}"/>
 <input type="hidden" name="canvas_cloth_frame" id="canvas_cloth_frame" value="{{$pattern->canvas_cloth_frame}}"/>
+<input type="hidden" name="upload_page_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -49,10 +50,11 @@
                     <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
                         <i class="fa fa-upload" aria-hidden="true"></i>
                     </li> -->
-
-                    <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
-                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                    </li>
+                    @if($pattern->gallery_edit == 0)
+                        <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns"><i class="fa fa-floppy-o" aria-hidden="true"></i></li>
+                      @else
+                        <li class="canvas_tool" id="save_new_design" data-mode="save" title="Save to My Patterns"><i class="fa fa-floppy-o" aria-hidden="true"></i></li>
+                    @endif
                   </ul>
                   {!! Form::model($pattern, [
                       'method' => 'PATCH',
@@ -84,8 +86,6 @@
 <img src="" id="canvasimg"/>
 <div id="loader"></div>
 <div class="design_floss_list_style" id="design_floss_list" style="display:none;"></div>
-
-
 <!-- Text Modal -->
 <div id="textModal" class="modal fade">
     <div class="modal-dialog">
@@ -223,7 +223,6 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
 </div>
 <div id="symbolstage" style="display:none"></div>
 <div id="pdfloader"><p>Pdf downloading is in progress... Please Wait for a while!</p><img src="{{ asset('imgs/download.gif') }}"/></div>

@@ -1404,7 +1404,7 @@ function canvasInit()
         localStorage.setItem("stage_clothframe", localStorage.getItem("clothFrame"));
         localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
         window.location.href = $("#upload_page_url").val();
-    })
+    });
 
     function updateLocalStorage(stageJson,gridSize)
     {
