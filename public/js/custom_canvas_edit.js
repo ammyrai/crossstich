@@ -1181,6 +1181,7 @@ function canvasInit(){
 
         $(document).on("click","#save_canvas",function()
         {
+            savedesign = true;
             $("#designimage").val(stage.toDataURL());
             $("#canvasdata").val(stage.toJSON());
             $("#gridsize").val(gridSize);
@@ -1188,6 +1189,7 @@ function canvasInit(){
         })
         $(document).on("click","#save_new_design",function()
         {
+            savedesign = true;
             localStorage.setItem("stage_image_url", stage.toDataURL());
             localStorage.setItem("stage_json", stage.toJSON());
             localStorage.setItem("stage_gridsize", gridSize);
@@ -1206,8 +1208,18 @@ function canvasInit(){
     /*   Loader on page load  */
 
   }
-  window.onbeforeunload = confirmExit;
-  function confirmExit()
-  {
-    return "Do you want to leave this page without saving?";
-  }
+
+  var savedesign = false;
+
+  window.onload = function() {
+      window.addEventListener("beforeunload", function (e) {
+          if (savedesign) {
+              return undefined;
+          }
+          var confirmationMessage = 'It looks like you have been editing something. '
+                                  + 'If you leave before saving, your changes will be lost.';
+
+          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+      });
+  };
