@@ -26,8 +26,8 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+  <input type="hidden" name="site_url" id="site_url" val="{{ url('/') }}"/>
     <div id="app">
-
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">

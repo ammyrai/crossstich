@@ -188,12 +188,3 @@ $(function()
     return rgb;
   }
   /*  Generate new color codes script ends here!  */
-
-  // $(window).on('load',function(){
-  //   $('#selectTxtColor1').selectstyle({
-  //     width  : 400,
-  //     height : 300,
-  //     theme  : 'light',
-  //     onchange : function(val){}
-  //   });
-  // })

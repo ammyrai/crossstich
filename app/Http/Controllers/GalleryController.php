@@ -17,7 +17,7 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $images  = DB::table('save_pattern_design')->where('pattern_status', 1)->get()->all();
+        $images  = DB::table('save_pattern_design')->where('pattern_status', 1)->orderByRaw('id DESC')->get()->all();
         return view('gallery')->with("allimages", $images);
     }
 
@@ -26,7 +26,7 @@ class GalleryController extends Controller
     {
         if(\Auth::check()){
           $id = \Auth::user()->id;
-          $images  = DB::table('save_pattern_design')->where('user_id', $id)->get()->all();
+          $images  = DB::table('save_pattern_design')->where('user_id', $id)->orderByRaw('id DESC')->get()->all();
           return view('mypattern')->with("allimages", $images);
         }
         else{
@@ -41,17 +41,6 @@ class GalleryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
     {
         //
     }

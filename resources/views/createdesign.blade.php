@@ -36,7 +36,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-3" for="pwd">Please Select Aida Cloth</label>
+              <label class="control-label col-sm-3" for="pwd">Select Aida Cloth Frame</label>
               <div class="col-sm-9">
                   <div class="selectClothFrame">
 
@@ -46,7 +46,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-3" for="pwd">Please Select Aida Cloth</label>
+              <label class="control-label col-sm-3" for="pwd">Select Aida Cloth Colour</label>
               <div class="col-sm-9">
                 <div class="selectBgColor">
                   <select theme="google" width="400" style="" id="clothColorId" class="select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="bgSelect">

@@ -15,6 +15,10 @@
           <h1>
               My Saved Patterns
           </h1>
+          <!-- <div class="col-md-3 col-xs-offset-9 search_box">
+
+            <input class="form-control" type="text" placeholder="Search by tags" aria-label="Search" value="" id="search_tags">
+          </div> -->
           <br/>
           @if ($message = Session::get('success'))
               <div class="alert alert-success" id="patternDeleteMsg">
@@ -27,7 +31,7 @@
               </script>
           @endif
           @if(count($allimages) > 0)
-          <ul class="gallery">
+          <ul class="gallery" id="pattern_list">
             @foreach($allimages as $image)
                 <li>
                 <div class="pattern_details">

@@ -1036,7 +1036,7 @@ function canvasInit(){
                 });
             }
 
-            jQuery.getJSON( "../../json/floss.json").then(function(json)
+            jQuery.getJSON( "../../../json/floss.json").then(function(json)
             {
                   var data = json.colors;
                   $.each( uniqueNames, function( key, val )
@@ -1137,7 +1137,7 @@ function canvasInit(){
             }
 
             var bgcolr = backgroundCanvas.find('Rect');
-            var clothArray = jQuery.getJSON( "../../json/clothColors.json").then(function(clothjson)
+            var clothArray = jQuery.getJSON( "../../../json/clothColors.json").then(function(clothjson)
             {
                   var data = clothjson.colors;
                   var val = bgcolr[0].getAttr('fill');

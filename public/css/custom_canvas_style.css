@@ -270,6 +270,9 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
     background: #4CAF50;
     cursor: pointer;
 }
+.search_box {
+    margin-bottom: 9px;
+}
 
 ul.gallery {
     list-style: none;
