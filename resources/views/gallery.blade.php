@@ -56,21 +56,29 @@ $(document).ready(function(){
         success:function(data)
         {
           var output  = '';
-          $.each(data,function(key,val){
-            var imgurl = $("#site_url").val()+'pattern/edit/'+val.id+"/1";
-            output +='<li>'+
-                '<div class="pattern_details">'+
-                  '<img src="'+val.pattern_img+'" width="150px" height="150px"/>'+
-                  '<span>'+val.pattren_name+ '</span>';
-                  if( val.pattern_info != ''){
-                    output+='<span>'+val.pattern_info+'</span>';
-                  }
-                output+='</div>'+
-                '<div class="actions">'+
-                '<a href="'+imgurl+'" class="btn btn-large btn-primary openbutton">Edit</a>'+
-                 '</div>'+
-             '</li>';
-          });
+          if(data.length >0)
+          {
+            $.each(data,function(key,val){
+              var imgurl = $("#site_url").val()+'pattern/edit/'+val.id+"/1";
+              output +='<li>'+
+                  '<div class="pattern_details">'+
+                    '<img src="'+val.pattern_img+'" width="150px" height="150px"/>'+
+                    '<span>'+val.pattren_name+ '</span>';
+                    if( val.pattern_info != ''){
+                      output+='<span>'+val.pattern_info+'</span>';
+                    }
+                  output+='</div>'+
+                  '<div class="actions">'+
+                  '<a href="'+imgurl+'" class="btn btn-large btn-primary openbutton">Edit</a>'+
+                   '</div>'+
+               '</li>';
+            });
+          }
+          else {
+            output+='<div class="alert alert-info">'+
+                 '<strong>No record found!</strong></a>'+
+                 '</div>';
+          }
            $('#pattern_list').html(output);
         }
       });
