@@ -232,13 +232,11 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('js/custom_canvas_edit.js') }}" defer></script>
 <script src="{{ asset('js/selectstyle.js') }}" defer></script>
-<!-- <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script> -->
 <script src="{{ asset('js/jspdf/jspdf.debug.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.min.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.plugin.autotable.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<script src="{{ asset('js/lz-string.js') }}" defer></script>
 <script>
 jQuery(document).ready(function($) {
  jQuery('#selectTxtColor').selectstyle({

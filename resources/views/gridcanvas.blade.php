@@ -248,7 +248,6 @@
 <script src="{{ asset('js/jspdf/jspdf.plugin.autotable.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<script src="{{ asset('js/lz-string.js') }}" defer></script>
 <script>
  jQuery(document).ready(function($) {
   jQuery('#selectTxtColor').selectstyle({

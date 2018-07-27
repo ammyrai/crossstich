@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 use App\UploadPattern;
+use DB;
 use URL;
 
 class UploadPatternController extends Controller
@@ -18,11 +19,21 @@ class UploadPatternController extends Controller
     public function index()
     {
       $storage =  "<script> document.write(localStorage.getItem('stage_image_url')); </script>";
-      if (isset($storage)) {
-        if(\Auth::check()){
-            return view('upload_pattern');
+      if (isset($storage))
+      {
+        if(\Auth::check())
+        {
+            $tags  = DB::table('tags')->select('tag_name')->get();
+            $tagarray = array();
+            for($i= 0 ; $i<count($tags); $i++)
+            {
+              $tagarray[] = array('tagname'=>ucfirst($tags[$i]->tag_name));
+            }
+            $json = json_encode($tagarray);
+            return view('upload_pattern')->with("jsontagarray", $json);
         }
-        else{
+        else
+        {
             return redirect('/login');
         }
       }
@@ -81,18 +92,27 @@ class UploadPatternController extends Controller
         $patternDesign->canvas_cloth_frame = $request->input('canvasclothframe');
         $patternDesign->pattern_status = $status;
         $patternDesign->save();
-        return redirect('/mypattern');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $postId = $patternDesign->id;
+
+        $tagslist = explode(",",$request->input('autotags'));
+        for($i=0; $i<count($tagslist);$i++)
+        {
+            $tag = preg_replace('/[^A-Za-z0-9\-]/', '', $tagslist[$i]);
+            $tagexists = DB::table('tags')->where('tag_name',$tag)->first();
+            if ($tagexists === null)
+            {
+                DB::table('tags')->insert(['tag_name' => $tag]);
+                $tagid = DB::getPdo()->lastInsertId();
+                DB::table('patterns_tags')->insert(['tag_id' => $tagid,'pattren_id' => $postId]);
+            }
+            else
+            {
+                DB::table('patterns_tags')->insert(['tag_id' => $tagexists->tag_id,'pattren_id' => $postId]);
+            }
+
+        }
+        return redirect('/mypattern');
     }
 
     /**

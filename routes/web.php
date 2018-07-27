@@ -26,7 +26,7 @@ Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('home');
 
-Route::get('/upload_pattern', 'UploadPatternController@index');
+Route::get('/upload_pattern', 'UploadPatternController@index')->name('upload_pattern');
 
 Route::post('create', ['as' => 'create', 'uses' => 'UploadPatternController@create']);
 

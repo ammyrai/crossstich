@@ -330,3 +330,8 @@ ul.gallery {
     color: #000;
     cursor: pointer;
 }
+.autotags
+{
+  width: 730px;
+  resize: none;
+}
