@@ -21,7 +21,7 @@
               <div class="form-group">
                 <label for="email">Pattern Tags<span class="required_field">*</span> :</label>
                 <textarea id="textarea" class="autotags" rows="1" name="autotags"></textarea>
-                <p class="text-right">*Press enter to create tags.</p>
+                <p class="text-right">*Press enter to add more tags.</p>
               </div>
               <div class="form-group">
                 <label for="pwd">Info about your project:</label>
