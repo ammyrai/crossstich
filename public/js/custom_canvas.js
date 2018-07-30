@@ -354,17 +354,17 @@ function canvasInit()
                        text.draw();
                        selected_rect.push(box);
                     }
-                    // if(box.getAttr('filled') === true)
-                    // {
-                    //   box.setAttr('filled', false);
-                    //   textlayer.draw();
-                    //   if(evt.target.className === 'Text')
-                    //   {
-                    //       evt.target.destroy();
-                    //   }
-                    //   box.setAttr('filled', false);
-                    //   textlayer.draw();
-                    // }
+                    if(box.getAttr('filled') === true)
+                    {
+                      box.setAttr('filled', false);
+                      textlayer.draw();
+                      if(evt.target.className === 'Text')
+                      {
+                          evt.target.destroy();
+                      }
+                      box.setAttr('filled', false);
+                      textlayer.draw();
+                    }
                break;
                case 'eraser':
                    if(box.getAttr('filled') === true)
@@ -404,7 +404,6 @@ function canvasInit()
                default:
              }
         }
-        // updateLocalStorage(stage.toJSON(),gridSize)
     });
     stage.on('mouseup',function(evt)
     {
@@ -550,7 +549,6 @@ function canvasInit()
                  default:
              }
         }
-        // updateLocalStorage(stage.toJSON(),gridSize)
     });
 
     /*  Select tool Functionality   */
@@ -789,8 +787,7 @@ function canvasInit()
                  var val = textList;
                  if(val.attrs.x >= r2.attrs.x && val.attrs.x < (r2.attrs.x+r2.attrs.width) && val.attrs.y >= r2.attrs.y && val.attrs.y < (r2.attrs.y+r2.attrs.height))
                  {
-                   console.log(val)
-                     val.setAttr('name', 'textselected');
+                      val.setAttr('name', 'textselected');
                  }
              });
              /* Find and push selected lines  */
@@ -1226,7 +1223,7 @@ function canvasInit()
           }
       });
       toAnimate = false;
-      updateLocalStorage(stage.toJSON(),gridSize)
+      updateLocalStorage(stage.toJSON(),gridSize);
     }
     /*  Text popup ends here  */
 
@@ -1234,10 +1231,11 @@ function canvasInit()
     $(document).on('click',"#downloadLoginPopup",function(){
         updateLocalStorage(stage.toJSON(),gridSize)
         localStorage.setItem("download_canvas", stage.toJSON());
-    })
+        savedesign = true;
+    });
     $(document).on("click","#cancel_download",function(){
         localStorage.removeItem("download_canvas");
-    })
+    });
 
     $(document).on("click","#download_canvas",function()
     {
@@ -1418,6 +1416,7 @@ function canvasInit()
 
     $(document).on("click","#save_canvas",function()
     {
+        localStorage.removeItem("download_canvas");
         savedesign = true;
         updateLocalStorage(stage.toJSON(),gridSize)
         localStorage.setItem("stage_image_url", stage.toDataURL());

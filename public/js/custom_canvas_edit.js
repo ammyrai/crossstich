@@ -1017,7 +1017,7 @@ function canvasInit(){
 
         /*  Layer2 Create a grid on canvas work ends here!*/
         textlayer.add(gridTextGroup,gridSelectGroup);
-        
+
         $(document).on('click',"#downloadLoginPopup",function(){
             localStorage.setItem("download_edit_canvas", stage.toJSON());
             localStorage.setItem("edit_page_url", $("#curren_page_url").val());
@@ -1204,6 +1204,7 @@ function canvasInit(){
 
         $(document).on("click","#save_canvas",function()
         {
+            localStorage.removeItem("download_canvas");
             savedesign = true;
             $("#designimage").val(stage.toDataURL());
             $("#canvasdata").val(stage.toJSON());
@@ -1212,6 +1213,7 @@ function canvasInit(){
         })
         $(document).on("click","#save_new_design",function()
         {
+            localStorage.removeItem("download_canvas");
             savedesign = true;
             localStorage.setItem("stage_image_url", stage.toDataURL());
             localStorage.setItem("stage_json", stage.toJSON());
@@ -1234,15 +1236,15 @@ function canvasInit(){
 
   var savedesign = false;
 
-  // window.onload = function() {
-  //     window.addEventListener("beforeunload", function (e) {
-  //         if (savedesign) {
-  //             return undefined;
-  //         }
-  //         var confirmationMessage = 'It looks like you have been editing something. '
-  //                                 + 'If you leave before saving, your changes will be lost.';
-  //
-  //         (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-  //         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-  //     });
-  // };
+  window.onload = function() {
+      window.addEventListener("beforeunload", function (e) {
+          if (savedesign) {
+              return undefined;
+          }
+          var confirmationMessage = 'It looks like you have been editing something. '
+                                  + 'If you leave before saving, your changes will be lost.';
+
+          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+      });
+  };
