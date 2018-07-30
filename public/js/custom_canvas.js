@@ -1,4 +1,5 @@
 /*    Konva canvas file   */
+
 $( window ).on( "load", function()
 {
     canvasInit();
@@ -20,6 +21,8 @@ $(document).on('click',"#clear_canvas",function(){
 /*  Load canvas script */
 function canvasInit()
 {
+
+    var ReactHashMap = {}
   /*   Loader on page load  */
     setTimeout(function()
     {
@@ -281,8 +284,30 @@ function canvasInit()
           lineStroke = 1;
         }
         textlayer.add(gridTextGroup,gridSelectGroup);
-    }
 
+        var stageChildren = stagelayer;
+
+        for(var i = 0; i < stageChildren.length; i++)
+        {
+            if(stageChildren[i].attrs.name == "canvasGridLayer")
+            {
+                var tLayer = stageChildren[i];
+                for(var k = 0; k < tLayer.children.length; k++)
+                {
+                    var cachedRect = tLayer.children[k];
+                    if(cachedRect.className === "Rect")
+                    {
+                        if(cachedRect.attrs.filled === true)
+                        {
+                          ReactHashMap[''+cachedRect.x()+cachedRect.y()] = cachedRect;
+                        }
+                    }
+                }
+              }
+        }
+
+    }
+    
     if (localStorage.getItem("download_canvas") !== null)
     {
         download_canvas_script(localStorage.getItem("download_canvas"));
@@ -333,7 +358,6 @@ function canvasInit()
             switch (mode)
             {
                case 'pencil':
-                   console.log
                    if(box.getAttr('filled') === false)
                    {
                        text = new Konva.Text({
@@ -353,6 +377,7 @@ function canvasInit()
                        box.setAttr('filled', true);
                        text.draw();
                        selected_rect.push(box);
+                       ReactHashMap[''+box.x()+box.y()] = box;
                     }
                     // if(box.getAttr('filled') === true)
                     // {
@@ -369,6 +394,9 @@ function canvasInit()
                case 'eraser':
                    if(box.getAttr('filled') === true)
                    {
+                     if(ReactHashMap[''+box.x()+box.y()]) {
+                       ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                     }
                      if(evt.target.className === 'Text')
                      {
                          evt.target.destroy();
@@ -499,6 +527,7 @@ function canvasInit()
                        box.setAttr('filled', true);
                        text.draw();
                        selected_rect.push(box);
+                       ReactHashMap[''+box.x()+box.y()] = box
                    }
                  break;
                  case 'eraser':
@@ -506,6 +535,9 @@ function canvasInit()
                      {
                         var textList = textlayer.find("Text");
                         $( textList ).each(function() {
+                          if(ReactHashMap[''+box.x()+box.y()]) {
+                            ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                          }
                              if(evt.target.className == 'Text')
                              {
                                evt.target.destroy();
@@ -712,6 +744,7 @@ function canvasInit()
                                     rectval.setAttr('filled', true);
                                     text.draw();
                                     selected_rect.push(rectval);
+                                    ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                               }
                             });
                         }
@@ -1212,6 +1245,7 @@ function canvasInit()
                       rectval.setAttr('filled', true);
                       text.draw();
                       selected_rect.push(rectval);
+                      ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                 }
               });
               $(newlayer.children).each(function(key, val){
