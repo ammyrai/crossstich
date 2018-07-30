@@ -1017,8 +1017,7 @@ function canvasInit(){
 
         /*  Layer2 Create a grid on canvas work ends here!*/
         textlayer.add(gridTextGroup,gridSelectGroup);
-        // stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
-
+        
         $(document).on('click',"#downloadLoginPopup",function(){
             localStorage.setItem("download_edit_canvas", stage.toJSON());
             localStorage.setItem("edit_page_url", $("#curren_page_url").val());

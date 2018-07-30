@@ -281,7 +281,6 @@ function canvasInit()
           lineStroke = 1;
         }
         textlayer.add(gridTextGroup,gridSelectGroup);
-        // stage.add(backgroundCount,backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
     }
 
     if (localStorage.getItem("download_canvas") !== null)
