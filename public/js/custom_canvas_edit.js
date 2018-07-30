@@ -1017,7 +1017,7 @@ function canvasInit(){
 
         /*  Layer2 Create a grid on canvas work ends here!*/
         textlayer.add(gridTextGroup,gridSelectGroup);
-        stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
+        // stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
 
         $(document).on('click',"#downloadLoginPopup",function(){
             localStorage.setItem("download_edit_canvas", stage.toJSON());
@@ -1085,6 +1085,10 @@ function canvasInit(){
 
                   for(var i = 0; i < stageChildren.length; i++)
                   {
+                      if(stageChildren[i].attrs.name == "backgroundLayer")
+                      {
+                        stageChildren[i].children[0].attrs.fill = '#ffffff';
+                      }
                       if(stageChildren[i].attrs.name == "canvasGridLayer")
                       {
                           var gLayer = stageChildren[i];
@@ -1131,12 +1135,6 @@ function canvasInit(){
                   stageParsedJSON.children = stageChildren
 
                   var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
-                  var symbollayer = symbolStage.find('Layer');
-                  $(symbollayer).each(function(key,val){
-                    val.cache();
-                    val.filters([Konva.Filters.Grayscale]);
-                    symbolStage.add(val)
-                  })
                   jsonStage = symbolStage.toDataURL();
                   download_canvas(jsonStage,colorArry,backstitch);
               });
@@ -1237,15 +1235,15 @@ function canvasInit(){
 
   var savedesign = false;
 
-  window.onload = function() {
-      window.addEventListener("beforeunload", function (e) {
-          if (savedesign) {
-              return undefined;
-          }
-          var confirmationMessage = 'It looks like you have been editing something. '
-                                  + 'If you leave before saving, your changes will be lost.';
-
-          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-      });
-  };
+  // window.onload = function() {
+  //     window.addEventListener("beforeunload", function (e) {
+  //         if (savedesign) {
+  //             return undefined;
+  //         }
+  //         var confirmationMessage = 'It looks like you have been editing something. '
+  //                                 + 'If you leave before saving, your changes will be lost.';
+  //
+  //         (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+  //         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+  //     });
+  // };

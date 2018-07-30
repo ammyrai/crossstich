@@ -1299,6 +1299,10 @@ function canvasInit()
 
               for(var i = 0; i < stageChildren.length; i++)
               {
+                  if(stageChildren[i].attrs.name == "backgroundLayer")
+                  {
+                    stageChildren[i].children[0].attrs.fill = '#ffffff';
+                  }
                   if(stageChildren[i].attrs.name == "canvasGridLayer")
                   {
                       var gLayer = stageChildren[i];
@@ -1345,12 +1349,6 @@ function canvasInit()
               stageParsedJSON.children = stageChildren;
 
               var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
-              var symbollayer = symbolStage.find('Layer');
-              $(symbollayer).each(function(key,val){
-                val.cache();
-                val.filters([Konva.Filters.Grayscale]);
-                symbolStage.add(val);
-              });
               jsonStage = symbolStage.toDataURL();
               download_canvas(jsonStage,colorArry,backstitch);
           });
