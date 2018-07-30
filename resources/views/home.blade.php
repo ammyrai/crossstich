@@ -8,6 +8,9 @@
     if (localStorage.getItem("download_canvas") !== null) {
         window.location.href= $("#gridCanvasPage").val();
     }
+    if (localStorage.getItem("download_edit_canvas") !== null) {
+        window.location.href= localStorage.getItem("edit_page_url");
+    }
     if (localStorage.getItem("stage_image_url") !== null) {
         window.location.href= $("#upload_url").val();
     }

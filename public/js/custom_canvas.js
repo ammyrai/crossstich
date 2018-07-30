@@ -1213,7 +1213,6 @@ function canvasInit()
     })
     $(document).on("click","#cancel_download",function(){
         localStorage.removeItem("download_canvas");
-        console.log(localStorage.getItem("download_canvas"))
     })
 
     $(document).on("click","#download_canvas",function()

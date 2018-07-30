@@ -7,6 +7,8 @@
 <input type="hidden" name="canvas_cloth" id="canvas_cloth" value="{{$pattern->canvas_cloth}}"/>
 <input type="hidden" name="canvas_cloth_frame" id="canvas_cloth_frame" value="{{$pattern->canvas_cloth_frame}}"/>
 <input type="hidden" name="upload_page_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
+<input type="hidden" name="upload_page_url" id="curren_page_url" value="{{Request::url()}}"/>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -44,9 +46,15 @@
                     <li class="canvas_tool" id="refresh_canvas" data-mode="refresh" title="Refresh">
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </li>
-                    <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
-                        <i class="fa fa-download" aria-hidden="true"></i>
-                    </li>
+                    @guest
+                          <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                        </li>
+                    @else
+                        <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                        </li>
+                    @endguest
                     <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
                         <i class="fa fa-upload" aria-hidden="true"></i>
                     </li> -->
@@ -223,6 +231,25 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<div id="loginPopupModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="col-md-12 modal-content">
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Open file</h4> -->
+                <button type="button" class="close" id="cancel_download" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group login-modal-text">
+                <p>Please <a href="{{ route('login') }}">Login</a> first to Download the design.</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 </div>
 <div id="symbolstage" style="display:none"></div>
 <div id="pdfloader"><p>Pdf downloading is in progress... Please Wait for a while!</p><img src="{{ asset('imgs/download.gif') }}"/></div>

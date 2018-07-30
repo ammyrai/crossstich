@@ -110,6 +110,10 @@ function canvasInit(){
         {
           lineStroke = 1;
         }
+        if (localStorage.getItem("download_edit_canvas") !== null)
+        {
+            download_canvas_script(localStorage.getItem("download_edit_canvas"));
+        }
 
         /*   Change tool mode function starts here!   */
         $(document).on("click",".canvas_tool",function()
@@ -1007,7 +1011,20 @@ function canvasInit(){
         textlayer.add(gridTextGroup,gridSelectGroup);
         stage.add(backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
 
+        $(document).on('click',"#downloadLoginPopup",function(){
+            localStorage.setItem("download_edit_canvas", stage.toJSON());
+            localStorage.setItem("edit_page_url", $("#curren_page_url").val());
+        });
+        $(document).on("click","#cancel_download",function(){
+            localStorage.removeItem("download_edit_canvas");
+            localStorage.removeItem("edit_page_url");
+        });
+
         $(document).on("click","#download_canvas",function()
+        {
+          download_canvas_script(stage.toJSON());
+        })
+        function download_canvas_script(canvasJSON)
         {
             $("#pdfloader").show();
             var colorHashMap = {},
@@ -1115,7 +1132,7 @@ function canvasInit(){
                   jsonStage = symbolStage.toDataURL();
                   download_canvas(jsonStage,colorArry,backstitch);
               });
-        })
+        }
 
         function download_canvas(jsonStage,colorArry,backstitch)
         {
@@ -1176,6 +1193,7 @@ function canvasInit(){
                   doc.addImage(jsonStage, 'JPEG', 15, 40, 400, 300);
                   doc.save('pattern.pdf');
                   $("#pdfloader").hide();
+                  localStorage.removeItem("download_edit_canvas");
             });
         }
 
