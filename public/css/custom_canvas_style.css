@@ -291,19 +291,23 @@ ul.gallery {
 .gallery li .pattern_details {
     float: left;
     width: 100%;
-    min-height: 204px;
+    min-height: 225px;
 }
 .gallery li .pattern_details img {
     width: 190px;
 }
-.gallery li .pattern_details span {
+.gallery li .pattern_details p {
     float: left;
     width: 100%;
     text-align: left;
     margin-top: 5px;
     color: #000;
-    font-size: 16px;
+    font-size: 16px; margin-bottom: 0;
 }
+.gallery li .pattern_details p .moretext{ display: none; float: left;
+    text-align: left;
+    font-size: 16px;
+    color: #000;}
 .actions {
     float: left;
     width: 100%;

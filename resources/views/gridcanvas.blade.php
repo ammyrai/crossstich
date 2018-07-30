@@ -32,9 +32,6 @@
                     <li class="canvas_tool" id="text_modal" data-mode="text" title="Text" data-toggle="modal" data-target="#textModal" data-backdrop="false" >
                         <i class="fa fa-text-width" aria-hidden="true"></i>
                     </li>
-                    <li class="canvas_tool" id="refresh_canvas" data-mode="refresh" title="Refresh">
-                        <i class="fa fa-refresh" aria-hidden="true"></i>
-                    </li>
                     @guest
                         <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
                             <i class="fa fa-download" aria-hidden="true"></i>

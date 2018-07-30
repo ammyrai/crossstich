@@ -24,6 +24,7 @@ class SearchController extends Controller
                   ->join('tags', 'patterns_tags.tag_id', '=', 'tags.tag_id')
                   ->select('save_pattern_design.*')
                   ->where('tags.tag_name','LIKE','%'.$request->search."%")
+                  ->where('save_pattern_design.pattern_status', 1)
                   ->get();
               }
               else
@@ -34,8 +35,7 @@ class SearchController extends Controller
               {
                  foreach ($patterns as $key => $pattern)
                  {
-                    $patternInfo = substr($pattern->pattern_info, 0, 15);
-                    $output[] = array('id'=>$pattern->id,'pattern_img'=>$pattern->pattern_img,'pattren_name'=>$pattern->pattren_name, 'pattern_info'=>$patternInfo);
+                    $output[] = array('id'=>$pattern->id,'pattern_img'=>$pattern->pattern_img,'pattren_name'=>$pattern->pattren_name, 'pattern_info'=>$pattern->pattern_info);
                  }
                  return Response($output);
                }
