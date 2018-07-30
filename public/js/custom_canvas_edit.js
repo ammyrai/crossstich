@@ -145,12 +145,14 @@ function canvasInit(){
                          text: 'X',
                          x: box.x(),
                          y: box.y(),
+                         width: gridSize,
+                         height: gridSize,
                          fontFamily: 'sans-serif',
                          fontSize: txtFillSize,
                          fill: textFillColor,
                          fontStyle : 'normal',
                          filled : true,
-                         transformsEnabled : 'position'
+                         align: 'center',
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -289,12 +291,14 @@ function canvasInit(){
                          text: 'X',
                          x: box.x(),
                          y: box.y(),
+                         width: gridSize,
+                         height: gridSize,
                          fontFamily: 'sans-serif',
                          fontSize: txtFillSize,
                          fill: textFillColor,
                          fontStyle : 'normal',
                          filled : true,
-                         transformsEnabled : 'position'
+                         align: 'center'
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -487,12 +491,14 @@ function canvasInit(){
                                           text: val.text(),
                                           x: rectval.x(),
                                           y: rectval.y(),
+                                          width: val.width(),
+                                          height: val.height(),
                                           fontFamily: val.fontFamily(),
                                           fontSize: val.fontSize(),
                                           fill: val.fill(),
                                           fontStyle : val.fontStyle(),
                                           filled : true,
-                                          transformsEnabled : val.transformsEnabled()
+                                          align: val.align(),
                                         });
                                         gridTextGroup.add(text);
                                         rectval.setAttr('filled', true);
@@ -983,12 +989,14 @@ function canvasInit(){
                             text: 'X',
                             x: rectval.x(),
                             y: rectval.y(),
+                            width: gridSize,
+                            height: gridSize,
                             fontFamily: 'sans-serif',
                             fontSize: txtFillSize,
                             fill: textFillColor,
                             fontStyle : 'normal',
                             filled : true,
-                            transformsEnabled : 'position'
+                            align: 'center'
                           });
                           gridTextGroup.add(text);
                           rectval.setAttr('filled', true);

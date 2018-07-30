@@ -76,7 +76,16 @@ function canvasInit()
             stageWidth = 805;                             // Stage widht
             gridSize = Math.round(stageWidth/canvasWidth),    // Grid Tile Size
             txtFillSize = gridSize;      // Text font size
-
+            var stagerectWidth = stageWidth;
+        if(clothframe === '56 X 70' || clothframe === '56 X 84' || clothframe === '49 X 70' || clothframe === '60 X 84')
+        {
+          stageWidth = 850;
+        }
+        if(clothframe === '38.5 X 55')
+        {
+          stageWidth = 860;
+          stagerectWidth = 830;
+        }
         /*  create stage for main canvas  */
         stage = new Konva.Stage({
             container: 'canvas',                  // Canvas container
@@ -97,28 +106,34 @@ function canvasInit()
         gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
         gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
 
+
         if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
         {
-          stageWidth = 787;
+          stagerectWidth = 787;
         }
         if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
         {
-          stageWidth = 795;
+          stagerectWidth = 795;
         }
         if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
         {
-          stageWidth = 773;
+          stagerectWidth = 773;
         }
         if(clothframe === "66 X 88")
         {
-          stageWidth = 794;
+          stagerectWidth = 794;
+        }
+
+        if(clothframe === "56 X 84" || clothframe === "49 X 70" || clothframe === '60 X 84' || clothframe === '56 X 70')
+        {
+          stagerectWidth = 844;
         }
 
         /*  Layer1 work starts here! */
         stageRect =  new Konva.Rect({
           x:gridSize,
           y:gridSize,
-          width: stageWidth,
+          width: stagerectWidth,
           height: canvasHeight * gridSize,
           fill: canvasMainBgcolor,
         });
@@ -151,6 +166,7 @@ function canvasInit()
             y: 0,
             text: icx,
             fontSize: countfontSize,
+            align: 'center',
           });
           backgroundCount.add(counterText);
         }
@@ -162,6 +178,7 @@ function canvasInit()
             y: icy * gridSize + 2,
             text: icy,
             fontSize: countfontSize,
+            align: 'center',
           });
           backgroundCount.add(counterText);
         }
@@ -202,7 +219,7 @@ function canvasInit()
           }
         }
         textlayer.add(gridTextGroup,gridSelectGroup);
-        stage.add(backgroundCount,backgroundCanvas,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
+        stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
     }
     else
     {
@@ -324,12 +341,14 @@ function canvasInit()
                          text: 'X',
                          x: box.x(),
                          y: box.y(),
+                         width: gridSize,
+                         height: gridSize,
                          fontFamily: 'sans-serif',
                          fontSize: txtFillSize,
                          fill: textFillColor,
                          fontStyle : 'normal',
                          filled : true,
-                         transformsEnabled : 'position'
+                         align: 'center',
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -469,12 +488,14 @@ function canvasInit()
                          text: 'X',
                          x: box.x(),
                          y: box.y(),
+                         width: gridSize,
+                         height: gridSize,
                          fontFamily: 'sans-serif',
                          fontSize: txtFillSize,
                          fill: textFillColor,
                          fontStyle : 'normal',
                          filled : true,
-                         transformsEnabled : 'position'
+                         align: 'center',
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -681,12 +702,14 @@ function canvasInit()
                                       text: val.text(),
                                       x: rectval.x(),
                                       y: rectval.y(),
+                                      width: val.width(),
+                                      height: val.height(),
                                       fontFamily: val.fontFamily(),
                                       fontSize: val.fontSize(),
                                       fill: val.fill(),
                                       fontStyle : val.fontStyle(),
                                       filled : true,
-                                      transformsEnabled : val.transformsEnabled()
+                                      align: val.align(),
                                     });
                                     gridTextGroup.add(text);
                                     rectval.setAttr('filled', true);
@@ -1180,12 +1203,14 @@ function canvasInit()
                         text: 'X',
                         x: rectval.x(),
                         y: rectval.y(),
+                        width: gridSize,
+                        height: gridSize,
                         fontFamily: 'sans-serif',
                         fontSize: txtFillSize,
                         fill: textFillColor,
                         fontStyle : 'normal',
                         filled : true,
-                        transformsEnabled : 'position'
+                        align: 'center',
                       });
                       gridTextGroup.add(text);
                       rectval.setAttr('filled', true);
