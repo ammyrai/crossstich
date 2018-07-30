@@ -27,7 +27,7 @@
                     <img src="{{ $image->pattern_img }}" width="150px" height="150px"/>
                     <p>{{ $image->pattren_name }}</p>
                     @if( !empty($image->pattern_info))
-                    <p>{!! substr($image->pattern_info, 0, 15) !!}@if( strlen($image->pattern_info) > 15)<span id="dots_{{$image->id}}">...</span><span id="more_{{$image->id}}" class="moretext">{!! substr($image->pattern_info, 15) !!}</span></p><a href="javascript:void(0);" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}">Read more</a>@endif
+                    <p>{!! substr($image->pattern_info, 0, 15) !!}@if( strlen($image->pattern_info) >= 15)<span id="dots_{{$image->id}}">...</span><span id="more_{{$image->id}}" class="moretext">{!! substr($image->pattern_info, 15) !!}</span></p><a href="javascript:void(0);" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}">Read more</a>@endif
                     @endif
                   </div>
                   <div class="actions">
@@ -84,7 +84,7 @@ $(document).ready(function(){
                     if( val.pattern_info != ''){
                       var pinfo = val.pattern_info;
                       output+= '<p>'+ pinfo.substr(0, 15);
-                      if( pinfo.length > 15){
+                      if( pinfo.length >= 15){
                         output+= '<span id="dots_'+val.id+'">...</span><span id="more_'+val.id+'" class="moretext">'+pinfo.substr(15)+'</span>';
                       }
                       output+= '</p><a href="javascript:void(0);" class="redmore_link" onclick="myFunction('+val.id+')" id="myBtn_'+val.id+'">Read more</a>';
