@@ -333,7 +333,7 @@ function canvasInit()
             switch (mode)
             {
                case 'pencil':
-
+                   console.log
                    if(box.getAttr('filled') === false)
                    {
                        text = new Konva.Text({
@@ -354,17 +354,17 @@ function canvasInit()
                        text.draw();
                        selected_rect.push(box);
                     }
-                    if(box.getAttr('filled') === true)
-                    {
-                      box.setAttr('filled', false);
-                      textlayer.draw();
-                      if(evt.target.className === 'Text')
-                      {
-                          evt.target.destroy();
-                      }
-                      box.setAttr('filled', false);
-                      textlayer.draw();
-                    }
+                    // if(box.getAttr('filled') === true)
+                    // {
+                    //   box.setAttr('filled', false);
+                    //   textlayer.draw();
+                    //   if(evt.target.className === 'Text')
+                    //   {
+                    //       evt.target.destroy();
+                    //   }
+                    //   box.setAttr('filled', false);
+                    //   textlayer.draw();
+                    // }
                break;
                case 'eraser':
                    if(box.getAttr('filled') === true)
@@ -1275,19 +1275,21 @@ function canvasInit()
         jQuery.getJSON("../json/floss.json").then(function(json)
         {
               var data = json.colors;
+              var symbols = ['x','@','#','$','%','&','*','+','=','?','∆','⌂','□','◊','●','○','Ꙩ'];
+              var b = 0;
               $.each( uniqueNames, function( key, val )
               {
-                  // var val = val;
                   data.find(function(item){
                    if(item.color_code === val){
                      if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                       colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
+                       colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code});
                       }
                       colorHashMap[item.color_code] = {
-                        'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
+                        'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code
                       };
                    }
                   });
+                  b++;
               });
 
               // var canvasJSON = stage.toJSON();

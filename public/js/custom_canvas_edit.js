@@ -378,7 +378,6 @@ function canvasInit(){
                      });
                      grup.on('dragend', function()
                      {
-                        // console.time("");
                          var zText =0;
                          var fillTextArrGp = [];
                          var fillLineArrGp = [];
@@ -1030,7 +1029,7 @@ function canvasInit(){
         $(document).on("click","#download_canvas",function()
         {
           download_canvas_script(stage.toJSON());
-        })
+        });
         function download_canvas_script(canvasJSON)
         {
             $("#pdfloader").show();
@@ -1063,19 +1062,22 @@ function canvasInit(){
             jQuery.getJSON( "../../../json/floss.json").then(function(json)
             {
                   var data = json.colors;
+                  var symbols = ['x','@','#','$','%','&','*','+','=','?','∆','⌂','□','◊','●','○','Ꙩ'];
+                  var b = 0;
                   $.each( uniqueNames, function( key, val )
                   {
                       var val = val;
                       data.find(function(item, i){
                        if(item.color_code === val){
                          if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                           colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code});
+                           colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code});
                           }
                           colorHashMap[item.color_code] = {
-                            'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':item.floss_symbol,'colorCode':item.color_code
+                            'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code
                           }
                        }
                       });
+                      b++;
                   });
 
                   var canvasJSON = stage.toJSON();
@@ -1231,7 +1233,6 @@ function canvasInit(){
           }, 3000);
     });
     /*   Loader on page load  */
-
   }
 
   var savedesign = false;
