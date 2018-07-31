@@ -21,7 +21,6 @@ $(document).on('click',"#clear_canvas",function(){
 /*  Load canvas script */
 function canvasInit()
 {
-
     var ReactHashMap = {}
   /*   Loader on page load  */
     setTimeout(function()
@@ -52,7 +51,6 @@ function canvasInit()
           lineStroke,                  // Line width for back stitch
           posStart,                    // Select tool position start
           posNow,                      // Select tool Current position.
-          selected_rect = [],          // For Select Tool
           points =[],                  // For BAck Stitch
           positionXY = [],             // For text posotion XY
           lineStrokeColor = '#000000', // Line stroke color
@@ -379,7 +377,6 @@ function canvasInit()
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
                        text.draw();
-                       selected_rect.push(box);
                        ReactHashMap[''+box.x()+box.y()] = box;
                     }
                     // if(box.getAttr('filled') === true)
@@ -524,7 +521,6 @@ function canvasInit()
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
                        text.draw();
-                       selected_rect.push(box);
                        ReactHashMap[''+box.x()+box.y()] = box
                    }
                  break;
@@ -544,13 +540,14 @@ function canvasInit()
                        });
                      }
                      var lineList = textlayer.find("Line");
-                        $( lineList ).each(function(key, val) {
-                          if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
-                          {
-                            val.destroy();
-                          }
-                       });
-                      textlayer.batchDraw();
+                     $( lineList ).each(function(key, val)
+                     {
+                        if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
+                        {
+                          val.destroy();
+                        }
+                     });
+                    textlayer.batchDraw();
                  break;
                  case 'select_shape':
                     updateDrag({x: box.x(), y: box.y()},false);
@@ -741,7 +738,6 @@ function canvasInit()
                                     gridTextGroup.add(text);
                                     rectval.setAttr('filled', true);
                                     text.draw();
-                                    selected_rect.push(rectval);
                                     ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                               }
                             });
@@ -1044,7 +1040,6 @@ function canvasInit()
         }
         return a + d + "px " + e;
     }
-
     function getTextHeight(c)
     {
         var e = $('<span style="font: ' + c + '">Hg</span>');
@@ -1070,7 +1065,6 @@ function canvasInit()
         }
         return a;
     }
-
     function applyDeselRatio(b) {
         var deselRatio = 1;
         var a = b * deselRatio;
@@ -1081,7 +1075,6 @@ function canvasInit()
         }
         return a;
     }
-
     $("#cloneSampleText").click(function()
     {
         $( gridHiddenTextGroup.children ).each(function(key, val)
@@ -1242,7 +1235,6 @@ function canvasInit()
                       gridTextGroup.add(text);
                       rectval.setAttr('filled', true);
                       text.draw();
-                      selected_rect.push(rectval);
                       ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                 }
               });
@@ -1258,8 +1250,6 @@ function canvasInit()
       updateLocalStorage(stage.toJSON(),gridSize);
     }
     /*  Text popup ends here  */
-
-
     $(document).on('click',"#downloadLoginPopup",function(){
         updateLocalStorage(stage.toJSON(),gridSize)
         localStorage.setItem("download_canvas", stage.toJSON());
@@ -1324,7 +1314,6 @@ function canvasInit()
                   b++;
               });
 
-              // var canvasJSON = stage.toJSON();
               var stageParsedJSON = JSON.parse(canvasJSON);
               var stageChildren = stageParsedJSON.children;
 

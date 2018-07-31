@@ -4,64 +4,55 @@
         "floss" : "Ecru",
         "color_name" : "Ecru",
         "floss_code" : "Ecru",
-        "color_code": "#fcfbf8",
-        "floss_symbol": "x"
+        "color_code": "#fcfbf8"
     },
     {
         "floss" : "White",
         "color_name" : "White",
         "floss_code" : "B5200",
-        "color_code": "#ffffff",
-        "floss_symbol": "@"
+        "color_code": "#ffffff"
     },
     {
         "floss" : "Black",
         "color_name" : "Black",
         "floss_code" : 310,
-        "color_code": "#000000",
-        "floss_symbol": "#"
+        "color_code": "#000000"
     },
     {
         "floss" : "Red",
         "color_name" : "Red",
         "floss_code" : 321,
-        "color_code": "#c72b3b",
-        "floss_symbol": "$"
+        "color_code": "#c72b3b"
     },
     {
         "floss" : "Orange",
         "color_name" : "Orange",
         "floss_code" : 608,
-        "color_code": "#fd5d35",
-        "floss_symbol": "%"
+        "color_code": "#fd5d35"
     },
     {
         "floss" : "Yellow",
         "color_name" : "Yellow",
         "floss_code" : 973,
-        "color_code": "#ffe300",
-        "floss_symbol": "&"
+        "color_code": "#ffe300"
     },
     {
         "floss" : "Green",
         "color_name" : "Green",
         "floss_code" : 906,
-        "color_code": "#7fb335",
-        "floss_symbol": "*"
+        "color_code": "#7fb335"
     },
     {
         "floss" : "Blue",
         "color_name" : "Blue",
         "floss_code" : 826,
-        "color_code": "#6b9ebf",
-        "floss_symbol": "+"
+        "color_code": "#6b9ebf"
     },
     {
         "floss" : "Violet",
         "color_name" : "Violet",
         "floss_code" : 327,
-        "color_code": "#633666",
-        "floss_symbol": "="
+        "color_code": "#633666"
     }
 ]
 }

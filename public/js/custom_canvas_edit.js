@@ -28,7 +28,6 @@ function canvasInit(){
             txtFillSize = gridSize, // Text font size
             posStart,                           // Select tool position start
             posNow,                             // Select tool Current position.
-            selected_rect = [],                 // For Select Tool
             points =[],                         // For BAck Stitch
             positionXY = [],
             lineStrokeColor = '#000000',
@@ -181,8 +180,7 @@ function canvasInit(){
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
                        text.draw();
-                       selected_rect.push(box);
-                        ReactHashMap[''+box.x()+box.y()] = box;
+                       ReactHashMap[''+box.x()+box.y()] = box;
                     }
                     // if(box.getAttr('filled') === true)
                     // {
@@ -326,8 +324,7 @@ function canvasInit(){
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
                        text.draw();
-                       selected_rect.push(box);
-                        ReactHashMap[''+box.x()+box.y()] = box;
+                       ReactHashMap[''+box.x()+box.y()] = box;
                    }
                  break;
                  case 'eraser':
@@ -530,7 +527,6 @@ function canvasInit(){
                                         gridTextGroup.add(text);
                                         rectval.setAttr('filled', true);
                                         text.draw();
-                                        selected_rect.push(rectval);
                                         ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                                   }
                                 });
@@ -1029,7 +1025,6 @@ function canvasInit(){
                           gridTextGroup.add(text);
                           rectval.setAttr('filled', true);
                           text.draw();
-                          selected_rect.push(rectval);
                           ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                     }
                   });
@@ -1062,7 +1057,7 @@ function canvasInit(){
         })
         function download_canvas_script(canvasJSON)
         {
-            // $("#pdfloader").show();
+            $("#pdfloader").show();
             var colorHashMap = {},
             colorArry=[],
             backstitch = [],
@@ -1096,7 +1091,6 @@ function canvasInit(){
                   var b = 0;
                   $.each( uniqueNames, function( key, val )
                   {
-                      // var val = val;
                       data.find(function(item, i){
                        if(item.color_code === val){
                          if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
