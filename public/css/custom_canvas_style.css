@@ -342,3 +342,8 @@ ul.gallery {
   width: 730px;
   resize: none;
 }
+.alert-info
+{
+  float: left;
+    width: 100%;
+}

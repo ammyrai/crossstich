@@ -35,10 +35,12 @@
                     @guest
                         <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
                             <i class="fa fa-download" aria-hidden="true"></i>
+                            <input type="hidden" id="checkLogin" value="false"/>
                         </li>
                     @else
                         <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
                             <i class="fa fa-download" aria-hidden="true"></i>
+                            <input type="hidden" id="checkLogin" value="true"/>
                         </li>
                     @endguest
                     <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >

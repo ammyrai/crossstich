@@ -25,7 +25,7 @@
               <div class="col-md-10 float-left canvas_content">
                   <div id="canvas"></div>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-2" >
                   <h3>Toolbar Section</h3>
                   <ul class="toolbar_list" id="toolbar_section">
                     <li class="canvas_tool active" id="pencil" data-mode="pencil" title="pencil">
@@ -49,10 +49,12 @@
                     @guest
                           <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
                             <i class="fa fa-download" aria-hidden="true"></i>
+                            <input type="hidden" id="checkLogin" value="false"/>
                         </li>
                     @else
                         <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
                             <i class="fa fa-download" aria-hidden="true"></i>
+                            <input type="hidden" id="checkLogin" value="true"/>
                         </li>
                     @endguest
                     <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
@@ -87,7 +89,7 @@
                         <option value="#6b9ebf" data-type="">Blue - 826</option>
                         <option value="#633666" data-type="">Violet - 327</option>
                         </select>
-                </div>
+              </div>
         </div>
     </div>
 </div>

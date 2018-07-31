@@ -12,6 +12,7 @@ $(document).on("click","#refresh_canvas",function()
 
 function canvasInit(){
     /*    Declare Global Variables    */
+    var ReactHashMap = {}
     var jsondata = '';
 
     var jsonurl = $('#canvas_data_file').val();
@@ -97,6 +98,26 @@ function canvasInit(){
           }
         });
 
+        var stageChildren = stagelayer;
+
+        for(var i = 0; i < stageChildren.length; i++)
+        {
+            if(stageChildren[i].attrs.name == "canvasGridLayer")
+            {
+                var tLayer = stageChildren[i];
+                for(var k = 0; k < tLayer.children.length; k++)
+                {
+                    var cachedRect = tLayer.children[k];
+                    if(cachedRect.className === "Rect")
+                    {
+                        if(cachedRect.attrs.filled === true)
+                        {
+                          ReactHashMap[''+cachedRect.x()+cachedRect.y()] = cachedRect;
+                        }
+                    }
+                }
+              }
+        }
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
         if(gridSize >= 20)
         {
@@ -112,7 +133,10 @@ function canvasInit(){
         }
         if (localStorage.getItem("download_edit_canvas") !== null)
         {
-            download_canvas_script(localStorage.getItem("download_edit_canvas"));
+            if($("#checkLogin").val() === "true")
+            {
+              download_canvas_script(localStorage.getItem("download_edit_canvas"));
+            }
         }
 
         /*   Change tool mode function starts here!   */
@@ -158,6 +182,7 @@ function canvasInit(){
                        box.setAttr('filled', true);
                        text.draw();
                        selected_rect.push(box);
+                        ReactHashMap[''+box.x()+box.y()] = box;
                     }
                     // if(box.getAttr('filled') === true)
                     // {
@@ -174,6 +199,9 @@ function canvasInit(){
                case 'eraser':
                    if(box.getAttr('filled') === true)
                   {
+                    if(ReactHashMap[''+box.x()+box.y()]) {
+                      ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                    }
                      if(evt.target.className === 'Text')
                      {
                          evt.target.destroy();
@@ -255,14 +283,9 @@ function canvasInit(){
                          val.setAttr('name', '');
 
                          positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
-                         $( selected_rect ).each(function(key, rect)
-                         {
-                               if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
-                               {
-                                 rect.setAttr('filled', false);
-                                 textlayer.draw();
-                               }
-                          });
+                         if(ReactHashMap[''+val.attrs.x+val.attrs.y]) {
+                           ReactHashMap[''+val.attrs.x+val.attrs.y].setAttr('filled', false);
+                         }
                          val.destroy();
                        }
                   });
@@ -304,6 +327,7 @@ function canvasInit(){
                        box.setAttr('filled', true);
                        text.draw();
                        selected_rect.push(box);
+                        ReactHashMap[''+box.x()+box.y()] = box;
                    }
                  break;
                  case 'eraser':
@@ -311,6 +335,9 @@ function canvasInit(){
                      {
                         var textList = textlayer.find("Text");
                         $( textList ).each(function(key, val) {
+                          if(ReactHashMap[''+box.x()+box.y()]) {
+                            ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                          }
                              if(evt.target.className == 'Text')
                              {
                                evt.target.destroy();
@@ -378,6 +405,7 @@ function canvasInit(){
                      });
                      grup.on('dragend', function()
                      {
+                        // console.time("");
                          var zText =0;
                          var fillTextArrGp = [];
                          var fillLineArrGp = [];
@@ -503,6 +531,7 @@ function canvasInit(){
                                         rectval.setAttr('filled', true);
                                         text.draw();
                                         selected_rect.push(rectval);
+                                        ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                                   }
                                 });
                             }
@@ -1001,6 +1030,7 @@ function canvasInit(){
                           rectval.setAttr('filled', true);
                           text.draw();
                           selected_rect.push(rectval);
+                          ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                     }
                   });
                   $(newlayer.children).each(function(key, val){
@@ -1029,10 +1059,10 @@ function canvasInit(){
         $(document).on("click","#download_canvas",function()
         {
           download_canvas_script(stage.toJSON());
-        });
+        })
         function download_canvas_script(canvasJSON)
         {
-            $("#pdfloader").show();
+            // $("#pdfloader").show();
             var colorHashMap = {},
             colorArry=[],
             backstitch = [],
@@ -1062,11 +1092,11 @@ function canvasInit(){
             jQuery.getJSON( "../../../json/floss.json").then(function(json)
             {
                   var data = json.colors;
-                  var symbols = ['x','@','#','$','%','&','*','+','=','?','∆','⌂','□','◊','●','○','Ꙩ'];
+                  var symbols = ['x','#','$','%','&','*','+','=','?','∆','⌂','□','◊','●','○','Ꙩ'];
                   var b = 0;
                   $.each( uniqueNames, function( key, val )
                   {
-                      var val = val;
+                      // var val = val;
                       data.find(function(item, i){
                        if(item.color_code === val){
                          if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
@@ -1113,7 +1143,6 @@ function canvasInit(){
                       }
                       if(stageChildren[i].attrs.name == 'textLayer')
                       {
-
                           var tLayer = stageChildren[i];
                           for(var j = 0; j < tLayer.children.length; j++)
                           {
@@ -1125,16 +1154,14 @@ function canvasInit(){
                                 {
                                     textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
                                     textBlock.attrs.fill = "#000000";
-                                    return textBlock
+                                    return textBlock;
                                 })
                               // break;
                             }
                           }
                         }
                   }
-
-                  stageParsedJSON.children = stageChildren
-
+                  stageParsedJSON.children = stageChildren;
                   var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
                   jsonStage = symbolStage.toDataURL();
                   download_canvas(jsonStage,colorArry,backstitch);
@@ -1233,6 +1260,7 @@ function canvasInit(){
           }, 3000);
     });
     /*   Loader on page load  */
+
   }
 
   var savedesign = false;

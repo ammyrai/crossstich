@@ -307,10 +307,13 @@ function canvasInit()
         }
 
     }
-    
+
     if (localStorage.getItem("download_canvas") !== null)
     {
+      if($("#checkLogin").val() === "true")
+      {
         download_canvas_script(localStorage.getItem("download_canvas"));
+      }
     }
     /*  Text color  */
     $(document).on('click', 'ul#select_style_color_ul li',function()
@@ -476,14 +479,9 @@ function canvasInit()
                             val.setAttr('name', '');
 
                             positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
-                            $( selected_rect ).each(function(key, rect)
-                            {
-                                  if(rect.attrs.x === val.attrs.x && rect.attrs.y === val.attrs.y)
-                                  {
-                                    rect.setAttr('filled', false);
-                                    textlayer.draw();
-                                  }
-                             });
+                            if(ReactHashMap[''+val.attrs.x+val.attrs.y]) {
+                              ReactHashMap[''+val.attrs.x+val.attrs.y].setAttr('filled', false);
+                            }
                             val.destroy();
                           }
                      });
@@ -535,9 +533,9 @@ function canvasInit()
                      {
                         var textList = textlayer.find("Text");
                         $( textList ).each(function() {
-                          if(ReactHashMap[''+box.x()+box.y()]) {
-                            ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
-                          }
+                              if(ReactHashMap[''+box.x()+box.y()]) {
+                                ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                              }
                              if(evt.target.className == 'Text')
                              {
                                evt.target.destroy();
@@ -1309,7 +1307,7 @@ function canvasInit()
         jQuery.getJSON("../json/floss.json").then(function(json)
         {
               var data = json.colors;
-              var symbols = ['x','@','#','$','%','&','*','+','=','?','∆','⌂','□','◊','●','○','Ꙩ'];
+              var symbols = ['x','#','$','%','&','*','+','=','?','∆','⌂','□','◊','●','○','Ꙩ'];
               var b = 0;
               $.each( uniqueNames, function( key, val )
               {
