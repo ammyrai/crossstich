@@ -47,7 +47,7 @@ main.py-4 {
     text-transform: uppercase;
 }
 .navbar-light .navbar-nav .nav-link {
-    color: #000;
+    color: #000; cursor: pointer;
 }
 
 .m-b-md {
