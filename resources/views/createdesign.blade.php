@@ -2,14 +2,7 @@
 @section('content')
 <input type="hidden" id="base_url" value="{{ url('/') }}"/>
 <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
-<input type="hidden" id="gridCanvasPage" value="{{ url('/gridcanvas') }}"/>
-<script>
-  window.onload = function() {
-    if (localStorage.getItem("auto_save_canvas") !== null) {
-        window.location.href= $("#gridCanvasPage").val();
-    }
-  }
-</script>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 grid-canvas-page">

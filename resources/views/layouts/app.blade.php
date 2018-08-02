@@ -24,9 +24,11 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
 </head>
 <body>
   <input type="hidden" name="site_url" id="site_url" val="{{ url('/') }}"/>
+  <input type="hidden" id="gridCanvasPage" value="{{ url('/gridcanvas') }}"/>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
@@ -46,7 +48,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        <li><a class="nav-link" href="{{route('createdesign')}}">Create Design</a></li>
+                        <li><a class="nav-link" id="create_new_design_link" data_url="{{route('createdesign')}}">Create Design</a></li>
                         <li><a class="nav-link" href="{{route('gallery')}}">Gallery</a></li>
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
@@ -82,5 +84,17 @@
             @yield('content')
         </main>
     </div>
+        <script>
+          $(document).ready(function(){
+            $("#create_new_design_link").click(function(){
+              if (localStorage.getItem("auto_save_canvas") !== null) {
+                  window.location.href= $("#gridCanvasPage").val();
+              }
+              else {
+                window.location.href= $(this).attr('data_url');
+              }
+            })
+          })
+        </script>
 </body>
 </html>

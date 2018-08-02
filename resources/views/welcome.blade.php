@@ -39,7 +39,7 @@
                       <!-- Right Side Of Navbar -->
                       <ul class="navbar-nav ml-auto">
                           <!-- Authentication Links -->
-                          <li><a class="nav-link" href="{{route('createdesign')}}">Create Design</a></li>
+                          <li><a class="nav-link" data_url="{{route('createdesign')}}" id="create_new_design_link">Create Design</a></li>
                           <li><a class="nav-link" href="{{route('gallery')}}">Gallery</a></li>
                           @guest
                               <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
@@ -75,6 +75,19 @@
                     Craft World
                 </div>
            </div>
-
+           <input type="hidden" id="gridCanvasPage" value="{{ url('/gridcanvas') }}"/>
+           <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+           <script>
+             $(document).ready(function(){
+               $("#create_new_design_link").click(function(){
+                 if (localStorage.getItem("auto_save_canvas") !== null) {
+                     window.location.href= $("#gridCanvasPage").val();
+                 }
+                 else {
+                   window.location.href= $(this).attr('data_url');
+                 }
+               })
+             })
+           </script>
     </body>
 </html>
