@@ -204,12 +204,10 @@ function canvasInit(){
                      {
                          evt.target.destroy();
                      }
-                     box.setAttr('filled', false);
                    }
                    if(evt.target.className === 'Line')
                    {
                        evt.target.destroy();
-                       box.setAttr('lineDraw', false);
                    }
                    textlayer.draw();
                break;
@@ -231,8 +229,6 @@ function canvasInit(){
                      });
                      textlayer.add(line);
                      line.draw();
-               break;
-               case 'case text':
                break;
                default:
              }
@@ -267,7 +263,6 @@ function canvasInit(){
                      var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
                      gridcloneGroup.add(clonerect);
                      textlayer.add(gridcloneGroup);
-                     // val.destroy();
                   });
                   var textList = textlayer.find("Text");
                   textList.map(function(textList)
@@ -329,7 +324,7 @@ function canvasInit(){
                  break;
                  case 'eraser':
                     if(box.getAttr('filled') === true)
-                     {
+                    {
                         var textList = textlayer.find("Text");
                         $( textList ).each(function(key, val) {
                           if(ReactHashMap[''+box.x()+box.y()]) {
@@ -339,18 +334,17 @@ function canvasInit(){
                              {
                                evt.target.destroy();
                              }
-                             box.setAttr('filled', false);
                        });
-
-                     }
+                    }
                      var lineList = textlayer.find("Line");
-                        $( lineList ).each(function(key, val) {
-                          if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
-                          {
-                            val.destroy();
-                          }
-                       });
-                      textlayer.batchDraw();
+                     $( lineList ).each(function(key, val)
+                     {
+                        if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
+                        {
+                          val.destroy();
+                        }
+                     });
+                     textlayer.batchDraw();
                  break;
                  case 'select_shape':
                     updateDrag({x: box.x(), y: box.y()},false);
@@ -377,8 +371,6 @@ function canvasInit(){
                         textlayer.add(line);
                         line.draw();
                      }
-                 break;
-                 case 'case text':
                  break;
                  default:
                }
@@ -1254,7 +1246,6 @@ function canvasInit(){
           }, 3000);
     });
     /*   Loader on page load  */
-
   }
 
   var savedesign = false;

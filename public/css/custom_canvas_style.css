@@ -297,12 +297,16 @@ ul.gallery {
     width: 190px;
 }
 .gallery li .pattern_details p {
-    float: left;
-    width: 100%;
-    text-align: left;
-    margin-top: 5px;
-    color: #000;
-    font-size: 16px; margin-bottom: 0;
+  float: left;
+  width: 100%;
+  text-align: left;
+  margin-top: 5px;
+  color: #000;
+  font-size: 16px;
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .gallery li .pattern_details p .moretext{ display: none; float: left;
     text-align: left;
