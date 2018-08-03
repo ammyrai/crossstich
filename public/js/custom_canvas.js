@@ -224,7 +224,7 @@ function canvasInit()
     }
     else
     {
-        var cached_json = localStorage.getItem("auto_save_canvas");
+        var cached_json = LZString.decompress(localStorage.getItem('auto_save_canvas'));
         stage = Konva.Node.create(cached_json, 'canvas');
         stageWidth = stage.width();                // Grid Height
         gridSize = localStorage.getItem("stage_gridsize");      // Grid Tile Size
@@ -1453,7 +1453,9 @@ function canvasInit()
     function updateLocalStorage(stageJson,gridSize)
     {
       localStorage.removeItem("auto_save_canvas");
-      localStorage.setItem("auto_save_canvas", stageJson);
+      var compStageJson = LZString.compress(stageJson);
+      localStorage.setItem("auto_save_canvas", compStageJson)
+      // localStorage.setItem("auto_save_canvas", stageJson);
       localStorage.setItem("stage_gridsize", gridSize);
     }
 }

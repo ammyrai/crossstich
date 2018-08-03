@@ -84,6 +84,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('js/lz-string.js') }}" defer></script>
         <script>
           $(document).ready(function(){
             $("#create_new_design_link").click(function(){
@@ -101,5 +102,6 @@
             });
           })
         </script>
+
 </body>
 </html>
