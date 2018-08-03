@@ -65,6 +65,7 @@
         </div>
     </div>
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 function myFunction(id) {
   var dots = document.getElementById("dots_"+id);
