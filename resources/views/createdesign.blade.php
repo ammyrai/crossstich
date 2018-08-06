@@ -34,7 +34,7 @@
                   <div class="selectClothFrame">
 
                   </div>
-                  <p>Frame size is in Height X width in Inches</p>
+                  <p class="selectClothFramePahragraph">Frame size is in Height X width in Inches</p>
                   <span class="framevalidate">Please Select Aida Cloth</span>
               </div>
             </div>

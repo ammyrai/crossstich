@@ -155,15 +155,31 @@ ul.toolbar_list li:hover,  ul.toolbar_list li.active{
 .selectBgColor {
     margin-bottom: 8px;
 }
+.selectClothFrame{float: left; position: relative;}
+
+.selectClothFramePahragraph{clear: both;}
 
 .select_cloth, .cloth_frame_dropdown {
   width: 410px;
   height: 38px;
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 8px;
   border-radius: 3px;
   border: 1px solid #cbcbcb;
   color: #595959;
+  -webkit-appearance: none;
+  padding: 0 12px;
+  background: none;
+}
+.selectAidaCloth {float: left; position: relative;}
+.selectAidaCloth::after ,.selectClothFrame::after  {
+    position: absolute;
+    width: 7px;
+    height: 11px;
+    background: url(../images/google.png) no-repeat;
+    right: 10px;
+    top: 14px;
+    content: attr(x);
 }
 .aidavalidate, .framevalidate, .clothcolorvalidate {
     display: none;
