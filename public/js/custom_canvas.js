@@ -1,5 +1,5 @@
 /*    Konva canvas file   */
-
+var gCacheStage, gCacheGrid;
 $( window ).on( "load", function()
 {
     canvasInit();
@@ -14,7 +14,9 @@ $(document).on("click","#refresh_canvas",function()
 });
 
 $(document).on('click',"#clear_canvas",function(){
+    savedesign = true;
     localStorage.removeItem("auto_save_canvas");
+    localStorage.removeItem("stage_gridsize");
     window.location.href= $("#create_design_url").val();
 })
 
@@ -224,6 +226,7 @@ function canvasInit()
     }
     else
     {
+        gCacheStage = LZString.decompress(localStorage.getItem("auto_save_canvas"));
         var cached_json = LZString.decompress(localStorage.getItem('auto_save_canvas'));
         stage = Konva.Node.create(cached_json, 'canvas');
         stageWidth = stage.width();                // Grid Height
@@ -305,7 +308,7 @@ function canvasInit()
         }
 
     }
-
+    gCacheGrid = gridSize;
     if (localStorage.getItem("download_canvas") !== null)
     {
       if($("#checkLogin").val() === "true")
@@ -493,7 +496,8 @@ function canvasInit()
              default:
              // stage.container().style.cursor = 'pointer';
          }
-         updateLocalStorage(stage.toJSON(),gridSize)
+         gCacheStage = stage.toJSON();
+         // updateLocalStorage(stage.toJSON(),gridSize)
     });
     stage.on('mouseover', function(evt)
     {
@@ -770,10 +774,10 @@ function canvasInit()
                      fillTextArrGp = [];
                      fillLineArrGp = [];
                      moved = 1;
+                     gCacheStage = stage.toJSON();
                  });
              }
         });
-        updateLocalStorage(stage.toJSON(),gridSize)
         return;
     }
 
@@ -1247,10 +1251,12 @@ function canvasInit()
           }
       });
       toAnimate = false;
-      updateLocalStorage(stage.toJSON(),gridSize);
+      gCacheStage = stage.toJSON();
+        // updateLocalStorage(stage.toJSON(),gridSize);
     }
     /*  Text popup ends here  */
     $(document).on('click',"#downloadLoginPopup",function(){
+        // gCacheStage = stage.toJSON();
         updateLocalStorage(stage.toJSON(),gridSize)
         localStorage.setItem("download_canvas", stage.toJSON());
         savedesign = true;
@@ -1261,6 +1267,7 @@ function canvasInit()
 
     $(document).on("click","#download_canvas",function()
     {
+        // gCacheStage = stage.toJSON();
         updateLocalStorage(stage.toJSON(),gridSize)
         download_canvas_script(stage.toJSON());
     });
@@ -1313,7 +1320,6 @@ function canvasInit()
                   });
                   b++;
               });
-
               var stageParsedJSON = JSON.parse(canvasJSON);
               var stageChildren = stageParsedJSON.children;
 
@@ -1353,6 +1359,7 @@ function canvasInit()
                         {
                             var textGroup = tLayer.children[k];
                             var textBlocks = textGroup.children;
+
                             textGroup.children = textBlocks.map(function (textBlock)
                             {
                                 textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
@@ -1449,17 +1456,14 @@ function canvasInit()
         localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
         window.location.href = $("#upload_page_url").val();
     });
-
-    function updateLocalStorage(stageJson,gridSize)
-    {
-      localStorage.removeItem("auto_save_canvas");
-      var compStageJson = LZString.compress(stageJson);
-      localStorage.setItem("auto_save_canvas", compStageJson)
-      // localStorage.setItem("auto_save_canvas", stageJson);
-      localStorage.setItem("stage_gridsize", gridSize);
-    }
 }
-
+function updateLocalStorage(stageJson,gridSize)
+{
+  localStorage.removeItem("auto_save_canvas");
+  var compStageJson = LZString.compress(stageJson);
+  localStorage.setItem("auto_save_canvas", compStageJson)
+  localStorage.setItem("stage_gridsize", gridSize);
+}
 
 var savedesign = false;
 
@@ -1468,10 +1472,13 @@ window.onload = function() {
         if (savedesign) {
             return undefined;
         }
+        updateLocalStorage(gCacheStage,gCacheGrid)
+
         if(localStorage.getItem("auto_save_canvas") === null)
         {
           return undefined;
         }
+
         var confirmationMessage = 'It looks like you have been editing something. '
                                 + 'If you leave before saving, your changes will be lost.';
 

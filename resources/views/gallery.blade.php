@@ -25,7 +25,7 @@
                 <li>
                   <div class="pattern_details">
                     <img src="{{ $image->pattern_img }}" width="150px" height="150px"/>
-                    <p>{{ $image->pattren_name }}</p>
+                    <p class="pattern_heading">{{ $image->pattren_name }}</p>
                     @if( !empty($image->pattern_info))
                     <p>{!! substr($image->pattern_info, 0, 15) !!}@if( strlen($image->pattern_info) >= 15)<span id="dots_{{$image->id}}">...</span><span id="more_{{$image->id}}" class="moretext">{!! substr($image->pattern_info, 15) !!}</span></p><a href="javascript:void(0);" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}">Read more</a>@endif
                     @endif
@@ -38,7 +38,8 @@
           </ul>
           @else
           <div class="alert alert-info">
-               <strong>No record found!</strong> You may create your own design by clicking here. <a href="{{ route('createdesign') }}"> Create Design</a>
+               <p class="create_design"><strong>No record found!</strong> You may create your own design by clicking here. <a href="{{ route('createdesign') }}"> Create Design</a></p>
+               <p class="cached_design" style="display:none;"><strong>No record found!</strong> You may create your own design by clicking here. <a href="{{ url('/gridcanvas') }}"> Create Design</a></p>
           </div>
           @endif
         </div>
@@ -64,6 +65,16 @@ function myFunction(id) {
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+    if (localStorage.getItem("auto_save_canvas") === null)
+    {
+        $(".create_design").show();
+        $(".cached_design").hide();
+    }
+    else {
+      $(".create_design").hide();
+      $(".cached_design").show();
+    }
+
   $('#search_tags').on('keyup',function(){
       $value=$(this).val();
       $.ajax({

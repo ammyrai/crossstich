@@ -66,7 +66,7 @@ class RegisterController extends Controller
             'company_name' => $data['company_name'],
             'password' => Hash::make($data['password']),
         ]);
-        Mail::to($data['email'])->send(new WelcomeMail($user));
+        //Mail::to($data['email'])->send(new WelcomeMail($user));
 
        return $user;
     }

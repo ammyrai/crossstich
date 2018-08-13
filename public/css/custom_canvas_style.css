@@ -312,6 +312,9 @@ ul.gallery {
 .gallery li .pattern_details img {
     width: 190px;
 }
+.gallery li .pattern_details p.pattern_heading {
+  white-space: nowrap;
+}
 .gallery li .pattern_details p {
   float: left;
   width: 100%;
@@ -320,7 +323,6 @@ ul.gallery {
   color: #000;
   font-size: 16px;
   margin-bottom: 0;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
