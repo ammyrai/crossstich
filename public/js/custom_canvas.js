@@ -223,6 +223,7 @@ function canvasInit()
         }
         textlayer.add(gridTextGroup,gridSelectGroup);
         stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,textlayer,newlayer);          // Add Layer to stage
+        gCacheStage = stage.toJSON();
     }
     else
     {
