@@ -110,26 +110,30 @@ $(document).ready(function(){
           {
             $.each(data,function(key,val){
               var imgurl = $("#site_url").val()+'pattern/edit/'+val.id+"/1";
-              output +='<div class="col-md-4">'+
-                        '<div class="gallery pattern_details">'+
-                          '<img src="'+val.pattern_img+'"/>'+
-                          '<div class="innerContent">'+
-                            '<div class="inner">'+
-                              '<div class="galleryCon">'+
-                                  '<p>'+val.pattren_name+ '</p>';
-                                  if( val.pattern_info != '')
-                                  {
-                                    var pinfo = val.pattern_info;
-                                    output+= '<p>'+ pinfo.substr(0, 15)+'</p>';
-                                    output += '<div id="desc_'+val.id+'" style="display:none;">'+val.pattern_info+'</div>';
-                                    output+= '<a href="javascript:void(0);" class="redmore_link" onclick="myFunction('+val.id+')" id="myBtn_'+val.id+'" data-toggle="modal" data-target="#textModal" data-backdrop="false">Read more</a>';
-                                  }
-                                  output+='<a href="'+imgurl+'" class="openbutton"><button class="btn btn-success">Edit</button></a>'+
+                    output +='<div class="col-md-4">'+
+                      '<div class="gallery pattern_details">'+
+                        '<img src="'+val.pattern_img+'">'+
+                        '<div class="innerContent">'+
+                          '<div class="inner">'+
+                            '<div class="galleryCon">'+
+                              '<p>'+val.pattren_name+ '</p>';
+                              if( val.pattern_info != '')
+                              {
+                                var pinfo = val.pattern_info;
+                                output += '<p>'+ pinfo.substr(0, 15)+'</p>';
+                                output += '<div id="desc_'+val.id+'" style="display:none;">'+val.pattern_info+'</div>'+
+                                '<a href="#" class="redmore_link" onclick="myFunction('+val.id+')" id="myBtn_'+val.id+'" data-toggle="modal" data-target="#textModal" data-backdrop="false">Read More'+
+                                '</a>'+
+                                '<div class="clearfix"></div>';
+                              }
+                              output +='<a href="'+imgurl+'" class="openbutton">'+
+                                '<button class="btn btn-success">Edit</button>'+
+                              '</a>'+
+                            '</div>'+
                           '</div>'+
-                          '</div>'+
-                          '</div>'+
-                        '</div>'
-                     '</div>';
+                        '</div>'+
+                      '</div>'+
+                    '</div>';
             });
           }
           else {
