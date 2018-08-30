@@ -40,7 +40,7 @@
                                 {!! substr(str_replace(' ', '', $image->pattern_info), 0, 15) !!}
                               </p>
                               <div id="desc_{{ $image->id }}" style="display:none;">{{$image->pattern_info}}</div>
-                              <a href="#" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}" data-toggle="modal" data-target="#textModal" data-backdrop="false">
+                              <a href="#" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}" data-toggle="modal" data-target="#descModal" data-backdrop="false">
                                 Read More
                               </a>
                               <div class="clearfix"></div>
@@ -77,7 +77,7 @@
     </div>
   </div>
 </div>
-<div id="textModal" class="modal fade">
+<div id="descModal" class="modal fade">
     <div class="modal-dialog">
         <div class="col-md-12 modal-content">
             <div class="modal-header">
