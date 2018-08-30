@@ -74,7 +74,7 @@ $(function()
         {
             name: "cloth_frame",
             id:"select_cloth_frame",
-            class: "cloth_frame_dropdown",
+            class: "form-control cloth_frame_dropdown",
             placeholder : "Select Aida Cloth Frame Size",
             html: dimension.join( "" )
         }));
@@ -103,7 +103,7 @@ $(function()
           {
               name: "cloth_frame",
               id:"select_cloth_frame",
-              class: "cloth_frame_dropdown",
+              class: "form-control cloth_frame_dropdown",
               placeholder : "Select Aida Cloth Frame Size",
               html: dimension.join( "" )
           }));

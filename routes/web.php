@@ -10,10 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','LandingController@index');
 
 Route::get('/createdesign','GridCanvasController@createdesign')->name('createdesign');
 Route::get('/gridcanvas', 'GridCanvasController@index');
@@ -40,3 +42,8 @@ Route::get('/pattern/edit/{id}/{editnew}', array('as' => 'edit', 'uses' => 'Gall
 Route::patch('pattern/update/{id}', array('as' => 'update', 'uses' => 'GalleryController@update'));
 
 Route::get('search',['uses' => 'SearchController@searchtags','as' => 'search']);
+
+Route::get('/contact-us','ContactUSController@contactUS');
+Route::post('contact-us',['as'=>'contactus.store','uses'=>'ContactUSController@contactUSPost']);
+
+Route::get('/help', 'PageController@helpnsupport')->name('help');

@@ -1,9 +1,6 @@
 $(document).ready(function () {
-
-
-    $(".btn-primary").click(function (e)
+    $(".next_step").click(function (e)
     {
-
         if($('#aida_cloth').val() === '')
         {
           $(".aidavalidate").show();

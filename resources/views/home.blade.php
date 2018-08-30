@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <input type="hidden" id="upload_url" value="{{ url('/upload_pattern') }}"/>
 <input type="hidden" id="gridCanvasPage" value="{{ url('/gridcanvas') }}"/>
@@ -16,25 +15,24 @@
     }
   }
 </script>
-
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
+  <div class="row">
+    <div class="col-md-12">
+      <div class="workContainer">
+        <h2>Dashboard</h2>
+        <div class="row">
+          <div class="col-md-12">
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
                 </div>
-            </div>
+            @endif
+
+            You are logged in!
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 @endsection

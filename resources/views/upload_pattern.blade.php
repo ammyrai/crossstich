@@ -1,47 +1,48 @@
 @extends('layouts.app')
-
 @section('content')
 <link href="{{ asset('css/tags_style/textext.core.css') }}" rel="stylesheet">
 <link href="{{ asset('css/tags_style/textext.plugin.autocomplete.css') }}" rel="stylesheet">
 <link href="{{ asset('css/tags_style/textext.plugin.tags.css') }}" rel="stylesheet">
-<input type="hidden" id="base_url" value="{{ url('/') }}"/>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-          <h1>
-              Save to My Patterns
-          </h1>
-          <br/>
-          <form action="{{ route('create') }}" method="post">
-            {{ csrf_field() }}
-              <div class="form-group">
-                <label for="email">Pattern Name<span class="required_field">*</span> :</label>
-                <input type="text" class="form-control" id="patternname" name="pattername" required>
-              </div>
-              <div class="form-group">
-                <label for="email">Pattern Tags<span class="required_field">*</span> :</label>
-                <textarea id="textarea" class="autotags" rows="1" name="autotags"></textarea>
-                <p class="text-right">*Press enter to add more tags.</p>
-              </div>
-              <div class="form-group">
-                <label for="pwd">Info about your project:</label>
-                <textarea class="form-control" rows="5" id="info" name="proinfo"></textarea>
-              </div>
-              <div class="checkbox">
-                <label><input type="checkbox" name="prostatus"> Tick to request this is published to our public gallery (please ensure you have copyright permissions for any copyrighted source images used).</label>
-              </div>
-              <textarea name='designimage' id="designImg" style="display:none"></textarea>
-              <textarea name='canvasdata' id="canvasData" style="display:none"></textarea>
-              <input type="text" name='canvasgridsize' id="canvasGridSize" val="" style="display:none">
-              <input type="text" name='stage_cloth' id="stage_cloth" val="" style="display:none">
-              <input type="text" name='canvasclothframe' id="canvasclothframe" val="" style="display:none">
-              <button type="submit" class="btn btn-default">Submit</button>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="workContainer">
+        <h2>Save to My Patterns</h2>
+        <div class="row">
+          <div class="col-md-12">
+              <form action="{{ route('create') }}" method="post">
+                  {{ csrf_field() }}
+                    <div class="form-group">
+                      <label for="email">Pattern Name<span class="required_field">*</span></label>
+                      <input type="text" class="form-control" id="patternname" name="pattername" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="tags" style=" float:  left; width:  100%;">Pattern Tags<span class="required_field">*</span></label>
+                      <textarea id="textarea" class="autotags" rows="1" name="autotags"></textarea>
+                      <p class="hintInfo">*Press enter to add more tags.</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="project-info">Info about your project</label>
+                      <textarea class="form-control" rows="5" id="info" name="proinfo"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="prostatus"> Tick to request this is published to our public gallery (please ensure you have copyright permissions for any copyrighted source images used).
+                    </div>
+                    <textarea name='designimage' id="designImg" style="display:none"></textarea>
+                    <textarea name='canvasdata' id="canvasData" style="display:none"></textarea>
+                    <input type="text" name='canvasgridsize' id="canvasGridSize" val="" style="display:none">
+                    <input type="text" name='stage_cloth' id="stage_cloth" val="" style="display:none">
+                    <input type="text" name='canvasclothframe' id="canvasclothframe" val="" style="display:none">
+                    <button type="submit" class="btn btn-default">Submit</button>
               </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
+
 <textarea id="json_array" style="display:none">{{$jsontagarray}}</textarea>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="{{ asset('js/tags_script/textext.core.js') }}" defer></script>
 <script src="{{ asset('js/tags_script/textext.plugin.tags.js') }}" defer></script>
 <script src="{{ asset('js/tags_script/textext.plugin.autocomplete.js') }}" defer></script>
@@ -69,7 +70,7 @@ $(document).ready(function(){
 window.onload = function()
 {
       if (localStorage.getItem("stage_image_url") === null) {
-          window.location.href= $("#base_url").val();
+          window.location.href= $("#site_url").val();
       }
       document.getElementById("designImg").value = localStorage.getItem('stage_image_url');
       document.getElementById("canvasData").value = localStorage.getItem('stage_json');

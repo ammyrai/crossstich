@@ -901,7 +901,7 @@ function canvasInit()
     // CREATE KONVE STAGE AND LAYER for popup sample canvas starts here!
     var updateSampleStage = new Konva.Stage({
      container: 'textSample',
-     width: 360,
+     width: 441,
      height: 200
     });
 

@@ -1,57 +1,66 @@
 @extends('layouts.app')
 @section('content')
 <input type="hidden" id="create_design_url" value="{{ url('/createdesign') }}"/>
-<link href="{{ asset('css/custom_canvas_style.css') }}" rel="stylesheet">
-<link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12 grid-canvas-page">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="workContainer">
 
-          <div class="title m-b-md">
-              Create your Own Designs
+        <div id="loader" class="loader">
+          <div class="inner"></div>
+        </div>
+
+        <div id="pdfloader">
+          <div class="innerLoader">
+            <div class="loadingCon">
+              <p>Please Wait for a while! PDF downloading is in progress...</p>
+              <img src="{{ asset('imgs/download.gif') }}" />
+            </div>
           </div>
-          <div class="canvas_container" style="display:none;" id="myDiv">
-              <div class="col-md-10 float-left canvas_content">
-                  <div id="canvas"></div>
-              </div>
-              <div class="col-md-2">
-                  <h3>Toolbar Section</h3>
-                  <ul class="toolbar_list" id="toolbar_section">
-                    <li class="canvas_tool active" id="pencil" data-mode="pencil" title="pencil">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </li>
-                    <li class="canvas_tool" id="eraser" data-mode="eraser" title="eraser">
-                        <i class="fa fa-eraser" aria-hidden="true"></i>
-                    </li>
-                    <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
-                      <img src="{{ asset('imgs/select.png') }}" alt="select shape"/>
-                    </li>
-                    <li class="canvas_tool" id="back_stich" data-mode="back_stich" title="Back Stich">
-                      <img src="{{ asset('imgs/back_stich.png') }}" alt="Back Stich" width='54px' height='41px' />
-                    </li>
-                    <li class="canvas_tool" id="text_modal" data-mode="text" title="Text" data-toggle="modal" data-target="#textModal" data-backdrop="false" >
-                        <i class="fa fa-text-width" aria-hidden="true"></i>
-                    </li>
-                    @guest
-                        <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
-                            <i class="fa fa-download" aria-hidden="true"></i>
-                            <input type="hidden" id="checkLogin" value="false"/>
-                        </li>
-                    @else
-                        <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
-                            <i class="fa fa-download" aria-hidden="true"></i>
-                            <input type="hidden" id="checkLogin" value="true"/>
-                        </li>
-                    @endguest
-                    <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
-                        <i class="fa fa-upload" aria-hidden="true"></i>
-                    </li> -->
-                    <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
-                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                    </li>
-                  </ul>
-                    <input type="hidden" name="upload_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
+        </div>
 
+        <h2>Create your Own Designs</h2>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="ownDesignCon">
+              <div class="canvas_container" style="display:none;" id="myDiv">
+                <div class="col-md-12">
+                    <div class="toolbar">
+                      <ul class="toolbar_list" id="toolbar_section">
+                        <li class="canvas_tool active" id="pencil" data-mode="pencil" title="pencil">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </li>
+                        <li class="canvas_tool" id="eraser" data-mode="eraser" title="eraser">
+                            <i class="fa fa-eraser" aria-hidden="true"></i>
+                        </li>
+                        <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
+                          <img src="{{ asset('images/select.png') }}" alt="select shape" />
+                        </li>
+                        <li class="canvas_tool" id="back_stich" data-mode="back_stich" title="Back Stich">
+                          <img src="{{ asset('images/crossStich.png') }}" alt="Back Stich" />
+                        </li>
+                        <li class="canvas_tool" id="text_modal" data-mode="text" title="Text" data-toggle="modal" data-target="#textModal" data-backdrop="false" >
+                            <img src="{{ asset('images/text.png') }}" alt="text" />
+                        </li>
+                        @guest
+                            <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
+                                <img src="{{ asset('images/download.png') }}" alt="download" />
+                                <input type="hidden" id="checkLogin" value="false"/>
+                            </li>
+                        @else
+                            <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
+                                <img src="{{ asset('images/download.png') }}" alt="download" />
+                                <input type="hidden" id="checkLogin" value="true"/>
+                            </li>
+                        @endguest
+                        <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
+                            <i class="fa fa-upload" aria-hidden="true"></i>
+                        </li> -->
+                        <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
+                            <img src="{{ asset('images/save_img.png') }}" alt="save" />
+                        </li>
+                      </ul>
+                      <input type="hidden" name="upload_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
                       <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
                           <option value="#fcfbf8" data-type="">Ecru - Ecru</option>
                           <option value="#ffffff" data-type="">White - B5200</option>
@@ -63,17 +72,35 @@
                           <option value="#6b9ebf" data-type="">Blue - 826</option>
                           <option value="#633666" data-type="">Violet - 327</option>
                         </select>
-
                         <span class="create_new_design" id="clear_canvas" data-mode="clear" title="Clear Canvas">
                             Create New Design
                         </span>
-                </div>
+                      </div>
+                  </div>
+                  <div class="col-md-12 float-left canvas_content">
+                      <div id="canvas"></div>
+                  </div>
+            </div>
+            <div class="helpTextCon instructions">
+              <h4>Instructions:</h4>
+              <ul>
+                <li>
+                  <label>How to use it</label>
+                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+                </li>
+                <li>
+                  <label>Tell us...</label>
+                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<img src="" id="canvasimg"/>
-<div id="loader"></div>
-
+</div>
 <!-- Text Modal -->
 <div id="textModal" class="modal fade">
     <div class="modal-dialog">
@@ -85,15 +112,15 @@
             <div class="modal-body">
               <form class="form-horizontal" id="popupForm">
               <div class="form-group">
-                    <label class="control-label col-sm-2" for="email">Text</label>
+                    <label class="control-label col-sm-2" for="text">Text</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="textfill" autofocus>
                     </div>
                 </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Font:</label>
+                    <label class="control-label col-sm-2" for="font">Font:</label>
                     <div class="col-sm-10">
-                      <select id="textFontSelect" class="popup_font_family">
+                      <select id="textFontSelect" class="popup_font_family form-control">
                         <option value="sans-serif" style="font-family:'sans-serif';">sans-serif</option>
                         <option value="serif" style="font-family:'serif';">serif</option>
                         <option value="monospace" style="font-family:'monospace';">monospace</option>
@@ -138,34 +165,34 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Size:</label>
+                    <label class="control-label col-sm-2" for="size">Size:</label>
                     <div class="col-sm-10">
                       <input type="number" class="form-control" id="textFontsize" value="12">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Bold:</label>
+                    <label class="control-label col-sm-2" for="bold">Bold:</label>
                     <div class="col-sm-10">
                       <input type="checkbox" name='bold' id='textFontBold'/>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Italic:</label>
+                    <label class="control-label col-sm-2" for="italic">Italic:</label>
                     <div class="col-sm-10">
                       <input type="checkbox" name='italic' id='textFontItalic'/>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Weight:</label>
+                    <label class="control-label col-sm-2" for="weight">Weight:</label>
                     <div class="col-sm-10">
-                      <div class="slidecontainer">
+                      <div class="text-weight slidecontainer">
                         <input type="range" min="20" max="220" value="100" class="slider" id="myRange">
-                        <span class="float-left text-left">Light</span> <span class="float-right text-right"> Dark</span>
+                        <span class="span-left text-left">Light</span> <span class="span-right text-right"> Dark</span>
                       </div>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Sample:</label>
+                    <label class="control-label col-sm-2" for="sample">Sample:</label>
                     <div class="col-sm-10">
                       <div id="textSample"></div>
                       <div id="textSample1" style="display:none;"></div>
@@ -175,8 +202,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-              <span id="textToolTooWide" class="" style="color:red; display:none" title="You can change the pattern size in &quot;Grid settings&quot; in the Edit menu.">Text is too wide for pattern</span>
-                <button id="cloneSampleText" type="button" class="btn btn-primary">Ok</button>
+                <span id="textToolTooWide" class="textToolTooWide" style="display:none" title="You can change the pattern size in &quot;Grid settings&quot; in the Edit menu.">Text is too wide for pattern</span>
+                <button id="cloneSampleText" type="button" class="btn btn-success ok_btn pull-right">Ok</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -232,15 +259,10 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-<div id="pdfloader"><p>Please Wait for a while! PDF downloading is in progress...</p><img src="{{ asset('imgs/download.gif') }}"/></div>
-</div>
 <div id="symbolstage" style="display:none"></div>
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('js/custom_canvas.js') }}" defer></script>
-<script src="{{ asset('js/selectstyle.js') }}" defer></script>
 <script src="{{ asset('js/canvas_tool_bar_script.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.debug.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.min.js') }}" defer></script>

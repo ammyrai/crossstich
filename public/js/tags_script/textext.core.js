@@ -571,7 +571,7 @@
 		var result = [],
 			i, item
 			;
-		
+
 		for(i = 0; i < list.length; i++)
 		{
 			item = list[i];
@@ -979,9 +979,9 @@
 
 		// using css() method instead of width() and height() here because they don't seem to do the right thing in jQuery 1.8.x
 		// https://github.com/alexgorbatchev/jquery-textext/issues/74
-		input.css({ 'width' : width });
-		wrap.css({ 'width' : width, 'height' : height });
-		container.css({ 'height' : height });
+		input.css({ 'width' : '100%' });
+		wrap.css({ 'width' : '100%', 'height' : '40px' });
+		container.css({ 'height' : '40px' });
 
 		self.trigger(EVENT_POST_INVALIDATE);
 	};
