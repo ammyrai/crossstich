@@ -187,7 +187,7 @@
                     <div class="col-sm-10">
                       <div class="text-weight slidecontainer">
                         <input type="range" min="20" max="220" value="100" class="slider" id="myRange">
-                        <span class="span-left text-left">Light</span> <span class="span-right text-right"> Dark</span>
+                        <span class="span-left text-left">Dark</span> <span class="span-right text-right">Light </span>
                       </div>
                     </div>
                   </div>

@@ -6,16 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <title>Craft World</title>
-        <!-- Fonts -->
-        <!-- Scripts -->
-        <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
         <!-- Fonts -->
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+        <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="//fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800" rel="stylesheet">
+        <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     </head>
@@ -45,8 +42,8 @@
           <div class="overlayContent">
             <div class="contentbox">
               <div class="innerBox">
-                <h3>Thimble-Bee</h3>
-                <h4><b>Cross Stitch</b> is one of the most flexible and creative ways to make customized <br>heirloom artwork.</h4>
+                <img src="{{ asset('images/thimble-bee.png') }}"/>
+                <h4>A community of cross stitch artists sharing custom embroidery designs.</h4>
                 <a data_url="{{route('createdesign')}}" class="create_new_design_link" class="btn btn-success">Start Desiging</a>
               </div>
             </div>
@@ -57,10 +54,10 @@
         <div class="container">
           <div class="row>">
             <div class="col-md-12">
-              <h3 class="heading">Get To Know Us More</h3>
+              <h3 class="heading">Get To Know Us</h3>
             </div>
             <div class="col-md-10 col-md-offset-1 textCon">
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+              <p>We love designing cross stitch projects.  We want everyone to have access to fun, easy-to-use tools. Thimble-Bee is created to meet the needs of modern sewing enthusiasts.  Whether you are simply looking for a quick, fun project to download or you are interested in creating a customised heirloom, Thimble-Bee gives you the tools to bring your vision to life.  </p>
             </div>
           </div>
         </div>
@@ -74,35 +71,35 @@
             <div class="col-md-12">
               <ul class="featureList">
                 <li>
-                  <i class=""></i>
-                  <label>Globel</label>
-                  <p>Create multiple vaults to keep different documents separately.</p>
+                  <i class="fa fa-pencil-alt"></i>
+                  <label>Design</label>
+                  <p>Produce stunning patterns with easy-to-use tools.</p>
                 </li>
                 <li>
-                  <i class=""></i>
-                  <label>Globel</label>
-                  <p>Create multiple vaults to keep different documents separately.</p>
+                  <i class="fa fa-save" aria-hidden="true"></i>
+                  <label>Save</label>
+                  <p>Store your work to your free private account.</p>
                 </li>
                 <li>
-                  <i class=""></i>
-                  <label>Globel</label>
-                  <p>Create multiple vaults to keep different documents separately.</p>
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                  <label>Share</label>
+                  <p>Search designs that other artists have made available to the community.</p>
                 </li>
                 <li>
-                  <i class=""></i>
-                  <label>Globel</label>
-                  <p>Create multiple vaults to keep different documents separately.</p>
+                  <i class="fa fa-ruler-combined" aria-hidden="true"></i>
+                  <label>Combine</label>
+                  <p>Quickly merge elements from different designs to customise your project.</p>
                 </li>
                 <li>
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <label>Download</label>
+                  <p>Convert your pattern into printable PDF documents.</p>
+                </li>
+                <!-- <li>
                   <i class=""></i>
                   <label>Globel</label>
                   <p>Create multiple vaults to keep different documents separately.</p>
-                </li>
-                <li>
-                  <i class=""></i>
-                  <label>Globel</label>
-                  <p>Create multiple vaults to keep different documents separately.</p>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -119,18 +116,13 @@
                 @if(count($allimages) > 0)
                 <div id="pattern_list">
                   @foreach($allimages as $image)
-                    <div class="col-md-4">
+                  <div class="col-md-4">
                       <div class="gallery pattern_details">
-                        <img src="{{ $image->pattern_img }}">
+                        <img src="{{ $image['pattern_img'] }}">
                         <div class="innerContent">
                           <div class="inner">
                             <div class="galleryCon">
-                              <p>{{ $image->pattren_name }}</p>
-                              @if( !empty($image->pattern_info))
-                                <p>
-                                  {!! substr(str_replace(' ', '', $image->pattern_info), 0, 15) !!}
-                                </p>
-                              @endif
+                              <p><a class="tags_link" onclick="tags_search('{{route('gallery')}}','{{ $image['tag_name'] }}')" href="javascript:void(0);">{{ $image['tag_name'] }}</a></p>
                             </div>
                           </div>
                         </div>
@@ -156,13 +148,13 @@
                   <a class="create_new_design_link" data_url="{{route('createdesign')}}">Create Your Design</a>
                 </li>
                 <li>
-                  <a href="{{route('gallery')}}">Gallery</a>
+                  <a href="{{route('gallery')}}" onmousedown="return false">Gallery</a>
                 </li>
                 <li>
-                  <a href="{{route('help')}}">Help & Support</a>
+                  <a href="{{route('help')}}" onmousedown="return false">Help & Support</a>
                 </li>
                 <li>
-                  <a href="/contact-us">Conatct Us</a>
+                  <a href="/contact-us" onmousedown="return false">Conatct Us</a>
                 </li>
               </ul>
               <p class="copyRight">© 2018 thimbleBee. All rights reserved </p>
@@ -171,10 +163,16 @@
         </div>
       </footer>
      <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+     <script src="//code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+     <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
      <script>
+     function tags_search(url, tag)
+     {
+        localStorage.setItem("tag_name", tag);
+        window.location.href= url;
+     }
+
        $(document).ready(function(){
          $(".create_new_design_link").click(function(){
            if (localStorage.getItem("auto_save_canvas") !== null) {

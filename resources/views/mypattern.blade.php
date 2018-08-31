@@ -34,17 +34,19 @@
                       <div class="innerContent">
                         <div class="inner">
                           <div class="galleryCon">
-                            <p>{{ $image->pattren_name }}</p>
+                            <div class="pattern_desc">
+                            <p><?php echo str_limit($image->pattren_name, 14); ?></p>
                             @if( !empty($image->pattern_info))
                               <p>
-                                {!! substr(str_replace(' ', '', $image->pattern_info), 0, 15) !!}
+                                <?php echo str_limit($image->pattern_info, 14); ?>
                               </p>
-                              <div id="desc_{{ $image->id }}" style="display:none;">{{$image->pattern_info}}</div>
+                              <div id="desc_{{ $image->id }}" style="display:none;" data-name="{{$image->pattren_name}}">{{$image->pattern_info}}</div>
                               <a href="#" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}" data-toggle="modal" data-target="#descModal" data-backdrop="false">
                                 Read More
                               </a>
-                              <div class="clearfix"></div>
                             @endif
+                          </div>
+                            <div class="clearfix"></div>
                             <a href="{{ route('edit', [$image->id,0]) }}" class="openbutton btn btn-success">
                               Edit
                             </a>
@@ -84,6 +86,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
+                <h3 class="modal-pattern-heading"></h3>
                 <div class="modal-pattern-desc">
                 </div>
             </div>
@@ -105,6 +108,7 @@ $(document).ready(function(){
   }
 });
 function myFunction(id) {
+  $(".modal-pattern-heading").html($("#desc_"+id).data('name'));
   $(".modal-pattern-desc").html($("#desc_"+id).html());
 }
 </script>

@@ -19,7 +19,6 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
 
@@ -50,23 +49,23 @@
             {{ config('app.name', 'Craft World') }}
         </a> -->
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="{{ url('/') }}">Home</a></li>
-          <li><a class="create_new_design_link" data_url="{{route('createdesign')}}">Create Design</a></li>
-          <li><a href="{{route('gallery')}}">Gallery</a></li>
+          <li ><a href="{{ url('/') }}" onmousedown="return false">Home</a></li>
+          <li><a class="create_new_design_link {{{ (Request::is('createdesign') ? 'active' : '') }}} {{{ (Request::is('gridcanvas') ? 'class=active' : '') }}}" data_url="{{route('createdesign')}}">Create Design</a></li>
+          <li><a {{{ (Request::is('gallery') ? 'class=active' : '') }}} href="{{route('gallery')}}" onmousedown="return false">Gallery</a></li>
           @guest
-          <li><a href="{{ route('login') }}">{{ __('Login') }}</a></li>
-          <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
+          <li><a {{{ (Request::is('login') ? 'class=active' : '') }}} href="{{ route('login') }}" onmousedown="return false">{{ __('Login') }}</a></li>
+          <li><a href="{{ route('register') }}" {{{ (Request::is('register') ? 'class=active' : '') }}} onmousedown="return false">{{ __('Register') }}</a></li>
           @else
 
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ ucfirst(Auth::user()->name) }} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onmousedown="return false">{{ ucfirst(Auth::user()->name) }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="{{ route('home') }}">Dashboard</a></li>
-              <li><a href="{{ route('mypattern') }}">My Patterns</a></li>
+              <li><a href="{{ route('home') }}" {{{ (Request::is('dashboard') ? 'class=active' : '') }}} onmousedown="return false">Dashboard</a></li>
+              <li><a href="{{ route('mypattern') }}" {{{ (Request::is('mypattern') ? 'class=active' : '') }}} onmousedown="return false">My Patterns</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="{{ route('logout') }}"
                  onclick="event.preventDefault();
-                               document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                               document.getElementById('logout-form').submit();" onmousedown="return false">{{ __('Logout') }}</a>
                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                      @csrf
                  </form>
@@ -92,13 +91,13 @@
                 <a class="create_new_design_link" data_url="{{route('createdesign')}}">Create Your Design</a>
               </li>
               <li>
-                <a href="{{route('gallery')}}">Gallery</a>
+                <a href="{{route('gallery')}}" onmousedown="return false">Gallery</a>
               </li>
               <li>
-                <a href="{{route('help')}}">Help & Support</a>
+                <a href="{{route('help')}}" onmousedown="return false">Help & Support</a>
               </li>
               <li>
-                <a href="/contact-us">Conatct Us</a>
+                <a href="/contact-us" onmousedown="return false">Conatct Us</a>
               </li>
             </ul>
             <p class="copyRight"> &copy; <?php echo date('Y'); ?> thimbleBee. All rights reserved </p>

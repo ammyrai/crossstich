@@ -8,6 +8,29 @@
       localStorage.removeItem('stage_cloth');
     }
 </script>
+<style>
+.enlarge{
+  position: relative;
+}
+.pattern_details > span{
+  position: absolute;
+  top: 44%;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  background: #e8e7e7;
+  transition: all ease-out 0.3s 0s;
+  opacity: 0;
+  text-align: center;
+  padding: 10px 10px 0;
+  pointer-events: none;
+  text-transform: capitalize;
+}
+.enlarge:hover .pattern_details > span{
+  opacity: 1;
+  top: 68%;
+}
+</style>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -25,18 +48,22 @@
           @if(count($allimages) > 0)
           <div id="pattern_list">
             @foreach($allimages as $image)
-              <div class="col-md-4">
+              <div class="col-md-4 enlarge">
                 <div class="gallery pattern_details">
                   <img src="{{ $image->pattern_img }}">
+                  <span>
+                    <img src="{{ $image->pattern_img }}" />
+                    <h5>{{$image->pattren_name}} </h5>
+                  </span>
                   <div class="innerContent">
                     <div class="inner">
                       <div class="galleryCon">
-                        <p>{{ $image->pattren_name }}</p>
+                        <p><?php echo str_limit($image->pattren_name, 14); ?></p>
                         @if( !empty($image->pattern_info))
                           <p>
-                            {!! substr(str_replace(' ', '', $image->pattern_info), 0, 15) !!}
+                            <?php echo str_limit($image->pattern_info, 14); ?>
                           </p>
-                          <div id="desc_{{ $image->id }}" style="display:none;">{{$image->pattern_info}}</div>
+                          <div id="desc_{{ $image->id }}" data-name="{{$image->pattren_name}}" style="display:none;">{{$image->pattern_info}}</div>
                           <a href="#" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}" data-toggle="modal" data-target="#textModal" data-backdrop="false">
                             Read More
                           </a>
@@ -72,6 +99,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
+                <h3 class="modal-pattern-heading"></h3>
                 <div class="modal-pattern-desc">
                 </div>
             </div>
@@ -82,6 +110,7 @@
 </div>
 <script>
 function myFunction(id) {
+  $(".modal-pattern-heading").html($("#desc_"+id).data('name'));
   $(".modal-pattern-desc").html($("#desc_"+id).html());
 }
 </script>
@@ -97,8 +126,19 @@ $(document).ready(function(){
       $(".cached_design").show();
     }
 
-  $('#search_tags').on('keyup',function(){
-      $value=$(this).val();
+    if (localStorage.getItem("tag_name") !== null)
+    {
+        search_tag(localStorage.getItem("tag_name"));
+        $('#search_tags').val(localStorage.getItem("tag_name"));
+        localStorage.removeItem("tag_name")
+    }
+    $('#search_tags').on('keyup',function(){
+      $value = $(this).val();
+      search_tag($value);
+    });
+
+  function search_tag(tag_name){
+      $value = tag_name;
       $.ajax({
         type : 'get',
         url : '{{URL::to('search')}}',
@@ -109,19 +149,24 @@ $(document).ready(function(){
           if(data.length >0)
           {
             $.each(data,function(key,val){
+              var pattern_name = val.pattren_name;
               var imgurl = $("#site_url").val()+'pattern/edit/'+val.id+"/1";
-                    output +='<div class="col-md-4">'+
+                    output +='<div class="col-md-4 enlarge">'+
                       '<div class="gallery pattern_details">'+
                         '<img src="'+val.pattern_img+'">'+
+                        '<span>'+
+                          '<img src="'+val.pattern_img+'" />'+
+                          '<h5>'+pattern_name+'</h5>'+
+                        '</span>'+
                         '<div class="innerContent">'+
                           '<div class="inner">'+
                             '<div class="galleryCon">'+
-                              '<p>'+val.pattren_name+ '</p>';
+                              '<p>'+pattern_name.substr(0, 14)+ '</p>';
                               if( val.pattern_info != '')
                               {
                                 var pinfo = val.pattern_info;
-                                output += '<p>'+ pinfo.substr(0, 15)+'</p>';
-                                output += '<div id="desc_'+val.id+'" style="display:none;">'+val.pattern_info+'</div>'+
+                                output += '<p>'+ pinfo.substr(0, 14)+'</p>';
+                                output += '<div id="desc_'+val.id+'" style="display:none;" data-name="'+val.pattern_info+'">'+val.pattern_info+'</div>'+
                                 '<a href="#" class="redmore_link" onclick="myFunction('+val.id+')" id="myBtn_'+val.id+'" data-toggle="modal" data-target="#textModal" data-backdrop="false">Read More'+
                                 '</a>'+
                                 '<div class="clearfix"></div>';
@@ -144,7 +189,7 @@ $(document).ready(function(){
            $('#pattern_list').html(output);
         }
       });
-  });
+  }
 });
 </script>
 

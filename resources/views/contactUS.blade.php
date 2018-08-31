@@ -11,7 +11,7 @@
             <ul>
               <li>
                 <label>
-                  <i class="fa fa-envelope"></i>
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
                   Mail :
                 </label>
                 <p>yourmail.com</p>

@@ -2,6 +2,7 @@ body{
 	background: url(../images/bg.png) bottom no-repeat;
 	min-height: 100vh
 }
+
 .customNavbar{
 	background: #6b7d27;
 	box-shadow: 0 10px 10px rgba(0,0,0,0.16);
@@ -18,10 +19,15 @@ body{
 	padding: 20px;
 	cursor: pointer;
 }
-.customNavbar .navbar-nav>li>a:hover{
+.customNavbar .navbar-nav>li>a:hover, .customNavbar .navbar-nav>li>a.active{
 	color: #ccc;
 }
-
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a.active
+{
+	color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
 .customNavbar .navbar-nav>li>a:after{
 	content: attr(x);
 	position: absolute;
@@ -43,41 +49,45 @@ body{
 	background: #fff;
 	box-shadow: 0 0 50px rgba(172,169,169,0.6);
 	margin-top: 25px;
-	padding: 35px 55px;
+	padding: 35px 78px 50px;
 	position: relative;
 }
 .workContainer h2{
 	text-align: center;
-	font-size: 42px;
-	font-family: 'Raleway', sans-serif;
-	font-weight: 400;
-	margin: 0;
-	color: #6b7d27;
-	margin-bottom: 35px;
-	letter-spacing: 4px;
+    font-size: 54px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    color: #6b7d27;
+    margin-bottom: 25px;
+    text-transform: capitalize;
+    letter-spacing: 4px;
 }
 .workContainer form label{
 	font-size: 16px;
 	color: #000;
 	margin-bottom: 10px;
 	font-family: 'Raleway', sans-serif;
-	font-weight: 600;
+	font-weight: normal;
 }
 .workContainer form button[type="button"], .workContainer form button[type="submit"], .register_btn, .contact_btn, .ok_btn{
 	background: #6b7d27;
-	color: #fff;
-	border: solid 5px #fff;
-	border-radius: 8px;
-	padding: 9px 30px;
-	text-transform: uppercase;
-	margin-top: 10px;
-	letter-spacing: 2px;
-	transition: all ease-out 0.3s 0s;
+    color: #fff;
+    border: solid 3px #fff;
+    border-radius: 5px;
+    padding: 10px 30px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    box-shadow: 0px 8px 13px 2px #6b7d271f;
+}
+.next_step
+{
+	margin-right: 18px;
 }
 .workContainer form button[type="button"]:hover, .workContainer form button[type="submit"]:hover, .register_btn:hover, .contact_btn:hover, .ok_btn:hover{
 	background: #9fb05e;
 	color: #fff;
-	border: solid 5px #fff;
 }
 .workContainer input[type="text"],.workContainer input[type="email"],.workContainer input[type="password"], .workContainer select{
 	height: 40px;
@@ -95,9 +105,12 @@ body{
 	background: url(../images/arrow.png) no-repeat right;
 	background-position: calc(100% - 20px);
 	background-size: 20px;
+	border-color: #c2c2c2;
+  box-shadow: none;
+	text-transform: capitalize;
 }
 .contactContent{
-	padding-right: 50px;
+	padding-right: 36px;
 }
 .contactContent p{
 	font-size: 15px;
@@ -114,21 +127,22 @@ body{
 }
 .contactContent ul li label{
 	display: inline-block;
-	width: 150px;
-	float: left;
-	font-size: 20px;
-	font-family: 'Raleway', sans-serif;
-	font-weight: 600;
+    width: 150px;
+    float: left;
+    font-size: 20px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: normal;
 }
 .contactContent ul li label i{
-	margin-right: 15px;
+	margin-right: 12px;
+    font-size: 22px;
 }
 .contactContent ul li p{
 	width: calc(100% - 150px);
 	float: left;
 	font-size: 16px;
 	font-family: 'Raleway', sans-serif;
-	color: #a9a9a9;
+	color: #b0b0b0;
 }
 
 footer{
@@ -188,7 +202,7 @@ footer ul li:last-child:after{
 	margin-bottom: 50px;
 }
 .workContainer .createDesign form label{
-	width: 250px;
+	width: 230px;
 	display: inline-block;
 	float: left;
 	margin: 0;
@@ -199,9 +213,10 @@ footer ul li:last-child:after{
 	float: left;
 }
 .hintInfo{
-	font-size: 16px;
+	font-size: 13px;
 	font-family: 'Raleway', sans-serif;
 	margin-top: 5px;
+  margin-left: 13px;
 }
 .aidavalidate, .framevalidate, .clothcolorvalidate
 {
@@ -242,23 +257,26 @@ footer ul li:last-child:after{
 	color: #fff;
 	margin: 0;
 	font-family: 'Raleway', sans-serif;
-	font-size: 14px;
+	font-size: 16px;
+	text-transform: capitalize;
 }
 .galleryCon button, .galleryCon .btn{
 	background: #6b7d27;
-	color: #fff;
-	border: solid 2px #fff;
-	border-radius: 5px;
-	padding: 4px 15px;
-	text-transform: uppercase;
-	margin-top: 10px;
-	letter-spacing: 2px;
-	transition: all ease-out 0.3s 0s;
+color: #fff;
+border: solid 1px #fff;
+border-radius: 3px;
+padding: 3px 20px;
+text-transform: uppercase;
+margin-top: 10px;
+letter-spacing: 2px;
+transition: all ease-out 0.3s 0s;
+box-shadow: 0px 8px 13px 2px #6b7d271f;
+font-size: 12px;
 }
 .galleryCon button:hover, .galleryCon .btn:hover{
 	background: #9fb05e;
 	color: #fff;
-	border: solid 2px #fff;
+	border: solid 1px #fff;
 }
 .searchCon{
 	margin-bottom: 30px;
@@ -296,12 +314,12 @@ footer ul li:last-child:after{
 	left: -40px;
 }
 .helpTextCon ul li label{
-	font-size: 16px;
+	font-size: 15px;
 	font-family: 'Raleway', sans-serif;
 	font-weight: 600;
 }
 .helpTextCon ul li p{
-	font-size: 16px;
+	font-size: 15px;
 	font-family: 'Raleway', sans-serif;
 }
 .instructions{
@@ -341,14 +359,25 @@ footer ul li:last-child:after{
 }
 .heading:after{
 	position: absolute;
-	content: "******";
-	width: 50px;
-	left: 50%;
-	margin-left: -25px;
-	bottom: -50px;
-	font-size: 24px;
-	color: #beb9b9;
-	height: 12px;
+    content: "*****";
+    width: 50px;
+    left: 50%;
+    margin-left: -25px;
+    bottom: -50px;
+    font-size: 28px;
+    color: #a2a2a2;
+    height: 12px;
+    font-weight: 100;
+    letter-spacing: 3px;
+}
+.innerFeature .heading:after
+{
+	background: #fff;
+width: 57px;
+height: 10px;
+display: inline-block;
+padding-top: 0px;
+font-size: 28px;
 }
 .galleryContainer{
 	padding-top: 40px;
@@ -357,9 +386,10 @@ footer ul li:last-child:after{
 }
 .galleryContainer .gallery{
 	border: solid 5px #6b7d27;
-	border-radius: 30px;
+	border-radius: 17px;
 	overflow: hidden;
 	margin-bottom: 10px;
+	box-shadow: 0px 5px 4px 0px #b9babb;
 }
 .galleryContainer .col-md-4{
 	padding: 0 5px;
@@ -371,13 +401,14 @@ footer ul li:last-child:after{
 }
 .viewMore{
 	background: #6b7d27;
-	color: #fff;
-	border: solid 2px #fff;
-	border-radius: 5px;
-	padding: 10px 25px;
-	text-transform: uppercase;
-	margin-top: 40px;
-	letter-spacing: 2px;
+    color: #fff;
+    border: solid 2px #fff;
+    border-radius: 5px;
+    padding: 14px 26px;
+    text-transform: uppercase;
+    margin-top: 40px;
+    letter-spacing: 2px;
+    box-shadow: 0px 8px 13px 2px #6b7d271f;
 }
 .viewMore:hover{
 	background: #9fb05e;
@@ -393,6 +424,12 @@ footer ul li:last-child:after{
 .gerToKnow{
 	padding-top: 70px;
 	padding-bottom: 50px;
+}
+.gerToKnow .textCon
+{
+	color: #262626;
+    line-height: 28px;
+    font-size: 16px;
 }
 .slider{
 	position: relative;
@@ -451,21 +488,21 @@ footer ul li:last-child:after{
 	width: 100%;
 	vertical-align: middle;
 }
-.innerBox h3{
-	font-size: 60px;
+.innerBox img{
 	color: #6b7d27;
 	text-transform: uppercase;
-	margin-bottom: 50px;
+	margin-bottom: 69px;
 }
 .innerBox h4{
 	font-size: 18px;
-	font-family: 'Raleway', sans-serif;
-	font-weight: 300;
-	font-style: italic;
-	color: #fff;
-	letter-spacing: 1.5px;
-	line-height: 25px;
-	margin-bottom: 20px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 1.5px;
+    line-height: 25px;
+    margin-bottom: 50px;
+    text-shadow: 3px 3px 4px #605f53;
+    margin-top: -10px;
 }
 .innerBox h4 b{
 	font-weight: 600;
@@ -474,16 +511,17 @@ footer ul li:last-child:after{
 }
 .innerBox a{
 	background: #6b7d27;
-	color: #fff;
-	border: solid 2px #fff;
-	border-radius: 5px;
-	padding: 10px 12px;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-	font-size: 12px;
-	transition: all ease-out 0.3s 0s;
-	cursor: pointer;
-	text-decoration: none;
+    color: #fff;
+    border: solid 2px #fff;
+    border-radius: 5px;
+    padding: 16px 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    transition: all ease-out 0.3s 0s;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0px 5px 8px 0px #6b7d27a6;
 }
 .innerBox a:hover{
 	background: #9fb05e;
@@ -529,15 +567,16 @@ footer ul li:last-child:after{
 }
 .featureList li i{
 	display: inline-block;
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	border: solid 1px #fff;
-	position: absolute;
-	top: 0;
-	left: 0;
-	background: url(../images/featureIcon.png) no-repeat center;
-	background-size: 32px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: solid 1px #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 11px 0px 0px 14px;
+    font-size: 32px;
+    color: #6b7d27;
 }
 .featureList li label{
 	font-size: 16px;
@@ -731,18 +770,44 @@ footer ul li:last-child:after{
 .modal{
 	background: rgba(0,0,0,0.5)
 }
+#descModal .modal-body {
+    padding-top: 8px;
+	}
+h3.modal-pattern-heading {
+    margin-top: 0;
+    margin-bottom: 18px;
+    padding: 0 22px;
+    line-height: 30px;
+    letter-spacing: 1px;
+    font-size: 23px;
+    color: #6b7d27;
+}
 .modal-pattern-desc {
-    text-align: left;
-    width: 100%;
-    line-height: 26px;
-    margin-bottom: 15px;
-    font-size: 15px;
-    font-family: 'Raleway', sans-serif;
+	width: 100%;
+	line-height: 26px;
+	margin-bottom: 28px;
+	font-size: 14px;
+	font-family: 'Raleway', sans-serif;
+	padding: 0 22px;
+	text-align: justify;
 }
 .redmore_link
 {
 	color: #6b7d27;
-  text-decoration: none !important;
+	text-transform: capitalize;
+}
+.tags_link
+{
+	color: #fff;
+    text-decoration: none !important;
+    text-transform: capitalize;
+    font-size: 24px;
+}
+.redmore_link:hover, .redmore_link:focus {
+    color: #9fb05e;
+}
+.tags_link:hover {
+    color: #fff;
 }
 #pdfloader
 {
@@ -841,4 +906,37 @@ h4.modal-title {
     text-align: right;
     width: 80%;
     margin-top: 20px;
+}
+.btn-success.active.focus, .btn-success.active:focus, .btn-success:active.focus, .btn-success:active:focus,  .open>.dropdown-toggle.btn-success.focus, .open>.dropdown-toggle.btn-success:focus, .btn-success.focus, .btn-success:focus
+{
+	background-color: #9fb05e;
+	border-color: #fff;
+}
+.form-control:focus
+{
+	    box-shadow: none;
+}
+a:focus, a:hover
+{
+	outline: none;
+    outline-offset: unset;
+		text-decoration: none;
+		color: #010101;
+}
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus
+{
+	outline: none;
+    outline-offset: unset;
+}
+.close:focus, .close:hover
+{
+	outline: none;
+}
+.form-control:focus
+{
+	border-color: #c2c2c2;
+}
+.btn-success:hover
+{
+	border-color : #fff;
 }
