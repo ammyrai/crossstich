@@ -133,7 +133,7 @@
                 window.location.href= $(this).attr('data_url');
               }
             })
-            $(".nav-link").click(function(){
+            $(".nav li a").click(function(){
               if (localStorage.getItem("stage_image_url") !== null) {
                   localStorage.removeItem("stage_image_url")
               }

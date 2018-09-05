@@ -292,26 +292,30 @@ font-size: 12px;
 	right: 1px;
 }
 .helpTextCon{
-
+	line-height: 27px;
+	    letter-spacing: 0.8px;
 }
 .helpTextCon ul{
 	list-style: none;
 	padding: 0;
-	padding-left: 50px;
 }
 .helpTextCon ul li{
 	position: relative;
 	margin-bottom: 20px;
 }
-.helpTextCon ul li:after{
-	content: attr(x);
-	position: absolute;
-	width: 6px;
-	height: 6px;
-	background: #000;
-	border-radius: 50%;
-	top: 8px;
-	left: -40px;
+.helpTextCon i {
+    font-size: 15px;
+    border: 1px dotted;
+    padding: 7px;
+    margin-right: 4px;
+}
+.helpTextCon .help_icons {
+    padding: 5px;
+    border: 1px dotted;
+    margin-right: 4px;
+}
+.helpTextCon .help_icons img {
+    width: 18px;
 }
 .helpTextCon ul li label{
 	font-size: 15px;

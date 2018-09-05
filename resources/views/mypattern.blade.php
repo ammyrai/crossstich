@@ -66,6 +66,7 @@
                     </div>
                   </div>
                   @endforeach
+                  <?php echo $allimages->render(); ?>
               @else
               <div class="col-md-12">
                   <div class="alert alert-info text-center">

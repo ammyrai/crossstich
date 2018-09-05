@@ -182,11 +182,6 @@
              window.location.href= $(this).attr('data_url');
            }
          });
-         $(".nav-link").click(function(){
-           if (localStorage.getItem("stage_image_url") !== null) {
-               localStorage.removeItem("stage_image_url")
-           }
-         });
        });
      </script>
     </body>
