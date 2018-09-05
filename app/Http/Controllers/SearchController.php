@@ -25,11 +25,11 @@ class SearchController extends Controller
                   ->select('save_pattern_design.*')
                   ->where('tags.tag_name','LIKE','%'.$request->search."%")
                   ->where('save_pattern_design.pattern_status', 1)
-                  ->simplePaginate(4);
+                  ->get();
               }
               else
               {
-                $patterns  = DB::table('save_pattern_design')->where('pattern_status', 1)->orderByRaw('id DESC')->simplePaginate(4);
+                $patterns  = DB::table('save_pattern_design')->where('pattern_status', 1)->orderByRaw('id DESC')->get()->all();
               }
               if($patterns)
               {
