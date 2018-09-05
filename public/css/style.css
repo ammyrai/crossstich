@@ -944,3 +944,4 @@ a:focus, a:hover
 {
 	border-color : #fff;
 }
+.pagination { float: right;}
