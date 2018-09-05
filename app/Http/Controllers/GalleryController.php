@@ -17,7 +17,7 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $images  = DB::table('save_pattern_design')->where('pattern_status', 1)->orderByRaw('id DESC')->simplePaginate(12);
+        $images  = DB::table('save_pattern_design')->where('pattern_status', 1)->orderByRaw('id DESC')->simplePaginate(4);
         return view('gallery')->with("allimages", $images);
     }
 
