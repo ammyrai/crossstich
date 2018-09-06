@@ -79,7 +79,8 @@
               </div>
             @endforeach
           </div>
-          <div class="col-md-12">
+          <div class="clearfix"></div>
+          <div class="col-md-12 text-center">
               <?php echo $allimages->render(); ?>
           </div>
           @else

@@ -944,4 +944,16 @@ a:focus, a:hover
 {
 	border-color : #fff;
 }
-.pagination { float: right;}
+.pagination { border-radius: 0;}
+.pagination>li:first-child>a, .pagination>li:first-child>span {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.pagination>li>a, .pagination>li>span {
+    border: none;
+		color: #6b7d27;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    background-color: #6b7d27;
+    border-color: #6b7d27;
+}
