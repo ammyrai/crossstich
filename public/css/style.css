@@ -960,6 +960,27 @@ a:focus, a:hover
 }
 .error
 {color: red;}
+.enlarge{
+  position: relative;
+}
+.pattern_details > span{
+  position: absolute;
+  top: 44%;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  background: #e8e7e7;
+  transition: all ease-out 0.3s 0s;
+  opacity: 0;
+  text-align: center;
+  padding: 10px 10px 0;
+  pointer-events: none;
+  text-transform: capitalize;
+}
+.enlarge:hover .pattern_details > span{
+  opacity: 1;
+  top: 68%;
+}
 /*****Media Query*****/
 
 @media screen and (max-width:1200px){
