@@ -193,4 +193,52 @@ $(document).ready(function() {
           return true;
         }
   });
+
+  $('#reset_password').submit(function(e)
+  {
+      var email = $('#email').val();
+      var password = $('#password').val();
+      var password_confirm = $('#password-confirm').val();
+
+      var regEx = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      var validEmail = regEx.test(email);
+
+      if(email === '' && password === '' && password_confirm === '' )
+      {
+          $('.error_msg_email').html('<span class="error">Please enter your email.</span>');
+          $('.error_msg_password').html('<span class="error">Please enter password.</span>');
+          $('.error_msg_confirm').html('<span class="error">Please enter confirm password.</span>');
+          return false;
+      }
+      else if(email === '')
+      {
+          $('.error_msg_email').html('<span class="error">Please enter your email.</span>');
+          return false;
+      }
+      else if (!validEmail)
+      {
+          $('.error_msg_email').html('<span class="error">Enter a valid email</span>');
+          return false;
+      }
+      else if(password === '')
+      {
+          $('.error_msg_password').html('<span class="error">Please enter password.</span>');
+          return false;
+      }
+      else if (password_confirm === '')
+      {
+          $('.error_msg_confirm').html('<span class="error">Please enter confirm password.</span>');
+          return false;
+      }
+      else if (password != password_confirm )
+      {
+          $(".error_msg_confirm").html('<span class="error">Password do not match.</span>');
+          hasError = true;
+          return false;
+      }
+      else
+      {
+          return true;
+      }
+  });
 });
