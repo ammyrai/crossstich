@@ -8,29 +8,6 @@
       localStorage.removeItem('stage_cloth');
     }
 </script>
-<style>
-.enlarge{
-  position: relative;
-}
-.pattern_details > span{
-  position: absolute;
-  top: 44%;
-  left: 0;
-  z-index: 99;
-  width: 100%;
-  background: #e8e7e7;
-  transition: all ease-out 0.3s 0s;
-  opacity: 0;
-  text-align: center;
-  padding: 10px 10px 0;
-  pointer-events: none;
-  text-transform: capitalize;
-}
-.enlarge:hover .pattern_details > span{
-  opacity: 1;
-  top: 68%;
-}
-</style>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -64,7 +41,7 @@
                             <?php echo str_limit($image->pattern_info, 14); ?>
                           </p>
                           <div id="desc_{{ $image->id }}" data-name="{{$image->pattren_name}}" style="display:none;">{{$image->pattern_info}}</div>
-                          <a href="#" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}" data-toggle="modal" data-target="#textModal" data-backdrop="false">
+                          <a href="#" class="redmore_link" onclick="myFunction({{$image->id}})" id="myBtn_{{$image->id}}" data-toggle="modal" data-target="#galleryModal" data-backdrop="false">
                             Read More
                           </a>
                           <div class="clearfix"></div>
@@ -96,7 +73,7 @@
     </div>
   </div>
 </div>
-<div id="textModal" class="modal fade">
+<div id="galleryModal" class="modal fade">
     <div class="modal-dialog">
         <div class="col-md-12 modal-content">
             <div class="modal-header">
