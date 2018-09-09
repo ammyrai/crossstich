@@ -14,17 +14,19 @@
             @endif
           </div>
           <div class="col-md-6 col-md-offset-3" >
-            <form method="POST" action="{{ route('password.email') }}">
+            <form method="POST" action="{{ route('password.email') }}" id="forgot_password">
                 @csrf
                 <div class="form-group">
-                  <label>{{ __('E-Mail Address') }}</label>
+                  <label>{{ __('E-Mail Address') }}<span class="required_field">*</span></label>
                   <div class="formContent">
-                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-                    @if ($errors->has('email'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
+                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" onclick="$('.error_msg_email').html('');">
+                    <div class="error_msg_email">
+                        @if ($errors->has('email'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                    </div>
                   </div>
                 </div>
 

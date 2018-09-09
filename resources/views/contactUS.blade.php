@@ -39,24 +39,30 @@
                </div>
             @endif
 
-            {!! Form::open(['route'=>'contactus.store']) !!}
+            {!! Form::open(['route'=>'contactus.store', 'id' => 'contact']) !!}
 
             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-            {!! Form::label('Name:') !!}
-            {!! Form::text('name', old('name'), ['class'=>'form-control', 'placeholder'=>'Name']) !!}
-            <span class="text-danger">{{ $errors->first('name') }}</span>
+            {!! Form::label('Name:') !!}<span class="required_field">*</span>
+            {!! Form::text('name', old('name'), ['class'=>'form-control', 'placeholder'=>'Name','id' => 'name','onclick'=>'$(".error_msg_name").html("")']) !!}
+            <div class="error_msg_name">
+                <span class="text-danger">{{ $errors->first('name') }}</span>
+            </div>
             </div>
 
             <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-            {!! Form::label('Your Email:') !!}
-            {!! Form::text('email', old('email'), ['class'=>'form-control', 'placeholder'=>'Your Email']) !!}
-            <span class="text-danger">{{ $errors->first('email') }}</span>
+            {!! Form::label('Your Email:') !!}<span class="required_field">*</span>
+            {!! Form::text('email', old('email'), ['class'=>'form-control', 'placeholder'=>'Your Email','id' => 'email','onclick'=>'$(".error_msg_email").html("")']) !!}
+            <div class="error_msg_email">
+                <span class="text-danger">{{ $errors->first('email') }}</span>
+            </div>
             </div>
 
             <div class="form-group {{ $errors->has('message') ? 'has-error' : '' }}">
-            {!! Form::label('Message:') !!}
-            {!! Form::text('message', old('message'), ['class'=>'form-control', 'placeholder'=>'Message']) !!}
-            <span class="text-danger">{{ $errors->first('message') }}</span>
+            {!! Form::label('Message:') !!}<span class="required_field">*</span>
+            {!! Form::text('message', old('message'), ['class'=>'form-control', 'placeholder'=>'Message','id' => 'message','onclick'=>'$(".error_msg_message").html("")']) !!}
+            <div class="error_msg_message">
+                <span class="text-danger">{{ $errors->first('message') }}</span>
+            </div>
             </div>
 
             <div class="form-group">

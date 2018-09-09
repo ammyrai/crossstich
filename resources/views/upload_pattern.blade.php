@@ -10,16 +10,20 @@
         <h2>Save to My Patterns</h2>
         <div class="row">
           <div class="col-md-12">
-              <form action="{{ route('create') }}" method="post">
+              <form action="{{ route('create') }}" method="post" id="save_design">
                   {{ csrf_field() }}
                     <div class="form-group">
-                      <label for="email">Pattern Name<span class="required_field">*</span></label>
-                      <input type="text" class="form-control" id="patternname" name="pattername" required>
+                      <label for="pattern_name">Pattern Name<span class="required_field">*</span></label>
+                      <input type="text" class="form-control" id="patternname" name="pattername" onclick="$('.pattern_error').html('')">
+                      <div class="pattern_error">
+                      </div>
                     </div>
                     <div class="form-group">
                       <label for="tags" style=" float:  left; width:  100%;">Pattern Tags<span class="required_field">*</span></label>
-                      <textarea id="textarea" class="autotags" rows="1" name="autotags"></textarea>
+                      <textarea id="textarea" class="autotags" rows="1" name="autotags" onfocus="$('.tag_error').html('')"></textarea>
                       <p class="hintInfo">*Press enter to add more tags.</p>
+                      <div class="tag_error">
+                      </div>
                     </div>
                     <div class="form-group">
                       <label for="project-info">Info about your project</label>
