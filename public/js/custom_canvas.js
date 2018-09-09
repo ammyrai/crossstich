@@ -1413,7 +1413,7 @@ function canvasInit()
                   }
               });
 
-              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+localStorage.getItem("clothFrame")+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
+              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+localStorage.getItem("clothframe")+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
 
               var doc = new jsPDF('','px');
 

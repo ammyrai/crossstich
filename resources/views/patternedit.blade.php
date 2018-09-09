@@ -39,10 +39,10 @@
                 <div class="col-md-12">
                     <div class="toolbar">
                       <ul class="toolbar_list" id="toolbar_section">
-                        <li class="canvas_tool active" id="pencil" data-mode="pencil" title="pencil">
+                        <li class="canvas_tool active" id="pencil" data-mode="pencil" title="Pencil">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                         </li>
-                        <li class="canvas_tool" id="eraser" data-mode="eraser" title="eraser">
+                        <li class="canvas_tool" id="eraser" data-mode="eraser" title="Eraser">
                             <i class="fa fa-eraser" aria-hidden="true"></i>
                         </li>
                         <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
@@ -55,12 +55,12 @@
                             <img src="{{ asset('images/text.png') }}" alt="text" />
                         </li>
                         @guest
-                              <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Save File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
+                              <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Download File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
                                 <img src="{{ asset('images/download.png') }}" alt="download" />
                                 <input type="hidden" id="checkLogin" value="false"/>
                             </li>
                         @else
-                            <li class="canvas_tool" id="download_canvas" data-mode="download" title="Save File">
+                            <li class="canvas_tool" id="download_canvas" data-mode="download" title="Download File">
                                 <img src="{{ asset('images/download.png') }}" alt="download" />
                                 <input type="hidden" id="checkLogin" value="true"/>
                             </li>

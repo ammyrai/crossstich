@@ -34,7 +34,7 @@
 
                   </div>
                   <p class="hintInfo">Frame size is in Height X width in Inches</p>
-                  <span class="validaion_class framevalidate">Please Select Aida Cloth</span>
+                  <span class="validaion_class framevalidate">Please Select Aida Cloth Frame</span>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -49,7 +49,7 @@
                       <option value="#b39f8b" data-type="dark" data-floss="3032">Natural Brown - 3032</option>
                     </select>
                   </div>
-                  <span class="validaion_class clothcolorvalidate">Please Select Aida Cloth</span>
+                  <span class="validaion_class clothcolorvalidate">Please Select Aida Cloth Colour</span>
                 </div>
                 <div class="clearfix"></div>
               </div>

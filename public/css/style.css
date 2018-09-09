@@ -51,6 +51,7 @@ body{
 	margin-top: 25px;
 	padding: 35px 78px 50px;
 	position: relative;
+	min-height: 500px;
 }
 .workContainer h2{
 	text-align: center;
@@ -951,9 +952,292 @@ a:focus, a:hover
 }
 .pagination>li>a, .pagination>li>span {
     border: none;
-		color: #6b7d27;
+	color: #6b7d27;
 }
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
     background-color: #6b7d27;
     border-color: #6b7d27;
+}
+.error
+{color: red;}
+/*****Media Query*****/
+
+@media screen and (max-width:1200px){
+	.gerToKnow{
+		background-color: #fff;
+	}
+	.featureList{
+		margin-left: 79px;
+	}
+	.featureList li p{
+		width: 316px;
+	}
+	.canvas_content{
+		overflow-x: scroll;
+	}
+}
+@media screen and (max-width: 1024px){
+	.featureList {
+    	margin: 44px 0 0 46px;
+	}
+	.featureList li p {
+    	width: 241px;
+	}
+}
+@media screen and (max-width: 991px){
+	.featureList {
+    margin:96px 0 0 46px;
+	}
+	.galleryContainer .gallery{
+		float: left;
+	    width: 42%;
+	    margin: 8px 26px;
+	}
+	footer{
+		margin-top: 47px;
+	}
+	/**create your own design**/
+	.workContainer h2{
+		font-size:40px;
+		margin-bottom: 12px;
+	}
+	/**Gallery**/
+	.enlarge .gallery{
+		width: 44%;
+		margin: 15px 16px;
+		float: left;
+	}
+	/**My Pattern**/
+	.workContainer.gallery_page h2{
+		margin-top: 12px;
+	}
+	.workContainer.gallery_page .gallery{
+		width: 45%;
+    	margin: 22px 0 0 22px;
+    	float: left;
+	}
+	/**log in**/
+	form{
+		margin: 20px 60px;
+	}
+	/** Register**/
+	form .btn-success{
+		margin-bottom:25px;
+	}
+	form .btn-default{
+		margin-bottom: 40px;
+	}
+	/**contact us**/
+	.workContainer form{
+		 margin: 20px 0px;
+	}
+	.contactContent{
+		padding: 55px;
+	}
+	.workContainer form{
+		margin:0 40px;
+	}
+	/**canvas page**/
+	.toolbar_list li{
+		width: 32px;
+    	height: 40px;
+    	font-size: 16px;
+    	line-height: 38px;
+	}
+	.toolbar_list li img{
+		height: 16px;
+	}
+	.toolbar .selectstylecolor .ss_button{
+		height: 43px;
+		width: 136px!important;
+		padding: 10px 8px;
+		background-size: 13px;
+	}
+	.create_new_design{
+		line-height: 40px;
+		font-size: 13px;
+		width: 150px;
+    	height: 42px;
+    	margin-left: 138px;
+	}
+}
+@media screen and (max-width: 768px){
+	.innerBox img{
+		margin-bottom: 41px;
+	}
+	.innerBox h4{
+		margin-bottom: 32px;
+	}
+	.featureList li p {
+    	width:160px;
+	}
+	/**create your own design**/
+	.workContainer h2{
+		font-size:40px;
+		margin:0;
+		margin-bottom: 12px;
+	}
+	/**My Pattern**/
+	.workContainer.gallery_page .gallery{
+		width: 45%;
+    	margin: 22px 0 0 22px;
+    	float: left;
+	}
+	/** log In**/
+	form{
+		margin: 20px 52px;
+	}
+	/**create your own design**/
+}
+@media screen and (max-width: 640px){
+	.gerToKnow{
+		padding-top: 11px;
+   	 	padding-bottom: 6px;
+	}
+	.featureList li{
+		width: 100%;
+	}
+	.featureList li p {
+    width: 270px;
+	}
+	.galleryContainer{
+		margin: 0 83px;
+	}
+	.galleryContainer .gallery{
+		width: 42%;
+   		margin: 10px 16px;
+	}
+	/**create your own Design**/
+	.workContainer .createDesign form .formContent{
+		width: 100%;
+		float: left;
+	}
+	.createDesign .form-group{
+		margin-bottom: 21px;
+	}
+
+	/**Gallery**/
+	.enlarge .gallery{
+		width: 47%;
+    	margin: 12px 6px;
+    	float: left;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a{
+		color:#fff;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a.active{
+		color:#6b7d27;
+	}
+	/**canvas page**/
+	.toolbar_list{
+		margin-right:0px;
+		float: none;
+	}
+	.toolbar_list li {
+	    width: 37px;
+	    height: 42px;
+	    font-size: 16px;
+	    line-height: 38px;
+	}
+	.toolbar_list li img{
+		height: 16px;
+	}
+	.toolbar .selectstylecolor .ss_button {
+	    height: 43px;
+	    width: 200px!important;
+	    padding: 10px 8px;
+	    margin-top: 12px;
+	    background-size: 13px;
+	}
+	.create_new_design {
+	    margin-top:12px;
+	    width: 200px;
+	    height: 42px;
+	    margin-left: 214px;
+	    line-height: 40px;
+	}
+}
+
+@media screen and (max-width: 480px){
+	.innerFeature{
+		width: 336px;
+		margin-left: -31px;
+	}
+	.featureList li{
+		margin-bottom: 31px;
+	}
+	.featureList li p {
+    	width: 186px;
+	}
+	.overlayContent .contentbox .innerBox{
+		display:inline;
+	}
+	.galleryContainer .gallery{
+	    width: 100%;
+	    margin: 12px auto;
+	}
+	.innerBox a{
+		padding:11px 9px;
+		font-size: 11px;
+	}
+	.innerBox h4 {
+    	margin-bottom: 21px;
+	}
+	.innerBox img {
+    	margin-bottom: 35px;
+	}
+	.gallerySection {
+    	padding-top: 13px;
+	}
+	footer ul li a{
+		font-size: 11px;
+		margin: 0 6px;
+	}
+	.copyRight{
+		font-size: 11px;
+		margin-bottom: 11px;
+	}
+	/* create Your own Design **/
+	.workContainer h2{
+		font-size: 29px;
+		margin: 0;
+		margin-bottom:20px;
+	}
+	.next_step {
+    	margin: 12px 0;
+	}
+	/**Gallery**/
+	.workContainer.gallery_page .gallery {
+    	width:100%;
+    	float: left;
+    	margin:20px 0;
+	}
+	/**contact us**/
+	.contactContent{
+		padding: 0;
+	}
+	.workContainer form{
+		margin:0;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a{
+		color:#fff;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a.active{
+		color:#6b7d27;
+	}
+	/**canvas page**/
+	.toolbar .selectstylecolor .ss_button {
+	    height: 43px;
+	    width: 261px!important;
+	    padding: 10px 8px;
+	    margin-top: 12px;
+	    background-size: 13px;
+	}
+	.create_new_design {
+	    margin-top:12px;
+	    width: 261px;
+	    height: 42px;
+	    margin-left:0;
+	    line-height: 40px;
+	}
 }

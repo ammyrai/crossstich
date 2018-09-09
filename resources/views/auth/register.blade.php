@@ -7,12 +7,12 @@
           <h2>{{ __('Register') }}</h2>
           <div class="row">
             <div class="col-md-8 col-md-offset-2">
-              <form method="POST" action="{{ route('register') }}">
+              <form method="POST" action="{{ route('register') }}" id="register">
                   @csrf
                   <div class="form-group">
                       <label for="name">{{ __('Name') }}<span class="required_field">*</span></label>
                       <div class="formContent">
-                          <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                          <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" autofocus>
                           @if ($errors->has('name'))
                               <span class="invalid-feedback">
                                   <strong>{{ $errors->first('name') }}</strong>
@@ -23,7 +23,7 @@
                   <div class="form-group">
                       <label for="email">{{ __('E-Mail Address') }}<span class="required_field">*</span></label>
                       <div class="formContent">
-                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}">
 
                             @if ($errors->has('email'))
                                 <span class="invalid-feedback">
@@ -35,7 +35,7 @@
                   <div class="form-group">
                       <label for="password">{{ __('Password') }}<span class="required_field">*</span></label>
                       <div class="formContent">
-                          <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                          <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
                           @if ($errors->has('password'))
                               <span class="invalid-feedback">
                                   <strong>{{ $errors->first('password') }}</strong>
@@ -46,7 +46,7 @@
                   <div class="form-group">
                       <label for="password-confirm">{{ __('Confirm Password') }}<span class="required_field">*</span></label>
                       <div class="formContent">
-                          <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                          <input id="password_confirm" type="password" class="form-control" name="password_confirmation">
                       </div>
                   </div>
                   <div class="form-group">

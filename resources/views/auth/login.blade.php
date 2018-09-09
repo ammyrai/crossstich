@@ -7,12 +7,12 @@
           <h2 style="margin-bottom: 50px;">{{ __('Login') }}</h2>
           <div class="row">
             <div class="col-md-6 col-md-offset-3">
-              <form method="POST" action="{{ route('login') }}">
+              <form method="POST" action="{{ route('login') }}" id="login_form">
                   @csrf
                   <div class="form-group">
                       <label for="email">{{ __('E-Mail Address') }}</label>
                       <div class="formContent">
-                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
                         @if ($errors->has('email'))
                             <span class="invalid-feedback">
                                 <strong>{{ $errors->first('email') }}</strong>
@@ -23,7 +23,7 @@
                   <div class="form-group">
                       <label for="password">{{ __('Password') }}</label>
                       <div class="formContent">
-                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
                         @if ($errors->has('password'))
                             <span class="invalid-feedback">
                                 <strong>{{ $errors->first('password') }}</strong>
