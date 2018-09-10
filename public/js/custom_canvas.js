@@ -17,6 +17,14 @@ $(document).on('click',"#clear_canvas",function(){
     savedesign = true;
     localStorage.removeItem("auto_save_canvas");
     localStorage.removeItem("stage_gridsize");
+    localStorage.removeItem("aidaCloth");
+    localStorage.removeItem("clothframe");
+    localStorage.removeItem("canvasBgColor"),    // Canvas bg color
+    localStorage.removeItem("gridStrokeCPara"),    // Grid stroke color
+    localStorage.removeItem("gridShadowCPara"),    // Grid shadow color
+    localStorage.removeItem("circleStrokeCPara"),  // Circle stroke color
+    localStorage.removeItem("circleFillCPara");
+    localStorage.removeItem("canvascolorfloss");
     window.location.href= $("#create_design_url").val();
 })
 
