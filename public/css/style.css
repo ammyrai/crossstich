@@ -1153,9 +1153,10 @@ a:focus, a:hover
 	.toolbar_list{
 		margin-right:0px;
 		float: none;
+		width: 261px;
 	}
 	.toolbar_list li {
-	    width: 37px;
+	    width: 35px;
 	    height: 42px;
 	    font-size: 16px;
 	    line-height: 38px;
@@ -1165,16 +1166,16 @@ a:focus, a:hover
 	}
 	.toolbar .selectstylecolor .ss_button {
 	    height: 43px;
-	    width: 200px!important;
+	    width: 190px!important;
 	    padding: 10px 8px;
 	    margin-top: 12px;
 	    background-size: 13px;
 	}
 	.create_new_design {
 	    margin-top:12px;
-	    width: 200px;
+	    width:190px;
 	    height: 42px;
-	    margin-left: 214px;
+	    margin-left:207px;
 	    line-height: 40px;
 	}
 }
@@ -1260,5 +1261,69 @@ a:focus, a:hover
 	    height: 42px;
 	    margin-left:0;
 	    line-height: 40px;
+	}
+}
+@media screen and (max-width:375px){
+	.overlayContent .contentbox{
+		width: 350px;
+	}
+	.innerBox img{
+		height: 27px;
+    	margin-bottom:17px;
+	}
+	.innerBox a{
+		padding: 11px 9px;
+    	font-size: 11px
+	}
+	.slider:after{
+		bottom: -28px;
+	}
+	.gerToKnow .heading{
+		font-size: 39px;
+	}
+	.innerFeature{
+		width: 279px;
+    	margin-left: -57px;
+	}
+	.featureList{
+		margin: 96px 0 0 34px;
+	}
+	.featureList li p{
+		width: 137px;
+	}
+	.galleryContainer .col-md-4{
+		padding:21px;
+	}
+	.galleryContainer{
+		margin: auto;
+	}
+	.gallery img{
+		height: auto;
+	}
+	footer ul li a{
+		font-size: 10px;
+	}
+	/**canvas**/
+	.ownDesignCon{
+		padding: 28px 13px 38px;
+	}
+	.toolbar_list{
+		width: 209px;
+	}
+	.toolbar_list li{
+		width: 29px;
+	}
+	.toolbar .selectstylecolor .ss_button{
+		width: 209px!important;
+	}
+	.create_new_design{
+		width: 209px;
+	}
+	.workContainer{
+		padding: 28px 38px 25px;
+	}
+	.enlarge .gallery{
+		width: 100%;
+
 	}
 }
