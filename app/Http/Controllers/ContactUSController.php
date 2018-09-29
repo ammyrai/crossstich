@@ -14,7 +14,8 @@ class ContactUSController extends Controller
   }
   public function contactUS()
   {
-    return view('contactUS');
+    $page_title = 'Contact Us';
+    return view('contactUS')->with('page_title',$page_title);
   }
 
   public function contactUSPost(Request $request)

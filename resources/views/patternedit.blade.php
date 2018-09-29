@@ -100,6 +100,13 @@
                           <option value="#6b9ebf" data-type="">Blue - 826</option>
                           <option value="#633666" data-type="">Violet - 327</option>
                         </select>
+                        <ul class="custom_color_boxes">
+                          <?php
+                              for($i=0; $i<10; $i++)
+                              {  ?>
+                                  <li id="color_<?php echo $i; ?>" class="color_box" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false" data-id="<?php echo $i; ?>" data-color=""><span></span></li>
+                          <?php  } ?>
+                        </ul>
                       </div>
                   </div>
                   <div class="col-md-12 float-left canvas_content">

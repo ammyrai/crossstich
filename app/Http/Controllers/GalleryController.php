@@ -18,7 +18,7 @@ class GalleryController extends Controller
     public function index()
     {
         $images  = DB::table('save_pattern_design')->where('pattern_status', 1)->orderByRaw('id DESC')->paginate(12);
-        return view('gallery')->with("allimages", $images);
+        return view('gallery', array('allimages' => $images, 'page_title' => 'Gallery'));
     }
 
 
@@ -27,7 +27,7 @@ class GalleryController extends Controller
         if(\Auth::check()){
           $id = \Auth::user()->id;
           $images  = DB::table('save_pattern_design')->where('user_id', $id)->orderByRaw('id DESC')->paginate(12);
-          return view('mypattern')->with("allimages", $images);
+          return view('mypattern', array('allimages' => $images, 'page_title' => 'My Patterns'));
         }
         else{
             return redirect('/login');

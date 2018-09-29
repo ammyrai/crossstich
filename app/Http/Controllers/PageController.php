@@ -15,6 +15,6 @@ class PageController extends Controller
     }
     public function helpnsupport()
     {
-        return view('helpnsupport');
+        return view('helpnsupport')->with('page_title','Help & Support');
     }
 }

@@ -112,6 +112,42 @@
 			$(this).parents('ul#select_style_ul').hide();
 			$(this).parents('ul#select_style_ul').parent('div').find('div#select_style_text').html(txt);
 			$('#'+sid).children('option').filter(function(){return $(this).val()==vl}).prop('selected',true).change();
+
+
+			 $(".clothcolorvalidate").hide();
+          canvasBgColor = $(this).attr('value');
+          var colorType = $(this).attr('data-type');
+          var colorfloss = $(this).attr('data-floss');
+          if(colorType == "white" || colorType == "black")        // set default colors if bg is of white or black color
+          {
+            gridStrokeCPara = '#FFE793';
+            gridShadowCPara = '#FFE9AD';
+            circleStrokeCPara = '#F7976F';
+            circleFillCPara = '#FED376';
+          }
+          else if(colorType == 'light')     // generate and set 20% darker shade if bg is of light color
+          {
+              // Create a 20% darker shade of light color
+              gridStrokeCPara = ColorLuminance(canvasBgColor, -0.2);
+              gridShadowCPara = ColorLuminance(gridStrokeCPara, -0.2);
+              circleStrokeCPara = ColorLuminance(gridShadowCPara, -0.2);
+              circleFillCPara = ColorLuminance(circleStrokeCPara, -0.2);
+          }
+          else                             // generate and set 100% lighter shade if bg is of dark color
+          {
+            // Create a 100% lighter shade of dark color
+            gridStrokeCPara = ColorLuminance(canvasBgColor, 0.10);
+            gridShadowCPara = ColorLuminance(gridStrokeCPara, 0.10);
+            circleStrokeCPara = ColorLuminance(gridShadowCPara, 0.10);
+            circleFillCPara = ColorLuminance(circleStrokeCPara, 0.10);
+          }
+          localStorage.setItem("canvasBgColor", canvasBgColor);
+          localStorage.setItem("canvascolorfloss", colorfloss);
+          localStorage.setItem("gridStrokeCPara", gridStrokeCPara);
+          localStorage.setItem("gridShadowCPara", gridShadowCPara);
+          localStorage.setItem("circleStrokeCPara", circleStrokeCPara);
+          localStorage.setItem("circleFillCPara", circleFillCPara);
+
 		});
 		$(document).delegate(".selectstyle", "click", function(e) {
 			var clickedOn=$(e.target);
@@ -163,4 +199,25 @@
 			}
 		});
 	}
+
+function ColorLuminance(hex, lum)
+  {
+    // validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+
+    if (hex.length < 6) {
+      hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    }
+    lum = lum || 0;
+
+    // convert to decimal and change luminosity
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i*2,2), 16);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+      rgb += ("00"+c).substr(c.length);
+    }
+    return rgb;
+  }
+
 })(jQuery);

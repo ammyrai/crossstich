@@ -75,6 +75,15 @@
                         <span class="create_new_design" id="clear_canvas" data-mode="clear" title="Clear Canvas">
                             Create New Design
                         </span>
+
+
+                        <ul class="custom_color_boxes">
+                          <?php
+                              for($i=0; $i<10; $i++)
+                              {  ?>
+                                  <li id="color_<?php echo $i; ?>" class="color_box" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false" data-id="<?php echo $i; ?>" data-color=""><span></span></li>
+                          <?php  } ?>
+                        </ul>
                       </div>
                   </div>
                   <div class="col-md-12 float-left canvas_content">
@@ -101,6 +110,7 @@
   </div>
 </div>
 </div>
+
 <!-- Text Modal -->
 <div id="textModal" class="modal fade">
     <div class="modal-dialog">
@@ -260,6 +270,7 @@
 </div>
 <!-- /.modal -->
 <div id="symbolstage" style="display:none"></div>
+
 <script src="//cdn.rawgit.com/konvajs/konva/2.1.3/konva.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('js/custom_canvas.js') }}" defer></script>
@@ -269,8 +280,11 @@
 <script src="{{ asset('js/jspdf/jspdf.plugin.autotable.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
 <script>
  jQuery(document).ready(function($) {
+
+  /*  Searchable dropdown for text colors.  */
   jQuery('#selectTxtColor').selectstyle({
     width  : 400,
     height : 300,

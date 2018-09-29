@@ -11,10 +11,10 @@ class GridCanvasController extends Controller
 {
     public function index()
     {
-        return view('gridcanvas');
+        return view('gridcanvas')->with('page_title','Create your design');
     }
     public function createdesign()
     {
-        return view('createdesign');
+        return view('createdesign')->with('page_title','Create your design');
     }
 }

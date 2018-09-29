@@ -41,11 +41,25 @@ function canvasInit(){
             newlayer,
             selectedRectNodes = [];
         /*  Text color  */
-       $(document).on('click', 'ul#select_style_color_ul li',function()
+        $(document).on('click', 'ul#select_style_color_ul li',function()
         {
             var textClr = $(this).attr('value');
             changeColor(textClr);
-        })
+        });
+
+        $(document).on('click', ".color_box",function()
+        {
+          var textClr = $(this).attr("data-color");
+          changeColor(textClr);
+        });
+
+        $(document).on('click', ".segment",function()
+        {
+          var path = $(this).children('path').first();
+          var value = $(path).attr('fill').substring(1).toUpperCase();
+          changeColor("#"+value);
+        });
+
         function changeColor(x)
         {
           textFillColor = x;
@@ -218,17 +232,17 @@ function canvasInit(){
                      points=[];
                      var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
                      var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
-                     points.push(box.x(),box.y(),secondX,secondY)
-                     var line = new Konva.Line({
-                         points :points,
-                         stroke: lineStrokeColor,
-                         strokeWidth: lineStroke,
-                         drawLine : true,
-                         tension: 0,
-                         perfectDrawEnabled: false,
-                     });
-                     textlayer.add(line);
-                     line.draw();
+                     points.push(box.x(),box.y(),secondX,secondY);
+                     // var line = new Konva.Line({
+                     //     points :points,
+                     //     stroke: lineStrokeColor,
+                     //     strokeWidth: lineStroke,
+                     //     drawLine : true,
+                     //     tension: 0,
+                     //     perfectDrawEnabled: false,
+                     // });
+                     // textlayer.add(line);
+                     // line.draw();
                break;
                default:
              }
@@ -350,15 +364,16 @@ function canvasInit(){
                     updateDrag({x: box.x(), y: box.y()},false);
                  break;
                  case 'back_stich':
-                     points=[];
+                     //points=[];
 
-                     var line = textlayer.find("Line");
+                     //var line = textlayer.find("Line");
 
-                     var last_two_values = line[line.length-1].points().slice(-2);
+                     var last_two_values = points.slice(-2);
 
                      if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined")){
                        var secondX = nearest(evt.evt.layerX,box.x(),box.x()+Math.round(gridSize));
                        var secondY = nearest(evt.evt.layerY,box.y(),box.y()+Math.round(gridSize));
+                       points=[];
                        points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
                        var line = new Konva.Line({
                             points :points,
@@ -370,11 +385,244 @@ function canvasInit(){
                         });
                         textlayer.add(line);
                         line.draw();
-                     }
+
+                    }
                  break;
                  default:
                }
             }
+          });
+
+          /*  For touch devices */
+
+          stage.on('touchstart', function(evt)
+          {
+              isMouseDown = true;
+              if (isMouseDown)
+              {
+                  box = evt.target;
+                  switch (mode)
+                  {
+                     case 'pencil':
+                         if(box.getAttr('filled') === false)
+                         {
+                             text = new Konva.Text({
+                               text: 'X',
+                               x: box.x(),
+                               y: box.y(),
+                               width: gridSize,
+                               height: gridSize,
+                               fontFamily: 'sans-serif',
+                               fontSize: txtFillSize,
+                               fill: textFillColor,
+                               fontStyle : 'normal',
+                               filled : true,
+                               align: 'center',
+                             });
+                             gridTextGroup.add(text);
+                             box.setAttr('filled', true);
+                             text.draw();
+                             ReactHashMap[''+box.x()+box.y()] = box;
+                          }
+                          // if(box.getAttr('filled') === true)
+                          // {
+                          //   box.setAttr('filled', false);
+                          //   textlayer.draw();
+                          //   if(evt.target.className === 'Text')
+                          //   {
+                          //       evt.target.destroy();
+                          //   }
+                          //   box.setAttr('filled', false);
+                          //   textlayer.draw();
+                          // }
+                     break;
+                     case 'eraser':
+                         if(box.getAttr('filled') === true)
+                         {
+                           if(ReactHashMap[''+box.x()+box.y()]) {
+                             ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                           }
+                           if(evt.target.className === 'Text')
+                           {
+                               evt.target.destroy();
+                           }
+                           box.setAttr('filled', false);
+                         }
+                         if(evt.target.className === 'Line')
+                         {
+                             evt.target.destroy();
+                             box.setAttr('lineDraw', false);
+                         }
+                         textlayer.draw();
+                     break;
+                     case 'select_shape':
+                        startDrag({x: box.x(), y: box.y()})
+                     break;
+                     case 'back_stich':
+                           points=[];
+                           var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
+                           var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
+                           points.push(box.x(),box.y(),secondX,secondY);
+                           // var line = new Konva.Line({
+                           //     points :points,
+                           //     stroke: lineStrokeColor,
+                           //     strokeWidth: lineStroke,
+                           //     drawLine : true,
+                           //     tension: 0,
+                           //     perfectDrawEnabled: false,
+                           // });
+                           // textlayer.add(line);
+                           // line.draw();
+                     break;
+                     default:
+                   }
+              }
+          });
+          stage.on('touchend',function(evt)
+          {
+              isMouseDown= false;
+              box = evt.target;
+              switch (mode)
+              {
+                   case 'select_shape':
+                          updateDrag({x: box.x(), y: box.y()},true);
+                          var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
+                           gridcloneGroup.destroy();
+                           textlayer.draw();
+                           var lineList = textlayer.find("Line");
+                           lineList.map(function(lineList)
+                           {
+                               var lineval = lineList;
+                               if(lineval.hasName('lineselected'))
+                               {
+                                   var cloneline  = lineval.clone({name :'cloneLine'});
+                                   gridcloneGroup.add(cloneline);
+                                   textlayer.add(gridcloneGroup);
+                                   lineval.setAttr('name', '');
+                                   lineval.destroy();
+                               }
+                           });
+                           selectedRectNodes.map(function(selectedRectNodes)
+                           {
+                              var val = selectedRectNodes;
+                              var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
+                              gridcloneGroup.add(clonerect);
+                              textlayer.add(gridcloneGroup);
+                           });
+                           var textList = textlayer.find("Text");
+                           textList.map(function(textList)
+                           {
+                                var val = textList;
+                                if(val.hasName('textselected'))
+                                {
+                                  var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                                  gridcloneGroup.add(clonerect);
+                                  textlayer.add(gridcloneGroup);
+                                  val.setAttr('name', '');
+
+                                  positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
+                                  if(ReactHashMap[''+val.attrs.x+val.attrs.y]) {
+                                    ReactHashMap[''+val.attrs.x+val.attrs.y].setAttr('filled', false);
+                                  }
+                                  val.destroy();
+                                }
+                           });
+                           textlayer.draw();
+                           r2.visible(true);
+                           draggroup();
+                   break;
+                   case 'back_stich':
+                       var line = textlayer.find("Line");
+                       line[line.length-1].setAttr('lineDraw', false);
+                   break;
+                   default:
+                   // stage.container().style.cursor = 'pointer';
+               }
+               gCacheStage = stage.toJSON();
+               // updateLocalStorage(stage.toJSON(),gridSize)
+          });
+          stage.on('touchmove', function(evt)
+          {
+              if (isMouseDown)
+              {
+                  box = evt.target;
+                  switch (mode)
+                  {
+                       case 'pencil':
+                         if(box.getAttr('filled') === false)
+                         {
+                             text = new Konva.Text({
+                               text: 'X',
+                               x: box.x(),
+                               y: box.y(),
+                               width: gridSize,
+                               height: gridSize,
+                               fontFamily: 'sans-serif',
+                               fontSize: txtFillSize,
+                               fill: textFillColor,
+                               fontStyle : 'normal',
+                               filled : true,
+                               align: 'center',
+                             });
+                             gridTextGroup.add(text);
+                             box.setAttr('filled', true);
+                             text.draw();
+                             ReactHashMap[''+box.x()+box.y()] = box
+                         }
+                       break;
+                       case 'eraser':
+                          if(box.getAttr('filled') === true)
+                           {
+                              var textList = textlayer.find("Text");
+                              $( textList ).each(function() {
+                                    if(ReactHashMap[''+box.x()+box.y()]) {
+                                      ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                                    }
+                                   if(evt.target.className == 'Text')
+                                   {
+                                     evt.target.destroy();
+                                   }
+                                   box.setAttr('filled', false);
+                             });
+                           }
+                           var lineList = textlayer.find("Line");
+                           $( lineList ).each(function(key, val)
+                           {
+                              if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
+                              {
+                                val.destroy();
+                              }
+                           });
+                          textlayer.batchDraw();
+                       break;
+                       case 'select_shape':
+                          updateDrag({x: box.x(), y: box.y()},false);
+                       break;
+                       case 'back_stich':
+                           //points=[];
+                           //var line = textlayer.find("Line");
+                           var last_two_values = points.slice(-2);
+                           if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
+                           {
+                               var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
+                               var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
+                               points=[];
+                               points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
+                               line = new Konva.Line({
+                                  points :points,
+                                  stroke: lineStrokeColor,
+                                  strokeWidth: lineStroke,
+                                  drawLine : true,
+                                  tension: 0,
+                                  perfectDrawEnabled: false,
+                                });
+                                textlayer.add(line);
+                                line.draw();
+                            }
+                       break;
+                       default:
+                   }
+              }
           });
 
         /*  Select tool Functionality   */
@@ -905,6 +1153,14 @@ function canvasInit(){
                   update(mouseX,mouseY);
                 }
               });
+              /*  For touch devices */
+              stage.addEventListener("touchmove", function setMousePosition(e){
+                mouseX = e.layerX - canvasPos.x-posmin;
+                mouseY = e.layerY - canvasPos.y-posmin;
+                if(toAnimate){
+                  update(mouseX,mouseY);
+                }
+              });
               setTimeout(function(){
                 $('.toolbar_list li').removeClass('active');
                 $("#select_shape").addClass('active');
@@ -912,6 +1168,7 @@ function canvasInit(){
               }, 2000);
 
               stage.addEventListener("click", stopfollow);
+              stage.addEventListener("touchend", stopfollow);
         }
         function getPosition(el)
         {
@@ -1247,18 +1504,18 @@ function canvasInit(){
     });
     /*   Loader on page load  */
   }
-
-  var savedesign = false;
-
-  window.onload = function() {
-      window.addEventListener("beforeunload", function (e) {
-          if (savedesign) {
-              return undefined;
-          }
-          var confirmationMessage = 'It looks like you have been editing something. '
-                                  + 'If you leave before saving, your changes will be lost.';
-
-          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-      });
-  };
+  //
+  // var savedesign = false;
+  //
+  // window.onload = function() {
+  //     window.addEventListener("beforeunload", function (e) {
+  //         if (savedesign) {
+  //             return undefined;
+  //         }
+  //         var confirmationMessage = 'It looks like you have been editing something. '
+  //                                 + 'If you leave before saving, your changes will be lost.';
+  //
+  //         (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+  //         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+  //     });
+  // };

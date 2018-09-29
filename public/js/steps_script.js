@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(".next_step").click(function (e)
-    {
+    {   
         if($('#aida_cloth').val() === '' && $('#select_cloth_frame').val() === '' && $('#select_style_text').html() === $('#clothColorId').attr('placeholder'))
         {
             $(".aidavalidate").show();

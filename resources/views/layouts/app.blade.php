@@ -8,7 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Craft World') }}</title>
+    <title>
+      <?php if(isset($page_title)) { echo $page_title . '-';} elseif(Request::is('register')) { echo 'Register - '; }elseif(Request::is('login')) { echo 'Login - '; } elseif(Request::is('password/reset')) { echo 'Rest Password - '; }  else { } ?> {{ config('app.name', 'Thimble-bee') }}
+    </title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -21,6 +23,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectstyle.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/color_wheel/colorwheel.css') }}" rel="stylesheet">
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -106,6 +110,26 @@
       </div>
     </footer>
 
+    <!--  Color Wheel HTML  -->
+    <div id="colorWheelModal" class="modal fade color-wheel-popup">
+        <div class="modal-dialog">
+            <div class="col-md-12 modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" id="cancel_download" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <h3 class="modal-title">Choose your Favorite colour</h3>
+                    <div id="widget"></div>
+                    <p id="selected"></p>
+                    <input type="hidden" id="put_box_color" name="color_name" value=""/>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <!-- Color Wheel HTML ends here! -->
     <script src="{{ asset('js/steps_script.js') }}" defer></script>
     <script src="{{ asset('js/selectstyle.js') }}" defer></script>
      <script>
@@ -123,6 +147,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="{{ asset('js/form_validation.js') }}" defer></script>
     <script src="{{ asset('js/lz-string.js') }}" defer></script>
+    <script src="{{ asset('js/color_wheel/jquery.colorwheel.js') }}" defer></script>
         <script>
           $(document).ready(function(){
             $(".create_new_design_link").click(function(){
@@ -138,6 +163,59 @@
                   localStorage.removeItem("stage_image_url")
               }
             });
+
+
+            jQuery(document).on("click", ".color_box", function(){
+              console.log("Jii")
+                jQuery("#put_box_color").val(jQuery(this).data('id'));
+            });
+
+            /*  Custom color wheel script   */
+            jQuery("#widget").colorwheel('init',
+              ['E2A099',
+               'AB0249',
+               'F0CED4',
+               'E6CCD9',
+               '572433',
+               '9891B6',
+               'A3AED1',
+               'BBC3D9',
+               '4C526E',
+               'C7CAD7',
+               '999FB7',
+               '7880A4',
+               'DBECF5',
+               '4D8361',
+               'C8D8B8',
+               'EFF4A4',
+               'C0C840',
+               'A77C49',
+               'D1D1D1',
+               '848484',
+               '835B8B',
+               'A37BA7',
+               'D29FC3',
+               'E3CBE3',
+               'CC847C',
+               'FFDFD7',
+               '6F2F00',
+               'B35F2B',
+               'B71F33',
+               'FDED54',
+               '1C5066',
+               '35668B',
+               'B7737F',
+               'ABABAB',
+               '205F2E',
+               'C72B3B',
+               '5A8FB8',
+               'B33B4B',
+               '739FC1',
+               '253B73'
+             ]
+            );
+
+
           })
         </script>
 </body>

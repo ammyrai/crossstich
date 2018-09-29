@@ -261,7 +261,7 @@ footer ul li:last-child:after{
 	color: #fff;
 	margin: 0;
 	font-family: 'Raleway', sans-serif;
-	font-size: 14px;
+	font-size: 16px;
 	text-transform: capitalize;
 }
 .galleryCon button, .galleryCon .btn{
@@ -803,7 +803,6 @@ h3.modal-pattern-heading {
 {
 	color: #6b7d27;
 	text-transform: capitalize;
-	font-size: 13px;
 }
 .tags_link
 {
@@ -983,7 +982,7 @@ a:focus, a:hover
 }
 .enlarge:hover .pattern_details > span{
   opacity: 1;
-  top: 83%;
+  top: 68%;
 }
 select::-ms-expand {
    display: none;
@@ -995,151 +994,6 @@ select::-ms-expand {
 	max-height:425px;
 	overflow-y: scroll;
 }
-.social-buttons {
-    margin-top: 10px;
-}
-.social-buttons a {
-    color: #fff;
-    border: solid 1px #fff;
-    border-radius: 3px;
-    padding: 3px 20px;
-    text-transform: uppercase;
-    background: #3c5a98;
-    font-size: 12px;
-}
-.social-buttons i {
-    font-size: 14px;
-}
-.login_pattern a.btn.btn-primary{
-	position: relative;
-    left: 131px;
-    width: 249px;
-    padding: 10px 0px;
-    border: 3px solid #fff;
-    box-shadow: 1px 4px 10px #337ab740;
-}
-.login_pattern .form-group.Create{
-	text-align: center;
-    margin-top: 38px;
-}
-.login_pattern form#login_form p {
-   height: 27px;
-    display: inline-block;
-    position: relative;
-    background: #ebe8e8;
-    margin: 10px auto;
-    opacity: 0.5;
-    color: #333333;
-    line-height: 15px;
-    font-size: 12px;
-    text-align: center;
-    border-radius: 50%;
-    padding: 6px 6px;
-}
-.login_pattern form#login_form b{
-	display: inline-block;
-    -ms-flex: 1;
-    flex: 1;
-    height: 2px;
-    width: 90px;
-    opacity: .1;
-    background-color: currentColor;
-}
-.login_pattern .btn-link{
-	position: relative;
-    float: right;
-    top: -52px;
-}
-.or_text{
-	margin: 0 auto;
-    width: 100%;
-   	text-align: center;
-}
-.login_pattern button.btn.btn-success{
-	margin: auto 128px;
-    width: 250px;
-}
-.registration_section .btn-primary {
-    text-transform: uppercase;
-    border-radius: 5px;
-    display: inline-block;
-    padding: 10px 30px;
-    border: 3px solid #fff;
-    box-shadow: 1px 5px 9px #337ab745;
-    margin-top: 10px;
-    letter-spacing: 1px;
-    font-size: 12px;
-    margin:0 0;
-}
-.registration_section .btn-success{
-	display: inline-block;
-	margin: 9px 2px;
-	font-size: 12px;
-}
-.inner_registrer{
-	display: inline-block;
-	font-size: 12px;
-    margin: 0 5px;
-}
-.form-group.registration_section{
-	float: right;
-}
-div#view_pattern {
-    padding: 40px 100px;
-}
-.view_patterns p{
-	font-size: 16px;
-    line-height: 1.6;
-    text-align: justify;
-    letter-spacing: 0.1px;
-}
-.view_patterns h2{
-	margin:20px auto;
-	font-size: 47px;
-}
-.view_patterns button.btn.btn-success{
-	background: #6b7d27;
-    color: #fff;
-    border: solid 3px #fff;
-    border-radius: 5px;
-    padding: 10px 30px;
-    text-transform: uppercase;
-    margin-top: 10px;
-    letter-spacing: 2px;
-    box-shadow: 0px 8px 13px 2px #6b7d271f;
-}
-
-/*	Style added by AMAN	*/
-
-/*	Canvas page custom color pattel style	*/
-
-ul.custom_color_boxes {
-    margin-top: 8px;
-    padding: 0;
-    list-style: none;
-}
-.custom_color_boxes li span {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #000;
-    float: left;
-    margin-right: 8px;
-}
-.color-wheel-popup .modal-header {
-    border-bottom: 0;
-		padding-bottom: 0;
-}
-.color-wheel-popup h3.modal-title {
-    color: #6b7d27;
-    text-align: center;
-    font-size: 25px;
-    margin: 0;
-    padding: 0;
-}
-/*	Canvas page custom color pattel style	ends here! */
-
-/*	Style added by AMAN ends here!	*/
-
 /*****Media Query*****/
 
 @media screen and (max-width:1200px){
@@ -1162,15 +1016,6 @@ ul.custom_color_boxes {
 	}
 	.featureList li p {
     	width: 241px;
-	}
-	.inner_login {
-    	margin: 0 -67px;
-	}
-	div#view_pattern img{
-    	width: 100%;
-	}
-	div#view_pattern{
-		padding: 0;
 	}
 }
 @media screen and (max-width: 991px){
@@ -1218,15 +1063,6 @@ ul.custom_color_boxes {
 		width: 150px;
     	height: 42px;
     	margin-left: 138px;
-	}
-	.inner_login {
-    margin: 0 32px;
-	}
-	div#view_pattern img{
-    	width:100%;
-	}
-	div#view_pattern{
-		padding: 0;
 	}
 }
 @media screen and (max-width: 768px){
@@ -1307,37 +1143,6 @@ ul.custom_color_boxes {
 	}
 	.toolbar .selectstylecolor .ss_ulsearch{
 		width: 230px;
-	}
-	.form-group.registration_section{
-		float: none;
-	}
-	.registration_section .btn-success{
-		width: 100%;
-	}
-	.registration_section .btn-primary{
-		width: 100%;
-	}
-	.inner_registrer{
-		display: inline;
-		text-align: center;
-		margin: -2px 0;
-	}
-	.inner_login{
-		margin:auto;
-	}
-	.login_pattern button.btn.btn-success {
-		width: 100%;
-		margin: auto;
-	}
-	.login_pattern a.btn.btn-primary{
-		width: 100%;
-		left: 0;
-	}
-	div#view_pattern img {
-    width:100%;
-	}
-	div#view_pattern{
-		padding: 0;
 	}
 }
 @media screen and (max-width: 480px){
@@ -1426,7 +1231,7 @@ ul.custom_color_boxes {
 	    width: 261px;
 	}
 	.workContainer form button[type="submit"]{
-		width: 100%;
+		width: 298px
 	}
 	.workContainer form button[type="button"]{
 		width: 298px;
@@ -1434,28 +1239,6 @@ ul.custom_color_boxes {
 	}
 	.contact_btn{
 		padding: 10px 113px;
-	}
-	.inner_login {
-	    width: 100%;
-	    margin:auto;
-	}
-	div#view_pattern img {
-    	width: 100%;
-	}
-	div#view_pattern{
-		padding: 0;
-	}
-	.view_patterns button.btn.btn-success{
-		width: 100%
-	}
-	.view_patterns p{
-		font-size: 14px;
-		letter-spacing: 0;
-	}
-	.view_patterns h2 {
-	    font-size:22px;
-	    margin: 0;
-	    margin-bottom: 20px;
 	}
 }
 @media screen and (max-width:414px){
@@ -1510,15 +1293,14 @@ ul.custom_color_boxes {
 		text-align: justify;
 	}
 	.workContainer form button[type="submit"]{
-		width: 100%;
+		width: 287px
 	}
 	.workContainer form button[type="button"]{
 		width: 287px;
     	margin-right: 0;
 	}
 	.contact_btn{
-		padding: 10px 0;
-		width: 100%;
+		padding: 10px 107px;
 	}
 }
 @media screen and (max-width:375px){
@@ -1581,18 +1363,14 @@ ul.custom_color_boxes {
 		padding: 28px 38px 50px;
 	}
 	.workContainer form button[type="submit"]{
-		width: 100%;
+		width: 271px;
 	}
 	.workContainer form button[type="button"]{
-		width: 100%;
+		width: 271px;
     	margin-right: 0;
 	}
 	.contact_btn{
-		padding: 10px 0;
-		width: 100%;
-	}
-	.login_pattern .btn-link{
-		left: 18px;
+		padding: 10px 100px;
 	}
 }
 @media screen and (max-width: 360px){
@@ -1608,20 +1386,14 @@ ul.custom_color_boxes {
 		bottom: 7px;
 	}
 	.workContainer form button[type="submit"]{
-		width:100%;
+		width: 258px;
 	}
 	.workContainer form button[type="button"]{
-		width: 100%;
+		width: 257px;
     	margin-right: 0;
 	}
 	.contact_btn {
-    	padding: 10px 0;
-    	width: 100%;
-	}
-	.login_pattern .btn-link {
-	    bottom: 25px;
-	    float: left;
-	    margin: 31px 0 -34px -28px;
+    	padding: 10px 92px;
 	}
 }
 @media screen and (max-width: 320px){
@@ -1653,10 +1425,10 @@ ul.custom_color_boxes {
 		margin-left: -77px;
 	}
 	.workContainer form button[type="submit"]{
-    	width: 100%;
+    	width: 222px;
 	}
 	.workContainer form button[type="button"] {
- 		width:100%;
+ 		width: 222px;
 	}
 	.toolbar{
 		margin-left: -20px;

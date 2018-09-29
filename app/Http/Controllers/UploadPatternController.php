@@ -30,7 +30,7 @@ class UploadPatternController extends Controller
               $tagarray[] = array('tagname'=>ucfirst($tags[$i]->tag_name));
             }
             $json = json_encode($tagarray);
-            return view('upload_pattern')->with("jsontagarray", $json);
+            return view('upload_pattern', array('jsontagarray' => $json, 'page_title' => 'Upload Pattern'));
         }
         else
         {

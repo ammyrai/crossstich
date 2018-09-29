@@ -13,7 +13,7 @@
 
                   <div class="form-group">
                       <label>{{ __('E-Mail Address') }}</label>
-                      <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" autofocus onfocus="$('.error_msg_email').html('');">
+                      <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" onfocus="$('.error_msg_email').html('');" readonly>
                       <div class="error_msg_email">
                           @if ($errors->has('email'))
                               <span class="invalid-feedback">

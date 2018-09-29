@@ -121,7 +121,7 @@ $(function()
         Pass colors to hidden fields from color pattel
         ====================================================
     */
-    $(".selectstyle").delegate("ul#select_style_ul li", "click", function(e)
+  /*  $(".selectstyle").delegate("ul#select_style_ul li", "click", function(e)
     {
           $(".clothcolorvalidate").hide();
           canvasBgColor = $(this).attr('value');
@@ -157,7 +157,7 @@ $(function()
           localStorage.setItem("circleStrokeCPara", circleStrokeCPara);
           localStorage.setItem("circleFillCPara", circleFillCPara);
 
-    });
+    }); */
 
     $("#aida_cloth").change(function(){
       localStorage.setItem("aidaCloth", $(this).val());
@@ -168,7 +168,7 @@ $(function()
       Generate new color codes script starts here!
       =============================================
   */
-  function ColorLuminance(hex, lum)
+  /* function ColorLuminance(hex, lum)
   {
     // validate hex string
     hex = String(hex).replace(/[^0-9a-f]/gi, '');
@@ -186,5 +186,5 @@ $(function()
       rgb += ("00"+c).substr(c.length);
     }
     return rgb;
-  }
+  } */
   /*  Generate new color codes script ends here!  */
