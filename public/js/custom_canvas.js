@@ -1671,15 +1671,16 @@ function canvasInit()
               var b = 0;
               $.each( uniqueNames, function( key, val )
               {
-                  data.find(function(item){
-                   if(item.color_code === val){
-                     if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                       colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code});
-                      }
-                      colorHashMap[item.color_code] = {
-                        'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code
-                      };
-                   }
+                  data.find(function(item)
+                  {
+                     if(item.color_code === val){
+                       if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
+                         colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code});
+                        }
+                        colorHashMap[item.color_code] = {
+                          'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code
+                        };
+                     }
                   });
                   b++;
               });
@@ -1722,7 +1723,7 @@ function canvasInit()
                         {
                             var textGroup = tLayer.children[k];
                             var textBlocks = textGroup.children;
-
+                            console.log(colorHashMap);
                             textGroup.children = textBlocks.map(function (textBlock)
                             {
                                 textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;

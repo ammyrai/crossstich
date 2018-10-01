@@ -164,17 +164,15 @@
               }
             });
 
-
+            /*  Custom color wheel script   */
             jQuery(document).on("click", ".color_box", function(){
-              console.log("Jii")
-                jQuery("#put_box_color").val(jQuery(this).data('id'));
+              jQuery("#put_box_color").val(jQuery(this).data('id'));
             });
 
-            /*  Custom color wheel script   */
             jQuery("#widget").colorwheel('init',
-              ['E2A099',
-               'AB0249',
+              ['AB0249',
                'F0CED4',
+               'E2A099',
                'E6CCD9',
                '572433',
                '9891B6',
@@ -184,34 +182,17 @@
                'C7CAD7',
                '999FB7',
                '7880A4',
-               'DBECF5',
-               '4D8361',
-               'C8D8B8',
-               'EFF4A4',
-               'C0C840',
-               'A77C49',
                'D1D1D1',
                '848484',
-               '835B8B',
-               'A37BA7',
-               'D29FC3',
-               'E3CBE3',
-               'CC847C',
-               'FFDFD7',
-               '6F2F00',
-               'B35F2B',
+               'EBB7AF',
                'B71F33',
-               'FDED54',
-               '1C5066',
-               '35668B',
-               'B7737F',
-               'ABABAB',
+               'BA4A4A',
+               '6C6C6C',
                '205F2E',
-               'C72B3B',
-               '5A8FB8',
-               'B33B4B',
-               '739FC1',
-               '253B73'
+               '633666',
+               'EE546E',
+               'D21035',
+               '617A52'
              ]
             );
 
