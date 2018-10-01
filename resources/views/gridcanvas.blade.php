@@ -84,6 +84,10 @@
                                   <li id="color_<?php echo $i; ?>" class="color_box" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false" data-id="<?php echo $i; ?>" data-color=""><span></span></li>
                           <?php  } ?>
                         </ul>
+
+                        <span class="create_new_design float-right" id="change_canvas" title="Change Canvas" data-toggle="modal" data-target="#changeCanvasModal" data-backdrop="false">
+                            Click to change canvas
+                        </span>
                       </div>
                   </div>
                   <div class="col-md-12 float-left canvas_content">
@@ -110,6 +114,73 @@
   </div>
 </div>
 </div>
+
+<!-- Text Modal -->
+<div id="changeCanvasModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="col-md-12 modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change Canvas</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form action="/action_page.php">
+                <div class="form-group">
+                  <label>Select Aida Cloth</label>
+                  <div class="formContent">
+                    <div class="selectAidaCloth">
+                      <select name="cloth" class="form-control select_cloth" id="aida_cloth" placeholder="Select Aida Cloth for Design" onchange="$('.aidavalidate').hide();">
+                        <option value="">Select Aida cloth</option>
+                        <option value="7">7</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="14">14</option>
+                        <option value="18">18</option>
+                        <option value="20">20</option>
+                        <option value="22">22</option>
+                      </select>
+                      <span class="validaion_class aidavalidate">Please Select Aida Cloth</span>
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                  <label>Select Aida Cloth Frame</label>
+                  <div class="formContent">
+                    <div class="selectClothFrame">
+
+                    </div>
+                    <p class="hintInfo">Frame size is in Height X width in Inches</p>
+                    <span class="validaion_class framevalidate">Please Select Aida Cloth Frame</span>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                  <label>Select Aida Cloth Colour</label>
+                  <div class="formContent">
+                    <div class="selectBgColor">
+                      <select theme="google" width="400" style="" id="clothColorId" class="form-control select_style" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="bgSelect">
+                        <option value="#fcfcee" data-type="light" data-floss="746">Buttermilk - 746</option>
+                        <option value="#fffbef" data-type="light" data-floss="712">Ivory - 712</option>
+                        <option value="#f8e4c8" data-type="light" data-floss="739">Sandstone - 739</option>
+                        <option value="#b39f8b" data-type="dark" data-floss="3032">Natural Brown - 3032</option>
+                      </select>
+                    </div>
+                    <span class="validaion_class clothcolorvalidate">Please Select Aida Cloth Colour</span>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button id="cloneSampleText" type="button" class="btn btn-success ok_btn pull-right">Ok</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <!-- Text Modal -->
 <div id="textModal" class="modal fade">
