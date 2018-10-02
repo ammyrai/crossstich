@@ -1,139 +1,213 @@
 @extends('layouts.app')
 @section('content')
+<style>
+.ads_section {
+    padding: 0;
+    margin-top: 23px;
+}
+.ads_section img {
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 35px;
+}
+.canvas_section .workContainer {
+    padding-left: 0;
+    padding-right: 0;
+}
+footer {
+    float: left;
+    width: 100%;
+}
+@media screen and (max-width:1024px){
+  .ads_section img {
+    margin-left: 3px;
+  }
+  .canvas_section .workContainer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+@media screen and (max-width:768px){
+  .ads_section  {
+    display: none;
+  }
+  ul.custom_color_boxes {
+    width: 400px;
+}
+.create_new_design {
+    margin-left: 75px;
+}
+}
+@media screen and (max-width:600px){
+  .toolbar .selectstylecolor {
+    width: 100% !important;
+    margin-right: 0;
+    float: left;
+}
+.create_new_design {
+    margin-left: 0;
+}
+}
+@media screen and (max-width:414px){
+  ul.custom_color_boxes {
+    width: 100%;
+}
+.custom_color_boxes li {
+    float: left;
+    margin-left: -2px;
+    margin-bottom: 7px;
+    margin-top: 7px;
+}
+}
+</style>
 <input type="hidden" name="datafile" id="canvas_data_file" value="{{$pattern->canvas_data_link}}"/>
 <input type="hidden" name="pGridSize" id="pGridSize" value="{{$pattern->canvas_grid_size}}"/>
 <input type="hidden" name="canvas_cloth" id="canvas_cloth" value="{{$pattern->canvas_cloth}}"/>
 <input type="hidden" name="canvas_cloth_frame" id="canvas_cloth_frame" value="{{$pattern->canvas_cloth_frame}}"/>
 <input type="hidden" name="upload_page_url" id="upload_page_url" value="{{ url('/upload_pattern') }}"/>
 <input type="hidden" name="upload_page_url" id="curren_page_url" value="{{Request::url()}}"/>
-<div class="container">
+<div class="col-md-12 canvas_page">
+<div class="col-md-2 ads_section">
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+</div>
+<div class="col-md-8 canvas_section">
   <div class="row">
     <div class="col-md-12">
       <div class="workContainer">
 
-        <div id="loader" class="loader">
-          <div class="inner"></div>
-        </div>
-
-        <div id="pdfloader">
-          <div class="innerLoader">
-            <div class="loadingCon">
-              <p>Please Wait for a while! PDF downloading is in progress...</p>
-              <img src="{{ asset('imgs/download.gif') }}" />
-            </div>
+          <div id="loader" class="loader">
+            <div class="inner"></div>
           </div>
-        </div>
 
-        <h2>Edit Your Design</h2>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="ownDesignCon">
-              <div class="col-md-12">
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-success" id="editDesignMsg">
-                        <p>{{ $message }}</p>
-                    </div>
-                @endif
+          <div id="pdfloader">
+            <div class="innerLoader">
+              <div class="loadingCon">
+                <p>Please Wait for a while! PDF downloading is in progress...</p>
+                <img src="{{ asset('imgs/download.gif') }}" />
               </div>
-              <div class="canvas_container" style="display:none;" id="myDiv">
-                <div class="col-md-12">
-                    <div class="toolbar">
-                      <ul class="toolbar_list" id="toolbar_section">
-                        <li class="canvas_tool active" id="pencil" data-mode="pencil" title="Pencil">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                        </li>
-                        <li class="canvas_tool" id="eraser" data-mode="eraser" title="Eraser">
-                            <i class="fa fa-eraser" aria-hidden="true"></i>
-                        </li>
-                        <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
-                          <img src="{{ asset('images/select.png') }}" alt="select shape" />
-                        </li>
-                        <li class="canvas_tool" id="back_stich" data-mode="back_stich" title="Back Stich">
-                          <img src="{{ asset('images/crossStich.png') }}" alt="Back Stich" />
-                        </li>
-                        <li class="canvas_tool" id="text_modal" data-mode="text" title="Text" data-toggle="modal" data-target="#textModal" data-backdrop="false" >
-                            <img src="{{ asset('images/text.png') }}" alt="text" />
-                        </li>
-                        @guest
-                              <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Download File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
-                                <img src="{{ asset('images/download.png') }}" alt="download" />
-                                <input type="hidden" id="checkLogin" value="false"/>
-                            </li>
-                        @else
-                            <li class="canvas_tool" id="download_canvas" data-mode="download" title="Download File">
-                                <img src="{{ asset('images/download.png') }}" alt="download" />
-                                <input type="hidden" id="checkLogin" value="true"/>
-                            </li>
-                        @endguest
-                        <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
-                            <i class="fa fa-upload" aria-hidden="true"></i>
-                        </li> -->
-                        @if($pattern->gallery_edit == 0)
-                            <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
-                              <img src="{{ asset('images/save_img.png') }}" alt="save" />
-                            </li>
-                          @else
-                            <li class="canvas_tool" id="save_new_design" data-mode="save" title="Save to My Patterns">
-                              <img src="{{ asset('images/save_img.png') }}" alt="save" />
-                            </li>
-                        @endif
-                      </ul>
-                      {!! Form::model($pattern, [
-                          'method' => 'PATCH',
-                          'route' => ['update', $pattern->id],
-                          'id' => 'patternUpdate'
-                      ]) !!}
-                        {!! Form::hidden('userid', null, ['id' => 'userId' ]) !!}
-                        {!! Form::hidden('gridsize', null, ['id' => 'gridsize' ]) !!}
-                        {!! Form::textarea('designimage', null, ['id' => 'designimage','style'=>'display:none']) !!}
-                        {!! Form::textarea('canvasdata', null, ['id' => 'canvasdata','style'=>'display:none']) !!}
-                        {!! Form::submit('Submit', ['class' => 'btn btn-submit','style'=>'display:none']) !!}
-                      {!! Form::close() !!}
-                      <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
-                          <option value="#fcfbf8" data-type="">Ecru - Ecru</option>
-                          <option value="#ffffff" data-type="">White - B5200</option>
-                          <option value="#000000" data-type="">Black - 310</option>
-                          <option value="#c72b3b" data-type="">Red - 321</option>
-                          <option value="#fd5d35" data-type="">Orange - 608</option>
-                          <option value="#ffe300" data-type="">Yellow - 973</option>
-                          <option value="#7fb335" data-type="">Green - 906</option>
-                          <option value="#6b9ebf" data-type="">Blue - 826</option>
-                          <option value="#633666" data-type="">Violet - 327</option>
-                        </select>
-                        <ul class="custom_color_boxes">
-                          <?php
-                              for($i=0; $i<10; $i++)
-                              {  ?>
-                                  <li id="color_<?php echo $i; ?>" class="color_box" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false" data-id="<?php echo $i; ?>" data-color=""><span></span></li>
-                          <?php  } ?>
-                        </ul>
-                      </div>
-                  </div>
-                  <div class="col-md-12 float-left canvas_content">
-                      <div id="canvas"></div>
-                  </div>
-            </div>
-            <div class="helpTextCon instructions">
-              <h4>Instructions:</h4>
-              <ul>
-                <li>
-                  <label>How to use it</label>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
-                </li>
-                <li>
-                  <label>Tell us...</label>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
-                </li>
-              </ul>
             </div>
           </div>
-        </div>
-      </div>
+
+          <h2>Edit Your Design</h2>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="ownDesignCon">
+                <div class="col-md-12">
+                  @if ($message = Session::get('success'))
+                      <div class="alert alert-success" id="editDesignMsg">
+                          <p>{{ $message }}</p>
+                      </div>
+                  @endif
+                </div>
+                <div class="canvas_container" style="display:none;" id="myDiv">
+                  <div class="col-md-12">
+                      <div class="toolbar">
+                        <ul class="toolbar_list" id="toolbar_section">
+                          <li class="canvas_tool active" id="pencil" data-mode="pencil" title="Pencil">
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                          </li>
+                          <li class="canvas_tool" id="eraser" data-mode="eraser" title="Eraser">
+                              <i class="fa fa-eraser" aria-hidden="true"></i>
+                          </li>
+                          <li class="canvas_tool" id="select_shape" data-mode="select_shape" title="Select Shape">
+                            <img src="{{ asset('images/select.png') }}" alt="select shape" />
+                          </li>
+                          <li class="canvas_tool" id="back_stich" data-mode="back_stich" title="Back Stich">
+                            <img src="{{ asset('images/crossStich.png') }}" alt="Back Stich" />
+                          </li>
+                          <li class="canvas_tool" id="text_modal" data-mode="text" title="Text" data-toggle="modal" data-target="#textModal" data-backdrop="false" >
+                              <img src="{{ asset('images/text.png') }}" alt="text" />
+                          </li>
+                          @guest
+                                <li class="canvas_tool" id="downloadLoginPopup" data-mode="download" title="Download File" data-toggle="modal" data-target="#loginPopupModal" data-backdrop="false">
+                                  <img src="{{ asset('images/download.png') }}" alt="download" />
+                                  <input type="hidden" id="checkLogin" value="false"/>
+                              </li>
+                          @else
+                              <li class="canvas_tool" id="download_canvas" data-mode="download" title="Download File">
+                                  <img src="{{ asset('images/download.png') }}" alt="download" />
+                                  <input type="hidden" id="checkLogin" value="true"/>
+                              </li>
+                          @endguest
+                          <!-- <li class="canvas_tool" id="upload_canvas_modal" data-mode="open" title="Open File" data-toggle="modal" data-target="#uploadModal" data-backdrop="false" >
+                              <i class="fa fa-upload" aria-hidden="true"></i>
+                          </li> -->
+                          @if($pattern->gallery_edit == 0)
+                              <li class="canvas_tool" id="save_canvas" data-mode="save" title="Save to My Patterns">
+                                <img src="{{ asset('images/save_img.png') }}" alt="save" />
+                              </li>
+                            @else
+                              <li class="canvas_tool" id="save_new_design" data-mode="save" title="Save to My Patterns">
+                                <img src="{{ asset('images/save_img.png') }}" alt="save" />
+                              </li>
+                          @endif
+                        </ul>
+                        {!! Form::model($pattern, [
+                            'method' => 'PATCH',
+                            'route' => ['update', $pattern->id],
+                            'id' => 'patternUpdate'
+                        ]) !!}
+                          {!! Form::hidden('userid', null, ['id' => 'userId' ]) !!}
+                          {!! Form::hidden('gridsize', null, ['id' => 'gridsize' ]) !!}
+                          {!! Form::textarea('designimage', null, ['id' => 'designimage','style'=>'display:none']) !!}
+                          {!! Form::textarea('canvasdata', null, ['id' => 'canvasdata','style'=>'display:none']) !!}
+                          {!! Form::submit('Submit', ['class' => 'btn btn-submit','style'=>'display:none']) !!}
+                        {!! Form::close() !!}
+                        <select width="200" id="selectTxtColor" placeholder="Select Your Favorite Colour for Canvas" data-search="true" data-item="txtColorSelect">
+                            <option value="#fcfbf8" data-type="">Ecru - Ecru</option>
+                            <option value="#ffffff" data-type="">White - B5200</option>
+                            <option value="#000000" data-type="">Black - 310</option>
+                            <option value="#c72b3b" data-type="">Red - 321</option>
+                            <option value="#fd5d35" data-type="">Orange - 608</option>
+                            <option value="#ffe300" data-type="">Yellow - 973</option>
+                            <option value="#7fb335" data-type="">Green - 906</option>
+                            <option value="#6b9ebf" data-type="">Blue - 826</option>
+                            <option value="#633666" data-type="">Violet - 327</option>
+                          </select>
+                          <ul class="custom_color_boxes">
+                            <?php
+                                for($i=0; $i<10; $i++)
+                                {  ?>
+                                    <li id="color_<?php echo $i; ?>" class="color_box" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false" data-id="<?php echo $i; ?>" data-color=""><span></span></li>
+                            <?php  } ?>
+                          </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-12 float-left canvas_content">
+                        <div id="canvas"></div>
+                    </div>
+              </div>
+              <div class="helpTextCon instructions">
+                <h4>Instructions:</h4>
+                <ul>
+                  <li>
+                    <label>How to use it</label>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+                  </li>
+                  <li>
+                    <label>Tell us...</label>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          </div>
     </div>
   </div>
 </div>
 </div>
-
+<div class="col-md-2 ads_section">
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+</div>
+</div>
 <div class="design_floss_list_style" id="design_floss_list" style="display:none;"></div>
 <!-- Text Modal -->
 <div id="textModal" class="modal fade">

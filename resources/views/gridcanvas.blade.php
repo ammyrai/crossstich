@@ -1,7 +1,74 @@
 @extends('layouts.app')
 @section('content')
+<style>
+.ads_section {
+    padding: 0;
+    margin-top: 23px;
+}
+.ads_section img {
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 35px;
+}
+.canvas_section .workContainer {
+    padding-left: 0;
+    padding-right: 0;
+}
+footer {
+    float: left;
+    width: 100%;
+}
+@media screen and (max-width:1024px){
+  .ads_section img {
+    margin-left: 3px;
+  }
+  .canvas_section .workContainer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+@media screen and (max-width:768px){
+  .ads_section  {
+    display: none;
+  }
+  ul.custom_color_boxes {
+    width: 400px;
+}
+.create_new_design {
+    margin-left: 75px;
+}
+}
+@media screen and (max-width:600px){
+  .toolbar .selectstylecolor {
+    width: 100% !important;
+    margin-right: 0;
+    float: left;
+}
+.create_new_design {
+    margin-left: 0;
+}
+}
+@media screen and (max-width:414px){
+  ul.custom_color_boxes {
+    width: 100%;
+}
+.custom_color_boxes li {
+    float: left;
+    margin-left: -2px;
+    margin-bottom: 7px;
+}
+}
+</style>
 <input type="hidden" id="create_design_url" value="{{ url('/createdesign') }}"/>
-<div class="container">
+<div class="col-md-12 canvas_page">
+<div class="col-md-2 ads_section">
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+    <img src="{{ asset('images/mobile-ad.png') }}"/>
+</div>
+<div class="col-md-8 canvas_section">
   <div class="row">
     <div class="col-md-12">
       <div class="workContainer">
@@ -85,7 +152,7 @@
                           <?php  } ?>
                         </ul>
 
-                        <span class="create_new_design float-right" id="change_canvas" title="Change Canvas" data-toggle="modal" data-target="#changeCanvasModal" data-backdrop="false">
+                        <span class="create_new_design change_canvas_btn float-right" id="change_canvas" title="Change Canvas" data-toggle="modal" data-target="#changeCanvasModal" data-backdrop="false">
                             Click to change canvas
                         </span>
                       </div>
@@ -114,7 +181,13 @@
   </div>
 </div>
 </div>
-
+<div class="col-md-2 ads_section">
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+  <img src="{{ asset('images/mobile-ad.png') }}"/>
+</div>
+</div>
 <!-- Text Modal -->
 <div id="changeCanvasModal" class="modal fade">
     <div class="modal-dialog">

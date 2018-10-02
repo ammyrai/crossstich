@@ -89,6 +89,7 @@ function canvasInit()
             gridSize = Math.round(stageWidth/canvasWidth),    // Grid Tile Size
             txtFillSize = gridSize;      // Text font size
             var stagerectWidth = stageWidth;
+            var GridLineLayerWidth = stageWidth;
         if(clothframe === '56 X 70' || clothframe === '56 X 84' || clothframe === '49 X 70' || clothframe === '60 X 84')
         {
           stageWidth = 850;
@@ -97,6 +98,7 @@ function canvasInit()
         {
           stageWidth = 860;
           stagerectWidth = 830;
+          GridLineLayerWidth = stageWidth-20;
         }
         /*  create stage for main canvas  */
         stage = new Konva.Stage({
@@ -119,10 +121,17 @@ function canvasInit()
         gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
         gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
 
+        console.log(clothframe);
 
+
+        if(clothframe === "24.5 X 35" || clothframe === "28 X 42" || clothframe === "96 X 120" || clothframe === "96 X 144")
+        {
+            GridLineLayerWidth = stageWidth + 100;
+        }
         if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
         {
           stagerectWidth = 787;
+          GridLineLayerWidth = stageWidth-5;
         }
         if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
         {
@@ -131,15 +140,17 @@ function canvasInit()
         if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
         {
           stagerectWidth = 773;
+          GridLineLayerWidth = stageWidth-23;
         }
         if(clothframe === "66 X 88")
         {
           stagerectWidth = 794;
         }
 
-        if(clothframe === "56 X 84" || clothframe === "49 X 70" || clothframe === '60 X 84' || clothframe === '56 X 70')
+        if(clothframe === "56 X 84" || clothframe === "49 X 70" || clothframe === '60 X 84' || clothframe === '56 X 70' || clothframe === '112 X 140' || clothframe === '112 X 168')
         {
           stagerectWidth = 844;
+          GridLineLayerWidth = stageWidth + 5;
         }
 
         /*  Layer1 work starts here! */
@@ -213,7 +224,7 @@ function canvasInit()
                 }
                 var gLine = new Konva.Line({
                   points: [(icx * gridSize), gridSize, (icx * gridSize), stageWidth] ,
-                  stroke: '#000',
+                  stroke: 'red',
                   strokeWidth: 1,
                   dash: [6, 4],
                   dashEnabled : dashEnabled
@@ -262,7 +273,7 @@ function canvasInit()
                   var dashEnabled = false;
                 }
                 var gLine = new Konva.Line({
-                  points: [gridSize, (icy * gridSize), stageWidth+500, (icy*gridSize)],
+                  points: [gridSize, (icy * gridSize), GridLineLayerWidth, (icy*gridSize)],
                   stroke: '#000',
                   strokeWidth: 1,
                   dash: [6, 4],
