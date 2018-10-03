@@ -1144,6 +1144,16 @@ ul.custom_color_boxes {
     margin: 0;
     padding: 0;
 }
+.backstitch_strand, .x-size
+{
+		width: 27%;
+    padding: 8px;
+    margin-left: 37px;
+}
+.x-size
+{
+	width: 18%;
+}
 /*	Canvas page custom color pattel style	ends here! */
 
 /*	Style added by AMAN ends here!	*/

@@ -64,6 +64,45 @@ function canvasInit(){
         {
           textFillColor = x;
         }
+
+
+        /*  Change backstitch strand */
+
+        $(document).on('change', '.backstitch_strand',function()
+        {
+            var back_strand = $(this).val();
+            if(back_strand === ' ')
+            {
+               changeStitchStrand(lineStroke);
+            }
+            else {
+              changeStitchStrand(back_strand);
+            }
+        });
+        function changeStitchStrand(s)
+        {
+            lineStroke = s;
+            localStorage.setItem("linestrand", lineStroke)
+        }
+
+        /*  Change X's Size */
+
+        $(document).on('change', '.x-size',function()
+        {
+            var x_size = $(this).val();
+            if(x_size === ' ')
+            {
+               changeXSize(txtFillSize);
+            }
+            else {
+              changeXSize(x_size);
+            }
+        });
+        function changeXSize(xs)
+        {
+            txtFillSize = xs;
+        }
+
         /*  Create Multiple Layers for stage  */
         var stagelayer = stage.getLayers();
         $(stagelayer).each(function(key,val){
@@ -134,11 +173,11 @@ function canvasInit(){
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
         if(gridSize >= 20)
         {
-          lineStroke = 4;
+          lineStroke = 3;
         }
         else if(gridSize >= 10)
         {
-          lineStroke = 3;
+          lineStroke = 2;
         }
         else
         {
@@ -1104,7 +1143,7 @@ function canvasInit(){
             return a
         }
 
-        $("#cloneSampleText").click(function()
+        $(document).on("click", "#cloneSampleText", function()
         {
             $( gridHiddenTextGroup.children ).each(function(key, val)
             {
@@ -1427,7 +1466,7 @@ function canvasInit(){
             if(backstitch.length != 0){
                 htmlcontent += '<h4>Backstitch</h4>';
                 htmlcontent += '<p>floss :' +backstitch.floss+', Colour : '+backstitch.colorName+'</p>';
-                htmlcontent += '<p>Backstitch- 3 strands</p>';
+                htmlcontent += '<p>Backstitch- ' + localStorage.getItem("linestrand") +' strands</p>';
             }
 
             var bgcolr = backgroundCanvas.find('Rect');

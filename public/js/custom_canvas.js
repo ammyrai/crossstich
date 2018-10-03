@@ -90,16 +90,150 @@ function canvasInit()
             txtFillSize = gridSize;      // Text font size
             var stagerectWidth = stageWidth;
             var GridLineLayerWidth = stageWidth;
-        if(clothframe === '56 X 70' || clothframe === '56 X 84' || clothframe === '49 X 70' || clothframe === '60 X 84')
-        {
-          stageWidth = 850;
-        }
-        if(clothframe === '38.5 X 55')
-        {
-          stageWidth = 860;
-          stagerectWidth = 830;
-          GridLineLayerWidth = stageWidth-20;
-        }
+
+            console.log(clothframe)
+
+            switch (clothframe)
+            {
+               case '56 X 70':
+                  stageWidth = 850;
+                  stagerectWidth = 844;
+                  GridLineLayerWidth = stageWidth + 5;
+               break;
+               case '56 X 84':
+                  stageWidth = 850;
+                  stagerectWidth = 844;
+                  GridLineLayerWidth = stageWidth + 5;
+               break;
+               case '49 X 70':
+                  stageWidth = 850;
+               break;
+               case '60 X 84':
+                  stageWidth = 850;
+               break;
+               case '38.5 X 55':
+                   stageWidth = 860;
+                   stagerectWidth = 830;
+                   GridLineLayerWidth = stageWidth-20;
+               break;
+               case '24.5 X 35':
+                   GridLineLayerWidth = stageWidth + 100;
+               break;
+               case '28 X 42':
+                   GridLineLayerWidth = stageWidth + 100;
+               break;
+               case '96 X 120':
+                   GridLineLayerWidth = stageWidth + 100;
+               break;
+               case '96 X 144':
+                   GridLineLayerWidth = stageWidth + 100;
+               break;
+               case '35 X 49':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = stageWidth-5;
+               break;
+               case '42 X 56':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = stageWidth-5;
+               break;
+               case '42 X 60':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = stageWidth-5;
+               break;
+               case '70 X 98':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = stageWidth-5;
+               break;
+               case '84 X 112':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = stageWidth-5;
+               break;
+               case '44 X 66':
+                   stagerectWidth = 795;
+               break;
+               case '88 X 132':
+                   stagerectWidth = 795;
+               break;
+               case '48 X 72':
+                   stagerectWidth = 795;
+               break;
+               case '55 X 77':
+                   stagerectWidth = 773;
+                   GridLineLayerWidth = stageWidth-23;
+               break;
+               case '88 X 110':
+                   stagerectWidth = 773;
+                   GridLineLayerWidth = stageWidth-23;
+               break;
+               case '72 X 96':
+                   stagerectWidth = 773;
+                   GridLineLayerWidth = stageWidth-23;
+               break;
+               case '66 X 88':
+                   stagerectWidth = 794;
+               break;
+               case '49 X 70':
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = stageWidth + 5;
+               break;
+               case '60 X 84':
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = stageWidth + 5;
+               break;
+               case '112 X 140':
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = stageWidth + 5;
+               break;
+               case '112 X 168':
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = stageWidth + 5;
+               break;
+            }
+
+
+        // if(clothframe === '56 X 70' || clothframe === '56 X 84' || clothframe === '49 X 70' || clothframe === '60 X 84')
+        // {
+        //   stageWidth = 850;
+        // }
+        // if(clothframe === '38.5 X 55')
+        // {
+        //   stageWidth = 860;
+        //   stagerectWidth = 830;
+        //   GridLineLayerWidth = stageWidth-20;
+        // }
+
+        // if(clothframe === "24.5 X 35" || clothframe === "28 X 42" || clothframe === "96 X 120" || clothframe === "96 X 144")
+        // {
+        //     GridLineLayerWidth = stageWidth + 100;
+        // }
+        // if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
+        // {
+        //   stagerectWidth = 787;
+        //   GridLineLayerWidth = stageWidth-5;
+        // }
+        // if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
+        // {
+        //   stagerectWidth = 795;
+        // }
+        // if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
+        // {
+        //   stagerectWidth = 773;
+        //   GridLineLayerWidth = stageWidth-23;
+        // }
+        // if(clothframe === "66 X 88")
+        // {
+        //   stagerectWidth = 794;
+        // }
+
+        // if(clothframe === "56 X 84" || clothframe === "49 X 70" || clothframe === '60 X 84' || clothframe === '56 X 70' || clothframe === '112 X 140' || clothframe === '112 X 168')
+        // {
+        //   stagerectWidth = 844;
+        //   GridLineLayerWidth = stageWidth + 5;
+        // }
+
+
+
+
         /*  create stage for main canvas  */
         stage = new Konva.Stage({
             container: 'canvas',                  // Canvas container
@@ -121,38 +255,6 @@ function canvasInit()
         gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
         gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
 
-        console.log(clothframe);
-
-
-        if(clothframe === "24.5 X 35" || clothframe === "28 X 42" || clothframe === "96 X 120" || clothframe === "96 X 144")
-        {
-            GridLineLayerWidth = stageWidth + 100;
-        }
-        if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
-        {
-          stagerectWidth = 787;
-          GridLineLayerWidth = stageWidth-5;
-        }
-        if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
-        {
-          stagerectWidth = 795;
-        }
-        if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
-        {
-          stagerectWidth = 773;
-          GridLineLayerWidth = stageWidth-23;
-        }
-        if(clothframe === "66 X 88")
-        {
-          stagerectWidth = 794;
-        }
-
-        if(clothframe === "56 X 84" || clothframe === "49 X 70" || clothframe === '60 X 84' || clothframe === '56 X 70' || clothframe === '112 X 140' || clothframe === '112 X 168')
-        {
-          stagerectWidth = 844;
-          GridLineLayerWidth = stageWidth + 5;
-        }
-
         /*  Layer1 work starts here! */
         stageRect =  new Konva.Rect({
           x:gridSize,
@@ -168,7 +270,7 @@ function canvasInit()
         if(gridSize >= 20)
         {
           cr = 2;
-          lineStroke = 4;
+          lineStroke = 3;
           countfontSize = txtFillSize - 7;
           var a = 5;
           var b = 5;
@@ -178,7 +280,7 @@ function canvasInit()
         else if(gridSize >= 10)
         {
           cr = 1;
-          lineStroke = 3;
+          lineStroke = 2;
           countfontSize = txtFillSize - 4;
           var a = 10;
           var b = 10;
@@ -224,7 +326,7 @@ function canvasInit()
                 }
                 var gLine = new Konva.Line({
                   points: [(icx * gridSize), gridSize, (icx * gridSize), stageWidth] ,
-                  stroke: 'red',
+                  stroke: '#000',
                   strokeWidth: 1,
                   dash: [6, 4],
                   dashEnabled : dashEnabled
@@ -389,11 +491,11 @@ function canvasInit()
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
         if(gridSize >= 20)
         {
-          lineStroke = 4;
+          lineStroke = 3;
         }
         else if(gridSize >= 10)
         {
-          lineStroke = 3;
+          lineStroke = 2;
         }
         else
         {
@@ -455,6 +557,45 @@ function canvasInit()
     {
         textFillColor = x;
     }
+
+
+    /*  Change backstitch strand */
+
+    $(document).on('change', '.backstitch_strand',function()
+    {
+        var back_strand = $(this).val();
+        if(back_strand === ' ')
+        {
+           changeStitchStrand(lineStroke);
+        }
+        else {
+          changeStitchStrand(back_strand);
+        }
+    });
+    function changeStitchStrand(s)
+    {
+        lineStroke = s;
+        localStorage.setItem("linestrand", lineStroke)
+    }
+
+    /*  Change X's Size */
+
+    $(document).on('change', '.x-size',function()
+    {
+        var x_size = $(this).val();
+        if(x_size === ' ')
+        {
+           changeXSize(txtFillSize);
+        }
+        else {
+          changeXSize(x_size);
+        }
+    });
+    function changeXSize(xs)
+    {
+        txtFillSize = xs;
+    }
+
     if(gridSize >= 20)
     {
       xplus = 4;
@@ -505,6 +646,8 @@ function canvasInit()
                          fontStyle : 'normal',
                          filled : true,
                          align: 'center',
+                         verticalAlign : 'middle',
+                         lineHeight : 2
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -653,6 +796,8 @@ function canvasInit()
                          fontStyle : 'normal',
                          filled : true,
                          align: 'center',
+                         verticalAlign : 'middle',
+                         lineHeight : 2
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -690,7 +835,7 @@ function canvasInit()
                  break;
                  case 'back_stich':
                      //points=[];
-                     //var line = textlayer.find("Line");
+                     //var line = textlayer.find("Line");'
                      var last_two_values = points.slice(-2);
                      if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
                      {
@@ -1444,7 +1589,7 @@ function canvasInit()
         }
         return a;
     }
-    $("#cloneSampleText").click(function()
+    $(document).on("click", "#cloneSampleText", function()
     {
         $( gridHiddenTextGroup.children ).each(function(key, val)
         {
@@ -1771,7 +1916,7 @@ function canvasInit()
         if(backstitch.length !== 0){
             htmlcontent += '<h4>Backstitch</h4>';
             htmlcontent += '<p>Backstitch floss is :' +backstitch.floss+', Colour is : '+backstitch.colorName+'</p>';
-            htmlcontent += '<p>Backstitch- 3 strands</p>';
+            htmlcontent += '<p>Backstitch-' + localStorage.getItem("linestrand") +' strands</p>';
         }
 
         var bgcolr = backgroundCanvas.find('Rect');
@@ -1815,6 +1960,7 @@ function canvasInit()
               doc.save('pattern.pdf');
               $("#pdfloader").hide();
               localStorage.removeItem("download_canvas");
+              localStorage.removeItem("linestrand");
         });
 
     }
