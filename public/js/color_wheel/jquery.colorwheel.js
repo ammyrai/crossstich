@@ -59,7 +59,7 @@
 					})
 					r = r - 0.4
 				})
-				output += "<circle cx='0' cy='0' r='0.01' stroke='black' stroke-width='0' fill='white' />";	/* inner circle */
+				output += "<circle cx='0' cy='0' r='0' stroke='black' stroke-width='0' fill='white' />";	/* inner circle */
 				output += "</g></svg></div>";
 				output += "<input type=\"hidden\" pattern=\"[a-f0-9]{6}\" readonly=\"readonly\" title=\"Value\" class=\"colorwheel-value\">";
 				output += "</div>"; /* end colorwheel-wrapper */

@@ -1693,3 +1693,8 @@ ul.custom_color_boxes {
 		font-size: 10px;
 	}
 }
+#canvasCon{
+	width: 100%;
+	height: 100%;
+	background: red
+}

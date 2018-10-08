@@ -10,10 +10,22 @@
     text-align: center;
     vertical-align: middle;
     margin-left: 35px;
+    margin-bottom: 12px;
 }
 .canvas_section .workContainer {
     padding-left: 0;
     padding-right: 0;
+}
+#scroll-container {
+            width: auto;
+            height: auto;
+            overflow: auto;
+        }
+
+#canvas
+{
+  transform: scale(1,1);
+  transform-origin: top left;
 }
 footer {
     float: left;
@@ -63,8 +75,8 @@ footer {
 <input type="hidden" id="create_design_url" value="{{ url('/createdesign') }}"/>
 <div class="col-md-12 canvas_page">
 <div class="col-md-2 ads_section">
-    <img src="{{ asset('images/mobile-ad.png') }}"/>
-    <img src="{{ asset('images/mobile-ad.png') }}"/>
+    <img src="{{ asset('images/demo_img.png') }}"/>
+    <img src="{{ asset('images/demo_img.png') }}"/>
     <img src="{{ asset('images/mobile-ad.png') }}"/>
     <img src="{{ asset('images/mobile-ad.png') }}"/>
 </div>
@@ -159,34 +171,18 @@ footer {
                             <option value="2">2 Strand</option>
                             <option value="3">3 Strand</option>
                         </select>
-                        <select name="x-size" class="x-size">
-                            <option value="">Select X's Size</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                            <option value="24">24</option>
-                            <option value="25">25</option>
-                            <option value="26">26</option>
-                            <option value="27">27</option>
-                            <option value="28">28</option>
-                            <option value="29">29</option>
-                            <option value="30">30</option>
+                        <select name="x-size" class="x-size" id="x_font_size">
+                            
                         </select>
+
+                        <div class="text-weight slidecontainer">
+                          <input type="range" min="0" max="2" value="1" step="0.1" class="slider" id="zoom_slider">
+                        </div>
                       </div>
                   </div>
-                  <div class="col-md-12 float-left canvas_content">
+                  <div class="col-md-12 float-left canvas_content" id="scroll-container">
                       <div id="canvas"></div>
+                      <!-- <div id="canvasCon"></div> -->
                   </div>
             </div>
             <div class="helpTextCon instructions">

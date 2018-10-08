@@ -69,11 +69,14 @@ function canvasInit()
           selectedRectNodes = [],      // Selected rectangle nodes.
           moved = 0,                   // Move
           xplus,
+          lineheight,
           canvasMainBgcolor = localStorage.getItem("canvasBgColor"),    // Canvas bg color
           gridStrokeColor = localStorage.getItem("gridStrokeCPara"),    // Grid stroke color
           gridShadowColor = localStorage.getItem("gridShadowCPara"),    // Grid shadow color
           circleStrokeColor = localStorage.getItem("circleStrokeCPara"),  // Circle stroke color
           circleFillColor = localStorage.getItem("circleFillCPara");      // Circle fill color
+
+          var deviceAgent = ('ontouchstart' in document.documentElement);
 
     if (localStorage.getItem("auto_save_canvas") === null)
     {
@@ -91,8 +94,6 @@ function canvasInit()
             var stagerectWidth = stageWidth;
             var GridLineLayerWidth = stageWidth;
 
-            console.log(clothframe)
-
             switch (clothframe)
             {
                case '56 X 70':
@@ -107,9 +108,12 @@ function canvasInit()
                break;
                case '49 X 70':
                   stageWidth = 850;
+                  stagerectWidth = 844;
+                  GridLineLayerWidth = stageWidth + 5;
                break;
                case '60 X 84':
-                  stageWidth = 850;
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = stageWidth + 10;
                break;
                case '38.5 X 55':
                    stageWidth = 860;
@@ -142,11 +146,11 @@ function canvasInit()
                break;
                case '70 X 98':
                    stagerectWidth = 787;
-                   GridLineLayerWidth = stageWidth-5;
+                   GridLineLayerWidth = stageWidth-10;
                break;
                case '84 X 112':
                    stagerectWidth = 787;
-                   GridLineLayerWidth = stageWidth-5;
+                   GridLineLayerWidth = stageWidth-10;
                break;
                case '44 X 66':
                    stagerectWidth = 795;
@@ -172,14 +176,6 @@ function canvasInit()
                case '66 X 88':
                    stagerectWidth = 794;
                break;
-               case '49 X 70':
-                   stagerectWidth = 844;
-                   GridLineLayerWidth = stageWidth + 5;
-               break;
-               case '60 X 84':
-                   stagerectWidth = 844;
-                   GridLineLayerWidth = stageWidth + 5;
-               break;
                case '112 X 140':
                    stagerectWidth = 844;
                    GridLineLayerWidth = stageWidth + 5;
@@ -189,50 +185,6 @@ function canvasInit()
                    GridLineLayerWidth = stageWidth + 5;
                break;
             }
-
-
-        // if(clothframe === '56 X 70' || clothframe === '56 X 84' || clothframe === '49 X 70' || clothframe === '60 X 84')
-        // {
-        //   stageWidth = 850;
-        // }
-        // if(clothframe === '38.5 X 55')
-        // {
-        //   stageWidth = 860;
-        //   stagerectWidth = 830;
-        //   GridLineLayerWidth = stageWidth-20;
-        // }
-
-        // if(clothframe === "24.5 X 35" || clothframe === "28 X 42" || clothframe === "96 X 120" || clothframe === "96 X 144")
-        // {
-        //     GridLineLayerWidth = stageWidth + 100;
-        // }
-        // if(clothframe === "35 X 49" || clothframe === "42 X 56" || clothframe === "42 X 60" || clothframe === "70 X 98" || clothframe === "84 X 112")
-        // {
-        //   stagerectWidth = 787;
-        //   GridLineLayerWidth = stageWidth-5;
-        // }
-        // if(clothframe === "44 X 66" || clothframe === "88 X 132" || clothframe === "48 X 72"  )
-        // {
-        //   stagerectWidth = 795;
-        // }
-        // if(clothframe === "55 X 77" || clothframe === "88 X 110" || clothframe === "72 X 96")
-        // {
-        //   stagerectWidth = 773;
-        //   GridLineLayerWidth = stageWidth-23;
-        // }
-        // if(clothframe === "66 X 88")
-        // {
-        //   stagerectWidth = 794;
-        // }
-
-        // if(clothframe === "56 X 84" || clothframe === "49 X 70" || clothframe === '60 X 84' || clothframe === '56 X 70' || clothframe === '112 X 140' || clothframe === '112 X 168')
-        // {
-        //   stagerectWidth = 844;
-        //   GridLineLayerWidth = stageWidth + 5;
-        // }
-
-
-
 
         /*  create stage for main canvas  */
         stage = new Konva.Stage({
@@ -267,6 +219,7 @@ function canvasInit()
         /*  Layer1 work ends here! */
 
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
+
         if(gridSize >= 20)
         {
           cr = 2;
@@ -297,8 +250,8 @@ function canvasInit()
           var c = 10;
           var d = 10;
         }
-        var t= 0;
 
+        var t= 0;
         for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
         {
               var counterText = new Konva.Text({
@@ -525,6 +478,238 @@ function canvasInit()
         }
 
     }
+    lineheight = gridSize/ txtFillSize;
+    /*    Font size array    */
+    switch(gridSize)
+    {
+        case 5:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="1">1</option>'
+                            +'<option value="2">2</option>'
+                            +'<option value="3">3</option>'
+                            +'<option value="4">4</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 6:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="3">3</option>'
+                            +'<option value="4">4</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 7:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 8:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="4">4</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 9:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 10:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 11:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 12:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 13:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 14:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>'
+                            +'<option value="20">20</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 15:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>'
+                            +'<option value="20">20</option>'
+                            +'<option value="21">21</option>'
+                            +'<option value="22">22</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 16:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>'
+                            +'<option value="20">20</option>'
+                            +'<option value="21">21</option>'
+                            +'<option value="22">22</option>'
+                            +'<option value="23">23</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 19:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>'
+                            +'<option value="20">20</option>'
+                            +'<option value="21">21</option>'
+                            +'<option value="22">22</option>'
+                            +'<option value="23">23</option>'
+                            +'<option value="24">24</option>'
+                            +'<option value="25">25</option>'
+                            +'<option value="26">26</option>'
+                            +'<option value="27">27</option>'
+                            +'<option value="28">28</option>';
+                    $("#x_font_size").html( options );
+        break;
+        case 23:
+              var options = '<option value="">Select X Size</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>'
+                            +'<option value="20">20</option>'
+                            +'<option value="21">21</option>'
+                            +'<option value="22">22</option>'
+                            +'<option value="23">23</option>'
+                            +'<option value="24">24</option>'
+                            +'<option value="25">25</option>'
+                            +'<option value="26">26</option>'
+                            +'<option value="27">27</option>'
+                            +'<option value="28">28</option>'
+                            +'<option value="29">29</option>'
+                            +'<option value="30">30</option>';
+                    $("#x_font_size").html( options );
+        break;
+
+
+    }
+
+
+    /*    Font size array ends here!    */
+
     gCacheGrid = gridSize;
     if (localStorage.getItem("download_canvas") !== null)
     {
@@ -558,7 +743,6 @@ function canvasInit()
         textFillColor = x;
     }
 
-
     /*  Change backstitch strand */
 
     $(document).on('change', '.backstitch_strand',function()
@@ -575,7 +759,7 @@ function canvasInit()
     function changeStitchStrand(s)
     {
         lineStroke = s;
-        localStorage.setItem("linestrand", lineStroke)
+        localStorage.setItem("linestrand", lineStroke);
     }
 
     /*  Change X's Size */
@@ -594,6 +778,7 @@ function canvasInit()
     function changeXSize(xs)
     {
         txtFillSize = xs;
+        lineheight = gridSize / txtFillSize;
     }
 
     if(gridSize >= 20)
@@ -622,394 +807,401 @@ function canvasInit()
     r2.listening(false); // stop r2 catching our mouse events.
     gridSelectGroup.add(r2);
 
-    /*    Fill Grid cell   */
-    stage.on('mousedown', function(evt)
+
+
+    if(deviceAgent === false)
     {
-        isMouseDown = true;
-        if (isMouseDown)
+        /*    Fill Grid cell   */
+        stage.on('mousedown', function(evt)
         {
+            isMouseDown = true;
+            if (isMouseDown)
+            {
+                box = evt.target;
+                switch (mode)
+                {
+                   case 'pencil':
+                       if(box.getAttr('filled') === false)
+                       {
+                           text = new Konva.Text({
+                             text: 'X',
+                             x: box.x(),
+                             y: box.y(),
+                             width: gridSize,
+                             height: gridSize,
+                             fontFamily: 'sans-serif',
+                             fontSize: txtFillSize,
+                             fill: textFillColor,
+                             fontStyle : 'normal',
+                             filled : true,
+                             align: 'center',
+                             verticalAlign : 'middle',
+                             lineHeight : lineheight
+                           });
+                           gridTextGroup.add(text);
+                           box.setAttr('filled', true);
+                           text.draw();
+                           ReactHashMap[''+box.x()+box.y()] = box;
+                        }
+                        // if(box.getAttr('filled') === true)
+                        // {
+                        //   box.setAttr('filled', false);
+                        //   textlayer.draw();
+                        //   if(evt.target.className === 'Text')
+                        //   {
+                        //       evt.target.destroy();
+                        //   }
+                        //   box.setAttr('filled', false);
+                        //   textlayer.draw();
+                        // }
+                   break;
+                   case 'eraser':
+                       if(box.getAttr('filled') === true)
+                       {
+                         if(ReactHashMap[''+box.x()+box.y()]) {
+                           ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                         }
+                         if(evt.target.className === 'Text')
+                         {
+                             evt.target.destroy();
+                         }
+                         box.setAttr('filled', false);
+                       }
+                       if(evt.target.className === 'Line')
+                       {
+                           evt.target.destroy();
+                           box.setAttr('lineDraw', false);
+                       }
+                       textlayer.draw();
+                   break;
+                   case 'select_shape':
+                      startDrag({x: box.x(), y: box.y()})
+                   break;
+                   case 'back_stich':
+                         points=[];
+                         var secondX = nearest(evt.evt.layerX, (Math.round(box.x()/ gridSize) * gridSize), (Math.round(box.x()/ gridSize) * gridSize) + gridSize);
+                         var secondY = nearest(evt.evt.layerY, (Math.round(box.y()/ gridSize) * gridSize), (Math.round(box.y()/ gridSize) * gridSize) + gridSize);
+                         points.push((Math.round(box.x()/ gridSize) * gridSize),(Math.round(box.y()/ gridSize) * gridSize),secondX,secondY);
+                         // var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
+                         // var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
+                         // points.push(box.x(),box.y(),secondX,secondY);
+                         // var line = new Konva.Line({
+                         //     points :points,
+                         //     stroke: lineStrokeColor,
+                         //     strokeWidth: lineStroke,
+                         //     drawLine : true,
+                         //     tension: 0,
+                         //     perfectDrawEnabled: false,
+                         // });
+                         // textlayer.add(line);
+                         // line.draw();
+                   break;
+                   default:
+                 }
+            }
+        });
+        stage.on('mouseup',function(evt)
+        {
+            isMouseDown= false;
             box = evt.target;
             switch (mode)
             {
-               case 'pencil':
-                   if(box.getAttr('filled') === false)
-                   {
-                       text = new Konva.Text({
-                         text: 'X',
-                         x: box.x(),
-                         y: box.y(),
-                         width: gridSize,
-                         height: gridSize,
-                         fontFamily: 'sans-serif',
-                         fontSize: txtFillSize,
-                         fill: textFillColor,
-                         fontStyle : 'normal',
-                         filled : true,
-                         align: 'center',
-                         verticalAlign : 'middle',
-                         lineHeight : 2
-                       });
-                       gridTextGroup.add(text);
-                       box.setAttr('filled', true);
-                       text.draw();
-                       ReactHashMap[''+box.x()+box.y()] = box;
-                    }
-                    // if(box.getAttr('filled') === true)
-                    // {
-                    //   box.setAttr('filled', false);
-                    //   textlayer.draw();
-                    //   if(evt.target.className === 'Text')
-                    //   {
-                    //       evt.target.destroy();
-                    //   }
-                    //   box.setAttr('filled', false);
-                    //   textlayer.draw();
-                    // }
-               break;
-               case 'eraser':
-                   if(box.getAttr('filled') === true)
-                   {
-                     if(ReactHashMap[''+box.x()+box.y()]) {
-                       ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
-                     }
-                     if(evt.target.className === 'Text')
-                     {
-                         evt.target.destroy();
-                     }
-                     box.setAttr('filled', false);
-                   }
-                   if(evt.target.className === 'Line')
-                   {
-                       evt.target.destroy();
-                       box.setAttr('lineDraw', false);
-                   }
-                   textlayer.draw();
-               break;
-               case 'select_shape':
-                  startDrag({x: box.x(), y: box.y()})
-               break;
-               case 'back_stich':
-                     points=[];
-                     var secondX = nearest(evt.evt.layerX, (Math.round(box.x()/ gridSize) * gridSize), (Math.round(box.x()/ gridSize) * gridSize) + gridSize);
-                     var secondY = nearest(evt.evt.layerY, (Math.round(box.y()/ gridSize) * gridSize), (Math.round(box.y()/ gridSize) * gridSize) + gridSize);
-                     points.push((Math.round(box.x()/ gridSize) * gridSize),(Math.round(box.y()/ gridSize) * gridSize),secondX,secondY);
-                     // var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
-                     // var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
-                     // points.push(box.x(),box.y(),secondX,secondY);
-                     // var line = new Konva.Line({
-                     //     points :points,
-                     //     stroke: lineStrokeColor,
-                     //     strokeWidth: lineStroke,
-                     //     drawLine : true,
-                     //     tension: 0,
-                     //     perfectDrawEnabled: false,
-                     // });
-                     // textlayer.add(line);
-                     // line.draw();
-               break;
-               default:
-             }
-        }
-    });
-    stage.on('mouseup',function(evt)
-    {
-        isMouseDown= false;
-        box = evt.target;
-        switch (mode)
-        {
-             case 'select_shape':
-                    updateDrag({x: box.x(), y: box.y()},true);
-                    var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
-                     gridcloneGroup.destroy();
-                     textlayer.draw();
-                     var lineList = textlayer.find("Line");
-                     lineList.map(function(lineList)
-                     {
-                         var lineval = lineList;
-                         if(lineval.hasName('lineselected'))
+                 case 'select_shape':
+                        updateDrag({x: box.x(), y: box.y()},true);
+                        var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
+                         gridcloneGroup.destroy();
+                         textlayer.draw();
+                         var lineList = textlayer.find("Line");
+                         lineList.map(function(lineList)
                          {
-                             var cloneline  = lineval.clone({name :'cloneLine'});
-                             gridcloneGroup.add(cloneline);
-                             textlayer.add(gridcloneGroup);
-                             lineval.setAttr('name', '');
-                             lineval.destroy();
-                         }
-                     });
-                     selectedRectNodes.map(function(selectedRectNodes)
-                     {
-                        var val = selectedRectNodes;
-                        var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
-                        gridcloneGroup.add(clonerect);
-                        textlayer.add(gridcloneGroup);
-                     });
-                     var textList = textlayer.find("Text");
-                     textList.map(function(textList)
-                     {
-                          var val = textList;
-                          if(val.hasName('textselected'))
-                          {
-                            var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                             var lineval = lineList;
+                             if(lineval.hasName('lineselected'))
+                             {
+                                 var cloneline  = lineval.clone({name :'cloneLine'});
+                                 gridcloneGroup.add(cloneline);
+                                 textlayer.add(gridcloneGroup);
+                                 lineval.setAttr('name', '');
+                                 lineval.destroy();
+                             }
+                         });
+                         selectedRectNodes.map(function(selectedRectNodes)
+                         {
+                            var val = selectedRectNodes;
+                            var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
                             gridcloneGroup.add(clonerect);
                             textlayer.add(gridcloneGroup);
-                            val.setAttr('name', '');
+                         });
+                         var textList = textlayer.find("Text");
+                         textList.map(function(textList)
+                         {
+                              var val = textList;
+                              if(val.hasName('textselected'))
+                              {
+                                var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                                gridcloneGroup.add(clonerect);
+                                textlayer.add(gridcloneGroup);
+                                val.setAttr('name', '');
 
-                            positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
-                            if(ReactHashMap[''+val.attrs.x+val.attrs.y]) {
-                              ReactHashMap[''+val.attrs.x+val.attrs.y].setAttr('filled', false);
-                            }
-                            val.destroy();
-                          }
-                     });
-                     textlayer.draw();
-                     r2.visible(true);
-                     draggroup();
-             break;
-             case 'back_stich':
-                 var line = textlayer.find("Line");
-                 line[line.length-1].setAttr('lineDraw', false);
-             break;
-             default:
-             // stage.container().style.cursor = 'pointer';
-         }
-         gCacheStage = stage.toJSON();
-         // updateLocalStorage(stage.toJSON(),gridSize)
-    });
-    stage.on('mouseover', function(evt)
-    {
-        if (isMouseDown)
-        {
-            box = evt.target;
-            switch (mode)
-            {
-                 case 'pencil':
-                   if(box.getAttr('filled') === false)
-                   {
-                       text = new Konva.Text({
-                         text: 'X',
-                         x: box.x(),
-                         y: box.y(),
-                         width: gridSize,
-                         height: gridSize,
-                         fontFamily: 'sans-serif',
-                         fontSize: txtFillSize,
-                         fill: textFillColor,
-                         fontStyle : 'normal',
-                         filled : true,
-                         align: 'center',
-                         verticalAlign : 'middle',
-                         lineHeight : 2
-                       });
-                       gridTextGroup.add(text);
-                       box.setAttr('filled', true);
-                       text.draw();
-                       ReactHashMap[''+box.x()+box.y()] = box
-                   }
-                 break;
-                 case 'eraser':
-                    if(box.getAttr('filled') === true)
-                     {
-                        var textList = textlayer.find("Text");
-                        $( textList ).each(function() {
-                              if(ReactHashMap[''+box.x()+box.y()]) {
-                                ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                                positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
+                                if(ReactHashMap[''+val.attrs.x+val.attrs.y]) {
+                                  ReactHashMap[''+val.attrs.x+val.attrs.y].setAttr('filled', false);
+                                }
+                                val.destroy();
                               }
-                             if(evt.target.className == 'Text')
-                             {
-                               evt.target.destroy();
-                             }
-                             box.setAttr('filled', false);
-                       });
-                     }
-                     var lineList = textlayer.find("Line");
-                     $( lineList ).each(function(key, val)
-                     {
-                        if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
-                        {
-                          val.destroy();
-                        }
-                     });
-                    textlayer.batchDraw();
-                 break;
-                 case 'select_shape':
-                    updateDrag({x: box.x(), y: box.y()},false);
+                         });
+                         textlayer.draw();
+                         r2.visible(true);
+                         draggroup();
                  break;
                  case 'back_stich':
-                     //points=[];
-                     //var line = textlayer.find("Line");'
-                     var last_two_values = points.slice(-2);
-                     if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
-                     {
-                         var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
-                         var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
-                         points=[];
-                         points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
-                         line = new Konva.Line({
-                            points :points,
-                            stroke: lineStrokeColor,
-                            strokeWidth: lineStroke,
-                            drawLine : true,
-                            tension: 0,
-                            perfectDrawEnabled: false,
-                          });
-                          textlayer.add(line);
-                          line.draw();
-                      }
+                     var line = textlayer.find("Line");
+                     line[line.length-1].setAttr('lineDraw', false);
                  break;
                  default:
+                 // stage.container().style.cursor = 'pointer';
              }
-        }
-    });
-
-    /*  For touch devices */
-
-    stage.on('touchstart', function(evt)
-    {
-        isMouseDown = true;
-        if (isMouseDown)
+             gCacheStage = stage.toJSON();
+             // updateLocalStorage(stage.toJSON(),gridSize)
+        });
+        stage.on('mouseover', function(evt)
         {
-            box = evt.target;
-            switch (mode)
+            if (isMouseDown)
             {
-               case 'pencil':
-                   if(box.getAttr('filled') === false)
-                   {
-                       text = new Konva.Text({
-                         text: 'X',
-                         x: box.x(),
-                         y: box.y(),
-                         width: gridSize,
-                         height: gridSize,
-                         fontFamily: 'sans-serif',
-                         fontSize: txtFillSize,
-                         fill: textFillColor,
-                         fontStyle : 'normal',
-                         filled : true,
-                         align: 'center',
-                       });
-                       gridTextGroup.add(text);
-                       box.setAttr('filled', true);
-                       text.draw();
-                       ReactHashMap[''+box.x()+box.y()] = box;
-                    }
-                    // if(box.getAttr('filled') === true)
-                    // {
-                    //   box.setAttr('filled', false);
-                    //   textlayer.draw();
-                    //   if(evt.target.className === 'Text')
-                    //   {
-                    //       evt.target.destroy();
-                    //   }
-                    //   box.setAttr('filled', false);
-                    //   textlayer.draw();
-                    // }
-               break;
-               case 'eraser':
-                   if(box.getAttr('filled') === true)
-                   {
-                     if(ReactHashMap[''+box.x()+box.y()]) {
-                       ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                box = evt.target;
+                switch (mode)
+                {
+                     case 'pencil':
+                       if(box.getAttr('filled') === false)
+                       {
+                           text = new Konva.Text({
+                             text: 'X',
+                             x: box.x(),
+                             y: box.y(),
+                             width: gridSize,
+                             height: gridSize,
+                             fontFamily: 'sans-serif',
+                             fontSize: txtFillSize,
+                             fill: textFillColor,
+                             fontStyle : 'normal',
+                             filled : true,
+                             align: 'center',
+                             verticalAlign : 'middle',
+                             lineHeight : lineheight
+                           });
+                           gridTextGroup.add(text);
+                           box.setAttr('filled', true);
+                           text.draw();
+                           ReactHashMap[''+box.x()+box.y()] = box
+                       }
+                     break;
+                     case 'eraser':
+                        if(box.getAttr('filled') === true)
+                         {
+                            var textList = textlayer.find("Text");
+                            $( textList ).each(function() {
+                                  if(ReactHashMap[''+box.x()+box.y()]) {
+                                    ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                                  }
+                                 if(evt.target.className == 'Text')
+                                 {
+                                   evt.target.destroy();
+                                 }
+                                 box.setAttr('filled', false);
+                           });
+                         }
+                         var lineList = textlayer.find("Line");
+                         $( lineList ).each(function(key, val)
+                         {
+                            if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
+                            {
+                              val.destroy();
+                            }
+                         });
+                        textlayer.batchDraw();
+                     break;
+                     case 'select_shape':
+                        updateDrag({x: box.x(), y: box.y()},false);
+                     break;
+                     case 'back_stich':
+                         //points=[];
+                         //var line = textlayer.find("Line");'
+                         var last_two_values = points.slice(-2);
+                         if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
+                         {
+                             var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
+                             var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
+                             points=[];
+                             points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
+                             line = new Konva.Line({
+                                points :points,
+                                stroke: lineStrokeColor,
+                                strokeWidth: lineStroke,
+                                drawLine : true,
+                                tension: 0,
+                                perfectDrawEnabled: false,
+                              });
+                              textlayer.add(line);
+                              line.draw();
+                          }
+                     break;
+                     default:
+                 }
+            }
+        });
+    }
+    else
+    {
+      /*  For touch devices */
+
+      stage.on('touchstart',function(evt)
+      {
+          isMouseDown = true;
+          if (isMouseDown)
+          {
+              box = evt.target;
+              switch (mode)
+              {
+                 case 'pencil':
+                     if(box.getAttr('filled') === false)
+                     {
+                         text = new Konva.Text({
+                           text: 'X',
+                           x: box.x(),
+                           y: box.y(),
+                           width: gridSize,
+                           height: gridSize,
+                           fontFamily: 'sans-serif',
+                           fontSize: txtFillSize,
+                           fill: textFillColor,
+                           fontStyle : 'normal',
+                           filled : true,
+                           align: 'center',
+                           lineHeight : lineheight
+                         });
+                         gridTextGroup.add(text);
+                         box.setAttr('filled', true);
+                         text.draw();
+                         ReactHashMap[''+box.x()+box.y()] = box;
+                      }
+                      // if(box.getAttr('filled') === true)
+                      // {
+                      //   box.setAttr('filled', false);
+                      //   textlayer.draw();
+                      //   if(evt.target.className === 'Text')
+                      //   {
+                      //       evt.target.destroy();
+                      //   }
+                      //   box.setAttr('filled', false);
+                      //   textlayer.draw();
+                      // }
+                 break;
+                 case 'eraser':
+                     if(box.getAttr('filled') === true)
+                     {
+                       if(ReactHashMap[''+box.x()+box.y()]) {
+                         ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                       }
+                       if(evt.target.className === 'Text')
+                       {
+                           evt.target.destroy();
+                       }
+                       box.setAttr('filled', false);
                      }
-                     if(evt.target.className === 'Text')
+                     if(evt.target.className === 'Line')
                      {
                          evt.target.destroy();
+                         box.setAttr('lineDraw', false);
                      }
-                     box.setAttr('filled', false);
-                   }
-                   if(evt.target.className === 'Line')
-                   {
-                       evt.target.destroy();
-                       box.setAttr('lineDraw', false);
-                   }
-                   textlayer.draw();
-               break;
+                     textlayer.draw();
+                 break;
+                 case 'select_shape':
+                    startDrag({x: box.x(), y: box.y()})
+                 break;
+                 case 'back_stich':
+                       points=[];
+                       var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
+                       var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
+                       points.push(box.x(),box.y(),secondX,secondY);
+                       // var line = new Konva.Line({
+                       //     points :points,
+                       //     stroke: lineStrokeColor,
+                       //     strokeWidth: lineStroke,
+                       //     drawLine : true,
+                       //     tension: 0,
+                       //     perfectDrawEnabled: false,
+                       // });
+                       // textlayer.add(line);
+                       // line.draw();
+                 break;
+                 default:
+               }
+          }
+      });
+      stage.on('touchend',function(evt)
+      {
+          isMouseDown= false;
+          box = evt.target;
+          switch (mode)
+          {
                case 'select_shape':
-                  startDrag({x: box.x(), y: box.y()})
+                      updateDrag({x: box.x(), y: box.y()},true);
+                      var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
+                       gridcloneGroup.destroy();
+                       textlayer.draw();
+                       var lineList = textlayer.find("Line");
+                       lineList.map(function(lineList)
+                       {
+                           var lineval = lineList;
+                           if(lineval.hasName('lineselected'))
+                           {
+                               var cloneline  = lineval.clone({name :'cloneLine'});
+                               gridcloneGroup.add(cloneline);
+                               textlayer.add(gridcloneGroup);
+                               lineval.setAttr('name', '');
+                               lineval.destroy();
+                           }
+                       });
+                       selectedRectNodes.map(function(selectedRectNodes)
+                       {
+                          var val = selectedRectNodes;
+                          var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
+                          gridcloneGroup.add(clonerect);
+                          textlayer.add(gridcloneGroup);
+                       });
+                       var textList = textlayer.find("Text");
+                       textList.map(function(textList)
+                       {
+                            var val = textList;
+                            if(val.hasName('textselected'))
+                            {
+                              var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
+                              gridcloneGroup.add(clonerect);
+                              textlayer.add(gridcloneGroup);
+                              val.setAttr('name', '');
+
+                              positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
+                              if(ReactHashMap[''+val.attrs.x+val.attrs.y]) {
+                                ReactHashMap[''+val.attrs.x+val.attrs.y].setAttr('filled', false);
+                              }
+                              val.destroy();
+                            }
+                       });
+                       textlayer.draw();
+                       r2.visible(true);
+                       draggroup();
                break;
                case 'back_stich':
-                     points=[];
-                     var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
-                     var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
-                     points.push(box.x(),box.y(),secondX,secondY);
-                     // var line = new Konva.Line({
-                     //     points :points,
-                     //     stroke: lineStrokeColor,
-                     //     strokeWidth: lineStroke,
-                     //     drawLine : true,
-                     //     tension: 0,
-                     //     perfectDrawEnabled: false,
-                     // });
-                     // textlayer.add(line);
-                     // line.draw();
+                   var line = textlayer.find("Line");
+                   line[line.length-1].setAttr('lineDraw', false);
                break;
                default:
-             }
-        }
-    });
-    stage.on('touchend',function(evt)
-    {
-        isMouseDown= false;
-        box = evt.target;
-        switch (mode)
-        {
-             case 'select_shape':
-                    updateDrag({x: box.x(), y: box.y()},true);
-                    var gridcloneGroup = new Konva.Group({name:"selectCloneGrup",draggable:true});  // Group to clone text and lines for select shape
-                     gridcloneGroup.destroy();
-                     textlayer.draw();
-                     var lineList = textlayer.find("Line");
-                     lineList.map(function(lineList)
-                     {
-                         var lineval = lineList;
-                         if(lineval.hasName('lineselected'))
-                         {
-                             var cloneline  = lineval.clone({name :'cloneLine'});
-                             gridcloneGroup.add(cloneline);
-                             textlayer.add(gridcloneGroup);
-                             lineval.setAttr('name', '');
-                             lineval.destroy();
-                         }
-                     });
-                     selectedRectNodes.map(function(selectedRectNodes)
-                     {
-                        var val = selectedRectNodes;
-                        var clonerect  = val.clone({ x: val.x(), y: val.y(), name :'cloneRect', shadowEnabled:false,strokeEnabled:false });
-                        gridcloneGroup.add(clonerect);
-                        textlayer.add(gridcloneGroup);
-                     });
-                     var textList = textlayer.find("Text");
-                     textList.map(function(textList)
-                     {
-                          var val = textList;
-                          if(val.hasName('textselected'))
-                          {
-                            var clonerect  = val.clone({x: val.x(), y: val.y(), name :'cloneRect'});
-                            gridcloneGroup.add(clonerect);
-                            textlayer.add(gridcloneGroup);
-                            val.setAttr('name', '');
-
-                            positionXY.push(`{"x":${val.x()},"y":${val.y()}}`);
-                            if(ReactHashMap[''+val.attrs.x+val.attrs.y]) {
-                              ReactHashMap[''+val.attrs.x+val.attrs.y].setAttr('filled', false);
-                            }
-                            val.destroy();
-                          }
-                     });
-                     textlayer.draw();
-                     r2.visible(true);
-                     draggroup();
-             break;
-             case 'back_stich':
-                 var line = textlayer.find("Line");
-                 line[line.length-1].setAttr('lineDraw', false);
-             break;
-             default:
-             // stage.container().style.cursor = 'pointer';
-         }
-         gCacheStage = stage.toJSON();
-         // updateLocalStorage(stage.toJSON(),gridSize)
-    });
-    stage.on('touchmove', function(evt)
-    {
+               // stage.container().style.cursor = 'pointer';
+           }
+           gCacheStage = stage.toJSON();
+           // updateLocalStorage(stage.toJSON(),gridSize)
+      });
+      stage.on('touchmove', function(evt)
+      {
         if (isMouseDown)
         {
             box = evt.target;
@@ -1030,6 +1222,7 @@ function canvasInit()
                          fontStyle : 'normal',
                          filled : true,
                          align: 'center',
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -1091,7 +1284,7 @@ function canvasInit()
              }
         }
     });
-
+    }
     /*  Select tool Functionality   */
     function draggroup()
     {
@@ -1248,6 +1441,7 @@ function canvasInit()
                                       fontStyle : val.fontStyle(),
                                       filled : true,
                                       align: val.align(),
+                                      lineHeight : val.lineHeight()
                                     });
                                     gridTextGroup.add(text);
                                     rectval.setAttr('filled', true);
@@ -1630,7 +1824,8 @@ function canvasInit()
           else {
             posmin = 300;
           }
-
+          if(deviceAgent === false)
+          {
           stage.addEventListener("mousemove", function setMousePosition(e){
             mouseX = e.layerX - canvasPos.x-posmin;
             mouseY = e.layerY - canvasPos.y-posmin;
@@ -1638,6 +1833,9 @@ function canvasInit()
               update(mouseX,mouseY);
             }
           });
+        }
+        else {
+
           /*  For touch devices */
           stage.addEventListener("touchmove", function setMousePosition(e){
             mouseX = e.layerX - canvasPos.x-posmin;
@@ -1646,14 +1844,19 @@ function canvasInit()
               update(mouseX,mouseY);
             }
           });
+        }
           setTimeout(function(){
             $('.toolbar_list li').removeClass('active');
             $("#select_shape").addClass('active');
             mode = $("#select_shape").data('mode');
           }, 2000);
-
+          if(deviceAgent === false)
+          {
           stage.addEventListener("click", stopfollow);
-          stage.addEventListener("touchend", stopfollow);
+          }
+          else {
+            stage.addEventListener("touchend", stopfollow);
+          }
     }
     function getPosition(el)
     {
@@ -1754,6 +1957,7 @@ function canvasInit()
                         fontStyle : 'normal',
                         filled : true,
                         align: 'center',
+                        lineHeight : lineheight
                       });
                       gridTextGroup.add(text);
                       rectval.setAttr('filled', true);
@@ -1774,6 +1978,61 @@ function canvasInit()
         // updateLocalStorage(stage.toJSON(),gridSize);
     }
     /*  Text popup ends here  */
+
+
+    /*  Canvas Zoom Functionality   */
+    //
+    // var zoomLevel = 10;
+    //
+    // var zoomSlider = document.getElementById("zoom_slider");
+    //
+    // // Update the current slider value (each time you drag the slider handle)
+    // zoomSlider.oninput = function() {
+    //   //console.log(this.value)
+    //   $('#canvasCon').css({'transform': 'scale('+this.value+','+ this.value+')'})
+    //   stage.scale({
+    //           x : this.value,
+    //           y : this.value
+    //       });
+    //       stage.batchDraw();
+    //
+    //       var scrollContainer = document.getElementById('scroll-container');
+    //       scrollContainer.style.width = 'calc(100% - 22px)';
+    //       scrollContainer.style.height = 'calc(100vh - 22px)';
+    //
+    //       scrollContainer.addEventListener('scroll', {passive: true}, function () {
+    //             console.log("stage height", stage.height());
+    //             var dx = scrollContainer.scrollLeft;
+    //             var dy = scrollContainer.scrollTop;
+    //             console.log("dy", dy);
+    //             if(dy >= Math.round(stage.height()))
+    //             {
+    //               stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    //             }
+    //
+    //             stage.x(-dx);
+    //             stage.y(-dy);
+    //             stage.batchDraw();
+    //       });
+    // }
+
+    var scrollContainer = document.getElementById('scroll-container');
+    //console.log(scrollContainer);
+    // scrollContainer.addEventListener('scroll', function () {
+    //       console.log("stage height", stage.height());
+    //       var dx = scrollContainer.scrollLeft;
+    //       var dy = scrollContainer.scrollTop;
+    //       console.log("dy", dy);
+    //       if(dy >= Math.round(stage.height()))
+    //       {
+    //         stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    //       }
+    //
+    //       stage.x(-dx);
+    //       stage.y(-dy);
+    //       stage.batchDraw();
+    // });
+
     $(document).on('click',"#downloadLoginPopup",function(){
         // gCacheStage = stage.toJSON();
         updateLocalStorage(stage.toJSON(),gridSize)
@@ -1879,7 +2138,6 @@ function canvasInit()
                         {
                             var textGroup = tLayer.children[k];
                             var textBlocks = textGroup.children;
-                            console.log(colorHashMap);
                             textGroup.children = textBlocks.map(function (textBlock)
                             {
                                 textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
@@ -1977,28 +2235,6 @@ function canvasInit()
         localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
         window.location.href = $("#upload_page_url").val();
     });
-
-    // var scaleBy = 1.01;
-    //    window.addEventListener('wheel', (e) => {
-    //        e.preventDefault();
-    //        var oldScale = stage.scaleX();
-    //
-    //        var mousePointTo = {
-    //            x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
-    //            y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
-    //        };
-    //
-    //        var newScale = e.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-    //        stage.scale({ x: newScale, y: newScale });
-    //
-    //        var newPos = {
-    //            x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-    //            y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale
-    //        };
-    //        stage.position(newPos);
-    //        stage.batchDraw();
-    //    });
-
 
 
 }
