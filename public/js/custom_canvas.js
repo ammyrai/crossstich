@@ -25,6 +25,7 @@ $(document).on('click',"#clear_canvas",function(){
     localStorage.removeItem("circleStrokeCPara"),  // Circle stroke color
     localStorage.removeItem("circleFillCPara");
     localStorage.removeItem("canvascolorfloss");
+    localStorage.removeItem("linestrand");
     window.location.href= $("#create_design_url").val();
 })
 
@@ -479,8 +480,11 @@ function canvasInit()
 
     }
     lineheight = gridSize/ txtFillSize;
+
+    gCacheGrid = gridSize;
+
     /*    Font size array    */
-    switch(gridSize)
+    switch(parseInt(gridSize))
     {
         case 5:
               var options = '<option value="">Select X Size</option>'
@@ -710,7 +714,7 @@ function canvasInit()
 
     /*    Font size array ends here!    */
 
-    gCacheGrid = gridSize;
+
     if (localStorage.getItem("download_canvas") !== null)
     {
       if($("#checkLogin").val() === "true")
@@ -2057,14 +2061,28 @@ function canvasInit()
         colorArry=[],
         backstitch = [],
         carray = [],
-        uniqueNames = [];
+        uniqueNames = [],
+        stroke_width = [],
+        uniqueLineStroke = [],
+        tFontSize = [],
+        uniqueTFontSize = [];
 
         /*  For backstitch */
         var canvasline = textlayer.find('Line');
+
+
         if(canvasline.length !== 0)
         {
-            backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
+            canvasline.map(function (canvasline)
+            {
+                stroke_width.push(parseInt(canvasline.strokeWidth()));
+            });
+            $.each(stroke_width, function(i, el){
+                if($.inArray(el, uniqueLineStroke) === -1) uniqueLineStroke.push(el);
+            });
+            backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':uniqueLineStroke};
         }
+
 
         /* For text colors  */
         var canvastext = textlayer.find('Text');
@@ -2140,12 +2158,17 @@ function canvasInit()
                             var textBlocks = textGroup.children;
                             textGroup.children = textBlocks.map(function (textBlock)
                             {
+                                //console.log(textBlock); return false;
                                 textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
                                 textBlock.attrs.fill = "#000000";
                                 textBlock.attrs.fill = "#000000";
+                                tFontSize.push(textBlock.attrs.fontSize)
                                 return textBlock;
                             });
-                          // break;
+                            $.each(tFontSize, function(i, el){
+                                if($.inArray(el, uniqueTFontSize) === -1) uniqueTFontSize.push(el);
+                            });
+                            // break;
                         }
                       }
                     }
@@ -2155,10 +2178,10 @@ function canvasInit()
 
               var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
               jsonStage = symbolStage.toDataURL();
-              download_canvas(jsonStage,colorArry,backstitch);
+              download_canvas(jsonStage,colorArry,backstitch, uniqueTFontSize);
           });
     }
-    function download_canvas(jsonStage,colorArry,backstitch)
+    function download_canvas(jsonStage,colorArry,backstitch, uniqueTFontSize)
     {
         var colordataimge = '',
         htmlcontent = '';
@@ -2174,7 +2197,8 @@ function canvasInit()
         if(backstitch.length !== 0){
             htmlcontent += '<h4>Backstitch</h4>';
             htmlcontent += '<p>Backstitch floss is :' +backstitch.floss+', Colour is : '+backstitch.colorName+'</p>';
-            htmlcontent += '<p>Backstitch-' + localStorage.getItem("linestrand") +' strands</p>';
+            htmlcontent += '<p>Backstitch-' + backstitch.strokeWidth.toString() +' strands</p>';
+
         }
 
         var bgcolr = backgroundCanvas.find('Rect');
@@ -2190,7 +2214,7 @@ function canvasInit()
                   }
               });
 
-              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+localStorage.getItem("clothframe")+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
+              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+localStorage.getItem("clothframe")+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p><p>Font Size-' + uniqueTFontSize.toString() +'</p></div>';
 
               var doc = new jsPDF('','px');
 
