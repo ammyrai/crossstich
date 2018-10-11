@@ -25,7 +25,6 @@ $(document).on('click',"#clear_canvas",function(){
     localStorage.removeItem("circleStrokeCPara"),  // Circle stroke color
     localStorage.removeItem("circleFillCPara");
     localStorage.removeItem("canvascolorfloss");
-    localStorage.removeItem("linestrand");
     window.location.href= $("#create_design_url").val();
 })
 
@@ -226,31 +225,24 @@ function canvasInit()
           cr = 2;
           lineStroke = 3;
           countfontSize = txtFillSize - 7;
-          var a = 5;
-          var b = 5;
-          var c = 5;
-          var d = 5;
         }
         else if(gridSize >= 10)
         {
           cr = 1;
           lineStroke = 2;
           countfontSize = txtFillSize - 4;
-          var a = 10;
-          var b = 10;
-          var c = 10;
-          var d = 10;
         }
         else
         {
           cr = 0;
           lineStroke = 1;
           countfontSize = txtFillSize - 2;
-          var a = 10;
-          var b = 10;
-          var c = 10;
-          var d = 10;
         }
+
+        var a = 6;
+        var b = 6;
+        var c = 6;
+        var d = 6;
 
         var t= 0;
         for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
@@ -267,13 +259,7 @@ function canvasInit()
                 if(a == b)
                 {
                     var dashEnabled = true;
-                    if(gridSize >= 20)
-                    {
-                      b+= 10;
-                    }
-                    else {
-                      b+= 20;
-                    }
+                    b+= 10;
                 }
                 else {
                   var dashEnabled = false;
@@ -286,13 +272,7 @@ function canvasInit()
                   dashEnabled : dashEnabled
                 });
                 gridLinesLayer.add(gLine);
-                if(gridSize >= 20)
-                {
-                  a+= 5;
-                }
-                else {
-                  a+= 10;
-                }
+                a+= 5;
               }
               backgroundCount.add(counterText);
               t = t+1;
@@ -317,13 +297,7 @@ function canvasInit()
                 if(c == d)
                 {
                     var dashEnabled = true;
-                    if(gridSize >= 20)
-                    {
-                      d+= 10;
-                    }
-                    else {
-                      d+= 20;
-                    }
+                    d+= 10;
                 }
                 else {
                   var dashEnabled = false;
@@ -336,13 +310,7 @@ function canvasInit()
                   dashEnabled : dashEnabled
                 });
                 gridLinesLayer.add(gLine);
-                if(gridSize >= 20)
-                {
-                  c+= 5;
-                }
-                else {
-                  c+= 10;
-                }
+                c+= 5;
               }
               backgroundCount.add(counterText);
               u++;
@@ -711,7 +679,6 @@ function canvasInit()
 
     }
 
-
     /*    Font size array ends here!    */
 
 
@@ -763,7 +730,6 @@ function canvasInit()
     function changeStitchStrand(s)
     {
         lineStroke = s;
-        localStorage.setItem("linestrand", lineStroke);
     }
 
     /*  Change X's Size */
@@ -2161,7 +2127,6 @@ function canvasInit()
                                 //console.log(textBlock); return false;
                                 textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
                                 textBlock.attrs.fill = "#000000";
-                                textBlock.attrs.fill = "#000000";
                                 tFontSize.push(textBlock.attrs.fontSize)
                                 return textBlock;
                             });
@@ -2188,7 +2153,7 @@ function canvasInit()
 
         if(colorArry.length !== 0){
           htmlcontent = '<h4>Floss</h4>';
-          htmlcontent += "<table cellpadding='0' id='table1' cellspacing='0' border='0px'><thead><tr><th></th><th>DMC</th><th>Color</td></tr></thead><tbody>";
+          htmlcontent += "<table cellpadding='0' id='table1' cellspacing='0' border='0px'><thead><tr><th>Symbol</th><th>DMC</th><th>Color</td></tr></thead><tbody>";
             $(colorArry).each(function(key,val){
                  htmlcontent += "<tr><td align='right'>"+ val.colorSymbol+"</td><td>"+ val.floss+"</td><td>"+ val.colorName+"</td></tr>";
             });
@@ -2242,7 +2207,6 @@ function canvasInit()
               doc.save('pattern.pdf');
               $("#pdfloader").hide();
               localStorage.removeItem("download_canvas");
-              localStorage.removeItem("linestrand");
         });
 
     }

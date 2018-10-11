@@ -44,6 +44,7 @@
 				output += "<div class=\"colorwheel-wrapper\">";
 				output += "<div class=\"colorwheel-selector\"><svg viewBox=\"-1 -1 2 2\"><g class='make-visible'>";
 				$.each(palette, function(index, paletteArr) {
+
 					var percent = 1 / paletteArr.length;
 					var offset = -(percent / 2);
 					output += "<circle cx=\"0\" cy=\"0\" r=\"0\" stroke=\"black\" stroke-width=\"0\" fill=\"black\" />";
@@ -55,10 +56,12 @@
 						var x2 = r * Math.cos(2 * Math.PI * p2);
 						var y2 = r * Math.sin(2 * Math.PI * p2);
 						var laf = 0;
-						output += "<g class=\"segment\"><path d=\"M " + x1 + " " + y1 + " A " + r + " " + r + " 0 " + laf + " 1 " + x2 + " " + y2 + " L 0 0\" stroke=\"black\" stroke-width=\".001\" fill=\"#" + value +"\"></path></g>";
+
+						output += "<g class=\"segment\"><text y=\"20\" x=\"20\" color=\"red\" font-size=\"30\">\"" + value.color_name +"\"</text><path d=\"M " + x1 + " " + y1 + " A " + r + " " + r + " 0 " + laf + " 1 " + x2 + " " + y2 + " L 0 0\" stroke=\"black\" stroke-width=\".001\" fill=\"" + value.code +"\"></path></g>";
 					})
 					r = r - 0.4
 				})
+
 				output += "<circle cx='0' cy='0' r='0' stroke='black' stroke-width='0' fill='white' />";	/* inner circle */
 				output += "</g></svg></div>";
 				output += "<input type=\"hidden\" pattern=\"[a-f0-9]{6}\" readonly=\"readonly\" title=\"Value\" class=\"colorwheel-value\">";
@@ -72,6 +75,7 @@
 					var value = $(path).attr('fill').substring(1).toUpperCase();
 					$("#color_"+$("#put_box_color").val()).attr( "data-color","#"+value);
 					$("#color_"+$("#put_box_color").val()+ " span").css( "background-color","#"+value);
+					$("#color_"+$("#put_box_color").val()+ " span #cross_"+$("#put_box_color").val()).show();
 					$("#color_"+$("#put_box_color").val()).attr("data-toggle", ' ');
 					$('.close').click();
 				}

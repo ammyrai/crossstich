@@ -17,15 +17,31 @@
     padding-right: 0;
 }
 #scroll-container {
-            width: auto;
-            height: auto;
-            overflow: auto;
-        }
-
+    width: auto;
+    height: auto;
+    overflow: auto;
+}
 #canvas
 {
   transform: scale(1,1);
   transform-origin: top left;
+}
+.color_box span i.fa.fa-times {
+    float: right;
+    margin-top: -8px;
+    margin-right: -6px;
+    color: red;
+    cursor: pointer;
+    display: none;
+    background: #fff;
+    padding: 0px;
+    border-radius: 50%;
+    border: solid 1px #000;
+    width: 16px;
+    text-align: center;
+    font-size: 12px;
+    height: 16px;
+    line-height: 14px;
 }
 footer {
     float: left;
@@ -158,7 +174,11 @@ footer {
                           <?php
                               for($i=0; $i<10; $i++)
                               {  ?>
-                                  <li id="color_<?php echo $i; ?>" class="color_box" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false" data-id="<?php echo $i; ?>" data-color=""><span></span></li>
+                                  <li id="color_<?php echo $i; ?>" class="color_box" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false" data-id="<?php echo $i; ?>" data-color="">
+                                    <span>
+                                        <i id="cross_<?php echo $i; ?>" class="fa fa-times" aria-hidden="true" data-toggle="modal" data-target="#colorWheelModal" data-backdrop="false"></i>
+                                    </span>
+                                  </li>
                           <?php  } ?>
                         </ul>
 
@@ -172,9 +192,7 @@ footer {
                             <option value="3">3 Strand</option>
                         </select>
                         <select name="x-size" class="x-size" id="x_font_size">
-                            
                         </select>
-
                         <div class="text-weight slidecontainer">
                           <input type="range" min="0" max="2" value="1" step="0.1" class="slider" id="zoom_slider">
                         </div>

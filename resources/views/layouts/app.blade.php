@@ -169,34 +169,20 @@
               jQuery("#put_box_color").val(jQuery(this).data('id'));
             });
 
-            jQuery("#widget").colorwheel('init',
-              ['AB0249',
-               'F0CED4',
-               'E2A099',
-               'E6CCD9',
-               '572433',
-               '9891B6',
-               'A3AED1',
-               'BBC3D9',
-               '4C526E',
-               'C7CAD7',
-               '999FB7',
-               '7880A4',
-               'D1D1D1',
-               '848484',
-               'EBB7AF',
-               'B71F33',
-               'BA4A4A',
-               '6C6C6C',
-               '205F2E',
-               '633666',
-               'EE546E',
-               'D21035',
-               '617A52'
-             ]
-            );
-
-
+            wheel_init();
+            var color_array = [];
+            function wheel_init()
+            {
+                  jQuery.getJSON("<?php echo url('/'); ?>/json/floss.json").then(function(json)
+                  {
+                      var colordata = json.colors;
+                      $(colordata).each(function(key,val)
+                      {
+                          color_array.push({'code':val.color_code, 'color_name':val.color_name})
+                      });
+                      jQuery("#widget").colorwheel('init',color_array );
+                  });
+            }
           })
         </script>
 </body>

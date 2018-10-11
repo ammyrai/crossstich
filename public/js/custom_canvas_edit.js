@@ -39,7 +39,239 @@ function canvasInit(){
             backgroundCanvas,
             canvasGridLayer,
             newlayer,
+            lineheight,
             selectedRectNodes = [];
+
+        /*    Font size array    */
+        switch(parseInt(gridSize))
+        {
+            case 5:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="1">1</option>'
+                                +'<option value="2">2</option>'
+                                +'<option value="3">3</option>'
+                                +'<option value="4">4</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 6:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="3">3</option>'
+                                +'<option value="4">4</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 7:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 8:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="4">4</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 9:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 10:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 11:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 12:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>'
+                                +'<option value="17">17</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 13:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>'
+                                +'<option value="17">17</option>'
+                                +'<option value="18">18</option>'
+                                +'<option value="19">19</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 14:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="5">5</option>'
+                                +'<option value="6">6</option>'
+                                +'<option value="7">7</option>'
+                                +'<option value="8">8</option>'
+                                +'<option value="9">9</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>'
+                                +'<option value="17">17</option>'
+                                +'<option value="18">18</option>'
+                                +'<option value="19">19</option>'
+                                +'<option value="20">20</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 15:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>'
+                                +'<option value="17">17</option>'
+                                +'<option value="18">18</option>'
+                                +'<option value="19">19</option>'
+                                +'<option value="20">20</option>'
+                                +'<option value="21">21</option>'
+                                +'<option value="22">22</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 16:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>'
+                                +'<option value="17">17</option>'
+                                +'<option value="18">18</option>'
+                                +'<option value="19">19</option>'
+                                +'<option value="20">20</option>'
+                                +'<option value="21">21</option>'
+                                +'<option value="22">22</option>'
+                                +'<option value="23">23</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 19:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>'
+                                +'<option value="17">17</option>'
+                                +'<option value="18">18</option>'
+                                +'<option value="19">19</option>'
+                                +'<option value="20">20</option>'
+                                +'<option value="21">21</option>'
+                                +'<option value="22">22</option>'
+                                +'<option value="23">23</option>'
+                                +'<option value="24">24</option>'
+                                +'<option value="25">25</option>'
+                                +'<option value="26">26</option>'
+                                +'<option value="27">27</option>'
+                                +'<option value="28">28</option>';
+                        $("#x_font_size").html( options );
+            break;
+            case 23:
+                  var options = '<option value="">Select X Size</option>'
+                                +'<option value="10">10</option>'
+                                +'<option value="11">11</option>'
+                                +'<option value="12">12</option>'
+                                +'<option value="13">13</option>'
+                                +'<option value="14">14</option>'
+                                +'<option value="15">15</option>'
+                                +'<option value="16">16</option>'
+                                +'<option value="17">17</option>'
+                                +'<option value="18">18</option>'
+                                +'<option value="19">19</option>'
+                                +'<option value="20">20</option>'
+                                +'<option value="21">21</option>'
+                                +'<option value="22">22</option>'
+                                +'<option value="23">23</option>'
+                                +'<option value="24">24</option>'
+                                +'<option value="25">25</option>'
+                                +'<option value="26">26</option>'
+                                +'<option value="27">27</option>'
+                                +'<option value="28">28</option>'
+                                +'<option value="29">29</option>'
+                                +'<option value="30">30</option>';
+                        $("#x_font_size").html( options );
+            break;
+
+
+        }
+        /*    Font size array ends here!    */
+
+
         /*  Text color  */
         $(document).on('click', 'ul#select_style_color_ul li',function()
         {
@@ -82,7 +314,6 @@ function canvasInit(){
         function changeStitchStrand(s)
         {
             lineStroke = s;
-            localStorage.setItem("linestrand", lineStroke)
         }
 
         /*  Change X's Size */
@@ -101,6 +332,7 @@ function canvasInit(){
         function changeXSize(xs)
         {
             txtFillSize = xs;
+            lineheight = gridSize / txtFillSize;
         }
 
         /*  Create Multiple Layers for stage  */
@@ -206,6 +438,8 @@ function canvasInit(){
         r2.listening(false); // stop r2 catching our mouse events.
         gridSelectGroup.add(r2);
 
+        lineheight = gridSize/ txtFillSize;
+
         /*    Fill Grid cell   */
         stage.on('mousedown', function(evt){
           isMouseDown = true;
@@ -229,6 +463,7 @@ function canvasInit(){
                          fontStyle : 'normal',
                          filled : true,
                          align: 'center',
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -367,7 +602,8 @@ function canvasInit(){
                          fill: textFillColor,
                          fontStyle : 'normal',
                          filled : true,
-                         align: 'center'
+                         align: 'center',
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -457,6 +693,7 @@ function canvasInit(){
                                fontStyle : 'normal',
                                filled : true,
                                align: 'center',
+                               lineHeight : lineheight
                              });
                              gridTextGroup.add(text);
                              box.setAttr('filled', true);
@@ -602,6 +839,7 @@ function canvasInit(){
                                fontStyle : 'normal',
                                filled : true,
                                align: 'center',
+                               lineHeight : lineheight
                              });
                              gridTextGroup.add(text);
                              box.setAttr('filled', true);
@@ -802,6 +1040,7 @@ function canvasInit(){
                                           fontStyle : val.fontStyle(),
                                           filled : true,
                                           align: val.align(),
+                                          lineHeight : val.lineHeight()
                                         });
                                         gridTextGroup.add(text);
                                         rectval.setAttr('filled', true);
@@ -1308,7 +1547,8 @@ function canvasInit(){
                             fill: textFillColor,
                             fontStyle : 'normal',
                             filled : true,
-                            align: 'center'
+                            align: 'center',
+                            lineHeight : lineheight
                           });
                           gridTextGroup.add(text);
                           rectval.setAttr('filled', true);
@@ -1350,13 +1590,24 @@ function canvasInit(){
             colorArry=[],
             backstitch = [],
             carray = [],
-            uniqueNames = [];
+            uniqueNames = [],
+            stroke_width = [],
+            uniqueLineStroke = [],
+            tFontSize = [],
+            uniqueTFontSize = [];
 
             /*  For backstitch */
             var canvasline = textlayer.find('Line');
             if(canvasline.length !== 0)
             {
-                backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':canvasline[0].strokeWidth()};
+              canvasline.map(function (canvasline)
+              {
+                  stroke_width.push(parseInt(canvasline.strokeWidth()));
+              });
+              $.each(stroke_width, function(i, el){
+                  if($.inArray(el, uniqueLineStroke) === -1) uniqueLineStroke.push(el);
+              });
+              backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':uniqueLineStroke};
             }
 
             /* For text colors  */
@@ -1436,8 +1687,12 @@ function canvasInit(){
                                 {
                                     textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
                                     textBlock.attrs.fill = "#000000";
+                                    tFontSize.push(textBlock.attrs.fontSize)
                                     return textBlock;
-                                })
+                                });
+                                $.each(tFontSize, function(i, el){
+                                    if($.inArray(el, uniqueTFontSize) === -1) uniqueTFontSize.push(el);
+                                });
                               // break;
                             }
                           }
@@ -1446,11 +1701,11 @@ function canvasInit(){
                   stageParsedJSON.children = stageChildren;
                   var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
                   jsonStage = symbolStage.toDataURL();
-                  download_canvas(jsonStage,colorArry,backstitch);
+                  download_canvas(jsonStage,colorArry,backstitch,uniqueTFontSize);
               });
         }
 
-        function download_canvas(jsonStage,colorArry,backstitch)
+        function download_canvas(jsonStage,colorArry,backstitch,uniqueTFontSize)
         {
             var colordataimge = '',
             htmlcontent = '',
@@ -1466,7 +1721,7 @@ function canvasInit(){
             if(backstitch.length != 0){
                 htmlcontent += '<h4>Backstitch</h4>';
                 htmlcontent += '<p>floss :' +backstitch.floss+', Colour : '+backstitch.colorName+'</p>';
-                htmlcontent += '<p>Backstitch- ' + localStorage.getItem("linestrand") +' strands</p>';
+                htmlcontent += '<p>Backstitch- ' + backstitch.strokeWidth.toString() +' strands</p>';
             }
 
             var bgcolr = backgroundCanvas.find('Rect');
@@ -1482,7 +1737,7 @@ function canvasInit(){
                       }
                   });
 
-                  htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+$("#canvas_cloth").val()+'</p><p> Cloth Frame: '+$("#canvas_cloth_frame").val()+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p></div>';
+                  htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+$("#canvas_cloth").val()+'</p><p> Cloth Frame: '+$("#canvas_cloth_frame").val()+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p><p>Font Size-' + uniqueTFontSize.toString() +'</p></div>';
 
                   var doc = new jsPDF('','px');
 
