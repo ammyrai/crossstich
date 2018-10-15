@@ -28,6 +28,53 @@ $(document).on('click',"#clear_canvas",function(){
     window.location.href= $("#create_design_url").val();
 })
 
+$(document).on('change', '#select_cloth_frame',function(){
+      localStorage.setItem("clothframe", this.value );
+});
+
+$(".selectstyle").delegate("ul#select_style_ul li", "click", function(e) {
+    $(".clothcolorvalidate").hide();
+     canvasBgColor = $(this).attr('value');
+     var colorType = $(this).attr('data-type');
+     var colorfloss = $(this).attr('data-floss');
+     if(colorType == "white" || colorType == "black")        // set default colors if bg is of white or black color
+     {
+       gridStrokeCPara = '#FFE793';
+       gridShadowCPara = '#FFE9AD';
+       circleStrokeCPara = '#F7976F';
+       circleFillCPara = '#FED376';
+     }
+     else if(colorType == 'light')     // generate and set 20% darker shade if bg is of light color
+     {
+         // Create a 20% darker shade of light color
+         gridStrokeCPara = ColorLuminance(canvasBgColor, -0.2);
+         gridShadowCPara = ColorLuminance(gridStrokeCPara, -0.2);
+         circleStrokeCPara = ColorLuminance(gridShadowCPara, -0.2);
+         circleFillCPara = ColorLuminance(circleStrokeCPara, -0.2);
+     }
+     else                             // generate and set 100% lighter shade if bg is of dark color
+     {
+       // Create a 100% lighter shade of dark color
+       gridStrokeCPara = ColorLuminance(canvasBgColor, 0.10);
+       gridShadowCPara = ColorLuminance(gridStrokeCPara, 0.10);
+       circleStrokeCPara = ColorLuminance(gridShadowCPara, 0.10);
+       circleFillCPara = ColorLuminance(circleStrokeCPara, 0.10);
+     }
+     localStorage.setItem("canvasBgColor", canvasBgColor);
+     localStorage.setItem("canvascolorfloss", colorfloss);
+     localStorage.setItem("gridStrokeCPara", gridStrokeCPara);
+     localStorage.setItem("gridShadowCPara", gridShadowCPara);
+     localStorage.setItem("circleStrokeCPara", circleStrokeCPara);
+     localStorage.setItem("circleFillCPara", circleFillCPara);
+
+});
+
+$(document).on('click', '#changeCanvas',function(){
+      canvasInit();
+      $('.close').click();
+      $('#change_canvas_form')[0].reset();
+});
+
 /*  Load canvas script */
 function canvasInit()
 {
@@ -39,7 +86,7 @@ function canvasInit()
         $("#myDiv").show();
     }, 1000);
     /*    Declare Global Variables    */
-    var   stage,                       // Stage variable
+    var stage,                       // Stage variable
           backgroundCanvas,            // Main background canvas variable
           backgroundCount,             // Layer to show grid numbers
           gridLinesLayer,              // Draw Grid Lines
@@ -99,90 +146,114 @@ function canvasInit()
                case '56 X 70':
                   stageWidth = 850;
                   stagerectWidth = 844;
-                  GridLineLayerWidth = stageWidth + 5;
+                  GridLineLayerWidth = 855;
+                  GridLineLayerHeight = 690;
                break;
                case '56 X 84':
                   stageWidth = 850;
                   stagerectWidth = 844;
-                  GridLineLayerWidth = stageWidth + 5;
+                  GridLineLayerWidth = 855;
+                  GridLineLayerHeight = 570;
                break;
                case '49 X 70':
                   stageWidth = 850;
                   stagerectWidth = 844;
-                  GridLineLayerWidth = stageWidth + 5;
+                  GridLineLayerWidth = 855;
+                  GridLineLayerHeight = 600;
                break;
                case '60 X 84':
                    stagerectWidth = 844;
-                   GridLineLayerWidth = stageWidth + 10;
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 610;
                break;
                case '38.5 X 55':
                    stageWidth = 860;
                    stagerectWidth = 830;
-                   GridLineLayerWidth = stageWidth-20;
+                   GridLineLayerWidth = 840;
+                   GridLineLayerHeight = 600;
                break;
                case '24.5 X 35':
-                   GridLineLayerWidth = stageWidth + 100;
+                   GridLineLayerWidth = 830;
+                   GridLineLayerHeight = 600;
                break;
                case '28 X 42':
-                   GridLineLayerWidth = stageWidth + 100;
+                   GridLineLayerWidth = 825;
+                   GridLineLayerHeight = 560;
                break;
                case '96 X 120':
-                   GridLineLayerWidth = stageWidth + 100;
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 680;
                break;
                case '96 X 144':
-                   GridLineLayerWidth = stageWidth + 100;
+                   GridLineLayerWidth = 875;
+                   GridLineLayerHeight = 580;
                break;
                case '35 X 49':
                    stagerectWidth = 787;
-                   GridLineLayerWidth = stageWidth-5;
+                   GridLineLayerWidth = 800;
+                   GridLineLayerHeight = 580;
                break;
                case '42 X 56':
                    stagerectWidth = 787;
-                   GridLineLayerWidth = stageWidth-5;
+                   GridLineLayerWidth = 800;
+                   GridLineLayerHeight = 600;
                break;
                case '42 X 60':
                    stagerectWidth = 787;
-                   GridLineLayerWidth = stageWidth-5;
+                   GridLineLayerWidth = 800;
+                   GridLineLayerHeight = 560;
                break;
                case '70 X 98':
                    stagerectWidth = 787;
-                   GridLineLayerWidth = stageWidth-10;
+                   GridLineLayerWidth = 795;
+                   GridLineLayerHeight = 570;
                break;
                case '84 X 112':
                    stagerectWidth = 787;
-                   GridLineLayerWidth = stageWidth-10;
+                   GridLineLayerWidth = 795;
+                   GridLineLayerHeight = 600;
                break;
                case '44 X 66':
                    stagerectWidth = 795;
+                   GridLineLayerWidth = 805;
+                   GridLineLayerHeight = 540;
                break;
                case '88 X 132':
                    stagerectWidth = 795;
+                   GridLineLayerHeight = 540;
                break;
                case '48 X 72':
                    stagerectWidth = 795;
+                   GridLineLayerHeight = 540;
                break;
                case '55 X 77':
                    stagerectWidth = 773;
-                   GridLineLayerWidth = stageWidth-23;
+                   GridLineLayerWidth = 785;
+                   GridLineLayerHeight = 560;
                break;
                case '88 X 110':
                    stagerectWidth = 773;
-                   GridLineLayerWidth = stageWidth-23;
+                   GridLineLayerWidth = 785;
+                   GridLineLayerHeight = 630;
                break;
                case '72 X 96':
                    stagerectWidth = 773;
-                   GridLineLayerWidth = stageWidth-23;
+                   GridLineLayerWidth = 780;
+                   GridLineLayerHeight = 585;
                break;
                case '66 X 88':
                    stagerectWidth = 794;
+                   GridLineLayerHeight = 605;
                break;
                case '112 X 140':
                    stagerectWidth = 844;
-                   GridLineLayerWidth = stageWidth + 5;
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 680;
                break;
                case '112 X 168':
                    stagerectWidth = 844;
-                   GridLineLayerWidth = stageWidth + 5;
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 570;
                break;
             }
 
@@ -194,8 +265,8 @@ function canvasInit()
         });
 
         /*  Create Multiple Layers for stage  */
-        backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});        // Layer1 for canvas main background
-        gridLinesLayer = new Konva.Layer({name:'gridLinesLayer',hitGraphEnabled:false});        // Layer1 for canvas main background
+        backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});  // Layer1 for canvas main background
+        gridLinesLayer = new Konva.Layer({name:'gridLinesLayer',hitGraphEnabled:false});  // Layer1 for canvas main background
         backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
         canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
         textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
@@ -265,7 +336,7 @@ function canvasInit()
                   var dashEnabled = false;
                 }
                 var gLine = new Konva.Line({
-                  points: [(icx * gridSize), gridSize, (icx * gridSize), stageWidth] ,
+                  points: [(icx * gridSize), gridSize, (icx * gridSize), GridLineLayerHeight] ,
                   stroke: '#000',
                   strokeWidth: 1,
                   dash: [6, 4],
@@ -356,7 +427,7 @@ function canvasInit()
           }
         }
         textlayer.add(gridTextGroup,gridSelectGroup);
-        stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);          // Add Layer to stage
+        stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);   // Add Layer to stage
         gCacheStage = stage.toJSON();
     }
     else
@@ -445,7 +516,6 @@ function canvasInit()
                 }
               }
         }
-
     }
     lineheight = gridSize/ txtFillSize;
 
@@ -776,8 +846,6 @@ function canvasInit()
     var r2 = new Konva.Rect({x: 0, y: 0, width: 0, height: 0, strokeWidth:0.8, stroke: '#2c2c25', dash: [5,6], name:'selectShape'});
     r2.listening(false); // stop r2 catching our mouse events.
     gridSelectGroup.add(r2);
-
-
 
     if(deviceAgent === false)
     {
@@ -1949,59 +2017,90 @@ function canvasInit()
     }
     /*  Text popup ends here  */
 
-
     /*  Canvas Zoom Functionality   */
-    //
-    // var zoomLevel = 10;
-    //
-    // var zoomSlider = document.getElementById("zoom_slider");
-    //
-    // // Update the current slider value (each time you drag the slider handle)
-    // zoomSlider.oninput = function() {
-    //   //console.log(this.value)
-    //   $('#canvasCon').css({'transform': 'scale('+this.value+','+ this.value+')'})
-    //   stage.scale({
-    //           x : this.value,
-    //           y : this.value
-    //       });
-    //       stage.batchDraw();
-    //
-    //       var scrollContainer = document.getElementById('scroll-container');
-    //       scrollContainer.style.width = 'calc(100% - 22px)';
-    //       scrollContainer.style.height = 'calc(100vh - 22px)';
-    //
-    //       scrollContainer.addEventListener('scroll', {passive: true}, function () {
-    //             console.log("stage height", stage.height());
-    //             var dx = scrollContainer.scrollLeft;
-    //             var dy = scrollContainer.scrollTop;
-    //             console.log("dy", dy);
-    //             if(dy >= Math.round(stage.height()))
-    //             {
-    //               stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
-    //             }
-    //
-    //             stage.x(-dx);
-    //             stage.y(-dy);
-    //             stage.batchDraw();
-    //       });
-    // }
+    $(document).on('click','.rest_zoom',function(){
+      stage.scale({
+              x : 1,
+              y : 1
+          });
+      stage.batchDraw();
+      var scrollContainer = document.getElementById('scroll-container');
+      var scrollCanvasContainer = document.getElementById('canvas');
+      scrollContainer.style.width = '';
+      scrollContainer.style.height = '';
+      scrollCanvasContainer.style.width = '';
+      scrollCanvasContainer.style.height = '';
+      $('#scroll-container').css({'border': '', 'box-shadow' : '' });
+      $("#zoom_slider").val(1);
+    });
+    $(document).on('click','.plus_icon',function(){
+
+        var start_val = parseFloat($("#zoom_slider").val());
+
+        var new_val = start_val +  0.1;
+
+        if(new_val > 2)
+        {
+          return false;
+        }
+         $("#zoom_slider").val(new_val);
+        zoom_canvas(new_val, new_val);
+    });
+    $(document).on('click','.minus_icon',function(){
+
+        var start_val = parseFloat($("#zoom_slider").val());
+
+        var new_val = start_val -  0.1;
+
+        if(new_val < 0)
+        {
+          return false;
+        }
+         $("#zoom_slider").val(new_val);
+        zoom_canvas(new_val, new_val);
+    });
+
+    var zoomLevel = 10;
+
+    var zoomSlider = document.getElementById("zoom_slider");
+    // Update the current slider value (each time you drag the slider handle)
+    zoomSlider.oninput = function()
+    {
+        zoom_canvas(this.value, this.value);
+    }
+
+    function zoom_canvas(x,y)
+    {
+          stage.scale({
+                  x : x,
+                  y : y
+              });
+          stage.batchDraw();
+
+          var scrollContainer = document.getElementById('scroll-container');
+          var scrollCanvasContainer = document.getElementById('canvas');
+          scrollContainer.style.width = 'calc(100% - 22px)';
+          scrollContainer.style.height = 'calc(80vh - 22px)';
+          scrollCanvasContainer.style.width = 'calc(100% * '+x+')';
+          scrollCanvasContainer.style.height = 'calc(80vh * '+y+')';
+
+          $('#scroll-container').css({'border': '1px solid #ccc', 'box-shadow' : '1px 1px 2px 0px #ccc' })
+    }
 
     var scrollContainer = document.getElementById('scroll-container');
-    //console.log(scrollContainer);
-    // scrollContainer.addEventListener('scroll', function () {
-    //       console.log("stage height", stage.height());
-    //       var dx = scrollContainer.scrollLeft;
-    //       var dy = scrollContainer.scrollTop;
-    //       console.log("dy", dy);
-    //       if(dy >= Math.round(stage.height()))
-    //       {
-    //         stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
-    //       }
-    //
-    //       stage.x(-dx);
-    //       stage.y(-dy);
-    //       stage.batchDraw();
-    // });
+    scrollContainer.addEventListener('scroll', function () {
+          var dx = scrollContainer.scrollLeft;
+          var dy = scrollContainer.scrollTop;
+          if(dy >= Math.round(stage.height()))
+          {
+            stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+          }
+          stage.x(-dx);
+          stage.y(-dy);
+          stage.batchDraw();
+    });
+
+    /*  Canvas Zoom Functionality ends here   */
 
     $(document).on('click',"#downloadLoginPopup",function(){
         // gCacheStage = stage.toJSON();
@@ -2012,7 +2111,6 @@ function canvasInit()
     $(document).on("click","#cancel_download",function(){
         localStorage.removeItem("download_canvas");
     });
-
     $(document).on("click","#download_canvas",function()
     {
         // gCacheStage = stage.toJSON();
@@ -2210,7 +2308,6 @@ function canvasInit()
         });
 
     }
-
     $(document).on("click","#save_canvas",function()
     {
         localStorage.removeItem("download_canvas");
@@ -2223,8 +2320,6 @@ function canvasInit()
         localStorage.setItem("stage_cloth", localStorage.getItem("aidaCloth"));
         window.location.href = $("#upload_page_url").val();
     });
-
-
 }
 function updateLocalStorage(stageJson,gridSize)
 {
@@ -2255,3 +2350,23 @@ function updateLocalStorage(stageJson,gridSize)
 //         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
 //     });
 // };
+
+function ColorLuminance(hex, lum)
+  {
+    // validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+
+    if (hex.length < 6) {
+      hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    }
+    lum = lum || 0;
+
+    // convert to decimal and change luminosity
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i*2,2), 16);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+      rgb += ("00"+c).substr(c.length);
+    }
+    return rgb;
+  }

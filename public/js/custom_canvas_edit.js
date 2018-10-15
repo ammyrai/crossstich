@@ -438,7 +438,8 @@ function canvasInit(){
         r2.listening(false); // stop r2 catching our mouse events.
         gridSelectGroup.add(r2);
 
-        lineheight = gridSize/ txtFillSize;
+        lineheight = gridSize / txtFillSize;
+
 
         /*    Fill Grid cell   */
         stage.on('mousedown', function(evt){
@@ -582,7 +583,8 @@ function canvasInit(){
              // stage.container().style.cursor = 'pointer';
            }
         })
-        stage.on('mouseover', function(evt) {
+        stage.on('mouseover', function(evt)
+        {
             if (isMouseDown)
             {
               box = evt.target;
@@ -666,7 +668,7 @@ function canvasInit(){
                  default:
                }
             }
-          });
+        });
 
           /*  For touch devices */
 
@@ -1566,6 +1568,92 @@ function canvasInit(){
           });
           toAnimate = false;
         }
+
+        /*  Canvas Zoom Functionality   */
+        $(document).on('click','.rest_zoom',function(){
+          stage.scale({
+                  x : 1,
+                  y : 1
+              });
+          stage.batchDraw();
+          var scrollContainer = document.getElementById('scroll-container');
+          var scrollCanvasContainer = document.getElementById('canvas');
+          scrollContainer.style.width = '';
+          scrollContainer.style.height = '';
+          scrollCanvasContainer.style.width = '';
+          scrollCanvasContainer.style.height = '';
+          $('#scroll-container').css({'border': '', 'box-shadow' : '' });
+          $("#zoom_slider").val(1);
+        });
+        $(document).on('click','.plus_icon',function(){
+
+            var start_val = parseFloat($("#zoom_slider").val());
+
+            var new_val = start_val +  0.1;
+
+            if(new_val > 2)
+            {
+              return false;
+            }
+             $("#zoom_slider").val(new_val);
+            zoom_canvas(new_val, new_val);
+        });
+        $(document).on('click','.minus_icon',function(){
+
+            var start_val = parseFloat($("#zoom_slider").val());
+
+            var new_val = start_val -  0.1;
+
+            if(new_val < 0)
+            {
+              return false;
+            }
+             $("#zoom_slider").val(new_val);
+            zoom_canvas(new_val, new_val);
+        });
+
+        var zoomLevel = 10;
+
+        var zoomSlider = document.getElementById("zoom_slider");
+        // Update the current slider value (each time you drag the slider handle)
+        zoomSlider.oninput = function()
+        {
+            zoom_canvas(this.value, this.value);
+        }
+
+        function zoom_canvas(x,y)
+        {
+              stage.scale({
+                      x : x,
+                      y : y
+                  });
+              stage.batchDraw();
+
+              var scrollContainer = document.getElementById('scroll-container');
+              var scrollCanvasContainer = document.getElementById('canvas');
+              scrollContainer.style.width = 'calc(100% - 22px)';
+              scrollContainer.style.height = 'calc(80vh - 22px)';
+              scrollCanvasContainer.style.width = 'calc(100% * '+x+')';
+              scrollCanvasContainer.style.height = 'calc(80vh * '+y+')';
+
+              $('#scroll-container').css({'border': '1px solid #ccc', 'box-shadow' : '1px 1px 2px 0px #ccc' })
+        }
+
+        var scrollContainer = document.getElementById('scroll-container');
+        scrollContainer.addEventListener('scroll', function () {
+              var dx = scrollContainer.scrollLeft;
+              var dy = scrollContainer.scrollTop;
+              if(dy >= Math.round(stage.height()))
+              {
+                stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+              }
+              stage.x(-dx);
+              stage.y(-dy);
+              stage.batchDraw();
+        });
+
+        /*  Canvas Zoom Functionality ends here   */
+
 
         /*  Layer2 Create a grid on canvas work ends here!*/
         textlayer.add(gridTextGroup,gridSelectGroup);

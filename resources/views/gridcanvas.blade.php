@@ -20,6 +20,8 @@
     width: auto;
     height: auto;
     overflow: auto;
+    transform: scale(1,1);
+    transform-origin: top left;
 }
 #canvas
 {
@@ -42,6 +44,36 @@
     font-size: 12px;
     height: 16px;
     line-height: 14px;
+}
+.text-weight.slidecontainer {
+    background-color: #cccccc4d;
+    float: left;
+    width: 31%;
+    padding: 8px;
+}
+span.minus_icon {
+    float: left;
+    width: 4%;
+    cursor: pointer;
+}
+input#zoom_slider {
+    float: left;
+    width: 84%;
+    margin-right: 6px;
+    margin-top: 6px;
+    margin-left: 7px;
+}
+span.plus_icon {
+    float: left;
+    width: 2%;
+    cursor: pointer;
+}
+.rest_zoom
+{
+    float: left;
+    margin-left: 11px;
+    border: 1px solid;
+    padding: 9px;
 }
 footer {
     float: left;
@@ -194,8 +226,11 @@ footer {
                         <select name="x-size" class="x-size" id="x_font_size">
                         </select>
                         <div class="text-weight slidecontainer">
-                          <input type="range" min="0" max="2" value="1" step="0.1" class="slider" id="zoom_slider">
+                          <span class="minus_icon"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                          <input type="range" min="0" max="2" value="1" step="0.1" class="" id="zoom_slider">
+                          <span class="plus_icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
+                        <a href="javascript:void(0);" class="rest_zoom"> Rest Zoom</a>
                       </div>
                   </div>
                   <div class="col-md-12 float-left canvas_content" id="scroll-container">
@@ -239,7 +274,7 @@ footer {
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
-              <form action="/action_page.php">
+              <form action="" id="change_canvas_form">
                 <div class="form-group">
                   <label>Select Aida Cloth</label>
                   <div class="formContent">
@@ -288,7 +323,7 @@ footer {
               </form>
             </div>
             <div class="modal-footer">
-                <button id="cloneSampleText" type="button" class="btn btn-success ok_btn pull-right">Ok</button>
+                <button id="changeCanvas" type="button" class="btn btn-success ok_btn pull-right">Ok</button>
             </div>
         </div>
         <!-- /.modal-content -->

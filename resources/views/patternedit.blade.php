@@ -32,6 +32,48 @@
     height: 16px;
     line-height: 14px;
 }
+#scroll-container {
+    width: auto;
+    height: auto;
+    overflow: auto;
+    transform: scale(1,1);
+    transform-origin: top left;
+}
+#canvas
+{
+  transform: scale(1,1);
+  transform-origin: top left;
+}
+.text-weight.slidecontainer {
+    background-color: #cccccc4d;
+    float: left;
+    width: 31%;
+    padding: 8px;
+}
+span.minus_icon {
+    float: left;
+    width: 4%;
+    cursor: pointer;
+}
+input#zoom_slider {
+    float: left;
+    width: 84%;
+    margin-right: 6px;
+    margin-top: 6px;
+    margin-left: 7px;
+}
+span.plus_icon {
+    float: left;
+    width: 2%;
+    cursor: pointer;
+}
+.rest_zoom
+{
+    float: left;
+    margin-left: 11px;
+    border: 1px solid;
+    padding: 9px;
+}
 footer {
     float: left;
     width: 100%;
@@ -204,9 +246,15 @@ footer {
                           </select>
                           <select name="x-size" class="x-size" id="x_font_size">
                           </select>
+                          <div class="text-weight slidecontainer">
+                            <span class="minus_icon"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                            <input type="range" min="0" max="2" value="1" step="0.1" class="" id="zoom_slider">
+                            <span class="plus_icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                          </div>
+                          <a href="javascript:void(0);" class="rest_zoom"> Rest Zoom</a>
                         </div>
                     </div>
-                    <div class="col-md-12 float-left canvas_content">
+                    <div class="col-md-12 float-left canvas_content" id="scroll-container">
                         <div id="canvas"></div>
                     </div>
               </div>
