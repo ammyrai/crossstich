@@ -69,9 +69,9 @@ $(document).on('click', '#changeCanvas',function()
 
       $("#loader").show();
       $("#myDiv").hide();
+      canvasInit();
       $('.close').click();
       $('#change_canvas_form')[0].reset();
-      canvasInit();
 });
 
 /*  Load canvas script */
@@ -85,7 +85,7 @@ function canvasInit()
         $("#myDiv").show();
     }, 1000);
     /*    Declare Global Variables    */
-    var   stage,                       // Stage variable
+    var stage,                       // Stage variable
           backgroundCanvas,            // Main background canvas variable
           backgroundCount,             // Layer to show grid numbers
           gridLinesLayer,              // Draw Grid Lines
@@ -129,7 +129,9 @@ function canvasInit()
         {
             window.location.href= $("#create_design_url").val();
         }
+
         clothframe = localStorage.getItem("clothframe");
+
         var frame = clothframe.split(" X "),
             canvasWidth = frame[1],                       // Grid Width
             canvasHeight = frame[0];                      // Grid Height
@@ -138,6 +140,7 @@ function canvasInit()
             txtFillSize = gridSize;      // Text font size
             var stagerectWidth = stageWidth;
             var GridLineLayerWidth = stageWidth;
+
             switch (clothframe)
             {
                case '56 X 70':
@@ -262,8 +265,8 @@ function canvasInit()
         });
 
         /*  Create Multiple Layers for stage  */
-        backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});        // Layer1 for canvas main background
-        gridLinesLayer = new Konva.Layer({name:'gridLinesLayer',hitGraphEnabled:false});        // Layer1 for canvas main background
+        backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});  // Layer1 for canvas main background
+        gridLinesLayer = new Konva.Layer({name:'gridLinesLayer',hitGraphEnabled:false});  // Layer1 for canvas main background
         backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});        // Layer1 for canvas main background
         canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});         // Layer2 for canvas Grid
         textlayer = new Konva.Layer({name:'textLayer'});           // Layer3 for Text
@@ -274,7 +277,6 @@ function canvasInit()
         gridTextGroup = new Konva.Group({name:'textGroup'});      // Group for all the functionlities
         gridSelectGroup = new Konva.Group({name:'gridSelectGroup'});    // Group for select shape rectangle.
         gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  // Group for hidden text
-
 
         /*  Layer1 work starts here! */
         stageRect =  new Konva.Rect({
@@ -288,6 +290,7 @@ function canvasInit()
         /*  Layer1 work ends here! */
 
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
+
         if(gridSize >= 20)
         {
           cr = 2;
@@ -422,172 +425,183 @@ function canvasInit()
               canvasGridLayer.add(box);                   // Add rectangle to group
               canvasGridLayer.add(circle);             // Add rectangle to background layer
           }
-
         }
         textlayer.add(gridTextGroup,gridSelectGroup);
-        stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);          // Add Layer to stage
+        stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);   // Add Layer to stage
         gCacheStage = stage.toJSON();
     }
     else
     {
         gCacheStage = LZString.decompress(localStorage.getItem("auto_save_canvas"));
         var cached_json = LZString.decompress(localStorage.getItem('auto_save_canvas'));
+
         if(localStorage.getItem('internalCanvasChange') !== null)
         {
-                clothframe = localStorage.getItem("clothframe");
-                var frame = clothframe.split(" X "),
-                    canvasWidth = frame[1],                       // Grid Width
-                    canvasHeight = frame[0],                      // Grid Height
-                    stageWidth = 805,                             // Stage widht
-                    gridSize = Math.round(stageWidth/canvasWidth),    // Grid Tile Size
-                    txtFillSize = gridSize,      // Text font size
-                    stagerectWidth = stageWidth,
-                    GridLineLayerWidth = stageWidth;
+            clothframe = localStorage.getItem("clothframe");
+            var frame = clothframe.split(" X "),
+                canvasWidth = frame[1],                       // Grid Width
+                canvasHeight = frame[0];                      // Grid Height
+                stageWidth = 805;                             // Stage widht
+                gridSize = Math.round(stageWidth/canvasWidth),    // Grid Tile Size
+                txtFillSize = gridSize;      // Text font size
+                var stagerectWidth = stageWidth;
+                var GridLineLayerWidth = stageWidth;
 
-                var stageCachedJson = JSON.parse(cached_json);
+            var stageCachedJson = JSON.parse(cached_json);
 
-                stageCachedJson.attrs.height = canvasHeight * gridSize + gridSize;
-                stageCachedJson.attrs.width = stageWidth + gridSize;
+            stageCachedJson.attrs.height = canvasHeight * gridSize + gridSize;
+            stageCachedJson.attrs.width = stageWidth + gridSize;
 
-                switch (clothframe)
+            switch (clothframe)
+            {
+               case '56 X 70':
+                  stageWidth = 850;
+                  stagerectWidth = 844;
+                  GridLineLayerWidth = 855;
+                  GridLineLayerHeight = 690;
+               break;
+               case '56 X 84':
+                  stageWidth = 850;
+                  stagerectWidth = 844;
+                  GridLineLayerWidth = 855;
+                  GridLineLayerHeight = 570;
+               break;
+               case '49 X 70':
+                  stageWidth = 850;
+                  stagerectWidth = 844;
+                  GridLineLayerWidth = 855;
+                  GridLineLayerHeight = 600;
+               break;
+               case '60 X 84':
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 610;
+               break;
+               case '38.5 X 55':
+                   stageWidth = 860;
+                   stagerectWidth = 830;
+                   GridLineLayerWidth = 840;
+                   GridLineLayerHeight = 600;
+               break;
+               case '24.5 X 35':
+                   GridLineLayerWidth = 830;
+                   GridLineLayerHeight = 600;
+               break;
+               case '28 X 42':
+                   GridLineLayerWidth = 825;
+                   GridLineLayerHeight = 560;
+               break;
+               case '96 X 120':
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 680;
+               break;
+               case '96 X 144':
+                   GridLineLayerWidth = 875;
+                   GridLineLayerHeight = 580;
+               break;
+               case '35 X 49':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = 800;
+                   GridLineLayerHeight = 580;
+               break;
+               case '42 X 56':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = 800;
+                   GridLineLayerHeight = 600;
+               break;
+               case '42 X 60':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = 800;
+                   GridLineLayerHeight = 560;
+               break;
+               case '70 X 98':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = 795;
+                   GridLineLayerHeight = 570;
+               break;
+               case '84 X 112':
+                   stagerectWidth = 787;
+                   GridLineLayerWidth = 795;
+                   GridLineLayerHeight = 600;
+               break;
+               case '44 X 66':
+                   stagerectWidth = 795;
+                   GridLineLayerWidth = 805;
+                   GridLineLayerHeight = 540;
+               break;
+               case '88 X 132':
+                   stagerectWidth = 795;
+                   GridLineLayerHeight = 540;
+               break;
+               case '48 X 72':
+                   stagerectWidth = 795;
+                   GridLineLayerHeight = 540;
+               break;
+               case '55 X 77':
+                   stagerectWidth = 773;
+                   GridLineLayerWidth = 785;
+                   GridLineLayerHeight = 560;
+               break;
+               case '88 X 110':
+                   stagerectWidth = 773;
+                   GridLineLayerWidth = 785;
+                   GridLineLayerHeight = 630;
+               break;
+               case '72 X 96':
+                   stagerectWidth = 773;
+                   GridLineLayerWidth = 780;
+                   GridLineLayerHeight = 585;
+               break;
+               case '66 X 88':
+                   stagerectWidth = 794;
+                   GridLineLayerHeight = 605;
+               break;
+               case '112 X 140':
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 680;
+               break;
+               case '112 X 168':
+                   stagerectWidth = 844;
+                   GridLineLayerWidth = 850;
+                   GridLineLayerHeight = 570;
+               break;
+            }
+            var stageCachedChildren = stageCachedJson.children;
+
+            for(var i = 0; i < stageCachedChildren.length; i++)
+            {
+                if(stageCachedChildren[i].attrs.name == "backgroundLayer")
                 {
-                   case '56 X 70':
-                      stageWidth = 850;
-                      stagerectWidth = 844;
-                      GridLineLayerWidth = 855;
-                      GridLineLayerHeight = 690;
-                   break;
-                   case '56 X 84':
-                      stageWidth = 850;
-                      stagerectWidth = 844;
-                      GridLineLayerWidth = 855;
-                      GridLineLayerHeight = 570;
-                   break;
-                   case '49 X 70':
-                      stageWidth = 850;
-                      stagerectWidth = 844;
-                      GridLineLayerWidth = 855;
-                      GridLineLayerHeight = 600;
-                   break;
-                   case '60 X 84':
-                       stagerectWidth = 844;
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 610;
-                   break;
-                   case '38.5 X 55':
-                       stageWidth = 860;
-                       stagerectWidth = 830;
-                       GridLineLayerWidth = 840;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '24.5 X 35':
-                       GridLineLayerWidth = 830;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '28 X 42':
-                       GridLineLayerWidth = 825;
-                       GridLineLayerHeight = 560;
-                   break;
-                   case '96 X 120':
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 680;
-                   break;
-                   case '96 X 144':
-                       GridLineLayerWidth = 875;
-                       GridLineLayerHeight = 580;
-                   break;
-                   case '35 X 49':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 800;
-                       GridLineLayerHeight = 580;
-                   break;
-                   case '42 X 56':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 800;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '42 X 60':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 800;
-                       GridLineLayerHeight = 560;
-                   break;
-                   case '70 X 98':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 795;
-                       GridLineLayerHeight = 570;
-                   break;
-                   case '84 X 112':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 795;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '44 X 66':
-                       stagerectWidth = 795;
-                       GridLineLayerWidth = 805;
-                       GridLineLayerHeight = 540;
-                   break;
-                   case '88 X 132':
-                       stagerectWidth = 795;
-                       GridLineLayerHeight = 540;
-                   break;
-                   case '48 X 72':
-                       stagerectWidth = 795;
-                       GridLineLayerHeight = 540;
-                   break;
-                   case '55 X 77':
-                       stagerectWidth = 773;
-                       GridLineLayerWidth = 785;
-                       GridLineLayerHeight = 560;
-                   break;
-                   case '88 X 110':
-                       stagerectWidth = 773;
-                       GridLineLayerWidth = 785;
-                       GridLineLayerHeight = 630;
-                   break;
-                   case '72 X 96':
-                       stagerectWidth = 773;
-                       GridLineLayerWidth = 780;
-                       GridLineLayerHeight = 585;
-                   break;
-                   case '66 X 88':
-                       stagerectWidth = 794;
-                       GridLineLayerHeight = 605;
-                   break;
-                   case '112 X 140':
-                       stagerectWidth = 844;
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 680;
-                   break;
-                   case '112 X 168':
-                       stagerectWidth = 844;
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 570;
-                   break;
+                    stageCachedChildren[i].children[0].attrs.x = gridSize;
+                    stageCachedChildren[i].children[0].attrs.y = gridSize;
+                    stageCachedChildren[i].children[0].attrs.width = stagerectWidth;
+                    stageCachedChildren[i].children[0].attrs.height = canvasHeight * gridSize;
+                    stageCachedChildren[i].children[0].attrs.fill = canvasMainBgcolor;
                 }
-                var stageCachedChildren = stageCachedJson.children;
-
-                for(var i = 0; i < stageCachedChildren.length; i++)
+                if(stageCachedChildren[i].attrs.name == 'textLayer')
                 {
-                    if(stageCachedChildren[i].attrs.name == 'textLayer')
+                    var tLayer = stageCachedChildren[i];
+                    for(var k = 0; k < tLayer.children.length; k++)
                     {
-                        var tLayer = stageCachedChildren[i];
-                        for(var k = 0; k < tLayer.children.length; k++)
-                        {
-                          if(tLayer.children[k].attrs.name == "textGroup")
+                      if(tLayer.children[k].attrs.name == "textGroup")
+                      {
+                          var textGroup = tLayer.children[k];
+                          var textBlocks = textGroup.children;
+                          textGroup.children = textBlocks.map(function (textBlock)
                           {
-                              var textGroup = tLayer.children[k];
-                              var textBlocks = textGroup.children;
-                              textGroup.children = textBlocks.map(function (textBlock)
-                              {
-                                  textBlock.attrs.fontSize = txtFillSize;
-                                  return textBlock;
-                              });
-                          }
-                        }
+                              textBlock.attrs.fontSize = txtFillSize;
+                              return textBlock;
+                          });
+
+                          // break;
                       }
-                }
-                stageCachedJson.children = stageCachedChildren;
-                var stage = Konva.Node.create(stageCachedJson, 'canvas');;
+                    }
+                  }
+            }
+
+            stageCachedJson.children = stageCachedChildren;
+            var stage = Konva.Node.create(stageCachedJson, 'canvas');;
         }
         else
         {
@@ -597,229 +611,38 @@ function canvasInit()
         }
 
         stageWidth = stage.width();                // Grid Height
-        if(gridSize >= 20)
-        {
-          cr = 2;
-          lineStroke = 3;
-          countfontSize = txtFillSize - 7;
-        }
-        else if(gridSize >= 10)
-        {
-          cr = 1;
-          lineStroke = 2;
-          countfontSize = txtFillSize - 4;
-        }
-        else
-        {
-          cr = 0;
-          lineStroke = 1;
-          countfontSize = txtFillSize - 2;
-        }
+
         /*  Create Multiple Layers for stage  */
-
         var stagelayer = stage.getLayers();
-
         $(stagelayer).each(function(key,val)
         {
-              if(val.hasName('backgroundLayer'))
-              {
-                if(localStorage.getItem('internalCanvasChange') !== null)
-                {
-                    val.remove();
-                    backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});
-                    stageRect =  new Konva.Rect({
-                      x:gridSize,
-                      y:gridSize,
-                      width: stagerectWidth,
-                      height: canvasHeight * gridSize,
-                      fill: canvasMainBgcolor,
-                    });
-                    backgroundCanvas.add(stageRect);
-                }
-                else
-                {
-                  backgroundCanvas = val;
-                }
-              }
-              if(val.hasName("backgroundCountLayer"))
-              {
-                  if(localStorage.getItem('internalCanvasChange') !== null)
-                  {
-                      val.remove();
-                      backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});
-                      var t= 0;
-                      for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
-                      {
-                            var counterText = new Konva.Text({
-                              x: (icx * gridSize) + 5,
-                              y: 0,
-                              text: t,
-                              fontSize: countfontSize,
-                              align: 'center',
-                            });
-                            backgroundCount.add(counterText);
-                            t = t+1;
-                            if(t > 10)
-                            {
-                              t =  1;
-                            }
-                      }
-                      var u = 0;
-                      for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
-                      {
-                            var counterText = new Konva.Text({
-                              x: 0,
-                              y: icy * gridSize + 2,
-                              text: u,
-                              fontSize: countfontSize,
-                              align: 'center',
-                            });
-                            backgroundCount.add(counterText);
-                            u++;
-                            if(u > 10)
-                            {
-                              u =  1;
-                            }
-                      }
-                      backgroundCount.cache();
-                      console.time("answer time");
-                      // console.timeLog("answer time");
-                      console.timeEnd("answer time");
-                  }
-                  else {
-                    backgroundCount = val;
-                  }
-              }
-              if(val.hasName('gridLinesLayer'))
-              {
-                  if(localStorage.getItem('internalCanvasChange') !== null)
-                  {
-                      val.remove();
-                      gridLinesLayer = new Konva.Layer({name:'gridLinesLayer',hitGraphEnabled:false});
-
-                      var a = 6;
-                      var b = 6;
-                      var c = 6;
-                      var d = 6;
-
-                      for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
-                      {
-                            if(icx === a)
-                            {
-                              if(a == b)
-                              {
-                                  var dashEnabled = true;
-                                  b+= 10;
-                              }
-                              else {
-                                var dashEnabled = false;
-                              }
-                              var gLine = new Konva.Line({
-                                points: [(icx * gridSize), gridSize, (icx * gridSize), GridLineLayerHeight] ,
-                                stroke: '#000',
-                                strokeWidth: 1,
-                                dash: [6, 4],
-                                dashEnabled : dashEnabled
-                              });
-                              gridLinesLayer.add(gLine);
-                              a+= 5;
-                            }
-                      }
-                      for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
-                      {
-                            var icyy = icy;
-                            if(icyy >= c)
-                            {
-                              if(c == d)
-                              {
-                                  var dashEnabled = true;
-                                  d+= 10;
-                              }
-                              else {
-                                var dashEnabled = false;
-                              }
-                              var gLine = new Konva.Line({
-                                points: [gridSize, (icy * gridSize), GridLineLayerWidth, (icy*gridSize)],
-                                stroke: '#000',
-                                strokeWidth: 1,
-                                dash: [6, 4],
-                                dashEnabled : dashEnabled
-                              });
-                              gridLinesLayer.add(gLine);
-                              c+= 5;
-                            }
-                      }
-                      gridLinesLayer.cache();
-                  }
-                  else {
-                    gridLinesLayer = val;
-                  }
-
-              }
-              if(val.hasName('canvasGridLayer'))
-              {
-                if(localStorage.getItem('internalCanvasChange') !== null)
-                {
-                  val.remove();
-                  canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});
-                  for (var ix = 0; ix < canvasWidth; ix++)
-                  {
-                    for (var iy = 0; iy < canvasHeight; iy++)
-                    {
-                        box = new Konva.Rect({
-                            x : ix * gridSize + gridSize,
-                            y : iy * gridSize + gridSize,
-                            width : gridSize ,
-                            height: gridSize,
-                            stroke: gridStrokeColor,
-                            strokeWidth: 0,
-                            lineJoin : 'round',
-                            shadowEnabled : true,
-                            shadowColor: gridShadowColor,
-                            shadowOffset: {  x: 3,   y: 3 },
-                            shadowOpacity: 1,
-                            filled : false,
-                            lineDraw: false
-                        });
-                        circle = new Konva.Circle({
-                          x: box.x()+ gridSize,
-                          y: box.y()+ gridSize,
-                          radius: cr,
-                          stroke: circleStrokeColor,
-                          strokeWidth: 1,
-                          fillEnabled: false,
-                          listening: false,
-                        });
-                        canvasGridLayer.add(box);                   // Add rectangle to group
-                        canvasGridLayer.add(circle);             // Add rectangle to background layer
-                    }
-                  }
-                }
-                else {
-                    canvasGridLayer = val;
-                }
-              }
-              if(val.hasName('textLayer'))
-              {
-                  textlayer = val;
-                  console.log(textlayer.children);
-                  // if(val.hasName('textGroup')){ console.log(val);gridTextGroup = val;  }
-              }
-              if(val.hasName('newlayer'))
-              {
-                if(localStorage.getItem('internalCanvasChange') !== null)
-                {
-                    val.remove();
-                    newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});
-                }
-                else
-                {
-                  newlayer = val;
-                }
-              }
-        });
-        stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);
-        // console.log(stagelayer);
+            if(val.hasName('backgroundLayer'))
+            {
+                backgroundCanvas = val;
+            }
+            if(val.hasName('backgroundCount'))
+            {
+                backgroundCount = val;
+              //  backgroundCount.removeChildren();
+            }
+            if(val.hasName('gridLinesLayer'))
+            {
+                gridLinesLayer = val;
+                //gridLinesLayer.removeChildren();
+            }
+            if(val.hasName('canvasGridLayer'))
+            {
+                canvasGridLayer = val;
+            }
+            if(val.hasName('textLayer'))
+            {
+                textlayer = val;
+            }
+            if(val.hasName('newlayer'))
+            {
+                newlayer = val;
+            }
+        })
         var groups = stage.find(node => {
                 return node.getType() === 'Group';
             });
@@ -833,11 +656,7 @@ function canvasInit()
             else { gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  }
         });
 
-        if(localStorage.getItem('internalCanvasChange') !== null)
-        {
-
-        }
-
+        // console.log(backgroundCount);
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
         if(gridSize >= 20)
         {
@@ -851,7 +670,151 @@ function canvasInit()
         {
           lineStroke = 1;
         }
+        if(localStorage.getItem('internalCanvasChange') !== null)
+        {
+
+              if(gridSize >= 20)
+              {
+                cr = 2;
+                lineStroke = 3;
+                countfontSize = txtFillSize - 7;
+              }
+              else if(gridSize >= 10)
+              {
+                cr = 1;
+                lineStroke = 2;
+                countfontSize = txtFillSize - 4;
+              }
+              else
+              {
+                cr = 0;
+                lineStroke = 1;
+                countfontSize = txtFillSize - 2;
+              }
+
+              var a = 6;
+              var b = 6;
+              var c = 6;
+              var d = 6;
+
+              var t= 0;
+              for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
+              {
+                    var counterText = new Konva.Text({
+                      x: (icx * gridSize) + 5,
+                      y: 0,
+                      text: t,
+                      fontSize: countfontSize,
+                      align: 'center',
+                    });
+                    if(icx === a)
+                    {
+                      if(a == b)
+                      {
+                          var dashEnabled = true;
+                          b+= 10;
+                      }
+                      else {
+                        var dashEnabled = false;
+                      }
+                      var gLine = new Konva.Line({
+                        points: [(icx * gridSize), gridSize, (icx * gridSize), GridLineLayerHeight] ,
+                        stroke: '#000',
+                        strokeWidth: 1,
+                        dash: [6, 4],
+                        dashEnabled : dashEnabled
+                      });
+                      gridLinesLayer.add(gLine);
+                      a+= 5;
+                    }
+                    backgroundCount.add(counterText);
+                    t = t+1;
+                    if(t > 10)
+                    {
+                      t =  1;
+                    }
+              }
+              var u = 0;
+              for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
+              {
+                    var counterText1 = new Konva.Text({
+                      x: 0,
+                      y: icy * gridSize + 2,
+                      text: u,
+                      fontSize: countfontSize,
+                      align: 'center',
+                    });
+                    var icyy = icy;
+                    if(icyy >= c)
+                    {
+                      if(c == d)
+                      {
+                          var dashEnabled = true;
+                          d+= 10;
+                      }
+                      else {
+                        var dashEnabled = false;
+                      }
+                      var gLine = new Konva.Line({
+                        points: [gridSize, (icy * gridSize), GridLineLayerWidth, (icy*gridSize)],
+                        stroke: '#000',
+                        strokeWidth: 1,
+                        dash: [6, 4],
+                        dashEnabled : dashEnabled
+                      });
+                      gridLinesLayer.add(gLine);
+                      c+= 5;
+                    }
+                    backgroundCount.add(counterText1);
+                    u++;
+                    if(u > 10)
+                    {
+                      u =  1;
+                    }
+              }
+              backgroundCount.cache();
+              gridLinesLayer.cache();
+              canvasGridLayer.destroyChildren();
+              canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});
+              for (var ix = 0; ix < canvasWidth; ix++)
+              {
+                for (var iy = 0; iy < canvasHeight; iy++)
+                {
+                    box = new Konva.Rect({
+                        x : ix * gridSize + gridSize,
+                        y : iy * gridSize + gridSize,
+                        width : gridSize ,
+                        height: gridSize,
+                        stroke: gridStrokeColor,
+                        strokeWidth: 0,
+                        lineJoin : 'round',
+                        shadowEnabled : true,
+                        shadowColor: gridShadowColor,
+                        shadowOffset: {  x: 3,   y: 3 },
+                        shadowOpacity: 1,
+                        filled : false,
+                        lineDraw: false
+                    });
+                    circle = new Konva.Circle({
+                      x: box.x()+ gridSize,
+                      y: box.y()+ gridSize,
+                      radius: cr,
+                      stroke: circleStrokeColor,
+                      strokeWidth: 1,
+                      fillEnabled: false,
+                      listening: false,
+                    });
+                    canvasGridLayer.add(box);                   // Add rectangle to group
+                    canvasGridLayer.add(circle);             // Add rectangle to background layer
+                }
+              }
+              stage.add(canvasGridLayer)
+              localStorage.removeItem('internalCanvasChange');
+        }
+
         textlayer.add(gridTextGroup,gridSelectGroup);
+
+        //
 
         var stageChildren = stagelayer;
 
@@ -873,243 +836,26 @@ function canvasInit()
                 }
               }
         }
-
     }
-    localStorage.removeItem('internalCanvasChange')
-
     lineheight = gridSize/ txtFillSize;
 
     gCacheGrid = gridSize;
 
     /*    Font size array    */
-    // switch(parseInt(gridSize))
-    // {
-    //     case 5:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="1">1</option>'
-    //                         +'<option value="2">2</option>'
-    //                         +'<option value="3">3</option>'
-    //                         +'<option value="4">4</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 6:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="3">3</option>'
-    //                         +'<option value="4">4</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 7:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 8:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="4">4</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 9:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 10:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 11:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 12:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 13:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 14:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 15:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 16:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>'
-    //                         +'<option value="23">23</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 19:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>'
-    //                         +'<option value="23">23</option>'
-    //                         +'<option value="24">24</option>'
-    //                         +'<option value="25">25</option>'
-    //                         +'<option value="26">26</option>'
-    //                         +'<option value="27">27</option>'
-    //                         +'<option value="28">28</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 23:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>'
-    //                         +'<option value="23">23</option>'
-    //                         +'<option value="24">24</option>'
-    //                         +'<option value="25">25</option>'
-    //                         +'<option value="26">26</option>'
-    //                         +'<option value="27">27</option>'
-    //                         +'<option value="28">28</option>'
-    //                         +'<option value="29">29</option>'
-    //                         +'<option value="30">30</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //
-    //
-    // }
+     var options = '<option value="">Select X Size</option>'
+                            +'<option value="100">100</option>'
+                            +'<option value="200">200</option>'
+                            +'<option value="300">300</option>'
+                            +'<option value="400">400</option>'
+                            +'<option value="500">500</option>'
+                            +'<option value="600">600</option>'
+                            +'<option value="700">700</option>'
+                            +'<option value="800">800</option>'
+                            +'<option value="900">900</option>';
+                    $("#x_font_size").html( options );
 
     /*    Font size array ends here!    */
+
 
     if (localStorage.getItem("download_canvas") !== null)
     {
@@ -1231,6 +977,7 @@ function canvasInit()
                          filled : true,
                          align: 'center',
                          verticalAlign : 'middle',
+                         // strokeWidth : txtStrokeWidth,
                          fontStyle : txtStrokeWidth
                          // lineHeight : lineheight
                        });
@@ -1252,24 +999,19 @@ function canvasInit()
                     // }
                break;
                case 'eraser':
-                   console.log('erase', box.getAttr('filled'));
                    if(box.getAttr('filled') === true)
                    {
-                     console.log('erase filled true make false');
                      if(ReactHashMap[''+box.x()+box.y()]) {
                        ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
                      }
-                     console.log(evt.target.className)
                      if(evt.target.className === 'Text')
                      {
-                         console.log('erase filled true destroy');
                          evt.target.destroy();
                      }
                      box.setAttr('filled', false);
                    }
                    if(evt.target.className === 'Line')
                    {
-                      console.log('erase line true');
                        evt.target.destroy();
                        box.setAttr('lineDraw', false);
                    }
@@ -1426,7 +1168,7 @@ function canvasInit()
                  break;
                  case 'back_stich':
                      //points=[];
-                     //var line = textlayer.find("Line");
+                     //var line = textlayer.find("Line");'
                      var last_two_values = points.slice(-2);
                      if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
                      {
@@ -1453,7 +1195,7 @@ function canvasInit()
 
     /*  For touch devices */
 
-    stage.on('touchstart', function(evt)
+    stage.on('touchstart',function(evt)
     {
         isMouseDown = true;
         if (isMouseDown)
@@ -1476,9 +1218,7 @@ function canvasInit()
                          fontStyle : 'normal',
                          filled : true,
                          align: 'center',
-                         verticalAlign : 'middle',
-                         fontStyle : txtStrokeWidth
-                         // lineHeight : lineheight
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
@@ -1604,89 +1344,87 @@ function canvasInit()
     });
     stage.on('touchmove', function(evt)
     {
-        if (isMouseDown)
-        {
-            box = evt.target;
-            switch (mode)
-            {
-                 case 'pencil':
-                   if(box.getAttr('filled') === false)
-                   {
-                       text = new Konva.Text({
-                         text: 'X',
-                         x: box.x(),
-                         y: box.y(),
-                         width: gridSize,
-                         height: gridSize,
-                         fontFamily: 'sans-serif',
-                         fontSize: txtFillSize,
-                         fill: textFillColor,
-                         fontStyle : 'normal',
-                         filled : true,
-                         align: 'center',
-                         verticalAlign : 'middle',
-                         fontStyle : txtStrokeWidth
-                         // lineHeight : lineheight
-                       });
-                       gridTextGroup.add(text);
-                       box.setAttr('filled', true);
-                       text.draw();
-                       ReactHashMap[''+box.x()+box.y()] = box
-                   }
-                 break;
-                 case 'eraser':
-                    if(box.getAttr('filled') === true)
-                     {
-                        var textList = textlayer.find("Text");
-                        $( textList ).each(function() {
-                              if(ReactHashMap[''+box.x()+box.y()]) {
-                                ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
-                              }
-                             if(evt.target.className == 'Text')
-                             {
-                               evt.target.destroy();
-                             }
-                             box.setAttr('filled', false);
-                       });
-                     }
-                     var lineList = textlayer.find("Line");
-                     $( lineList ).each(function(key, val)
-                     {
-                        if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
-                        {
-                          val.destroy();
-                        }
+      if (isMouseDown)
+      {
+          box = evt.target;
+          switch (mode)
+          {
+               case 'pencil':
+                 if(box.getAttr('filled') === false)
+                 {
+                     text = new Konva.Text({
+                       text: 'X',
+                       x: box.x(),
+                       y: box.y(),
+                       width: gridSize,
+                       height: gridSize,
+                       fontFamily: 'sans-serif',
+                       fontSize: txtFillSize,
+                       fill: textFillColor,
+                       fontStyle : 'normal',
+                       filled : true,
+                       align: 'center',
+                       lineHeight : lineheight
                      });
-                    textlayer.batchDraw();
-                 break;
-                 case 'select_shape':
-                    updateDrag({x: box.x(), y: box.y()},false);
-                 break;
-                 case 'back_stich':
-                     //points=[];
-                     //var line = textlayer.find("Line");
-                     var last_two_values = points.slice(-2);
-                     if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
-                     {
-                         var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
-                         var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
-                         points=[];
-                         points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
-                         line = new Konva.Line({
-                            points :points,
-                            stroke: lineStrokeColor,
-                            strokeWidth: lineStroke,
-                            drawLine : true,
-                            tension: 0,
-                            perfectDrawEnabled: false,
-                          });
-                          textlayer.add(line);
-                          line.draw();
+                     gridTextGroup.add(text);
+                     box.setAttr('filled', true);
+                     text.draw();
+                     ReactHashMap[''+box.x()+box.y()] = box
+                 }
+               break;
+               case 'eraser':
+                  if(box.getAttr('filled') === true)
+                   {
+                      var textList = textlayer.find("Text");
+                      $( textList ).each(function() {
+                            if(ReactHashMap[''+box.x()+box.y()]) {
+                              ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                            }
+                           if(evt.target.className == 'Text')
+                           {
+                             evt.target.destroy();
+                           }
+                           box.setAttr('filled', false);
+                     });
+                   }
+                   var lineList = textlayer.find("Line");
+                   $( lineList ).each(function(key, val)
+                   {
+                      if(val.attrs.points[0] === box.x() && val.attrs.points[1] === box.y())
+                      {
+                        val.destroy();
                       }
-                 break;
-                 default:
-             }
-        }
+                   });
+                  textlayer.batchDraw();
+               break;
+               case 'select_shape':
+                  updateDrag({x: box.x(), y: box.y()},false);
+               break;
+               case 'back_stich':
+                   //points=[];
+                   //var line = textlayer.find("Line");
+                   var last_two_values = points.slice(-2);
+                   if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
+                   {
+                       var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
+                       var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
+                       points=[];
+                       points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
+                       line = new Konva.Line({
+                          points :points,
+                          stroke: lineStrokeColor,
+                          strokeWidth: lineStroke,
+                          drawLine : true,
+                          tension: 0,
+                          perfectDrawEnabled: false,
+                        });
+                        textlayer.add(line);
+                        line.draw();
+                    }
+               break;
+               default:
+           }
+      }
     });
 
     /*  Select tool Functionality   */
@@ -1845,9 +1583,7 @@ function canvasInit()
                                       fontStyle : val.fontStyle(),
                                       filled : true,
                                       align: val.align(),
-                                      verticalAlign : val.attrs.verticalAlign,
-                                      fontStyle : val.fontStyle()
-                                      // lineHeight : val.lineHeight()
+                                      lineHeight : val.lineHeight()
                                     });
                                     gridTextGroup.add(text);
                                     rectval.setAttr('filled', true);
@@ -2189,7 +1925,7 @@ function canvasInit()
         }
         return a;
     }
-    $("#cloneSampleText").click(function()
+    $(document).on("click", "#cloneSampleText", function()
     {
         $( gridHiddenTextGroup.children ).each(function(key, val)
         {
@@ -2198,7 +1934,6 @@ function canvasInit()
               val.destroy();
            }
            val.fontSize(txtFillSize);
-           val.fontStyle(txtStrokeWidth);
            var xx = (Math.round(val.x() / gridSize) * gridSize), yy = (Math.round(val.y() / gridSize) * gridSize);
            val.setAttr('x', xx);
            val.setAttr('y', yy);
@@ -2231,7 +1966,6 @@ function canvasInit()
           else {
             posmin = 300;
           }
-
           stage.addEventListener("mousemove", function setMousePosition(e){
             mouseX = e.layerX - canvasPos.x-posmin;
             mouseY = e.layerY - canvasPos.y-posmin;
@@ -2247,14 +1981,15 @@ function canvasInit()
               update(mouseX,mouseY);
             }
           });
+
           setTimeout(function(){
             $('.toolbar_list li').removeClass('active');
             $("#select_shape").addClass('active');
             mode = $("#select_shape").data('mode');
           }, 2000);
-
           stage.addEventListener("click", stopfollow);
           stage.addEventListener("touchend", stopfollow);
+
     }
     function getPosition(el)
     {
@@ -2355,9 +2090,7 @@ function canvasInit()
                         fontStyle : 'normal',
                         filled : true,
                         align: 'center',
-                        verticalAlign : 'middle',
-                        fontStyle : txtStrokeWidth
-                        // lineHeight :  lineheight
+                        lineHeight : lineheight
                       });
                       gridTextGroup.add(text);
                       rectval.setAttr('filled', true);
@@ -2422,12 +2155,7 @@ function canvasInit()
         zoom_canvas(new_val, new_val);
     });
 
-    stage.scale({
-            x : 1,
-            y : 1
-        });
-    stage.batchDraw();
-    gCacheStage = stage.toJSON();
+    var zoomLevel = 10;
 
     var zoomSlider = document.getElementById("zoom_slider");
     // Update the current slider value (each time you drag the slider handle)
@@ -2435,36 +2163,38 @@ function canvasInit()
     {
         zoom_canvas(this.value, this.value);
     }
+
     function zoom_canvas(x,y)
     {
           stage.scale({
                   x : x,
                   y : y
               });
-
           stage.batchDraw();
 
           var scrollContainer = document.getElementById('scroll-container');
           var scrollCanvasContainer = document.getElementById('canvas');
-          // scrollContainer.style.width = 'calc(100% - 122px)';
+          scrollContainer.style.width = 'calc(100% - 22px)';
           scrollContainer.style.height = 'calc(80vh - 22px)';
           scrollCanvasContainer.style.width = 'calc(100% * '+x+')';
-          scrollCanvasContainer.style.height = 'calc(90vh * '+y+')';
+          scrollCanvasContainer.style.height = 'calc(80vh * '+y+')';
 
           $('#scroll-container').css({'border': '1px solid #ccc', 'box-shadow' : '1px 1px 2px 0px #ccc' })
     }
+
     var scrollContainer = document.getElementById('scroll-container');
     scrollContainer.addEventListener('scroll', function () {
           var dx = scrollContainer.scrollLeft;
           var dy = scrollContainer.scrollTop;
           if(dy >= Math.round(stage.height()))
           {
-              stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+            stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
           }
           stage.x(-dx);
           stage.y(-dy);
           stage.batchDraw();
     });
+
     /*  Canvas Zoom Functionality ends here   */
 
     $(document).on('click',"#downloadLoginPopup",function(){
@@ -2476,7 +2206,6 @@ function canvasInit()
     $(document).on("click","#cancel_download",function(){
         localStorage.removeItem("download_canvas");
     });
-
     $(document).on("click","#download_canvas",function()
     {
         // gCacheStage = stage.toJSON();
@@ -2499,17 +2228,20 @@ function canvasInit()
 
         /*  For backstitch */
         var canvasline = textlayer.find('Line');
+
+
         if(canvasline.length !== 0)
         {
-          canvasline.map(function (canvasline)
-          {
-              stroke_width.push(parseInt(canvasline.strokeWidth()));
-          });
-          $.each(stroke_width, function(i, el){
-              if($.inArray(el, uniqueLineStroke) === -1) uniqueLineStroke.push(el);
-          });
-          backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':uniqueLineStroke};
+            canvasline.map(function (canvasline)
+            {
+                stroke_width.push(parseInt(canvasline.strokeWidth()));
+            });
+            $.each(stroke_width, function(i, el){
+                if($.inArray(el, uniqueLineStroke) === -1) uniqueLineStroke.push(el);
+            });
+            backstitch = {'colorName':'Black', 'floss':310,'strokeWidth':uniqueLineStroke};
         }
+
 
         /* For text colors  */
         var canvastext = textlayer.find('Text');
@@ -2531,15 +2263,16 @@ function canvasInit()
               var b = 0;
               $.each( uniqueNames, function( key, val )
               {
-                  data.find(function(item){
-                   if(item.color_code === val){
-                     if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
-                       colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code});
-                      }
-                      colorHashMap[item.color_code] = {
-                        'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code
-                      };
-                   }
+                  data.find(function(item)
+                  {
+                     if(item.color_code === val){
+                       if( colorArry.map(x => x.floss).indexOf(item.floss_code) < 0 && item.floss_code !== undefined){
+                         colorArry.push({'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code});
+                        }
+                        colorHashMap[item.color_code] = {
+                          'colorName':item.color_name, 'floss':item.floss_code,'colorSymbol':symbols[b],'colorCode':item.color_code
+                        };
+                     }
                   });
                   b++;
               });
@@ -2582,18 +2315,18 @@ function canvasInit()
                         {
                             var textGroup = tLayer.children[k];
                             var textBlocks = textGroup.children;
-
                             textGroup.children = textBlocks.map(function (textBlock)
                             {
+                                //console.log(textBlock); return false;
                                 textBlock.attrs.text = colorHashMap[textBlock.attrs.fill].colorSymbol;
                                 textBlock.attrs.fill = "#000000";
-                                tFontSize.push(textBlock.attrs.fontSize);
+                                tFontSize.push(textBlock.attrs.fontSize)
                                 return textBlock;
                             });
                             $.each(tFontSize, function(i, el){
                                 if($.inArray(el, uniqueTFontSize) === -1) uniqueTFontSize.push(el);
                             });
-                          // break;
+                            // break;
                         }
                       }
                     }
@@ -2603,10 +2336,10 @@ function canvasInit()
 
               var symbolStage = Konva.Node.create(JSON.stringify(stageParsedJSON), 'symbolstage');
               jsonStage = symbolStage.toDataURL();
-              download_canvas(jsonStage,colorArry,backstitch,uniqueTFontSize);
+              download_canvas(jsonStage,colorArry,backstitch, uniqueTFontSize);
           });
     }
-    function download_canvas(jsonStage,colorArry,backstitch,uniqueTFontSize)
+    function download_canvas(jsonStage,colorArry,backstitch, uniqueTFontSize)
     {
         var colordataimge = '',
         htmlcontent = '';
@@ -2622,7 +2355,8 @@ function canvasInit()
         if(backstitch.length !== 0){
             htmlcontent += '<h4>Backstitch</h4>';
             htmlcontent += '<p>Backstitch floss is :' +backstitch.floss+', Colour is : '+backstitch.colorName+'</p>';
-            htmlcontent += '<p>Backstitch - ' + backstitch.strokeWidth.toString() +' strands</p>';
+            htmlcontent += '<p>Backstitch-' + backstitch.strokeWidth.toString() +' strands</p>';
+
         }
 
         var bgcolr = backgroundCanvas.find('Rect');
@@ -2638,7 +2372,7 @@ function canvasInit()
                   }
               });
 
-              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+localStorage.getItem("clothframe")+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p><p>Font Size - ' + uniqueTFontSize.toString() +'</p></div>';
+              htmlcontent += '<h4>Fabric: </h4><div class="bgattrs"><p>Cloth: '+localStorage.getItem("aidaCloth")+'</p><p> Cloth Frame: '+localStorage.getItem("clothframe")+'</p><p>Grid Cells: '+gridSize+'</p><p> Cloth Floss: '+filteredObj.floss_code+', '+filteredObj.color_name+'</p><p>Font Size-' + uniqueTFontSize.toString() +'</p></div>';
 
               var doc = new jsPDF('','px');
 
@@ -2669,7 +2403,6 @@ function canvasInit()
         });
 
     }
-
     $(document).on("click","#save_canvas",function()
     {
         localStorage.removeItem("download_canvas");
@@ -2691,44 +2424,44 @@ function updateLocalStorage(stageJson,gridSize)
   localStorage.setItem("stage_gridsize", gridSize);
 }
 
-var savedesign = false;
-
-window.onload = function() {
-    window.addEventListener("beforeunload", function (e) {
-        if (savedesign) {
-            return undefined;
-        }
-        updateLocalStorage(gCacheStage,gCacheGrid)
-
-        if(localStorage.getItem("auto_save_canvas") === null)
-        {
-          return undefined;
-        }
-
-        var confirmationMessage = 'It looks like you have been editing something. '
-                                + 'If you leave before saving, your changes will be lost.';
-
-        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-    });
-};
+// var savedesign = false;
+//
+// window.onload = function() {
+//     window.addEventListener("beforeunload", function (e) {
+//         if (savedesign) {
+//             return undefined;
+//         }
+//         updateLocalStorage(gCacheStage,gCacheGrid)
+//
+//         if(localStorage.getItem("auto_save_canvas") === null)
+//         {
+//           return undefined;
+//         }
+//
+//         var confirmationMessage = 'It looks like you have been editing something. '
+//                                 + 'If you leave before saving, your changes will be lost.';
+//
+//         (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+//         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+//     });
+// };
 
 function ColorLuminance(hex, lum)
-{
-  // validate hex string
-  hex = String(hex).replace(/[^0-9a-f]/gi, '');
+  {
+    // validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
 
-  if (hex.length < 6) {
-    hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-  }
-  lum = lum || 0;
+    if (hex.length < 6) {
+      hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    }
+    lum = lum || 0;
 
-  // convert to decimal and change luminosity
-  var rgb = "#", c, i;
-  for (i = 0; i < 3; i++) {
-    c = parseInt(hex.substr(i*2,2), 16);
-    c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-    rgb += ("00"+c).substr(c.length);
+    // convert to decimal and change luminosity
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i*2,2), 16);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+      rgb += ("00"+c).substr(c.length);
+    }
+    return rgb;
   }
-  return rgb;
-}

@@ -17,11 +17,11 @@
     padding-right: 0;
 }
 #scroll-container {
-    width: auto;
-    height: auto;
+    /* width: auto;
+    height: auto; */
     overflow: auto;
-    transform: scale(1,1);
-    transform-origin: top left;
+    /* transform: scale(1,1);
+    transform-origin: top left; */
 }
 #canvas
 {
@@ -224,6 +224,16 @@ footer {
                             <option value="3">3 Strand</option>
                         </select>
                         <select name="x-size" class="x-size" id="x_font_size">
+                             <option value="">Select X Size</option>
+                             <option value="100">100</option>
+                             <option value="200">200</option>
+                             <option value="300">300</option>
+                             <option value="400">400</option>
+                             <option value="500">500</option>
+                             <option value="600">600</option>
+                             <option value="700">700</option>
+                             <option value="800">800</option>
+                             <option value="900">900</option>
                         </select>
                         <div class="text-weight slidecontainer">
                           <span class="minus_icon"><i class="fa fa-minus" aria-hidden="true"></i></span>
