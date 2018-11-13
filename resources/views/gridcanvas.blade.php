@@ -75,6 +75,32 @@ span.plus_icon {
     border: 1px solid;
     padding: 9px;
 }
+p#selected {
+  text-align: right;
+  position: absolute;
+  top: 12%;
+  width: auto;
+  display: inline-block;
+  margin: 0;
+  background: #fff;
+  padding: 5px 10px;
+  z-index: 10;
+  pointer-events: none;
+  display: none;
+  box-shadow: 1px 1px 2px -1px black;
+}
+p#selected:after{
+  content: attr(x);
+  border: solid 10px;
+  border-color: transparent #fff transparent transparent;
+  box-shadow: 2px 0px 0px -1px black;
+  position: absolute;
+  left: -20px;
+}
+p#selected span {
+    padding: 1px 11px 2px 8px;
+    margin-right: 5px;
+}
 footer {
     float: left;
     width: 100%;
@@ -511,7 +537,6 @@ footer {
 <script src="{{ asset('js/jspdf/jspdf.plugin.autotable.js') }}" defer></script>
 <script src="{{ asset('js/jspdf/jspdf.plugin.from_html.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-
 <script>
  jQuery(document).ready(function($) {
 

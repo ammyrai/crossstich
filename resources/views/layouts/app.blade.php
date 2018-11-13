@@ -29,6 +29,7 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
   <input type="hidden" name="site_url" id="site_url" val="{{ url('/') }}"/>
@@ -119,8 +120,8 @@
                 </div>
                 <div class="modal-body">
                   <h3 class="modal-title">Choose your Favorite colour</h3>
-                    <div id="widget"></div>
                     <p id="selected"></p>
+                    <div id="widget"></div>
                     <input type="hidden" id="put_box_color" name="color_name" value=""/>
                 </div>
             </div>
@@ -140,14 +141,27 @@
         theme  : 'light',
         onchange : function(val){}
       });
+
+      $( document ).on('mousemove', '.make-visible', function(event) {
+        $('#selected').css({top: event.offsetY+40, left: event.offsetX+40, display: 'inline-block'})
+      });
+
+      $( document ).on('mouseout', '.make-visible', function(event) {
+        $('#selected').css({display: 'none'})
+      });
+
+
      });
+
      </script>
 
     <script src="//code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="{{ asset('js/form_validation.js') }}" defer></script>
     <script src="{{ asset('js/lz-string.js') }}" defer></script>
+
     <script src="{{ asset('js/color_wheel/jquery.colorwheel.js') }}" defer></script>
+
         <script>
           $(document).ready(function(){
             $(".create_new_design_link").click(function(){

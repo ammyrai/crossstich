@@ -19,6 +19,7 @@ $(document).on('click',"#clear_canvas",function(){
     localStorage.removeItem("stage_gridsize");
     localStorage.removeItem("aidaCloth");
     localStorage.removeItem("clothframe");
+    localStorage.removeItem("oldclothframe");
     localStorage.removeItem("canvasBgColor"),    // Canvas bg color
     localStorage.removeItem("gridStrokeCPara"),    // Grid stroke color
     localStorage.removeItem("gridShadowCPara"),    // Grid shadow color
@@ -31,6 +32,7 @@ $(document).on('click',"#clear_canvas",function(){
 
 $(document).on('click', '#changeCanvas',function()
 {
+      updateLocalStorage(gCacheStage,gCacheGrid);
       localStorage.setItem("clothframe", $("#select_cloth_frame").find("option:selected").val() );
       canvasBgColor = $("ul#select_style_ul li").attr('value');
       var colorType = $("ul#select_style_ul li").attr('data-type');
@@ -77,7 +79,10 @@ $(document).on('click', '#changeCanvas',function()
 /*  Load canvas script */
 function canvasInit()
 {
-    var ReactHashMap = {}
+    var ReactHashMap = {};
+    var filledTextHashMap = [];
+    var filledLineHashMap = {};
+    var newBoxXYHashMap = [];
   /*   Loader on page load  */
     setTimeout(function()
     {
@@ -110,6 +115,7 @@ function canvasInit()
           posNow,                      // Select tool Current position.
           points =[],                  // For BAck Stitch
           positionXY = [],             // For text posotion XY
+          positionFilledXY =[],
           lineStrokeColor = '#000000', // Line stroke color
           textFillColor = '#000000',   // Text default fill color
           selectedRectNodes = [],      // Selected rectangle nodes.
@@ -130,6 +136,7 @@ function canvasInit()
             window.location.href= $("#create_design_url").val();
         }
         clothframe = localStorage.getItem("clothframe");
+        localStorage.setItem("oldclothframe",clothframe);
         var frame = clothframe.split(" X "),
             canvasWidth = frame[1],                       // Grid Width
             canvasHeight = frame[0];                      // Grid Height
@@ -594,8 +601,8 @@ function canvasInit()
               stage = Konva.Node.create(cached_json, 'canvas');
               gridSize = localStorage.getItem("stage_gridsize");      // Grid Tile Size
               var txtFillSize = gridSize;      // Text font size
+              localStorage.setItem("oldclothframe",localStorage.getItem("clothframe"));
         }
-
         stageWidth = stage.width();                // Grid Height
         if(gridSize >= 20)
         {
@@ -615,10 +622,24 @@ function canvasInit()
           lineStroke = 1;
           countfontSize = txtFillSize - 2;
         }
+
+        var groups = stage.find(node => {
+                return node.getType() === 'Group';
+            });
+        $(groups).each(function(key,val)
+        {
+            if(val.hasName('textGroup')){ gridTextGroup = val;  }
+            else { gridTextGroup = new Konva.Group({name:'textGroup'}); }
+            if(val.hasName('gridSelectGroup')) { gridSelectGroup = val; }
+            else { gridSelectGroup = new Konva.Group({name:'gridSelectGroup'}); }
+            if(val.hasName('hiddenGroup')){ gridHiddenTextGroup = val; }
+            else { gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  }
+        });
+
         /*  Create Multiple Layers for stage  */
-
         var stagelayer = stage.getLayers();
-
+        var oldCanvasGrids = [];
+        var newCanvasGrids = [];
         $(stagelayer).each(function(key,val)
         {
               if(val.hasName('backgroundLayer'))
@@ -682,9 +703,9 @@ function canvasInit()
                             }
                       }
                       backgroundCount.cache();
-                      console.time("answer time");
+                      // console.time("answer time");
                       // console.timeLog("answer time");
-                      console.timeEnd("answer time");
+                      // console.timeEnd("answer time");
                   }
                   else {
                     backgroundCount = val;
@@ -760,50 +781,92 @@ function canvasInit()
               {
                 if(localStorage.getItem('internalCanvasChange') !== null)
                 {
-                  val.remove();
-                  canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});
-                  for (var ix = 0; ix < canvasWidth; ix++)
-                  {
-                    for (var iy = 0; iy < canvasHeight; iy++)
+                    var gridchild = val.children;
+                    gridchild.map(function(gridchild)
                     {
-                        box = new Konva.Rect({
-                            x : ix * gridSize + gridSize,
-                            y : iy * gridSize + gridSize,
-                            width : gridSize ,
-                            height: gridSize,
-                            stroke: gridStrokeColor,
-                            strokeWidth: 0,
-                            lineJoin : 'round',
-                            shadowEnabled : true,
-                            shadowColor: gridShadowColor,
-                            shadowOffset: {  x: 3,   y: 3 },
-                            shadowOpacity: 1,
-                            filled : false,
-                            lineDraw: false
-                        });
-                        circle = new Konva.Circle({
-                          x: box.x()+ gridSize,
-                          y: box.y()+ gridSize,
-                          radius: cr,
-                          stroke: circleStrokeColor,
-                          strokeWidth: 1,
-                          fillEnabled: false,
-                          listening: false,
-                        });
-                        canvasGridLayer.add(box);                   // Add rectangle to group
-                        canvasGridLayer.add(circle);             // Add rectangle to background layer
+                        if(gridchild.className === "Rect")
+                        {
+                            oldCanvasGrids.push({x:gridchild.x(), y: gridchild.y(), filled:gridchild.attrs.filled, filledColor:gridchild.attrs.filledColor});
+                        }
+                    });
+                    val.remove();
+                    canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});
+                    for (var ix = 0; ix < canvasWidth; ix++)
+                    {
+                      for (var iy = 0; iy < canvasHeight; iy++)
+                      {
+                          box = new Konva.Rect({
+                              x : ix * gridSize + gridSize,
+                              y : iy * gridSize + gridSize,
+                              width : gridSize ,
+                              height: gridSize,
+                              stroke: gridStrokeColor,
+                              strokeWidth: 0,
+                              lineJoin : 'round',
+                              shadowEnabled : true,
+                              shadowColor: gridShadowColor,
+                              shadowOffset: {  x: 3,   y: 3 },
+                              shadowOpacity: 1,
+                              filled : false,
+                              lineDraw: false
+                          });
+                          circle = new Konva.Circle({
+                            x: box.x()+ gridSize,
+                            y: box.y()+ gridSize,
+                            radius: cr,
+                            stroke: circleStrokeColor,
+                            strokeWidth: 1,
+                            fillEnabled: false,
+                            listening: false,
+                          });
+                          canvasGridLayer.add(box);                   // Add rectangle to group
+                          canvasGridLayer.add(circle);             // Add rectangle to background layer
+                          newCanvasGrids.push(box);
+                          newBoxXYHashMap.push({x : box.x() ,y : box.y()});
+                      }
                     }
-                  }
                 }
-                else {
+                else
+                {
                     canvasGridLayer = val;
                 }
               }
               if(val.hasName('textLayer'))
               {
-                  textlayer = val;
-                  console.log(textlayer.children);
-                  // if(val.hasName('textGroup')){ console.log(val);gridTextGroup = val;  }
+                  if(localStorage.getItem('internalCanvasChange') !== null)
+                  {
+                      var textChild = val.children;
+                      textChild.map(function(textChild)
+                      {
+                          if(textChild.nodeType === 'Shape')
+                          {
+                              filledLineHashMap[''+textChild.attrs.drawLine+textChild.attrs.perfectDrawEnabled+textChild.attrs.points+textChild.attrs.stroke+textChild.attrs.strokeWidth] = textChild;
+                          }
+                          else
+                          {
+                              var textGp = textChild;
+                              if(textGp.attrs.name === 'textGroup')
+                              {
+                                  var textGpChild = textGp.children;
+                                  // console.log(textGpChild.length)
+                                  if(textGpChild.length > 0)
+                                  {
+                                    textGpChild.map(function(textGpChild)
+                                    {
+                                        filledTextHashMap.push({x:textGpChild.attrs.x, y: textGpChild.attrs.y, align: textGpChild.attrs.align, fill: textGpChild.attrs.fill, filled: textGpChild.attrs.filled, fontFamily:textGpChild.attrs.fontFamily,fontSize: textGpChild.attrs.fontSize, text:textGpChild.attrs.text, verticalAlign: textGpChild.attrs.verticalAlign});
+                                        positionFilledXY.push(`{"x":${textGpChild.attrs.x},"y":${textGpChild.attrs.y}}`);
+                                    });
+                                  }
+                              }
+                          }
+                      });
+                      val.remove();
+                      textlayer = new Konva.Layer({name:'textLayer'});
+                  }
+                  else
+                  {
+                      textlayer = val;
+                  }
               }
               if(val.hasName('newlayer'))
               {
@@ -818,26 +881,61 @@ function canvasInit()
                 }
               }
         });
-        stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);
-        // console.log(stagelayer);
-        var groups = stage.find(node => {
-                return node.getType() === 'Group';
-            });
-        $(groups).each(function(key,val)
-        {
-            if(val.hasName('textGroup')){ gridTextGroup = val;  }
-            else { gridTextGroup = new Konva.Group({name:'textGroup'}); }
-            if(val.hasName('gridSelectGroup')) { gridSelectGroup = val; }
-            else { gridSelectGroup = new Konva.Group({name:'gridSelectGroup'}); }
-            if(val.hasName('hiddenGroup')){ gridHiddenTextGroup = val; }
-            else { gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  }
-        });
-
         if(localStorage.getItem('internalCanvasChange') !== null)
         {
+            stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);
 
+            clothframe = localStorage.getItem("clothframe");
+            var frame = clothframe.split(" X ");
+
+            var oldframe = localStorage.getItem("oldclothframe").split(" X ");
+
+            var i,j,temparray=[],chunk = Math.round(parseFloat(oldframe[0])), chunk_array=[];
+            for (i=0,j=oldCanvasGrids.length; i<j; i+=chunk) {
+                temparray = (oldCanvasGrids.slice(i,i+chunk));
+                chunk_array.push(temparray)
+            }
+
+            var i,j,temparray_array=[],chunk_new = Math.round(parseFloat(frame[0])), new_chunk_array=[];
+            for (i=0,j=newCanvasGrids.length; i<j; i+=chunk_new) {
+                temparray_array = (newCanvasGrids.slice(i,i+chunk_new));
+                new_chunk_array.push(temparray_array)
+            }
+
+            for ( var z = 0; z < chunk_array.length; z++ ) {
+
+              for ( var x = 0; x < chunk_array[z].length; x++ ) {
+
+                if (chunk_array[z][x].filled) {
+
+                  var new_chunk_element = new_chunk_array[z][x];
+
+                  text = new Konva.Text({
+                      text: 'X',
+                      x: (Math.round(new_chunk_element.attrs.x/ gridSize) * gridSize),
+                      y: (Math.round(new_chunk_element.attrs.y/ gridSize) * gridSize),
+                      width: gridSize,
+                      height: gridSize,
+                      fontFamily: 'sans-serif',
+                      fontSize: txtFillSize,
+                      fill: chunk_array[z][x].filledColor,
+                      fontStyle : 'normal',
+                      filled : true,
+                      align: 'center',
+                      verticalAlign : 'middle',
+                      fontStyle : txtStrokeWidth,
+                      lineHeight : gridSize/ txtFillSize
+                  });
+                  gridTextGroup.add(text);
+                  new_chunk_element.attrs.filled = true;
+                  new_chunk_element.attrs.filledColor = chunk_array[z][x].filledColor;
+                  textlayer.add(gridTextGroup);
+                  text.draw();
+                  ReactHashMap[''+new_chunk_element.attrs.x+new_chunk_element.attrs.y] = new_chunk_element;
+                }
+              }
+            }
         }
-
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
         if(gridSize >= 20)
         {
@@ -880,234 +978,6 @@ function canvasInit()
     lineheight = gridSize/ txtFillSize;
 
     gCacheGrid = gridSize;
-
-    /*    Font size array    */
-    // switch(parseInt(gridSize))
-    // {
-    //     case 5:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="1">1</option>'
-    //                         +'<option value="2">2</option>'
-    //                         +'<option value="3">3</option>'
-    //                         +'<option value="4">4</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 6:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="3">3</option>'
-    //                         +'<option value="4">4</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 7:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 8:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="4">4</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 9:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 10:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 11:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 12:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 13:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 14:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="5">5</option>'
-    //                         +'<option value="6">6</option>'
-    //                         +'<option value="7">7</option>'
-    //                         +'<option value="8">8</option>'
-    //                         +'<option value="9">9</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 15:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 16:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>'
-    //                         +'<option value="23">23</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 19:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>'
-    //                         +'<option value="23">23</option>'
-    //                         +'<option value="24">24</option>'
-    //                         +'<option value="25">25</option>'
-    //                         +'<option value="26">26</option>'
-    //                         +'<option value="27">27</option>'
-    //                         +'<option value="28">28</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //     case 23:
-    //           var options = '<option value="">Select X Size</option>'
-    //                         +'<option value="10">10</option>'
-    //                         +'<option value="11">11</option>'
-    //                         +'<option value="12">12</option>'
-    //                         +'<option value="13">13</option>'
-    //                         +'<option value="14">14</option>'
-    //                         +'<option value="15">15</option>'
-    //                         +'<option value="16">16</option>'
-    //                         +'<option value="17">17</option>'
-    //                         +'<option value="18">18</option>'
-    //                         +'<option value="19">19</option>'
-    //                         +'<option value="20">20</option>'
-    //                         +'<option value="21">21</option>'
-    //                         +'<option value="22">22</option>'
-    //                         +'<option value="23">23</option>'
-    //                         +'<option value="24">24</option>'
-    //                         +'<option value="25">25</option>'
-    //                         +'<option value="26">26</option>'
-    //                         +'<option value="27">27</option>'
-    //                         +'<option value="28">28</option>'
-    //                         +'<option value="29">29</option>'
-    //                         +'<option value="30">30</option>';
-    //                 $("#x_font_size").html( options );
-    //     break;
-    //
-    //
-    // }
 
     /*    Font size array ends here!    */
 
@@ -1177,7 +1047,7 @@ function canvasInit()
     function changeXSize(xs)
     {
         txtStrokeWidth = xs;
-        // lineheight = gridSize / txtFillSize;
+        lineheight = gridSize / txtFillSize;
     }
 
     if(gridSize >= 20)
@@ -1207,6 +1077,7 @@ function canvasInit()
     gridSelectGroup.add(r2);
 
     /*    Fill Grid cell   */
+    // console.log(stage)
     stage.on('mousedown', function(evt)
     {
         isMouseDown = true;
@@ -1218,7 +1089,7 @@ function canvasInit()
                case 'pencil':
                    if(box.getAttr('filled') === false)
                    {
-                       text = new Konva.Text({
+                      text = new Konva.Text({
                          text: 'X',
                          x: box.x(),
                          y: box.y(),
@@ -1231,11 +1102,12 @@ function canvasInit()
                          filled : true,
                          align: 'center',
                          verticalAlign : 'middle',
-                         fontStyle : txtStrokeWidth
-                         // lineHeight : lineheight
+                         fontStyle : txtStrokeWidth,
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
+                       box.setAttr('filledColor', textFillColor);
                        text.draw();
                        ReactHashMap[''+box.x()+box.y()] = box;
                     }
@@ -1252,24 +1124,19 @@ function canvasInit()
                     // }
                break;
                case 'eraser':
-                   console.log('erase', box.getAttr('filled'));
                    if(box.getAttr('filled') === true)
                    {
-                     console.log('erase filled true make false');
                      if(ReactHashMap[''+box.x()+box.y()]) {
                        ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
                      }
-                     console.log(evt.target.className)
                      if(evt.target.className === 'Text')
                      {
-                         console.log('erase filled true destroy');
                          evt.target.destroy();
                      }
                      box.setAttr('filled', false);
                    }
                    if(evt.target.className === 'Line')
                    {
-                      console.log('erase line true');
                        evt.target.destroy();
                        box.setAttr('lineDraw', false);
                    }
@@ -1279,23 +1146,11 @@ function canvasInit()
                   startDrag({x: box.x(), y: box.y()})
                break;
                case 'back_stich':
-                     points=[];
-                     var secondX = nearest(evt.evt.layerX, (Math.round(box.x()/ gridSize) * gridSize), (Math.round(box.x()/ gridSize) * gridSize) + gridSize);
-                     var secondY = nearest(evt.evt.layerY, (Math.round(box.y()/ gridSize) * gridSize), (Math.round(box.y()/ gridSize) * gridSize) + gridSize);
-                     points.push((Math.round(box.x()/ gridSize) * gridSize),(Math.round(box.y()/ gridSize) * gridSize),secondX,secondY);
-                     // var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
-                     // var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
-                     // points.push(box.x(),box.y(),secondX,secondY);
-                     // var line = new Konva.Line({
-                     //     points :points,
-                     //     stroke: lineStrokeColor,
-                     //     strokeWidth: lineStroke,
-                     //     drawLine : true,
-                     //     tension: 0,
-                     //     perfectDrawEnabled: false,
-                     // });
-                     // textlayer.add(line);
-                     // line.draw();
+                   points=[];
+
+                   var secondX = nearest(evt.evt.layerX, (Math.round(box.x()/ gridSize) * gridSize), (Math.round(box.x()/ gridSize) * gridSize) + gridSize);
+                   var secondY = nearest(evt.evt.layerY, (Math.round(box.y()/ gridSize) * gridSize), (Math.round(box.y()/ gridSize) * gridSize) + gridSize);
+                   points.push((Math.round(box.x()/ gridSize) * gridSize),(Math.round(box.y()/ gridSize) * gridSize),secondX,secondY);
                break;
                default:
              }
@@ -1387,11 +1242,12 @@ function canvasInit()
                          filled : true,
                          align: 'center',
                          verticalAlign : 'middle',
-                         fontStyle : txtStrokeWidth
-                         // lineHeight : lineheight
+                         fontStyle : txtStrokeWidth,
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
+                       box.setAttr('filledColor', textFillColor);
                        text.draw();
                        ReactHashMap[''+box.x()+box.y()] = box
                    }
@@ -1401,8 +1257,9 @@ function canvasInit()
                      {
                         var textList = textlayer.find("Text");
                         $( textList ).each(function() {
-                              if(ReactHashMap[''+box.x()+box.y()]) {
-                                ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                              if(ReactHashMap[''+box.x()+box.y()])
+                              {
+                                  ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
                               }
                              if(evt.target.className == 'Text')
                              {
@@ -1425,26 +1282,130 @@ function canvasInit()
                     updateDrag({x: box.x(), y: box.y()},false);
                  break;
                  case 'back_stich':
-                     //points=[];
-                     //var line = textlayer.find("Line");
-                     var last_two_values = points.slice(-2);
-                     if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
-                     {
-                         var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
-                         var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
-                         points=[];
-                         points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
-                         line = new Konva.Line({
-                            points :points,
-                            stroke: lineStrokeColor,
-                            strokeWidth: lineStroke,
-                            drawLine : true,
-                            tension: 0,
-                            perfectDrawEnabled: false,
-                          });
-                          textlayer.add(line);
-                          line.draw();
-                      }
+                       var last_two_values = points.slice(-2);
+
+                       var last_pos = {
+                         x: parseFloat(last_two_values[0]),
+                         y: parseFloat(last_two_values[1])
+                       }
+
+                       gridSize = parseInt(gridSize)
+                       // console.log(evt.evt.offsetX, evt.evt.offsetY)
+                       var qx = Math.round( (evt.evt.offsetX - last_pos.x) / gridSize );
+                       var qy = Math.round( (evt.evt.offsetY - last_pos.y ) / gridSize );
+
+                       var max = Math.max(Math.abs(qx), Math.abs(qy))
+
+                       for (var i = 0; i < max; i = i+gridSize) {
+
+                         var direction = ''
+                         var draw_to = last_pos
+
+                        var halfWidth = Math.round( gridSize);
+
+                         if (evt.evt.layerX > last_pos.x && last_pos.y + halfWidth >= evt.evt.layerY && last_pos.y - halfWidth <= evt.evt.layerY) {
+                              direction="right";
+                         }
+                         else if (last_pos.x + halfWidth >= evt.evt.layerX && last_pos.x - halfWidth <= evt.evt.layerX  && evt.evt.layerY > last_pos.y) {
+                             direction="down";
+                         }
+                         else if (last_pos.x + halfWidth >= evt.evt.layerX && last_pos.x - halfWidth <= evt.evt.layerX && evt.evt.layerY < last_pos.y) {
+                             direction="up";
+                         }
+                         else if (evt.evt.layerX < last_pos.x && last_pos.y + halfWidth >= evt.evt.layerY && last_pos.y - halfWidth <= evt.evt.layerY) {
+                             direction="left";
+                         }
+                         else if (evt.evt.layerX > last_pos.x - Math.round( gridSize /3) && evt.evt.layerY > last_pos.y - Math.round( gridSize /3)) {
+                            direction = "bottom-right-diagonal";
+                         }
+                         else if (evt.evt.layerX > last_pos.x - Math.round( gridSize /3) && evt.evt.layerY < last_pos.y - Math.round( gridSize /3)) {
+                            direction = "top-right-diagonal";
+                         }
+                         else if (evt.evt.layerX < last_pos.x - Math.round( gridSize /3) && evt.evt.layerY < last_pos.y - Math.round( gridSize /3)) {
+                              direction = 'top-left-diagonal'
+                         }
+                         else if (evt.evt.layerX < last_pos.x - Math.round( gridSize /3) && evt.evt.layerY > last_pos.y - Math.round( gridSize /3)) {
+                              direction="bottom-left-diagonal";
+                         }
+                         // console.log(direction)
+                          switch (direction) {
+                            case 'bottom-right-diagonal':
+                              draw_to = {
+                                x: last_pos.x + gridSize,
+                                y: last_pos.y + gridSize
+                              }
+                              break;
+                            case 'top-right-diagonal':
+                                draw_to = {
+                                  x: last_pos.x + gridSize,
+                                  y: last_pos.y - gridSize
+                                }
+                                break;
+                            case 'right':
+                                draw_to = {
+                                  x: last_pos.x + gridSize,
+                                  y: last_pos.y
+                                }
+                                break;
+                            case 'left':
+                                draw_to = {
+                                  x: last_pos.x - gridSize,
+                                  y: last_pos.y
+                                }
+                                break;
+                            case 'bottom-left-diagonal':
+                              draw_to = {
+                                x: last_pos.x - gridSize,
+                                y: last_pos.y + gridSize
+                              }
+                              break;
+                            case 'top-left-diagonal':
+                                draw_to = {
+                                  x: last_pos.x - gridSize,
+                                  y: last_pos.y - gridSize
+                                }
+                                break;
+                            case 'up':
+                                draw_to = {
+                                  x: last_pos.x,
+                                  y: last_pos.y - gridSize
+                                }
+                                break;
+                            case 'down':
+                                draw_to = {
+                                  x: last_pos.x,
+                                  y: last_pos.y + gridSize
+                                }
+                                break;
+                            default :
+                              break;
+
+                          }
+
+                          points = [];
+                          points.push(
+                            Math.round(last_pos.x),
+                            Math.round(last_pos.y),
+                            Math.round(draw_to.x),
+                            Math.round(draw_to.y)
+                          );
+
+                          // console.log(points);
+
+                          line = new Konva.Line({
+                             points :points,
+                             stroke: lineStrokeColor,
+                             strokeWidth: lineStroke,
+                             drawLine : true,
+                             tension: 0,
+                             perfectDrawEnabled: false,
+                           });
+
+                           textlayer.add(line);
+                           line.draw();
+
+                           last_pos = draw_to
+                       }
                  break;
                  default:
              }
@@ -1477,11 +1438,12 @@ function canvasInit()
                          filled : true,
                          align: 'center',
                          verticalAlign : 'middle',
-                         fontStyle : txtStrokeWidth
-                         // lineHeight : lineheight
+                         fontStyle : txtStrokeWidth,
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
+                       box.setAttr('filledColor', textFillColor);
                        text.draw();
                        ReactHashMap[''+box.x()+box.y()] = box;
                     }
@@ -1625,11 +1587,12 @@ function canvasInit()
                          filled : true,
                          align: 'center',
                          verticalAlign : 'middle',
-                         fontStyle : txtStrokeWidth
-                         // lineHeight : lineheight
+                         fontStyle : txtStrokeWidth,
+                         lineHeight : lineheight
                        });
                        gridTextGroup.add(text);
                        box.setAttr('filled', true);
+                       box.setAttr('filledColor', textFillColor);
                        text.draw();
                        ReactHashMap[''+box.x()+box.y()] = box
                    }
@@ -1759,7 +1722,7 @@ function canvasInit()
                              var yVal;
                              if(zText === 0)
                              {
-                               var firstpostionXY = JSON.parse(positionXY[zText]);
+                                var firstpostionXY = JSON.parse(positionXY[zText]);
                                 if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
                                 {
                                   xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
@@ -1846,11 +1809,12 @@ function canvasInit()
                                       filled : true,
                                       align: val.align(),
                                       verticalAlign : val.attrs.verticalAlign,
-                                      fontStyle : val.fontStyle()
-                                      // lineHeight : val.lineHeight()
+                                      fontStyle : val.fontStyle(),
+                                      lineHeight : val.lineHeight()
                                     });
                                     gridTextGroup.add(text);
                                     rectval.setAttr('filled', true);
+                                    rectval.setAttr('filledColor', textFillColor);
                                     text.draw();
                                     ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                               }
@@ -1890,7 +1854,6 @@ function canvasInit()
         });
         return;
     }
-
     function startDrag(posIn){
       posStart = {x: posIn.x, y: posIn.y};
       posNow = {x: posIn.x, y: posIn.y};
@@ -1945,7 +1908,6 @@ function canvasInit()
            textlayer.draw(); // redraw any changes.
       }
     }
-
     function reverse(r1, r2){
       var r1x = r1.x, r1y = r1.y, r2x = r2.x,  r2y = r2.y, d;
       if (r1x > r2x ){
@@ -2356,11 +2318,12 @@ function canvasInit()
                         filled : true,
                         align: 'center',
                         verticalAlign : 'middle',
-                        fontStyle : txtStrokeWidth
-                        // lineHeight :  lineheight
+                        fontStyle : txtStrokeWidth,
+                        lineHeight :  lineheight
                       });
                       gridTextGroup.add(text);
                       rectval.setAttr('filled', true);
+                      rectval.setAttr('filledColor', textFillColor);
                       text.draw();
                       ReactHashMap[''+rectval.x()+rectval.y()] = rectval;
                 }

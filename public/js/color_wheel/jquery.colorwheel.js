@@ -57,7 +57,7 @@
 						var y2 = r * Math.sin(2 * Math.PI * p2);
 						var laf = 0;
 
-						output += "<g class=\"segment\"><text y=\"20\" x=\"20\" color=\"red\" font-size=\"30\">\"" + value.color_name +"\"</text><path d=\"M " + x1 + " " + y1 + " A " + r + " " + r + " 0 " + laf + " 1 " + x2 + " " + y2 + " L 0 0\" stroke=\"black\" stroke-width=\".001\" fill=\"" + value.code +"\"></path></g>";
+						output += "<g class=\"segment\"><path d=\"M " + x1 + " " + y1 + " A " + r + " " + r + " 0 " + laf + " 1 " + x2 + " " + y2 + " L 0 0\" stroke=\"black\" stroke-width=\".001\" fill=\"" + value.code +"\" class=\"segment_path\"></path></g>";
 					})
 					r = r - 0.4
 				})
@@ -160,4 +160,7 @@
 			}
 		}
 	}
+	$(document).on('mousemove','.segment_path',function(){
+		$("#selected").html("<span style='background-color:"+$(this).attr('fill')+"'></span>" +$(this).attr('fill'));
+	})
 }(jQuery));
