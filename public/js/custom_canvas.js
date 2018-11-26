@@ -4,14 +4,6 @@ $( window ).on( "load", function()
 {
     canvasInit();
 });
-/*  Refresh canvas script */
-$(document).on("click","#refresh_canvas",function()
-{
-    $( "#toolbar_section" ).load(window.location.href + " #toolbar_section" );
-    $("#loader").show();
-    $("#myDiv").hide();
-    canvasInit();
-});
 
 $(document).on('click',"#clear_canvas",function(){
     savedesign = true;
@@ -29,11 +21,13 @@ $(document).on('click',"#clear_canvas",function(){
     window.location.href= $("#create_design_url").val();
 })
 
-
 $(document).on('click', '#changeCanvas',function()
 {
+      $('.close').click();
       updateLocalStorage(gCacheStage,gCacheGrid);
+
       localStorage.setItem("clothframe", $("#select_cloth_frame").find("option:selected").val() );
+
       canvasBgColor = $("ul#select_style_ul li").attr('value');
       var colorType = $("ul#select_style_ul li").attr('data-type');
       var colorfloss = $("ul#select_style_ul li").attr('data-floss');
@@ -71,17 +65,17 @@ $(document).on('click', '#changeCanvas',function()
 
       $("#loader").show();
       $("#myDiv").hide();
-      $('.close').click();
+
       $('#change_canvas_form')[0].reset();
       canvasInit();
 });
-
 /*  Load canvas script */
 function canvasInit()
 {
     var ReactHashMap = {};
+    var ReactHashMap = {}
     var filledTextHashMap = [];
-    var filledLineHashMap = {};
+    var filledLineHashMap = [];
     var newBoxXYHashMap = [];
   /*   Loader on page load  */
     setTimeout(function()
@@ -429,7 +423,6 @@ function canvasInit()
               canvasGridLayer.add(box);                   // Add rectangle to group
               canvasGridLayer.add(circle);             // Add rectangle to background layer
           }
-
         }
         textlayer.add(gridTextGroup,gridSelectGroup);
         stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);          // Add Layer to stage
@@ -437,505 +430,540 @@ function canvasInit()
     }
     else
     {
-        gCacheStage = LZString.decompress(localStorage.getItem("auto_save_canvas"));
-        var cached_json = LZString.decompress(localStorage.getItem('auto_save_canvas'));
-        if(localStorage.getItem('internalCanvasChange') !== null)
-        {
-                clothframe = localStorage.getItem("clothframe");
-                var frame = clothframe.split(" X "),
-                    canvasWidth = frame[1],                       // Grid Width
-                    canvasHeight = frame[0],                      // Grid Height
-                    stageWidth = 805,                             // Stage widht
-                    gridSize = Math.round(stageWidth/canvasWidth),    // Grid Tile Size
-                    txtFillSize = gridSize,      // Text font size
-                    stagerectWidth = stageWidth,
-                    GridLineLayerWidth = stageWidth;
+          gCacheStage = LZString.decompress(localStorage.getItem("auto_save_canvas"));
+          var cached_json = LZString.decompress(localStorage.getItem('auto_save_canvas'));
+          if(localStorage.getItem('internalCanvasChange') !== null)
+          {
+                  clothframe = localStorage.getItem("clothframe");
+                  var frame = clothframe.split(" X "),
+                      canvasWidth = frame[1],                       // Grid Width
+                      canvasHeight = frame[0],                      // Grid Height
+                      stageWidth = 805,                             // Stage widht
+                      gridSize = Math.round(stageWidth/canvasWidth),    // Grid Tile Size
+                      txtFillSize = gridSize,      // Text font size
+                      stagerectWidth = stageWidth,
+                      GridLineLayerWidth = stageWidth;
 
-                var stageCachedJson = JSON.parse(cached_json);
+                  var stageCachedJson = JSON.parse(cached_json);
 
-                stageCachedJson.attrs.height = canvasHeight * gridSize + gridSize;
-                stageCachedJson.attrs.width = stageWidth + gridSize;
+                  stageCachedJson.attrs.height = canvasHeight * gridSize + gridSize;
+                  stageCachedJson.attrs.width = stageWidth + gridSize;
 
-                switch (clothframe)
-                {
-                   case '56 X 70':
-                      stageWidth = 850;
-                      stagerectWidth = 844;
-                      GridLineLayerWidth = 855;
-                      GridLineLayerHeight = 690;
-                   break;
-                   case '56 X 84':
-                      stageWidth = 850;
-                      stagerectWidth = 844;
-                      GridLineLayerWidth = 855;
-                      GridLineLayerHeight = 570;
-                   break;
-                   case '49 X 70':
-                      stageWidth = 850;
-                      stagerectWidth = 844;
-                      GridLineLayerWidth = 855;
-                      GridLineLayerHeight = 600;
-                   break;
-                   case '60 X 84':
-                       stagerectWidth = 844;
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 610;
-                   break;
-                   case '38.5 X 55':
-                       stageWidth = 860;
-                       stagerectWidth = 830;
-                       GridLineLayerWidth = 840;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '24.5 X 35':
-                       GridLineLayerWidth = 830;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '28 X 42':
-                       GridLineLayerWidth = 825;
-                       GridLineLayerHeight = 560;
-                   break;
-                   case '96 X 120':
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 680;
-                   break;
-                   case '96 X 144':
-                       GridLineLayerWidth = 875;
-                       GridLineLayerHeight = 580;
-                   break;
-                   case '35 X 49':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 800;
-                       GridLineLayerHeight = 580;
-                   break;
-                   case '42 X 56':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 800;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '42 X 60':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 800;
-                       GridLineLayerHeight = 560;
-                   break;
-                   case '70 X 98':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 795;
-                       GridLineLayerHeight = 570;
-                   break;
-                   case '84 X 112':
-                       stagerectWidth = 787;
-                       GridLineLayerWidth = 795;
-                       GridLineLayerHeight = 600;
-                   break;
-                   case '44 X 66':
-                       stagerectWidth = 795;
-                       GridLineLayerWidth = 805;
-                       GridLineLayerHeight = 540;
-                   break;
-                   case '88 X 132':
-                       stagerectWidth = 795;
-                       GridLineLayerHeight = 540;
-                   break;
-                   case '48 X 72':
-                       stagerectWidth = 795;
-                       GridLineLayerHeight = 540;
-                   break;
-                   case '55 X 77':
-                       stagerectWidth = 773;
-                       GridLineLayerWidth = 785;
-                       GridLineLayerHeight = 560;
-                   break;
-                   case '88 X 110':
-                       stagerectWidth = 773;
-                       GridLineLayerWidth = 785;
-                       GridLineLayerHeight = 630;
-                   break;
-                   case '72 X 96':
-                       stagerectWidth = 773;
-                       GridLineLayerWidth = 780;
-                       GridLineLayerHeight = 585;
-                   break;
-                   case '66 X 88':
-                       stagerectWidth = 794;
-                       GridLineLayerHeight = 605;
-                   break;
-                   case '112 X 140':
-                       stagerectWidth = 844;
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 680;
-                   break;
-                   case '112 X 168':
-                       stagerectWidth = 844;
-                       GridLineLayerWidth = 850;
-                       GridLineLayerHeight = 570;
-                   break;
-                }
-                var stageCachedChildren = stageCachedJson.children;
+                  switch (clothframe)
+                  {
+                     case '56 X 70':
+                        stageWidth = 850;
+                        stagerectWidth = 844;
+                        GridLineLayerWidth = 855;
+                        GridLineLayerHeight = 690;
+                     break;
+                     case '56 X 84':
+                        stageWidth = 850;
+                        stagerectWidth = 844;
+                        GridLineLayerWidth = 855;
+                        GridLineLayerHeight = 570;
+                     break;
+                     case '49 X 70':
+                        stageWidth = 850;
+                        stagerectWidth = 844;
+                        GridLineLayerWidth = 855;
+                        GridLineLayerHeight = 600;
+                     break;
+                     case '60 X 84':
+                         stagerectWidth = 844;
+                         GridLineLayerWidth = 850;
+                         GridLineLayerHeight = 610;
+                     break;
+                     case '38.5 X 55':
+                         stageWidth = 860;
+                         stagerectWidth = 830;
+                         GridLineLayerWidth = 840;
+                         GridLineLayerHeight = 600;
+                     break;
+                     case '24.5 X 35':
+                         GridLineLayerWidth = 830;
+                         GridLineLayerHeight = 600;
+                     break;
+                     case '28 X 42':
+                         GridLineLayerWidth = 825;
+                         GridLineLayerHeight = 560;
+                     break;
+                     case '96 X 120':
+                         GridLineLayerWidth = 850;
+                         GridLineLayerHeight = 680;
+                     break;
+                     case '96 X 144':
+                         GridLineLayerWidth = 875;
+                         GridLineLayerHeight = 580;
+                     break;
+                     case '35 X 49':
+                         stagerectWidth = 787;
+                         GridLineLayerWidth = 800;
+                         GridLineLayerHeight = 580;
+                     break;
+                     case '42 X 56':
+                         stagerectWidth = 787;
+                         GridLineLayerWidth = 800;
+                         GridLineLayerHeight = 600;
+                     break;
+                     case '42 X 60':
+                         stagerectWidth = 787;
+                         GridLineLayerWidth = 800;
+                         GridLineLayerHeight = 560;
+                     break;
+                     case '70 X 98':
+                         stagerectWidth = 787;
+                         GridLineLayerWidth = 795;
+                         GridLineLayerHeight = 570;
+                     break;
+                     case '84 X 112':
+                         stagerectWidth = 787;
+                         GridLineLayerWidth = 795;
+                         GridLineLayerHeight = 600;
+                     break;
+                     case '44 X 66':
+                         stagerectWidth = 795;
+                         GridLineLayerWidth = 805;
+                         GridLineLayerHeight = 540;
+                     break;
+                     case '88 X 132':
+                         stagerectWidth = 795;
+                         GridLineLayerHeight = 540;
+                     break;
+                     case '48 X 72':
+                         stagerectWidth = 795;
+                         GridLineLayerHeight = 540;
+                     break;
+                     case '55 X 77':
+                         stagerectWidth = 773;
+                         GridLineLayerWidth = 785;
+                         GridLineLayerHeight = 560;
+                     break;
+                     case '88 X 110':
+                         stagerectWidth = 773;
+                         GridLineLayerWidth = 785;
+                         GridLineLayerHeight = 630;
+                     break;
+                     case '72 X 96':
+                         stagerectWidth = 773;
+                         GridLineLayerWidth = 780;
+                         GridLineLayerHeight = 585;
+                     break;
+                     case '66 X 88':
+                         stagerectWidth = 794;
+                         GridLineLayerHeight = 605;
+                     break;
+                     case '112 X 140':
+                         stagerectWidth = 844;
+                         GridLineLayerWidth = 850;
+                         GridLineLayerHeight = 680;
+                     break;
+                     case '112 X 168':
+                         stagerectWidth = 844;
+                         GridLineLayerWidth = 850;
+                         GridLineLayerHeight = 570;
+                     break;
+                  }
+                  var stageCachedChildren = stageCachedJson.children;
 
-                for(var i = 0; i < stageCachedChildren.length; i++)
-                {
-                    if(stageCachedChildren[i].attrs.name == 'textLayer')
-                    {
-                        var tLayer = stageCachedChildren[i];
-                        for(var k = 0; k < tLayer.children.length; k++)
-                        {
-                          if(tLayer.children[k].attrs.name == "textGroup")
+                  for(var i = 0; i < stageCachedChildren.length; i++)
+                  {
+                      if(stageCachedChildren[i].attrs.name == 'textLayer')
+                      {
+                          var tLayer = stageCachedChildren[i];
+                          for(var k = 0; k < tLayer.children.length; k++)
                           {
-                              var textGroup = tLayer.children[k];
-                              var textBlocks = textGroup.children;
-                              textGroup.children = textBlocks.map(function (textBlock)
-                              {
-                                  textBlock.attrs.fontSize = txtFillSize;
-                                  return textBlock;
-                              });
+                            if(tLayer.children[k].attrs.name == "textGroup")
+                            {
+                                var textGroup = tLayer.children[k];
+                                var textBlocks = textGroup.children;
+                                textGroup.children = textBlocks.map(function (textBlock)
+                                {
+                                    textBlock.attrs.fontSize = txtFillSize;
+                                    return textBlock;
+                                });
+                            }
                           }
                         }
-                      }
-                }
-                stageCachedJson.children = stageCachedChildren;
-                var stage = Konva.Node.create(stageCachedJson, 'canvas');;
-        }
-        else
-        {
-              stage = Konva.Node.create(cached_json, 'canvas');
-              gridSize = localStorage.getItem("stage_gridsize");      // Grid Tile Size
-              var txtFillSize = gridSize;      // Text font size
-              localStorage.setItem("oldclothframe",localStorage.getItem("clothframe"));
-        }
-        stageWidth = stage.width();                // Grid Height
-        if(gridSize >= 20)
-        {
-          cr = 2;
-          lineStroke = 3;
-          countfontSize = txtFillSize - 7;
-        }
-        else if(gridSize >= 10)
-        {
-          cr = 1;
-          lineStroke = 2;
-          countfontSize = txtFillSize - 4;
-        }
-        else
-        {
-          cr = 0;
-          lineStroke = 1;
-          countfontSize = txtFillSize - 2;
-        }
+                  }
+                  stageCachedJson.children = stageCachedChildren;
+                  var stage = Konva.Node.create(stageCachedJson, 'canvas');;
+          }
+          else
+          {
+                stage = Konva.Node.create(cached_json, 'canvas');
+                gridSize = localStorage.getItem("stage_gridsize");      // Grid Tile Size
+                var txtFillSize = gridSize;      // Text font size
+                localStorage.setItem("oldclothframe",localStorage.getItem("clothframe"));
+          }
 
-        var groups = stage.find(node => {
-                return node.getType() === 'Group';
-            });
-        $(groups).each(function(key,val)
-        {
-            if(val.hasName('textGroup')){ gridTextGroup = val;  }
-            else { gridTextGroup = new Konva.Group({name:'textGroup'}); }
-            if(val.hasName('gridSelectGroup')) { gridSelectGroup = val; }
-            else { gridSelectGroup = new Konva.Group({name:'gridSelectGroup'}); }
-            if(val.hasName('hiddenGroup')){ gridHiddenTextGroup = val; }
-            else { gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  }
-        });
+          stageWidth = stage.width();                // Grid Height
+          if(gridSize >= 20)
+          {
+            cr = 2;
+            lineStroke = 3;
+            countfontSize = txtFillSize - 7;
+          }
+          else if(gridSize >= 10)
+          {
+            cr = 1;
+            lineStroke = 2;
+            countfontSize = txtFillSize - 4;
+          }
+          else
+          {
+            cr = 0;
+            lineStroke = 1;
+            countfontSize = txtFillSize - 2;
+          }
 
-        /*  Create Multiple Layers for stage  */
-        var stagelayer = stage.getLayers();
-        var oldCanvasGrids = [];
-        var newCanvasGrids = [];
-        $(stagelayer).each(function(key,val)
-        {
-              if(val.hasName('backgroundLayer'))
-              {
-                if(localStorage.getItem('internalCanvasChange') !== null)
+          var groups = stage.find(node => {
+                  return node.getType() === 'Group';
+              });
+          $(groups).each(function(key,val)
+          {
+              if(val.hasName('textGroup')){ gridTextGroup = val;  }
+              else { gridTextGroup = new Konva.Group({name:'textGroup'}); }
+              if(val.hasName('gridSelectGroup')) { gridSelectGroup = val; }
+              else { gridSelectGroup = new Konva.Group({name:'gridSelectGroup'}); }
+              if(val.hasName('hiddenGroup')){ gridHiddenTextGroup = val; }
+              else { gridHiddenTextGroup = new Konva.Group({name:'hiddenGroup', visible: false});  }
+          });
+
+          var stagelayer = stage.getLayers();
+          var oldCanvasGrids = [];
+          var newCanvasGrids = [];
+          $(stagelayer).each(function(key,val)
+          {
+                if(val.hasName('backgroundLayer'))
                 {
-                    val.remove();
-                    backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});
-                    stageRect =  new Konva.Rect({
-                      x:gridSize,
-                      y:gridSize,
-                      width: stagerectWidth,
-                      height: canvasHeight * gridSize,
-                      fill: canvasMainBgcolor,
-                    });
-                    backgroundCanvas.add(stageRect);
-                }
-                else
-                {
-                  backgroundCanvas = val;
-                }
-              }
-              if(val.hasName("backgroundCountLayer"))
-              {
                   if(localStorage.getItem('internalCanvasChange') !== null)
                   {
                       val.remove();
-                      backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});
-                      var t= 0;
-                      for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
-                      {
-                            var counterText = new Konva.Text({
-                              x: (icx * gridSize) + 5,
-                              y: 0,
-                              text: t,
-                              fontSize: countfontSize,
-                              align: 'center',
-                            });
-                            backgroundCount.add(counterText);
-                            t = t+1;
-                            if(t > 10)
-                            {
-                              t =  1;
-                            }
-                      }
-                      var u = 0;
-                      for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
-                      {
-                            var counterText = new Konva.Text({
-                              x: 0,
-                              y: icy * gridSize + 2,
-                              text: u,
-                              fontSize: countfontSize,
-                              align: 'center',
-                            });
-                            backgroundCount.add(counterText);
-                            u++;
-                            if(u > 10)
-                            {
-                              u =  1;
-                            }
-                      }
-                      backgroundCount.cache();
-                      // console.time("answer time");
-                      // console.timeLog("answer time");
-                      // console.timeEnd("answer time");
-                  }
-                  else {
-                    backgroundCount = val;
-                  }
-              }
-              if(val.hasName('gridLinesLayer'))
-              {
-                  if(localStorage.getItem('internalCanvasChange') !== null)
-                  {
-                      val.remove();
-                      gridLinesLayer = new Konva.Layer({name:'gridLinesLayer',hitGraphEnabled:false});
-
-                      var a = 6;
-                      var b = 6;
-                      var c = 6;
-                      var d = 6;
-
-                      for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
-                      {
-                            if(icx === a)
-                            {
-                              if(a == b)
-                              {
-                                  var dashEnabled = true;
-                                  b+= 10;
-                              }
-                              else {
-                                var dashEnabled = false;
-                              }
-                              var gLine = new Konva.Line({
-                                points: [(icx * gridSize), gridSize, (icx * gridSize), GridLineLayerHeight] ,
-                                stroke: '#000',
-                                strokeWidth: 1,
-                                dash: [6, 4],
-                                dashEnabled : dashEnabled
-                              });
-                              gridLinesLayer.add(gLine);
-                              a+= 5;
-                            }
-                      }
-                      for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
-                      {
-                            var icyy = icy;
-                            if(icyy >= c)
-                            {
-                              if(c == d)
-                              {
-                                  var dashEnabled = true;
-                                  d+= 10;
-                              }
-                              else {
-                                var dashEnabled = false;
-                              }
-                              var gLine = new Konva.Line({
-                                points: [gridSize, (icy * gridSize), GridLineLayerWidth, (icy*gridSize)],
-                                stroke: '#000',
-                                strokeWidth: 1,
-                                dash: [6, 4],
-                                dashEnabled : dashEnabled
-                              });
-                              gridLinesLayer.add(gLine);
-                              c+= 5;
-                            }
-                      }
-                      gridLinesLayer.cache();
-                  }
-                  else {
-                    gridLinesLayer = val;
-                  }
-
-              }
-              if(val.hasName('canvasGridLayer'))
-              {
-                if(localStorage.getItem('internalCanvasChange') !== null)
-                {
-                    var gridchild = val.children;
-                    gridchild.map(function(gridchild)
-                    {
-                        if(gridchild.className === "Rect")
-                        {
-                            oldCanvasGrids.push({x:gridchild.x(), y: gridchild.y(), filled:gridchild.attrs.filled, filledColor:gridchild.attrs.filledColor});
-                        }
-                    });
-                    val.remove();
-                    canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});
-                    for (var ix = 0; ix < canvasWidth; ix++)
-                    {
-                      for (var iy = 0; iy < canvasHeight; iy++)
-                      {
-                          box = new Konva.Rect({
-                              x : ix * gridSize + gridSize,
-                              y : iy * gridSize + gridSize,
-                              width : gridSize ,
-                              height: gridSize,
-                              stroke: gridStrokeColor,
-                              strokeWidth: 0,
-                              lineJoin : 'round',
-                              shadowEnabled : true,
-                              shadowColor: gridShadowColor,
-                              shadowOffset: {  x: 3,   y: 3 },
-                              shadowOpacity: 1,
-                              filled : false,
-                              lineDraw: false
-                          });
-                          circle = new Konva.Circle({
-                            x: box.x()+ gridSize,
-                            y: box.y()+ gridSize,
-                            radius: cr,
-                            stroke: circleStrokeColor,
-                            strokeWidth: 1,
-                            fillEnabled: false,
-                            listening: false,
-                          });
-                          canvasGridLayer.add(box);                   // Add rectangle to group
-                          canvasGridLayer.add(circle);             // Add rectangle to background layer
-                          newCanvasGrids.push(box);
-                          newBoxXYHashMap.push({x : box.x() ,y : box.y()});
-                      }
-                    }
-                }
-                else
-                {
-                    canvasGridLayer = val;
-                }
-              }
-              if(val.hasName('textLayer'))
-              {
-                  if(localStorage.getItem('internalCanvasChange') !== null)
-                  {
-                      var textChild = val.children;
-                      textChild.map(function(textChild)
-                      {
-                          if(textChild.nodeType === 'Shape')
-                          {
-                              filledLineHashMap[''+textChild.attrs.drawLine+textChild.attrs.perfectDrawEnabled+textChild.attrs.points+textChild.attrs.stroke+textChild.attrs.strokeWidth] = textChild;
-                          }
-                          else
-                          {
-                              var textGp = textChild;
-                              if(textGp.attrs.name === 'textGroup')
-                              {
-                                  var textGpChild = textGp.children;
-                                  // console.log(textGpChild.length)
-                                  if(textGpChild.length > 0)
-                                  {
-                                    textGpChild.map(function(textGpChild)
-                                    {
-                                        filledTextHashMap.push({x:textGpChild.attrs.x, y: textGpChild.attrs.y, align: textGpChild.attrs.align, fill: textGpChild.attrs.fill, filled: textGpChild.attrs.filled, fontFamily:textGpChild.attrs.fontFamily,fontSize: textGpChild.attrs.fontSize, text:textGpChild.attrs.text, verticalAlign: textGpChild.attrs.verticalAlign});
-                                        positionFilledXY.push(`{"x":${textGpChild.attrs.x},"y":${textGpChild.attrs.y}}`);
-                                    });
-                                  }
-                              }
-                          }
+                      backgroundCanvas = new Konva.Layer({name:'backgroundLayer'});
+                      stageRect =  new Konva.Rect({
+                        x:gridSize,
+                        y:gridSize,
+                        width: stagerectWidth,
+                        height: canvasHeight * gridSize,
+                        fill: canvasMainBgcolor,
                       });
-                      val.remove();
-                      textlayer = new Konva.Layer({name:'textLayer'});
+                      backgroundCanvas.add(stageRect);
                   }
                   else
                   {
-                      textlayer = val;
+                    backgroundCanvas = val;
+                  }
+                }
+                if(val.hasName("backgroundCountLayer"))
+                {
+                    if(localStorage.getItem('internalCanvasChange') !== null)
+                    {
+                        val.remove();
+                        backgroundCount = new Konva.Layer({name:'backgroundCountLayer',hitGraphEnabled:false});
+                        var t= 0;
+                        for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
+                        {
+                              var counterText = new Konva.Text({
+                                x: (icx * gridSize) + 5,
+                                y: 0,
+                                text: t,
+                                fontSize: countfontSize,
+                                align: 'center',
+                              });
+                              backgroundCount.add(counterText);
+                              t = t+1;
+                              if(t > 10)
+                              {
+                                t =  1;
+                              }
+                        }
+                        var u = 0;
+                        for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
+                        {
+                              var counterText = new Konva.Text({
+                                x: 0,
+                                y: icy * gridSize + 2,
+                                text: u,
+                                fontSize: countfontSize,
+                                align: 'center',
+                              });
+                              backgroundCount.add(counterText);
+                              u++;
+                              if(u > 10)
+                              {
+                                u =  1;
+                              }
+                        }
+                        backgroundCount.cache();
+                        // console.time("answer time");
+                        // console.timeLog("answer time");
+                        // console.timeEnd("answer time");
+                    }
+                    else {
+                      backgroundCount = val;
+                    }
+                }
+                if(val.hasName('gridLinesLayer'))
+                {
+                    if(localStorage.getItem('internalCanvasChange') !== null)
+                    {
+                        val.remove();
+                        gridLinesLayer = new Konva.Layer({name:'gridLinesLayer',hitGraphEnabled:false});
+
+                        var a = 6;
+                        var b = 6;
+                        var c = 6;
+                        var d = 6;
+
+                        for (var icx = 0; icx < (parseInt(canvasWidth) + 1); icx++)
+                        {
+                              if(icx === a)
+                              {
+                                if(a == b)
+                                {
+                                    var dashEnabled = true;
+                                    b+= 10;
+                                }
+                                else {
+                                  var dashEnabled = false;
+                                }
+                                var gLine = new Konva.Line({
+                                  points: [(icx * gridSize), gridSize, (icx * gridSize), GridLineLayerHeight] ,
+                                  stroke: '#000',
+                                  strokeWidth: 1,
+                                  dash: [6, 4],
+                                  dashEnabled : dashEnabled
+                                });
+                                gridLinesLayer.add(gLine);
+                                a+= 5;
+                              }
+                        }
+                        for (var icy = 0; icy < (parseInt(canvasHeight) + 1); icy++)
+                        {
+                              var icyy = icy;
+                              if(icyy >= c)
+                              {
+                                if(c == d)
+                                {
+                                    var dashEnabled = true;
+                                    d+= 10;
+                                }
+                                else {
+                                  var dashEnabled = false;
+                                }
+                                var gLine = new Konva.Line({
+                                  points: [gridSize, (icy * gridSize), GridLineLayerWidth, (icy*gridSize)],
+                                  stroke: '#000',
+                                  strokeWidth: 1,
+                                  dash: [6, 4],
+                                  dashEnabled : dashEnabled
+                                });
+                                gridLinesLayer.add(gLine);
+                                c+= 5;
+                              }
+                        }
+                        gridLinesLayer.cache();
+                    }
+                    else {
+                      gridLinesLayer = val;
+                    }
+
+                }
+                if(val.hasName('canvasGridLayer'))
+                {
+                  if(localStorage.getItem('internalCanvasChange') !== null)
+                  {
+                      var gridchild = val.children;
+                      gridchild.map(function(gridchild)
+                      {
+                          if(gridchild.className === "Rect")
+                          {
+                              oldCanvasGrids.push({x:gridchild.x(), y: gridchild.y(), filled:gridchild.attrs.filled, filledColor:gridchild.attrs.filledColor});
+                          }
+                      });
+                      val.remove();
+                      canvasGridLayer = new Konva.Layer({name:'canvasGridLayer'});
+                      for (var ix = 0; ix < canvasWidth; ix++)
+                      {
+                        for (var iy = 0; iy < canvasHeight; iy++)
+                        {
+                            box = new Konva.Rect({
+                                x : ix * gridSize + gridSize,
+                                y : iy * gridSize + gridSize,
+                                width : gridSize ,
+                                height: gridSize,
+                                stroke: gridStrokeColor,
+                                strokeWidth: 0,
+                                lineJoin : 'round',
+                                shadowEnabled : true,
+                                shadowColor: gridShadowColor,
+                                shadowOffset: {  x: 3,   y: 3 },
+                                shadowOpacity: 1,
+                                filled : false,
+                                lineDraw: false
+                            });
+                            circle = new Konva.Circle({
+                              x: box.x()+ gridSize,
+                              y: box.y()+ gridSize,
+                              radius: cr,
+                              stroke: circleStrokeColor,
+                              strokeWidth: 1,
+                              fillEnabled: false,
+                              listening: false,
+                            });
+                            canvasGridLayer.add(box);                   // Add rectangle to group
+                            canvasGridLayer.add(circle);             // Add rectangle to background layer
+                            newCanvasGrids.push(box);
+                            newBoxXYHashMap.push({x : box.x() ,y : box.y()});
+                        }
+                      }
+                  }
+                  else
+                  {
+                      canvasGridLayer = val;
+                  }
+                }
+                if(val.hasName('textLayer'))
+                {
+                    if(localStorage.getItem('internalCanvasChange') !== null)
+                    {
+                        var textChild = val.children;
+                        textChild.map(function(textChild)
+                        {
+                            if(textChild.nodeType === 'Shape')
+                            {
+                                filledLineHashMap.push({drawLine:textChild.attrs.drawLine, perfectDrawEnabled: textChild.attrs.perfectDrawEnabled, points: textChild.attrs.points, stroke: textChild.attrs.stroke, strokeWidth: textChild.attrs.strokeWidth});
+                            }
+                            else
+                            {
+                                var textGp = textChild;
+                                if(textGp.attrs.name === 'textGroup')
+                                {
+                                    var textGpChild = textGp.children;
+                                    // console.log(textGpChild.length)
+                                    if(textGpChild.length > 0)
+                                    {
+                                      textGpChild.map(function(textGpChild)
+                                      {
+                                          filledTextHashMap.push({x:textGpChild.attrs.x, y: textGpChild.attrs.y, align: textGpChild.attrs.align, fill: textGpChild.attrs.fill, filled: textGpChild.attrs.filled, fontFamily:textGpChild.attrs.fontFamily,fontSize: textGpChild.attrs.fontSize, text:textGpChild.attrs.text, verticalAlign: textGpChild.attrs.verticalAlign});
+                                          positionFilledXY.push(`{"x":${textGpChild.attrs.x},"y":${textGpChild.attrs.y}}`);
+                                      });
+                                    }
+                                }
+                            }
+                        });
+                        val.remove();
+                        textlayer = new Konva.Layer({name:'textLayer'});
+                    }
+                    else
+                    {
+                        textlayer = val;
+                    }
+                }
+                if(val.hasName('newlayer'))
+                {
+                  if(localStorage.getItem('internalCanvasChange') !== null)
+                  {
+                      val.remove();
+                      newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});
+                  }
+                  else
+                  {
+                    newlayer = val;
+                  }
+                }
+          });
+          if(localStorage.getItem('internalCanvasChange') !== null)
+          {
+              stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);
+
+              clothframe = localStorage.getItem("clothframe");
+              var frame = clothframe.split(" X ");
+
+              var oldframe = localStorage.getItem("oldclothframe").split(" X ");
+
+              if(Number.isInteger(oldframe[0]) === true)
+              {
+                    old_frame = parseInt(oldframe[0]);
+              }
+              else {
+                  old_frame = Math.round(parseFloat(oldframe[0]));
+              }
+              if(Number.isInteger(frame[0]) === true)
+              {
+                    new_frame = parseInt(frame[0]);
+              }
+              else {
+                  new_frame = Math.round(parseFloat(frame[0]));
+              }
+
+              var i,j,temparray=[],chunk = old_frame, chunk_array=[];
+              for (i=0,j=oldCanvasGrids.length; i<j; i+=chunk) {
+                  temparray = (oldCanvasGrids.slice(i,i+chunk));
+                  chunk_array.push(temparray)
+              }
+
+              var i,j,temparray_array=[],chunk_new = new_frame, new_chunk_array=[];
+              for (i=0,j=newCanvasGrids.length; i<j; i+=chunk_new) {
+                  temparray_array = (newCanvasGrids.slice(i,i+chunk_new));
+                  new_chunk_array.push(temparray_array)
+              }
+
+              for ( var z = 0; z < chunk_array.length; z++ )
+              {
+                  for ( var x = 0; x < chunk_array[z].length; x++ )
+                  {
+                      if (chunk_array[z][x].filled)
+                      {
+                            var new_chunk_element = new_chunk_array[z][x];
+                            text = new Konva.Text({
+                                text: 'X',
+                                x: (Math.round(new_chunk_element.attrs.x/ gridSize) * gridSize),
+                                y: (Math.round(new_chunk_element.attrs.y/ gridSize) * gridSize),
+                                width: gridSize,
+                                height: gridSize,
+                                fontFamily: 'sans-serif',
+                                fontSize: txtFillSize,
+                                fill: chunk_array[z][x].filledColor,
+                                fontStyle : 'normal',
+                                filled : true,
+                                align: 'center',
+                                verticalAlign : 'middle',
+                                fontStyle : txtStrokeWidth,
+                                lineHeight : gridSize/ txtFillSize
+                            });
+                            gridTextGroup.add(text);
+                            new_chunk_element.attrs.filled = true;
+                            new_chunk_element.attrs.filledColor = chunk_array[z][x].filledColor;
+                            textlayer.add(gridTextGroup);
+                            text.draw();
+                            ReactHashMap[''+new_chunk_element.attrs.x+new_chunk_element.attrs.y] = new_chunk_element;
+                      }
                   }
               }
-              if(val.hasName('newlayer'))
+
+              if(filledLineHashMap.length !== 0)
               {
-                if(localStorage.getItem('internalCanvasChange') !== null)
-                {
-                    val.remove();
-                    newlayer = new Konva.Layer({name:'newlayer',hitGraphEnabled:false});
-                }
-                else
-                {
-                  newlayer = val;
-                }
+                    for(var i = 0; i < filledLineHashMap.length; i++)
+                    {
+                        var points =  filledLineHashMap[i].points;
+                        var newpoints = [(Math.round(points[0]/ gridSize) * gridSize), (Math.round(points[1]/ gridSize) * gridSize), (Math.round(points[2]/ gridSize) * gridSize), (Math.round(points[3]/ gridSize) * gridSize)];
+
+                        line = new Konva.Line({
+                           points :newpoints,
+                           stroke: filledLineHashMap[i].stroke,
+                           strokeWidth: lineStroke,
+                           drawLine : filledLineHashMap[i].drawLine,
+                           tension: 0,
+                           perfectDrawEnabled: filledLineHashMap[i].perfectDrawEnabled,
+                         });
+                         textlayer.add(line);
+                         line.draw();
+                    }
               }
-        });
-        if(localStorage.getItem('internalCanvasChange') !== null)
-        {
-            stage.add(backgroundCanvas,backgroundCount,canvasGridLayer,gridLinesLayer,textlayer,newlayer);
+          }
 
-            clothframe = localStorage.getItem("clothframe");
-            var frame = clothframe.split(" X ");
-
-            var oldframe = localStorage.getItem("oldclothframe").split(" X ");
-
-            var i,j,temparray=[],chunk = Math.round(parseFloat(oldframe[0])), chunk_array=[];
-            for (i=0,j=oldCanvasGrids.length; i<j; i+=chunk) {
-                temparray = (oldCanvasGrids.slice(i,i+chunk));
-                chunk_array.push(temparray)
-            }
-
-            var i,j,temparray_array=[],chunk_new = Math.round(parseFloat(frame[0])), new_chunk_array=[];
-            for (i=0,j=newCanvasGrids.length; i<j; i+=chunk_new) {
-                temparray_array = (newCanvasGrids.slice(i,i+chunk_new));
-                new_chunk_array.push(temparray_array)
-            }
-
-            for ( var z = 0; z < chunk_array.length; z++ ) {
-
-              for ( var x = 0; x < chunk_array[z].length; x++ ) {
-
-                if (chunk_array[z][x].filled) {
-
-                  var new_chunk_element = new_chunk_array[z][x];
-
-                  text = new Konva.Text({
-                      text: 'X',
-                      x: (Math.round(new_chunk_element.attrs.x/ gridSize) * gridSize),
-                      y: (Math.round(new_chunk_element.attrs.y/ gridSize) * gridSize),
-                      width: gridSize,
-                      height: gridSize,
-                      fontFamily: 'sans-serif',
-                      fontSize: txtFillSize,
-                      fill: chunk_array[z][x].filledColor,
-                      fontStyle : 'normal',
-                      filled : true,
-                      align: 'center',
-                      verticalAlign : 'middle',
-                      fontStyle : txtStrokeWidth,
-                      lineHeight : gridSize/ txtFillSize
-                  });
-                  gridTextGroup.add(text);
-                  new_chunk_element.attrs.filled = true;
-                  new_chunk_element.attrs.filledColor = chunk_array[z][x].filledColor;
-                  textlayer.add(gridTextGroup);
-                  text.draw();
-                  ReactHashMap[''+new_chunk_element.attrs.x+new_chunk_element.attrs.y] = new_chunk_element;
-                }
-              }
-            }
-        }
         /*  Set Circle radius and line stroke for differnt grid sizes. cr = Circle Radius, lineStroke = Line Stroke */
         if(gridSize >= 20)
         {
@@ -973,13 +1001,11 @@ function canvasInit()
         }
 
     }
-    localStorage.removeItem('internalCanvasChange')
-
+    localStorage.removeItem('internalCanvasChange');
+    localStorage.setItem("oldclothframe",localStorage.getItem("clothframe"))
     lineheight = gridSize/ txtFillSize;
 
     gCacheGrid = gridSize;
-
-    /*    Font size array ends here!    */
 
     if (localStorage.getItem("download_canvas") !== null)
     {
@@ -1077,7 +1103,6 @@ function canvasInit()
     gridSelectGroup.add(r2);
 
     /*    Fill Grid cell   */
-    // console.log(stage)
     stage.on('mousedown', function(evt)
     {
         isMouseDown = true;
@@ -1089,7 +1114,7 @@ function canvasInit()
                case 'pencil':
                    if(box.getAttr('filled') === false)
                    {
-                      text = new Konva.Text({
+                       text = new Konva.Text({
                          text: 'X',
                          x: box.x(),
                          y: box.y(),
@@ -1146,11 +1171,23 @@ function canvasInit()
                   startDrag({x: box.x(), y: box.y()})
                break;
                case 'back_stich':
-                   points=[];
-
-                   var secondX = nearest(evt.evt.layerX, (Math.round(box.x()/ gridSize) * gridSize), (Math.round(box.x()/ gridSize) * gridSize) + gridSize);
-                   var secondY = nearest(evt.evt.layerY, (Math.round(box.y()/ gridSize) * gridSize), (Math.round(box.y()/ gridSize) * gridSize) + gridSize);
-                   points.push((Math.round(box.x()/ gridSize) * gridSize),(Math.round(box.y()/ gridSize) * gridSize),secondX,secondY);
+                     points=[];
+                     var secondX = nearest(evt.evt.layerX, (Math.round(box.x()/ gridSize) * gridSize), (Math.round(box.x()/ gridSize) * gridSize) + gridSize);
+                     var secondY = nearest(evt.evt.layerY, (Math.round(box.y()/ gridSize) * gridSize), (Math.round(box.y()/ gridSize) * gridSize) + gridSize);
+                     points.push((Math.round(box.x()/ gridSize) * gridSize),(Math.round(box.y()/ gridSize) * gridSize),secondX,secondY);
+                     // var secondX = nearest(evt.evt.layerX, box.x(), box.x() + gridSize);
+                     // var secondY = nearest(evt.evt.layerY, box.y(), box.y() + gridSize);
+                     // points.push(box.x(),box.y(),secondX,secondY);
+                     // var line = new Konva.Line({
+                     //     points :points,
+                     //     stroke: lineStrokeColor,
+                     //     strokeWidth: lineStroke,
+                     //     drawLine : true,
+                     //     tension: 0,
+                     //     perfectDrawEnabled: false,
+                     // });
+                     // textlayer.add(line);
+                     // line.draw();
                break;
                default:
              }
@@ -1257,9 +1294,8 @@ function canvasInit()
                      {
                         var textList = textlayer.find("Text");
                         $( textList ).each(function() {
-                              if(ReactHashMap[''+box.x()+box.y()])
-                              {
-                                  ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
+                              if(ReactHashMap[''+box.x()+box.y()]) {
+                                ReactHashMap[''+box.x()+box.y()].setAttr('filled', false);
                               }
                              if(evt.target.className == 'Text')
                              {
@@ -1282,130 +1318,26 @@ function canvasInit()
                     updateDrag({x: box.x(), y: box.y()},false);
                  break;
                  case 'back_stich':
-                       var last_two_values = points.slice(-2);
-
-                       var last_pos = {
-                         x: parseFloat(last_two_values[0]),
-                         y: parseFloat(last_two_values[1])
-                       }
-
-                       gridSize = parseInt(gridSize)
-                       // console.log(evt.evt.offsetX, evt.evt.offsetY)
-                       var qx = Math.round( (evt.evt.offsetX - last_pos.x) / gridSize );
-                       var qy = Math.round( (evt.evt.offsetY - last_pos.y ) / gridSize );
-
-                       var max = Math.max(Math.abs(qx), Math.abs(qy))
-
-                       for (var i = 0; i < max; i = i+gridSize) {
-
-                         var direction = ''
-                         var draw_to = last_pos
-
-                        var halfWidth = Math.round( gridSize);
-
-                         if (evt.evt.layerX > last_pos.x && last_pos.y + halfWidth >= evt.evt.layerY && last_pos.y - halfWidth <= evt.evt.layerY) {
-                              direction="right";
-                         }
-                         else if (last_pos.x + halfWidth >= evt.evt.layerX && last_pos.x - halfWidth <= evt.evt.layerX  && evt.evt.layerY > last_pos.y) {
-                             direction="down";
-                         }
-                         else if (last_pos.x + halfWidth >= evt.evt.layerX && last_pos.x - halfWidth <= evt.evt.layerX && evt.evt.layerY < last_pos.y) {
-                             direction="up";
-                         }
-                         else if (evt.evt.layerX < last_pos.x && last_pos.y + halfWidth >= evt.evt.layerY && last_pos.y - halfWidth <= evt.evt.layerY) {
-                             direction="left";
-                         }
-                         else if (evt.evt.layerX > last_pos.x - Math.round( gridSize /3) && evt.evt.layerY > last_pos.y - Math.round( gridSize /3)) {
-                            direction = "bottom-right-diagonal";
-                         }
-                         else if (evt.evt.layerX > last_pos.x - Math.round( gridSize /3) && evt.evt.layerY < last_pos.y - Math.round( gridSize /3)) {
-                            direction = "top-right-diagonal";
-                         }
-                         else if (evt.evt.layerX < last_pos.x - Math.round( gridSize /3) && evt.evt.layerY < last_pos.y - Math.round( gridSize /3)) {
-                              direction = 'top-left-diagonal'
-                         }
-                         else if (evt.evt.layerX < last_pos.x - Math.round( gridSize /3) && evt.evt.layerY > last_pos.y - Math.round( gridSize /3)) {
-                              direction="bottom-left-diagonal";
-                         }
-                         // console.log(direction)
-                          switch (direction) {
-                            case 'bottom-right-diagonal':
-                              draw_to = {
-                                x: last_pos.x + gridSize,
-                                y: last_pos.y + gridSize
-                              }
-                              break;
-                            case 'top-right-diagonal':
-                                draw_to = {
-                                  x: last_pos.x + gridSize,
-                                  y: last_pos.y - gridSize
-                                }
-                                break;
-                            case 'right':
-                                draw_to = {
-                                  x: last_pos.x + gridSize,
-                                  y: last_pos.y
-                                }
-                                break;
-                            case 'left':
-                                draw_to = {
-                                  x: last_pos.x - gridSize,
-                                  y: last_pos.y
-                                }
-                                break;
-                            case 'bottom-left-diagonal':
-                              draw_to = {
-                                x: last_pos.x - gridSize,
-                                y: last_pos.y + gridSize
-                              }
-                              break;
-                            case 'top-left-diagonal':
-                                draw_to = {
-                                  x: last_pos.x - gridSize,
-                                  y: last_pos.y - gridSize
-                                }
-                                break;
-                            case 'up':
-                                draw_to = {
-                                  x: last_pos.x,
-                                  y: last_pos.y - gridSize
-                                }
-                                break;
-                            case 'down':
-                                draw_to = {
-                                  x: last_pos.x,
-                                  y: last_pos.y + gridSize
-                                }
-                                break;
-                            default :
-                              break;
-
-                          }
-
-                          points = [];
-                          points.push(
-                            Math.round(last_pos.x),
-                            Math.round(last_pos.y),
-                            Math.round(draw_to.x),
-                            Math.round(draw_to.y)
-                          );
-
-                          // console.log(points);
-
-                          line = new Konva.Line({
-                             points :points,
-                             stroke: lineStrokeColor,
-                             strokeWidth: lineStroke,
-                             drawLine : true,
-                             tension: 0,
-                             perfectDrawEnabled: false,
-                           });
-
-                           textlayer.add(line);
-                           line.draw();
-
-                           last_pos = draw_to
-                       }
+                     //points=[];
+                     //var line = textlayer.find("Line");
+                     var last_two_values = points.slice(-2);
+                     if((typeof box.attrs.x !== "undefined") || ( typeof box.attrs.y !== "undefined"))
+                     {
+                         var secondX = nearest(evt.evt.layerX,box.x(),box.x()+ gridSize);
+                         var secondY = nearest(evt.evt.layerY,box.y(),box.y()+ gridSize);
+                         points=[];
+                         points.push((Math.round(last_two_values[0]/ gridSize) * gridSize),(Math.round(last_two_values[1] / gridSize) * gridSize),(Math.round(secondX / gridSize) * gridSize),(Math.round(secondY / gridSize) * gridSize));
+                         line = new Konva.Line({
+                            points :points,
+                            stroke: lineStrokeColor,
+                            strokeWidth: lineStroke,
+                            drawLine : true,
+                            tension: 0,
+                            perfectDrawEnabled: false,
+                          });
+                          textlayer.add(line);
+                          line.draw();
+                      }
                  break;
                  default:
              }
@@ -1722,7 +1654,7 @@ function canvasInit()
                              var yVal;
                              if(zText === 0)
                              {
-                                var firstpostionXY = JSON.parse(positionXY[zText]);
+                               var firstpostionXY = JSON.parse(positionXY[zText]);
                                 if((Math.round(grup.attrs.x / gridSize) * gridSize) > 0 )
                                 {
                                   xVal = val.attrs.x = firstpostionXY.x + Math.abs(Math.round(grup.x() / gridSize) * gridSize);
@@ -1854,6 +1786,7 @@ function canvasInit()
         });
         return;
     }
+
     function startDrag(posIn){
       posStart = {x: posIn.x, y: posIn.y};
       posNow = {x: posIn.x, y: posIn.y};
@@ -1908,6 +1841,7 @@ function canvasInit()
            textlayer.draw(); // redraw any changes.
       }
     }
+
     function reverse(r1, r2){
       var r1x = r1.x, r1y = r1.y, r2x = r2.x,  r2y = r2.y, d;
       if (r1x > r2x ){
@@ -2398,37 +2332,40 @@ function canvasInit()
     {
         zoom_canvas(this.value, this.value);
     }
+
     function zoom_canvas(x,y)
     {
           stage.scale({
                   x : x,
                   y : y
               });
-
           stage.batchDraw();
 
           var scrollContainer = document.getElementById('scroll-container');
           var scrollCanvasContainer = document.getElementById('canvas');
-          // scrollContainer.style.width = 'calc(100% - 122px)';
+          scrollContainer.style.width = 'calc(100% - 22px)';
           scrollContainer.style.height = 'calc(80vh - 22px)';
           scrollCanvasContainer.style.width = 'calc(100% * '+x+')';
-          scrollCanvasContainer.style.height = 'calc(90vh * '+y+')';
+          scrollCanvasContainer.style.height = 'calc(80vh * '+y+')';
 
           $('#scroll-container').css({'border': '1px solid #ccc', 'box-shadow' : '1px 1px 2px 0px #ccc' })
     }
+
     var scrollContainer = document.getElementById('scroll-container');
     scrollContainer.addEventListener('scroll', function () {
           var dx = scrollContainer.scrollLeft;
           var dy = scrollContainer.scrollTop;
           if(dy >= Math.round(stage.height()))
           {
-              stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+            stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
           }
           stage.x(-dx);
           stage.y(-dy);
           stage.batchDraw();
     });
+
     /*  Canvas Zoom Functionality ends here   */
+
 
     $(document).on('click',"#downloadLoginPopup",function(){
         // gCacheStage = stage.toJSON();
@@ -2490,7 +2427,7 @@ function canvasInit()
         jQuery.getJSON("../json/floss.json").then(function(json)
         {
               var data = json.colors;
-              var symbols = ['x','#','$','%','&','*','+','=','?','∆','⌂','□','◊','●','○','Ꙩ'];
+              var symbols = ['x','#','$','%','&','*','+','=','?','âˆ†','âŒ‚','â–¡','â—Š','â—','â—‹','ê™¨'];
               var b = 0;
               $.each( uniqueNames, function( key, val )
               {
@@ -2675,7 +2612,6 @@ window.onload = function() {
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });
 };
-
 function ColorLuminance(hex, lum)
 {
   // validate hex string
